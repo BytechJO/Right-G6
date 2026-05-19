@@ -1,0 +1,296 @@
+// UNIT 1
+import Page8_Q1 from "./unit1/Page8_Q1";
+import Page8_Q2 from "./unit1/Page8_Q2";
+import Page8_Q3 from "./unit1/Page8_Q3";
+import Page9_Q1 from "./unit1/Page9_Q1";
+import Page9_Q2 from "./unit1/Page9_Q2";
+import Page9_Q3 from "./unit1/Page9_Q3";
+// UNIT 2
+// import Unit2_Page5_Q1 from "./unit2/Unit2_Page5_Q1";
+// import Unit2_Page5_Q2 from "./unit2/Unit2_Page5_Q2";
+// import Unit2_Page6_Q1 from "./unit2/Unit2_Page6_Q1";
+// import Unit2_Page6_Q2 from "./unit2/Unit2_Page6_Q2";
+// import Unit2_Page6_Q3 from "./unit2/Unit2_Page6_Q3";
+// //review1&2
+// import Review1_Page1_Q1 from "./review1&2/Review1_Page1_Q1";
+// import Review1_Page1_Q2 from "./review1&2/Review1_Page1_Q2";
+// import Review1_Page1_Q3 from "./review1&2/Review1_Page1_Q3";
+// import Review1_Page2_Q1 from "./review1&2/Review1_Page2_Q1";
+// import Review1_Page2_Q2 from "./review1&2/Review1_Page2_Q2";
+// import Review1_Page2_Q3 from "./review1&2/Review1_Page2_Q3";
+
+// import Review2_Page1_Q1 from "./review1&2/Review2_Page1_Q1";
+// import Review2_Page1_Q2 from "./review1&2/Review2_Page1_Q2";
+// import Review2_Page1_Q3 from "./review1&2/Review2_Page1_Q3";
+// import Review2_Page2_Q1 from "./review1&2/Review2_Page2_Q1";
+// import Review2_Page2_Q2 from "./review1&2/Review2_Page2_Q2";
+// import Review2_Page2_Q3 from "./review1&2/Review2_Page2_Q3";
+
+// //unit3
+// import Unit3_Page5_Q1 from "./unit3/Unit3_Page5_Q1";
+// import Unit3_Page5_Q2 from "./unit3/Unit3_Page5_Q2";
+// import Unit3_Page5_Q3 from "./unit3/Unit3_Page5_Q3";
+// import Unit3_Page6_Q1 from "./unit3/Unit3_Page6_Q1";
+// import Unit3_Page6_Q2 from "./unit3/Unit3_Page6_Q2";
+// import Unit3_Page6_Q3 from "./unit3/Unit3_Page6_Q3";
+
+// // unit4
+// import Unit4_Page5_Q1 from "./unit4/Unit4_Page5_Q1";
+// import Unit4_Page5_Q2 from "./unit4/Unit4_Page5_Q2";
+// import Unit4_Page5_Q3 from "./unit4/Unit4_Page5_Q3";
+// import Unit4_Page6_Q1 from "./unit4/Unit4_Page6_Q1";
+// import Unit4_Page6_Q2 from "./unit4/Unit4_Page6_Q2";
+// import Unit4_Page6_Q3 from "./unit4/Unit4_Page6_Q3";
+
+// //review3&4
+// import Review3_Page1_Q1 from "./review3&4/Review3_Page1_Q1";
+// import Review3_Page1_Q2 from "./review3&4/Review3_Page1_Q2";
+// import Review3_Page1_Q3 from "./review3&4/Review3_Page1_Q3";
+// import Review3_Page2_Q1 from "./review3&4/Review3_Page2_Q1";
+// import Review3_Page2_Q2 from "./review3&4/Review3_Page2_Q2";
+// import Review3_Page2_Q3 from "./review3&4/Review3_Page2_Q3";
+
+// import Review4_Page1_Q1 from "./review3&4/Review4_Page1_Q1";
+// import Review4_Page1_Q2 from "./review3&4/Review4_Page1_Q2";
+// import Review4_Page1_Q3 from "./review3&4/Review4_Page1_Q3";
+// import Review4_Page2_Q1 from "./review3&4/Review4_Page2_Q1";
+// import Review4_Page2_Q2 from "./review3&4/Review4_Page2_Q2";
+
+// // unit5
+// import Unit5_Page5_Q1 from "./unit5/Unit5_Page5_Q1";
+// import Unit5_Page5_Q2 from "./unit5/Unit5_Page5_Q2";
+// import Unit5_Page6_Q1 from "./unit5/Unit5_Page6_Q1";
+// import Unit5_Page6_Q2 from "./unit5/Unit5_Page6_Q2";
+
+// //unit6
+// import Unit6_Page5_Q1 from "./unit6/Unit6_Page5_Q1";
+// import Unit6_Page5_Q2 from "./unit6/Unit6_Page5_Q2";
+// import Unit6_Page5_Q3 from "./unit6/Unit6_Page5_Q3";
+// import Unit6_Page6_Q1 from "./unit6/Unit6_Page6_Q1";
+// import Unit6_Page6_Q2 from "./unit6/Unit6_Page6_Q2";
+// import Unit6_Page6_Q3 from "./unit6/Unit6_Page6_Q3";
+
+// //review5&6
+// import Review5_Page1_Q1 from "./review5&6/Review5_Page1_Q1";
+// import Review5_Page1_Q2 from "./review5&6/Review5_Page1_Q2";
+// import Review5_Page1_Q3 from "./review5&6/Review5_Page1_Q3";
+// import Review5_Page2_Q1 from "./review5&6/Review5_Page2_Q1";
+// import Review5_Page2_Q2 from "./review5&6/Review5_Page2_Q2";
+// import Review5_Page2_Q3 from "./review5&6/Review5_Page2_Q3";
+
+// import Review6_Page1_Q1 from "./review5&6/Review6_Page1_Q1";
+// import Review6_Page1_Q2 from "./review5&6/Review6_Page1_Q2";
+// import Review6_Page1_Q3 from "./review5&6/Review6_Page1_Q3";
+// import Review6_Page1_Q4 from "./review5&6/Review6_Page1_Q4";
+// import Review6_Page2_Q1 from "./review5&6/Review6_Page2_Q1";
+// import Review6_Page2_Q2 from "./review5&6/Review6_Page2_Q2";
+
+// // unit 7
+// import Unit7_Page5_Q1 from "./unit7/Unit7_Page5_Q1";
+// import Unit7_Page5_Q2 from "./unit7/Unit7_Page5_Q2";
+// import Unit7_Page6_Q1 from "./unit7/Unit7_Page6_Q1";
+// import Unit7_Page6_Q2 from "./unit7/Unit7_Page6_Q2";
+// import Unit7_Page6_Q3 from "./unit7/Unit7_Page6_Q3";
+
+// //unit8
+// import Unit8_Page5_Q1 from "./unit8/Unit8_Page5_Q1";
+// import Unit8_Page5_Q2 from "./unit8/Unit8_Page5_Q2";
+// import Unit8_Page6_Q1 from "./unit8/Unit8_Page6_Q1";
+// import Unit8_Page6_Q2 from "./unit8/Unit8_Page6_Q2";
+// import Unit8_Page6_Q3 from "./unit8/Unit8_Page6_Q3";
+
+// //review7&8
+// import Review7_Page1_Q1 from "./review7&8/Review7_Page1_Q1";
+// import Review7_Page1_Q2 from "./review7&8/Review7_Page1_Q2";
+// import Review7_Page2_Q1 from "./review7&8/Review7_Page2_Q1";
+// import Review7_Page2_Q2 from "./review7&8/Review7_Page2_Q2";
+// import Review7_Page2_Q3 from "./review7&8/Review7_Page2_Q3";
+
+// import Review8_Page1_Q1 from "./review7&8/Review8_Page1_Q1";
+// import Review8_Page1_Q2 from "./review7&8/Review8_Page1_Q2";
+// import Review8_Page1_Q3 from "./review7&8/Review8_Page1_Q3";
+// import Review8_Page2_Q1 from "./review7&8/Review8_Page2_Q1";
+// import Review8_Page2_Q2 from "./review7&8/Review8_Page2_Q2";
+
+// //unit9
+// import Unit9_Page5_Q1 from "./unit9/Unit9_Page5_Q1";
+// import Unit9_Page5_Q2 from "./unit9/Unit9_Page5_Q2";
+// import Unit9_Page5_Q3 from "./unit9/Unit9_Page5_Q3";
+// import Unit9_Page6_Q1 from "./unit9/Unit9_Page6_Q1";
+// import Unit9_Page6_Q2 from "./unit9/Unit9_Page6_Q2";
+
+// //unit10
+// import Unit10_Page5_Q1 from "./unit10/Unit10_Page5_Q1";
+// import Unit10_Page5_Q2 from "./unit10/Unit10_Page5_Q2";
+// import Unit10_Page5_Q3 from "./unit10/Unit10_Page5_Q3";
+// import Unit10_Page6_Q1 from "./unit10/Unit10_Page6_Q1";
+// import Unit10_Page6_Q2 from "./unit10/Unit10_Page6_Q2";
+// import Unit10_Page6_Q3 from "./unit10/Unit10_Page6_Q3";
+
+// //review9&10
+// import Review9_Page1_Q1 from "./review9&10/Review9_Page1_Q1";
+// import Review9_Page1_Q2 from "./review9&10/Review9_Page1_Q2";
+// import Review9_Page1_Q3 from "./review9&10/Review9_Page1_Q3";
+// import Review9_Page2_Q1 from "./review9&10/Review9_Page2_Q1";
+// import Review9_Page2_Q2 from "./review9&10/Review9_Page2_Q2";
+// import Review9_Page2_Q3 from "./review9&10/Review9_Page2_Q3";
+
+// import Review10_Page1_Q1 from "./review9&10/Review10_Page1_Q1";
+// import Review10_Page1_Q2 from "./review9&10/Review10_Page1_Q2";
+// import Review10_Page1_Q3 from "./review9&10/Review10_Page1_Q3";
+// import Review10_Page2_Q1 from "./review9&10/Review10_Page2_Q1";
+// import Review10_Page2_Q2 from "./review9&10/Review10_Page2_Q2";
+// import Review10_Page2_Q3 from "./review9&10/Review10_Page2_Q3";
+
+export const lessons = [
+  // UNIT 1
+  { component: Page8_Q1, unit: 1 }, //0
+  { component: Page8_Q2, unit: 1 }, //1
+  { component: Page8_Q3, unit: 1 }, //2
+  { component: Page9_Q1, unit: 1 }, //3
+  { component: Page9_Q2, unit: 1 }, //4
+  { component: Page9_Q3, unit: 1, lastOfUnit: true }, //5
+
+  // UNIT 2
+  // { component: Unit2_Page5_Q1, unit: 2 }, //6
+  // { component: Unit2_Page5_Q2, unit: 2 }, //7
+  // { component: Unit2_Page6_Q1, unit: 2 }, //8
+  // { component: Unit2_Page6_Q2, unit: 2 }, //9
+  // { component: Unit2_Page6_Q3, unit: 2, lastOfUnit: true }, //10
+
+  // //review1&2
+  // { component: Review1_Page1_Q1, unit: 2, isReview: true }, //11
+  // { component: Review1_Page1_Q2, unit: 2, isReview: true }, //12
+  // { component: Review1_Page1_Q3, unit: 2, isReview: true }, //13
+  // { component: Review1_Page2_Q1, unit: 2, isReview: true }, //14
+  // { component: Review1_Page2_Q2, unit: 2, isReview: true }, //15
+  // { component: Review1_Page2_Q3, unit: 2, isReview: true }, //16
+
+  // { component: Review2_Page1_Q1, unit: 2, isReview: true }, //17
+  // { component: Review2_Page1_Q2, unit: 2, isReview: true }, //18
+  // { component: Review2_Page1_Q3, unit: 2, isReview: true }, //19
+  // { component: Review2_Page2_Q1, unit: 2, isReview: true }, //20
+  // { component: Review2_Page2_Q2, unit: 2, isReview: true }, //21
+  // { component: Review2_Page2_Q3, unit: 2, isReview: true, lastOfUnit: true }, //22
+
+  // //unit3
+  // { component: Unit3_Page5_Q1, unit: 3 }, //23
+  // { component: Unit3_Page5_Q2, unit: 3 }, //24
+  // { component: Unit3_Page5_Q3, unit: 3 }, //25
+  // { component: Unit3_Page6_Q1, unit: 3 }, //26
+  // { component: Unit3_Page6_Q2, unit: 3 }, //27
+  // { component: Unit3_Page6_Q3, unit: 3, lastOfUnit: true }, //28
+
+  // //unit4
+  // { component: Unit4_Page5_Q1, unit: 4 }, //29
+  // { component: Unit4_Page5_Q2, unit: 4 }, //30
+  // { component: Unit4_Page5_Q3, unit: 4 }, //31
+  // { component: Unit4_Page6_Q1, unit: 4 }, //32
+  // { component: Unit4_Page6_Q2, unit: 4 }, //33
+  // { component: Unit4_Page6_Q3, unit: 4, lastOfUnit: true }, //34
+
+  // //review3&4
+  // { component: Review3_Page1_Q1, unit: 4, isReview: true }, //35
+  // { component: Review3_Page1_Q2, unit: 4, isReview: true }, //36
+  // { component: Review3_Page1_Q3, unit: 4, isReview: true }, //37
+  // { component: Review3_Page2_Q1, unit: 4, isReview: true }, //38
+  // { component: Review3_Page2_Q2, unit: 4, isReview: true }, //39
+  // { component: Review3_Page2_Q3, unit: 4, isReview: true }, //40
+
+  // { component: Review4_Page1_Q1, unit: 4, isReview: true }, //41
+  // { component: Review4_Page1_Q2, unit: 4, isReview: true }, //42
+  // { component: Review4_Page1_Q3, unit: 4, isReview: true }, //43
+  // { component: Review4_Page2_Q1, unit: 4, isReview: true }, //44
+  // { component: Review4_Page2_Q2, unit: 4, isReview: true, lastOfUnit: true }, //45
+
+  // //unit5
+  // { component: Unit5_Page5_Q1, unit: 5 }, //46
+  // { component: Unit5_Page5_Q2, unit: 5 }, //47
+  // { component: Unit5_Page6_Q1, unit: 5 }, //48
+  // { component: Unit5_Page6_Q2, unit: 5, lastOfUnit: true }, //49
+
+  // //unit6
+  // { component: Unit6_Page5_Q1, unit: 6 }, //50
+  // { component: Unit6_Page5_Q2, unit: 6 }, //51
+  // { component: Unit6_Page5_Q3, unit: 6 }, //52
+  // { component: Unit6_Page6_Q1, unit: 6 }, //53
+  // { component: Unit6_Page6_Q2, unit: 6 }, //54
+  // { component: Unit6_Page6_Q3, unit: 6, lastOfUnit: true }, //55
+
+  // //review5&6
+  // { component: Review5_Page1_Q1, unit: 6, isReview: true }, //56
+  // { component: Review5_Page1_Q2, unit: 6, isReview: true }, //57
+  // { component: Review5_Page1_Q3, unit: 6, isReview: true }, //58
+  // { component: Review5_Page2_Q1, unit: 6, isReview: true }, //59
+  // { component: Review5_Page2_Q2, unit: 6, isReview: true }, //60
+  // { component: Review5_Page2_Q3, unit: 6, isReview: true }, //61
+
+  // { component: Review6_Page1_Q1, unit: 6, isReview: true }, //62
+  // { component: Review6_Page1_Q2, unit: 6, isReview: true }, //63
+  // { component: Review6_Page1_Q3, unit: 6, isReview: true }, //64
+  // { component: Review6_Page1_Q4, unit: 6, isReview: true }, //65
+  // { component: Review6_Page2_Q1, unit: 6, isReview: true }, //66
+  // { component: Review6_Page2_Q2, unit: 6, isReview: true, lastOfUnit: true }, //67
+
+  // //unit7
+  // { component: Unit7_Page5_Q1, unit: 7 }, //68
+  // { component: Unit7_Page5_Q2, unit: 7 }, //69
+  // { component: Unit7_Page6_Q1, unit: 7 }, //70
+  // { component: Unit7_Page6_Q2, unit: 7 }, //71
+  // { component: Unit7_Page6_Q3, unit: 7, lastOfUnit: true }, //72
+
+  // //unit8
+  // { component: Unit8_Page5_Q1, unit: 8 }, //73
+  // { component: Unit8_Page5_Q2, unit: 8 }, //74
+  // { component: Unit8_Page6_Q1, unit: 8 }, //75
+  // { component: Unit8_Page6_Q2, unit: 8 }, //76
+  // { component: Unit8_Page6_Q3, unit: 8, lastOfUnit: true }, //77
+
+  // //review7&8
+  // { component: Review7_Page1_Q1, unit: 8, isReview: true }, //78
+  // { component: Review7_Page1_Q2, unit: 8, isReview: true }, //79
+  // { component: Review7_Page2_Q1, unit: 8, isReview: true }, //80
+  // { component: Review7_Page2_Q2, unit: 8, isReview: true }, //81
+  // { component: Review7_Page2_Q3, unit: 8, isReview: true }, //82
+
+  // { component: Review8_Page1_Q1, unit: 8, isReview: true }, //83
+  // { component: Review8_Page1_Q2, unit: 8, isReview: true }, //84
+  // { component: Review8_Page1_Q3, unit: 8, isReview: true }, //85
+  // { component: Review8_Page2_Q1, unit: 8, isReview: true }, //86
+  // { component: Review8_Page2_Q2, unit: 8, isReview: true, lastOfUnit: true }, //87
+
+  // //unit9
+  // { component: Unit9_Page5_Q1, unit: 9 }, //88
+  // { component: Unit9_Page5_Q2, unit: 9 }, //89
+  // { component: Unit9_Page5_Q3, unit: 9 }, //90
+  // { component: Unit9_Page6_Q1, unit: 9 }, //91
+  // { component: Unit9_Page6_Q2, unit: 9, lastOfUnit: true }, //92
+
+  // //unit10
+  // { component: Unit10_Page5_Q1, unit: 10 }, //93
+  // { component: Unit10_Page5_Q2, unit: 10 }, //94
+  // { component: Unit10_Page5_Q3, unit: 10 }, //95
+  // { component: Unit10_Page6_Q1, unit: 10 }, //96
+  // { component: Unit10_Page6_Q2, unit: 10 }, //97
+  // { component: Unit10_Page6_Q3, unit: 10, lastOfUnit: true }, //98
+
+  // //review9&10
+  // { component: Review9_Page1_Q1, unit: 10, isReview: true }, //99
+  // { component: Review9_Page1_Q2, unit: 10, isReview: true }, //100
+  // { component: Review9_Page1_Q3, unit: 10, isReview: true }, //101
+  // { component: Review9_Page2_Q1, unit: 10, isReview: true }, //102
+  // { component: Review9_Page2_Q2, unit: 10, isReview: true }, //103
+  // { component: Review9_Page2_Q3, unit: 10, isReview: true }, //104
+
+  // { component: Review10_Page1_Q1, unit: 10, isReview: true }, //105
+  // { component: Review10_Page1_Q2, unit: 10, isReview: true }, //106
+  // { component: Review10_Page1_Q3, unit: 10, isReview: true }, //107
+  // { component: Review10_Page2_Q1, unit: 10, isReview: true }, //108
+  // { component: Review10_Page2_Q2, unit: 10, isReview: true }, //109
+  // {
+  //   component: Review10_Page2_Q3,
+  //   unit: 10,
+  //   isReview: true,
+  //   lastOfReview: true,
+  // }, //110
+];

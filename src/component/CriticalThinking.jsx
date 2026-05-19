@@ -1,0 +1,60 @@
+import React, { useState } from "react";
+import Rabbit from "../assets/Page 01/Rabbit.svg";
+
+const CriticalThinking = ({ title }) => {
+  const [answer, setAnswer] = useState("");
+
+  const handleReset = () => {
+    setAnswer("");
+  };
+
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          marginTop: "80px",
+        }}
+      >
+        <img
+          src={Rabbit}
+          style={{ height: "50px", width: "auto", marginRight: 10 }}
+        />
+        <h5 className="header-title-page8">{title}</h5>
+      </div>
+
+      {/* input */}
+      <textarea
+        value={answer}
+        onChange={(e) => setAnswer(e.target.value)}
+        placeholder="Write your answer here..."
+        style={{
+          marginTop: "40px",
+          width: "70%",
+          padding: "10px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+          fontSize: "18px",
+          minHeight: "220px",
+          resize: "vertical",
+        }}
+      />
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default CriticalThinking;
