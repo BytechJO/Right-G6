@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import conversationBG from "../assets/imgs/conversation.svg";
 import QuestionAudioPlayer from "./QuestionAudioPlayer";
 import pauseBtn from "../assets/Page 01/Right Video Button.svg";
+import img from "../assets/imgs/pages/classbook/conversation.svg";
 
 const ConversationItem = React.memo(
   ({
@@ -128,41 +129,38 @@ const Conversation = ({
   return (
     <div className="w-[60%] mx-auto">
       {/* العنوان */}
-      <div className="flex items-center gap-4 mb-12 mt-3">
-        <h2
-          className="text-xl font-bold px-3 py-1"
+      <div className="relative flex items-center gap-4 mb-12 mt-3">
+        <img
+          src={img}
           style={{
-            backgroundImage: `url(${conversationBG})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
+            height: "70px",
+            width: "auto",
           }}
-        >
-          {title}
-        </h2>
-        <h2 className="text-black font-bold">Listen and read. Then say.</h2>
-      </div>
-      <div
-        className="pauseBtn-icon-CD-page4 hover:scale-110 transition"
-        style={{ overflow: "visible" }}
-      >
-        <svg
-          width="30"
-          height="30"
-          viewBox="0 0 90 90"
-          onClick={() => setShowVideo(true)}
+        />
+        <h2 className="text-black text-[22px] font-bold flex items-center gap-5">Listen and read. Then say.<div
+          className="pauseBtn-icon-CD-page4 hover:scale-110 transition"
           style={{ overflow: "visible" }}
         >
-          <image
-            className="svg-img"
-            href={pauseBtn}
-            x="0"
-            y="0"
-            width="90"
-            height="90"
-          />
-        </svg>
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 90 90"
+            onClick={() => setShowVideo(true)}
+            style={{ overflow: "visible" }}
+          >
+            <image
+              className="svg-img"
+              href={pauseBtn}
+              x="0"
+              y="0"
+              width="90"
+              height="90"
+            />
+          </svg>
+        </div></h2>
+        
       </div>
+
       <QuestionAudioPlayer
         src={sound}
         captions={captions}

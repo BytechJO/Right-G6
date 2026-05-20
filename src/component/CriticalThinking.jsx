@@ -20,8 +20,8 @@ const CriticalThinking = ({ title }) => {
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
-          width: "100%",
+          justifyContent: "start",
+          width: "60%",
           marginTop: "80px",
         }}
       >
@@ -39,7 +39,7 @@ const CriticalThinking = ({ title }) => {
         placeholder="Write your answer here..."
         style={{
           marginTop: "40px",
-          width: "70%",
+          width: "60%",
           padding: "10px",
           borderRadius: "8px",
           border: "1px solid #ccc",

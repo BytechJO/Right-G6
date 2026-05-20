@@ -150,59 +150,50 @@ const handleSentenceChange = (index, value) => {
   setSentenceAnswers(updated);
 };
 
-  const handleCheck = () => {
-    if (locked) return;
+ const handleCheck = () => {
+  if (locked) return;
 
-    const lettersEmpty = letterAnswers.some((arr) =>
-      arr.some((v) => !v.trim()),
+  const lettersEmpty = letterAnswers.some((arr) => arr.some((v) => !v.trim()));
+  const sentenceEmpty = sentenceAnswers.some((v) => !v.trim());
+  if (lettersEmpty || sentenceEmpty) {
+    ValidationAlert.info("Please complete all fields.");
+    return;
+  }
+
+  let correct = 0;
+  const total = EXPRESSIONS.length + EXPRESSIONS.length; // 4 + 4 = 8
+
+  // ── حروف: كل expression = نقطة وحدة ──
+  const newLetterErrors = EXPRESSIONS.map((expr, i) => {
+    const correctArr = getCorrectBlanks(expr);
+    // هل كل حروف هاد الـ expression صح؟
+    const allCorrect = correctArr.every(
+      (c, j) => letterAnswers[i][j].toLowerCase() === c.toLowerCase()
     );
-    const sentenceEmpty = sentenceAnswers.some((v) => !v.trim());
-    if (lettersEmpty || sentenceEmpty) {
-      ValidationAlert.info("Please complete all fields.");
-      return;
-    }
+    if (allCorrect) correct++;
+    // ارجع errors لكل حرف بشكل منفصل (عشان الـ ❌ يظهر على كل حرف غلط)
+    return correctArr.map((c, j) =>
+      letterAnswers[i][j].toLowerCase() === c.toLowerCase() ? false : true
+    );
+  });
 
-    let correct = 0;
-    let total = 0;
+  // ── جمل: كل جملة = نقطة وحدة ──
+  const newMatchErrors = EXPRESSIONS.map((expr, i) => {
+    const ok = normalizeText(sentenceAnswers[i]) === normalizeText(expr.sentenceAnswer);
+    if (ok) correct++;
+    return ok ? false : true;
+  });
 
-    const newLetterErrors = EXPRESSIONS.map((expr, i) => {
-      const correctArr = getCorrectBlanks(expr);
-      return correctArr.map((c, j) => {
-        total++;
-        const ok = letterAnswers[i][j].toLowerCase() === c.toLowerCase();
-        if (ok) correct++;
-        return ok ? false : true;
-      });
-    });
+  setLetterErrors(newLetterErrors);
+  setMatchErrors(newMatchErrors);
 
-    const newMatchErrors = EXPRESSIONS.map((expr, i) => {
-      total++;
+  const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+  const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-      const ok =
-        normalizeText(sentenceAnswers[i]) ===
-        normalizeText(expr.sentenceAnswer);
-
-      if (ok) correct++;
-
-      return ok ? false : true;
-    });
-    setLetterErrors(newLetterErrors);
-    setMatchErrors(newMatchErrors);
-
-    const color =
-      correct === total ? "green" : correct === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-
-    if (correct === total) {
-      setLocked(true);
-      ValidationAlert.success(msg);
-    } else if (correct === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
-  };
-
+  if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+  else if (correct === 0) { ValidationAlert.error(msg); }
+  else { ValidationAlert.warning(msg); }
+};
   const handleShow = () => {
     setLetterAnswers(EXPRESSIONS.map((e) => getCorrectBlanks(e)));
     setSentenceAnswers(EXPRESSIONS.map((e) => e.sentenceAnswer));

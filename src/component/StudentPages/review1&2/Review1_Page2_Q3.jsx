@@ -1,59 +1,121 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 22.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 23.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 24.svg";
+import ActionButtons from "../../Button";
+
+const QUESTIONS = [
+  {
+    question: "I have read the newspaper.",
+    suggested: "I haven’t read the newspaper.",
+    correct: [
+      "I haven’t read the newspaper",
+      "I have not read the newspaper",
+    ],
+  },
+  {
+    question: "Aaron and Jim haven’t been to Disneyland before.",
+    suggested:
+      "Aaron and Jim have been to Disneyland before.",
+    correct: [
+      "Aaron and Jim have been to Disneyland before",
+    ],
+  },
+  {
+    question: "Haven’t you met the president before?",
+    suggested:
+      "Have you met the president before?",
+    correct: [
+      "Have you met the president before",
+    ],
+  },
+  {
+    question: "My cousin has seen that movie.",
+    suggested:
+      "My cousin hasn’t seen that movie.",
+    correct: [
+      "My cousin hasn’t seen that movie",
+      "My cousin has not seen that movie",
+    ],
+  },
+];
+
+const normalize = (text) =>
+  text
+    .toLowerCase()
+    .replace(/[.,!?]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/have not/g, "haven’t")
+    .replace(/has not/g, "hasn’t");
 
 const Review1_Page2_Q3 = () => {
-  const [answers, setAnswers] = useState(["", "", ""]);
-  const [result, setResult] = useState([]);
+  const [answers, setAnswers] = useState(
+    Array(QUESTIONS.length).fill("")
+  );
+
+  const [showSuggested, setShowSuggested] =
+    useState(false);
+
+  const [result, setResult] = useState(
+    Array(QUESTIONS.length).fill(null)
+  );
+
   const [locked, setLocked] = useState(false);
 
-  // ✅ الإجابات الصح (غيّرها إذا بدك)
-  const correct = [
-    "for two hours",
-    "They sailed for four miles",
-    "three pajamas",
-  ];
-
-  const normalize = (t) => t.toLowerCase().replace(/[.?]/g, "").trim();
-
   const handleChange = (i, val) => {
-    if (result[i] === true) return;
+    if (locked || result[i] === true) return;
 
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
+    setAnswers((prev) =>
+      prev.map((a, idx) => (idx === i ? val : a))
+    );
 
     setResult((prev) => {
       const copy = [...prev];
-      copy[i] = undefined;
+      copy[i] = null;
       return copy;
     });
   };
 
-  // ✅ CHECK
+  // ✅ CHECK ANSWERS
   const handleCheck = () => {
     if (locked) return;
 
     if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Complete all fields.");
+      ValidationAlert.info(
+        "Please complete all fields."
+      );
       return;
     }
 
     let correctCount = 0;
 
-    const res = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(correct[i]);
+    const newResult = answers.map((a, i) => {
+      const ok = QUESTIONS[i].correct.some(
+        (c) => normalize(a) === normalize(c)
+      );
+
       if (ok) correctCount++;
+
       return ok;
     });
 
-    setResult(res);
+    setResult(newResult);
 
-    const total = correct.length;
+    const total = QUESTIONS.length;
 
-    const msg = `Score: ${correctCount} / ${total}`;
+    const color =
+      correctCount === total
+        ? "green"
+        : correctCount === 0
+        ? "red"
+        : "orange";
+
+    const msg = `
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">
+          Score: ${correctCount} / ${total}
+        </span>
+      </div>
+    `;
 
     if (correctCount === total) {
       setLocked(true);
@@ -65,186 +127,123 @@ const Review1_Page2_Q3 = () => {
     }
   };
 
-  // 👀 SHOW
+  // 👀 SHOW ANSWERS
   const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
+    setAnswers(QUESTIONS.map((q) => q.suggested));
+    setShowSuggested(true);
+    setResult(Array(QUESTIONS.length).fill(true));
     setLocked(true);
   };
 
   // 🔄 RESET
   const handleReset = () => {
-    setAnswers(["", "", ""]);
-    setResult([]);
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setShowSuggested(false);
+    setResult(Array(QUESTIONS.length).fill(null));
     setLocked(false);
   };
 
-  // 🎯 input
-  const input = (i, width = "300px") => (
-    <span style={{ position: "relative", marginLeft: "6px" }}>
-      <input
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        disabled={result[i] === true}
-        style={{
-          borderBottom:
-            result[i] === false ? "1px solid red" : "1px solid black",
-          outline: "none",
-          textAlign: "center",
-          width: width,
-          fontSize: "18px",
-          fontWeight: "bold",
-          color: "#6D2980",
-          background: "transparent",
-        }}
-      />
-
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
   return (
-    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-15">
-          <span className="mr-2">F</span>
-          Look, read, and write a measurement.
+    <div className="p-[30px] flex flex-col items-center">
+      <div
+        className="div-forall"
+        style={{ gap: "40px" }}
+      >
+        {/* Title */}
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-2">E</span>
+          Change the positive sentences to negative
+          sentences and the negative sentences to
+          positive sentences.
         </h5>
 
-        {/* المحتوى */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "18px",
-          }}
-        >
-          {/* 1 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <div style={{ position: "relative" }}>
-              <span
+        <div className="flex flex-col gap-7 text-[18px] mt-5">
+          {QUESTIONS.map((q, i) => (
+            <div
+              key={i}
+              className="flex flex-col gap-2"
+            >
+              {/* Question */}
+              <div className="flex items-start gap-2">
+                <span className="font-bold shrink-0">
+                  {i + 1}
+                </span>
+
+                <span>{q.question}</span>
+              </div>
+
+              {/* Answer Input */}
+              <div
                 style={{
-                  position: "absolute",
-                  top: "30px",
-                  left: "-10px",
-                  fontWeight: "bold",
+                  position: "relative",
+                  marginLeft: "20px",
                 }}
               >
-                1
-              </span>
+                <input
+                  value={answers[i]}
+                  onChange={(e) =>
+                    handleChange(
+                      i,
+                      e.target.value
+                    )
+                  }
+                  disabled={
+                    locked || result[i] === true
+                  }
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    borderBottom:
+                      result[i] === false
+                        ? "2px solid red"
+                        : "1px solid #555",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: "18px",
+                    fontWeight: showSuggested
+                      ? "500"
+                      : "400",
+                    padding: "2px 0",
+                  }}
+                />
 
-              <img
-                src={img1}
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  marginLeft: "20px",
-                  padding: "4px",
-                }}
-              />
+                {/* ❌ icon */}
+                {result[i] === false && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border:
+                        "2px solid white",
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </div>
             </div>
-
-            <div style={{ flex: 1 }}>How long? She talked {input(0)}.</div>
-          </div>
-
-          {/* 2 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <div style={{ position: "relative" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "30px",
-                  left: "-10px",
-                  fontWeight: "bold",
-                }}
-              >
-                2
-              </span>
-
-              <img
-                src={img2}
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  marginLeft: "20px",
-                  padding: "4px",
-                }}
-              />
-            </div>
-
-            <div style={{ flex: 1 }}>How far? {input(1, "350px")}.</div>
-          </div>
-
-          {/* 3 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <div style={{ position: "relative" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "30px",
-                  left: "-10px",
-                  fontWeight: "bold",
-                }}
-              >
-                3
-              </span>
-
-              <img
-                src={img3}
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  marginLeft: "20px",
-                  padding: "4px",
-                }}
-              />
-            </div>
-
-            <div style={{ flex: 1 }}>
-              How many? She will bring {input(2, "300px")}.
-            </div>
-          </div>
+          ))}
         </div>
+      </div>
 
-        {/* buttons */}
-        <div className="action-buttons-container">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
-
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
-        </div>
+      {/* Buttons */}
+      <div className="flex justify-center gap-6 mt-8">
+        <ActionButtons
+          handleStartAgain={handleReset}
+          handleShowAnswer={handleShow}
+          checkAnswers={handleCheck}
+        />
       </div>
     </div>
   );

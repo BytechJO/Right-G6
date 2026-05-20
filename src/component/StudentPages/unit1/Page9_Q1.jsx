@@ -4,7 +4,7 @@ import trueIcon from "../../../assets/imgs/true.svg";
 import falseIcon from "../../../assets/imgs/false.svg";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 import sound from "../../../assets/audio/ClassBook/U1/PG 9/CD5.Pg9_Instruction1_Adult Lady.mp3";
-import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 9.svg"
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 9.svg";
 const SENTENCES = [
   { id: 0, text: "Jane hasn't been to the mall this week." },
   { id: 1, text: "Mike has visited his grandparents." },
@@ -129,148 +129,144 @@ const Page9_Q1 = () => {
           stopAtSecond={2.5}
         />
         <div className="flex gap-5 w-full items-center">
-        {/* Sentences list */}
-        <div className="flex flex-col gap-10">
-          {SENTENCES.map((sent, i) => {
-            const hasError = errors[i] === true;
-            const isOk = errors[i] === false;
+          {/* Sentences list */}
+          <div className="flex flex-col gap-10">
+            {SENTENCES.map((sent, i) => {
+              const hasError = errors[i] === true;
+              const isOk = errors[i] === false;
 
-            return (
-              <div key={i} className="flex items-center gap-4 text-[18px]">
-                {/* رقم السؤال */}
-                <span className="font-bold w-[20px] text-right shrink-0">
-                  {i + 1}
-                </span>
+              return (
+                <div key={i} className="flex items-center gap-4 text-[18px]">
+                  {/* رقم السؤال */}
+                  <span className="font-bold w-[20px] text-right shrink-0">
+                    {i + 1}
+                  </span>
 
-                {/* أزرار ✓ ✗ */}
-                <div className="flex gap-2 shrink-0">
-                  {/* ✓ */}
-                  <button
-                    disabled={locked || isOk}
-                    onClick={() => handleSelect(i, true)}
-                    style={{
-                      width: "38px",
-                      height: "38px",
-                      // borderRadius: "8px",
-                      borderBottom: ` ${
-                        answers[i] === true
-                          ? hasError
-                            ? "2px solid #ef4444"
-                            : "1px solid #84ad40"
-                          : "1px solid #ccc"
-                      }`,
-                      background:
-                        answers[i] === true
-                          ? hasError
-                            ? "#f0fdf4"
-                            : "#f0fdf4"
-                          : "white",
+                  {/* أزرار ✓ ✗ */}
+                  <div className="flex gap-2 shrink-0">
+                    {/* ✓ */}
+                    <button
+                      disabled={locked || isOk}
+                      onClick={() => handleSelect(i, true)}
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        // borderRadius: "8px",
+                        borderBottom: ` ${
+                          answers[i] === true
+                            ? hasError
+                              ? "2px solid #ef4444"
+                              : "1px solid #84ad40"
+                            : "1px solid #ccc"
+                        }`,
+                       
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        cursor: locked || isOk ? "default" : "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.15s",
+                        position: "relative",
+                      }}
+                    >
+                      {answers[i] === true ? (
+                        <img src={trueIcon} style={{ height: "25px" }} />
+                      ) : (
+                        ""
+                      )}
+                      {hasError && answers[i] === true && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-8px",
+                            right: "-8px",
+                            width: "22px",
+                            height: "22px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            fontSize: "12px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            zIndex: 5,
+                          }}
+                        >
+                          ✕
+                        </span>
+                      )}
+                    </button>
 
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      cursor: locked || isOk ? "default" : "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      transition: "all 0.15s",
-                      position: "relative",
-                    }}
-                  >
-                    <img src={trueIcon} style={{ height: "25px" }} />
-                    {hasError && answers[i] === true && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: "-8px",
-                          right: "-8px",
-                          width: "22px",
-                          height: "22px",
-                          background: "red",
-                          color: "white",
-                          borderRadius: "50%",
-                          fontSize: "12px",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontWeight: "bold",
-                          border: "2px solid white",
-                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-                          zIndex: 5,
-                        }}
-                      >
-                        ✕
-                      </span>
-                    )}
-                  </button>
+                    {/* ✗ */}
+                    <button
+                      disabled={locked || isOk}
+                      onClick={() => handleSelect(i, false)}
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        // borderRadius: "8px",
+                        borderBottom: `${
+                          answers[i] === false
+                            ? hasError
+                              ? "2px solid #ef4444"
+                              : "1px solid #16a34a"
+                            : "1px solid #ccc"
+                        }`,
+                      
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                        cursor: locked || isOk ? "default" : "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.15s",
+                        position: "relative",
+                      }}
+                    >
+                      {answers[i] === false ? (
+                        <img src={falseIcon} style={{ height: "25px" }} />
+                      ) : (
+                        ""
+                      )}
+                      {hasError && answers[i] === false && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-8px",
+                            right: "-8px",
+                            width: "22px",
+                            height: "22px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            fontSize: "12px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            zIndex: 5,
+                          }}
+                        >
+                          ✕
+                        </span>
+                      )}
+                    </button>
+                  </div>
 
-                  {/* ✗ */}
-                  <button
-                    disabled={locked || isOk}
-                    onClick={() => handleSelect(i, false)}
-                    style={{
-                      width: "38px",
-                      height: "38px",
-                      // borderRadius: "8px",
-                      borderBottom: `${
-                        answers[i] === false
-                          ? hasError
-                            ? "2px solid #ef4444"
-                            : "1px solid #16a34a"
-                          : "1px solid #ccc"
-                      }`,
-                      background:
-                        answers[i] === false
-                          ? hasError
-                            ? "#f0fdf4"
-                            : "#f0fdf4"
-                          : "white",
-
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                      cursor: locked || isOk ? "default" : "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      transition: "all 0.15s",
-                      position: "relative",
-                    }}
-                  >
-                    <img src={falseIcon} style={{ height: "25px" }} />
-                    {hasError && answers[i] === false && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: "-8px",
-                          right: "-8px",
-                          width: "22px",
-                          height: "22px",
-                          background: "red",
-                          color: "white",
-                          borderRadius: "50%",
-                          fontSize: "12px",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontWeight: "bold",
-                          border: "2px solid white",
-                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-                          zIndex: 5,
-                        }}
-                      >
-                        ✕
-                      </span>
-                    )}
-                  </button>
+                  {/* نص الجملة */}
+                  <span className="text-gray-800">{sent.text}</span>
                 </div>
-
-                {/* نص الجملة */}
-                <span className="text-gray-800">{sent.text}</span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <img src={img} style={{ height: "200px", width: "auto" }} />
         </div>
-        <img src={img} style={{height:"200px" ,width:"auto"}}/>
-</div>
         {/* Buttons */}
         <div className="action-buttons-container">
           <button className="try-again-button" onClick={handleReset}>
