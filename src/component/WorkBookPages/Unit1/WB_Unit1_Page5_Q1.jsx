@@ -49,8 +49,8 @@ const WB_Unit1_Page5_D = () => {
   const [matchResult, setMatchResult] = useState({});
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,'']/g, "").replace(/\s+/g, " ").trim();
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
   const handleMatchChange = (personId, value) => {
     if (locked || matchResult[personId] === true) return;

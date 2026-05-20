@@ -14,9 +14,8 @@ const WB_Unit1_Page7_G = () => {
   const [result, setResult]   = useState([]);
   const [locked, setLocked]   = useState(false);
 
-  const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,'']/g, "").replace(/\s+/g, " ").trim();
-
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
     const updated = [...answers];
@@ -64,11 +63,11 @@ const WB_Unit1_Page7_G = () => {
         {/* Title */}
         <h5 className="header-title-page8 mb-10">
           <span className="ex-A" style={{ marginRight: "10px" }}>G</span>
-          Complete each sentence using the present perfect tense.
+          Complete each sentence using the <span style={ {color :"orange"}}>  present perfect</span>  tense.
         </h5>
 
         {/* Questions */}
-        <div className="flex flex-col gap-10 text-[19px]">
+        <div className="flex flex-col gap-17 text-[19px]">
           {questions.map((q, i) => {
             const isWrong   = result[i] === false;
             const isCorrect = result[i] === true;
@@ -86,7 +85,7 @@ const WB_Unit1_Page7_G = () => {
                     onChange={(e) => handleChange(i, e.target.value)}
                     className={`
                       w-[220px] border-0 border-b outline-none bg-transparent
-                      text-[19px] text-[#6D2980] font-semibold px-1
+                      text-[19px] px-1
                       ${isWrong ? "border-[#D1232A]" : "border-black"}
                     `}
                   />

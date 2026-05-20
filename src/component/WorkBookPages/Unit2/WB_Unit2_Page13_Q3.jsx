@@ -4,47 +4,23 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 const questions = [
   {
     id: 1,
-    text: <>
-If you had wanted to visit the museum, we will go on Friday.
-</>,
+    text: <>Look at that roller coaster! <u>It look so</u> thrilling.</>,
     answer: "wrong",
   },
   {
     id: 2,
-    text: <>If George and Carl planned to visit, we would love to have them stay
-with us.
-</>,
+    text: <><u>I am still not sure</u> fun to ride.</>,
     answer: "correct",
   },
   {
     id: 3,
-    text: <>
-Earth would be very flat compared to how it is today if we didn't have
-earthquakes and volcanoes.
-</>,
+    text: <>We're going on a bike ride. <u>Come along</u>!</>,
     answer: "correct",
   },
   {
     id: 4,
-    text: <>If we will go to the cinema, we could have seen a great movie.
-</>,
+    text: <>I'd like to <u>where's your sense of adventure</u> today.</>,
     answer: "wrong",
-  },
-    {
-    id: 5,
-    text: <> France had just had a revolution in their country when they built the
-Statue of Liberty.
-
-</>,
-    answer: "wrong",
-  },
-    {
-    id: 6,
-    text: <>
-If they decided to go to the Olympics, the athletes would start a tough
-training schedule.
-</>,
-    answer: "correct",
   },
 ];
 
@@ -200,20 +176,20 @@ const WB_Unit2_Page13_H = () => {
             className="ex-A"
             style={{ marginRight: "10px" }}
           >
-            D
+            H
           </span>
 
-         Write<strong style={{ color: "red" }}>✓</strong> or  <strong style={{ color: "red" }}>✕</strong>. to show if the second conditional sentence is
-correct or not.
-         
+          Is the expression used correctly? Write{" "}
+          <strong style={{ color: "red" }}>✓</strong> or{" "}
+          <strong style={{ color: "red" }}>✕</strong>.
         </h5>
 
         {/* Questions */}
-        <div className="flex flex-col gap-10 my-1">
+        <div className="flex flex-col gap-14 my-10">
           {questions.map((q, i) => (
             <div
               key={q.id}
-              className="flex items-center gap-4 "
+              className="flex items-center gap-4"
               style={{ fontSize: "19px" }}
             >
 
@@ -233,13 +209,13 @@ correct or not.
 
               {/* Question */}
               <span
-                className="font-bold "
+                className="font-bold"
                 style={{ minWidth: 24 }}
               >
                 {q.id}
               </span>
 
-              <span style={{whiteSpace :"nowrap"}}> {q.text}</span>
+              <span>{q.text}</span>
             </div>
           ))}
         </div>

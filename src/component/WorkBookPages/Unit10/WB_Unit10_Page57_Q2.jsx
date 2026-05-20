@@ -1,234 +1,124 @@
 import React, { useState } from "react";
-import Button from "../Button";
-import ValidationAlert from "../../Popup/ValidationAlert";
 
-// ── ثوابت ──────────────────────────────────────────────────────
-const BORDER_COLOR = "#f39b42";
-const WRONG_COLOR  = "#ef4444";
-
-// ── بيانات ─────────────────────────────────────────────────────
-const QUESTIONS = [
-  { id: 1, text: "Will you go to school?"        },
-  { id: 2, text: "Will you go to the park?"      },
-  { id: 3, text: "Will you eat any cake?"        },
-  { id: 4, text: "Will you buy new clothes?"     },
-  { id: 5, text: "Will you play with your friends?" },
+const adjectives = [
+  "modern", "rapid", "sweet", "melted",
+  "wooden", "bumpy", "freezing", "damp",
+  "cozy", "creepy", "pleasant", "noisy",
+  "brave", "peaceful", "risky", "delightful",
+  "lively", "melodic", "nervous", "brave",
+  "thankful", "terrifying", "comfortable", "thrilling",
 ];
 
-const OPTIONS = ["Yes, I will.", "No, I won't."];
+const nouns = [
+  "coach", "grade", "hobby", "kite",
+  "furniture", "language", "idea", "picture",
+  "ocean", "landscape", "squirrel", "friend",
+  "career", "skateboard", "novel", "musical",
+  "movie", "vacation", "roller coaster",
+  "sports car", "house", "experience",
+  "snowboarding",
+];
 
-// ── المكوّن الرئيسي ─────────────────────────────────────────────
-export default function WB_Unit8_Page57_QB() {
-  const [answers, setAnswers] = useState({});
-  const [checked, setChecked] = useState(false);
+const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
 
-  const handleSelect = (id, value) => {
-    setChecked(false);
-    setAnswers((prev) => ({ ...prev, [id]: value }));
+const WB_Unit2_Page11_C = () => {
+  const init = () => ["", "", ""];
+  const [answers, setAnswers] = useState(init);
+
+  const handleChange = (i, value) => {
+    setAnswers((prev) => {
+      const updated = [...prev];
+      updated[i] = value;
+      return updated;
+    });
   };
 
-  const handleCheck = () => {
-    const allAnswered = QUESTIONS.every((q) => answers[q.id]);
-    if (!allAnswered) {
-      ValidationAlert.error("Please answer all questions first! ✏️");
-      return;
-    }
-    setChecked(true);
-    ValidationAlert.success("Great! You answered all the questions. 🎉");
-  };
-
-  const handleReset = () => {
-    setAnswers({});
-    setChecked(false);
-  };
+  const handleReset = () => setAnswers(init());
 
   return (
-    <div className="main-container-component">
-      <div className="div-forall" style={{ gap: "clamp(18px,2.5vw,32px)" }}>
+    <div className="flex flex-col items-center p-[30px]">
+      <div className="div-forall">
+<div style={{display : "flex" , flexDirection :"row"}}>
+        {/* Title */}
+        <h5 className="header-title-page8 mb-4" >
+          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
+        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
+         so . . . that and such . . . that.
+    </div> 
+        </h5>
+</div>
+        {/* Word Table */}
+        <table style={{
+          width: "100%", borderCollapse: "collapse",
+          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
+        }}>
+          <thead>
+            <tr>
+              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
+                Adjectives
+              </th>
+              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
+                Nouns
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
+                  {adjectives.map((w, i) => (
+                    <span key={i}>{w}</span>
+                  ))}
+                </div>
+              </td>
+              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
+                  {nouns.map((w, i) => (
+                    <span key={i}>{w}</span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        {/* ── العنوان ── */}
-        <h1 className="WB-header-title-page8">
-          <span className="WB-ex-A">B</span>{" "}
-          What will you do tomorrow? Read and answer the questions.
-        </h1>
+        {/* Sentences */}
+        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
 
-        {/* ── صناديق الخيارات العلوية ── */}
-        <div
-          style={{
-            display:        "flex",
-            justifyContent: "center",
-            gap:            "clamp(40px,10vw,130px)",
-            flexWrap:       "wrap",
-          }}
-        >
-          {OPTIONS.map((opt) => (
-            <div
-              key={opt}
-              style={{
-                minWidth:        "clamp(120px,16vw,170px)",
-                height:          "clamp(40px,5vw,52px)",
-                border:          `2px solid ${BORDER_COLOR}`,
-                borderRadius:    "14px",
-                display:         "flex",
-                alignItems:      "center",
-                justifyContent:  "center",
-                fontSize:        "clamp(15px,1.8vw,20px)",
-                fontWeight:      500,
-                color:           "#222",
-                backgroundColor: "#fff",
-                padding:         "0 clamp(12px,1.5vw,20px)",
-                boxSizing:       "border-box",
-              }}
-            >
-              {opt}
+
+          {/* Q2, Q3, Q4 */}
+          {[1 ,2, 3, 4].map((num, i) => (
+            <div key={num} className="flex items-start gap-3">
+              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
+              <input
+                type="text"
+                value={answers[i]}
+                onChange={(e) => handleChange(i, e.target.value)}
+                style={{
+                  flex: 1,
+                  border: "none",
+                  borderBottom: "1.5px solid #999",
+                  outline: "none",
+                  background: "transparent",
+                  fontSize: "18px",
+                  color: "#333",
+                  paddingBottom: "4px",
+                }}
+              />
             </div>
           ))}
         </div>
 
-        {/* ── الأسئلة ── */}
-        <div
-          style={{
-            display:       "flex",
-            flexDirection: "column",
-            gap:           "clamp(14px,2vw,22px)",
-            width:         "100%",
-            maxWidth:      "820px",
-            margin:        "0 auto",
-          }}
-        >
-          {QUESTIONS.map((q) => {
-            const selected  = answers[q.id];
-            const unanswered = checked && !selected;
+      </div>
 
-            return (
-              <div
-                key={q.id}
-                style={{
-                  position:    "relative",
-                  display:     "flex",
-                  alignItems:  "center",
-                  gap:         "clamp(8px,1.2vw,16px)",
-                  flexWrap:    "wrap",
-                }}
-              >
-                {/* رقم + نص السؤال */}
-                <div
-                  style={{
-                    display:    "flex",
-                    alignItems: "center",
-                    gap:        "clamp(8px,1vw,12px)",
-                    flexShrink: 0,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize:   "clamp(16px,1.9vw,22px)",
-                      fontWeight: 700,
-                      color:      "#111",
-                      minWidth:   "clamp(14px,1.8vw,20px)",
-                    }}
-                  >
-                    {q.id}
-                  </span>
-                  <span
-                    style={{
-                      fontSize:   "clamp(14px,1.7vw,20px)",
-                      color:      "#222",
-                      lineHeight: 1.4,
-                      fontWeight: 500,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {q.text}
-                  </span>
-                </div>
-
-                {/* أزرار الاختيار */}
-                <div style={{ display: "flex", gap: "clamp(6px,0.8vw,10px)", flexShrink: 0 }}>
-                  {OPTIONS.map((opt) => {
-                    const active = selected === opt;
-                    return (
-                      <button
-                        key={opt}
-                        onClick={() => handleSelect(q.id, opt)}
-                        style={{
-                          padding:         "clamp(5px,0.7vw,8px) clamp(10px,1.2vw,14px)",
-                          borderRadius:    "20px",
-                          border:          `1.5px solid ${active ? BORDER_COLOR : "#e2e8f0"}`,
-                          backgroundColor: active ? "#ffca94" : "#f8fafc",
-                          color:           active ? "#fff" : "#64748b",
-                          fontSize:        "clamp(12px,1.4vw,15px)",
-                          fontWeight:      600,
-                          cursor:          "pointer",
-                          whiteSpace:      "nowrap",
-                          transition:      "all 0.15s",
-                          userSelect:      "none",
-                        }}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* خط الإجابة */}
-                <div
-                  style={{
-                    flex:         1,
-                    minWidth:     "80px",
-                    minHeight:    "clamp(30px,3.5vw,40px)",
-                    borderBottom: `2px solid ${unanswered ? WRONG_COLOR : "#7f7f7f"}`,
-                    display:      "flex",
-                    alignItems:   "center",
-                    fontSize:     "clamp(14px,1.7vw,20px)",
-                    fontWeight:   600,
-                    color:        "#000000ff",
-                    paddingBottom:"2px",
-                    transition:   "border-color 0.2s",
-                  }}
-                >
-                  {selected || ""}
-                </div>
-
-                {/* بادج الخطأ — فقط لو ما أجاب بعد Check */}
-                {unanswered && (
-                  <div
-                    style={{
-                      position:        "absolute",
-                      right:           -10,
-                      top:             "50%",
-                      transform:       "translateY(-50%)",
-                      width:           "clamp(16px,1.8vw,20px)",
-                      height:          "clamp(16px,1.8vw,20px)",
-                      borderRadius:    "50%",
-                      backgroundColor: WRONG_COLOR,
-                      color:           "#fff",
-                      display:         "flex",
-                      alignItems:      "center",
-                      justifyContent:  "center",
-                      fontSize:        "clamp(8px,0.9vw,11px)",
-                      fontWeight:      700,
-                      border:          "1.5px solid #fff",
-                      pointerEvents:   "none",
-                    }}
-                  >
-                    ✕
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ── الأزرار — بدون showAnswer ── */}
-        <div className="mt-4 flex justify-center">
-          <Button
-            checkAnswers={handleCheck}
-            handleStartAgain={handleReset}
-          />
-        </div>
-
+      {/* Buttons */}
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
       </div>
     </div>
   );
-}
+};
+
+export default WB_Unit2_Page11_C;

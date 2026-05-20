@@ -74,8 +74,8 @@ const WB_Unit1_Page4_PastParticiple = () => {
   const [groupResult, setGroupResult] = useState({});
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) => str.toLowerCase().trim();
-
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
   const handleVerbChange = (verb, value) => {
     if (locked || verbResult[verb] === true) return;
     setVerbAnswers((prev) => ({ ...prev, [verb]: value }));

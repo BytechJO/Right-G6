@@ -1,403 +1,124 @@
 import React, { useState } from "react";
-import Button from "../Button";
-import ValidationAlert from "../../Popup/ValidationAlert";
 
-// غيّري المسارات حسب ملفاتك
-import q1a from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/E1.svg"
-import q1b from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/E2.svg"
-
-import q2a from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F2.svg"
-import q2b from"../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F3.svg"
-
-import q3a from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/E3.svg"
-import q3b from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/E4.svg";
-
-import q4a from"../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F4.svg"
-import q4b from"../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F5.svg"
-
-import q5a from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/E5.svg"
-import q5b from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F1.svg"
-
-import q6a from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F6.svg"
-import q6b from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U5 Folder/Page 29/F7.svg"
-
-const YELLOW_COLOR = "#f39b42";
-const RED_COLOR = "#ef4444";
-const TEXT_COLOR = "#222";
-const BORDER_COLOR = "#d4d4d4";
-
-const QUESTIONS = [
-  {
-    id: 1,
-    text: "The cat is under the bed.",
-    options: [
-      { id: "a", img: q1a },
-      { id: "b", img: q1b },
-    ],
-    correct: "a",
-  },
-  {
-    id: 2,
-    text: "The duck is in front of the bathtub.",
-    options: [
-      { id: "a", img: q2a },
-      { id: "b", img: q2b },
-    ],
-    correct: "a",
-  },
-  {
-    id: 3,
-    text: "The chair is behind the table.",
-    options: [
-      { id: "a", img: q3a },
-      { id: "b", img: q3b },
-    ],
-    correct: "a",
-  },
-  {
-    id: 4,
-    text: "The book is on the table.",
-    options: [
-      { id: "a", img: q4a },
-      { id: "b", img: q4b },
-    ],
-    correct: "b",
-  },
-  {
-    id: 5,
-    text: "The cup is between the dishes.",
-    options: [
-      { id: "a", img: q5a },
-      { id: "b", img: q5b },
-    ],
-    correct: "a",
-  },
-  {
-    id: 6,
-    text: "The table is next to the sofa.",
-    options: [
-      { id: "a", img: q6a },
-      { id: "b", img: q6b },
-    ],
-    correct: "b",
-  },
+const adjectives = [
+  "modern", "rapid", "sweet", "melted",
+  "wooden", "bumpy", "freezing", "damp",
+  "cozy", "creepy", "pleasant", "noisy",
+  "brave", "peaceful", "risky", "delightful",
+  "lively", "melodic", "nervous", "brave",
+  "thankful", "terrifying", "comfortable", "thrilling",
 ];
 
-const initialAnswers = {
-  1: null,
-  2: null,
-  3: null,
-  4: null,
-  5: null,
-  6: null,
-};
+const nouns = [
+  "coach", "grade", "hobby", "kite",
+  "furniture", "language", "idea", "picture",
+  "ocean", "landscape", "squirrel", "friend",
+  "career", "skateboard", "novel", "musical",
+  "movie", "vacation", "roller coaster",
+  "sports car", "house", "experience",
+  "snowboarding",
+];
 
-const styles = {
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    gap: "clamp(20px, 4vw, 42px)",
-    width: "100%",
-  },
+const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
 
-  item: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "clamp(10px, 1.5vw, 16px)",
-    minWidth: 0,
-  },
+const WB_Unit2_Page11_C = () => {
+  const init = () => ["", "", ""];
+  const [answers, setAnswers] = useState(init);
 
-  topRow: {
-    display: "flex",
-    alignItems: "flex-start",
-    gap: "clamp(8px, 1vw, 14px)",
-    minWidth: 0,
-  },
-
-  number: {
-    fontSize: "clamp(20px, 2vw, 30px)",
-    fontWeight: "700",
-    color: TEXT_COLOR,
-    lineHeight: 1,
-    flexShrink: 0,
-    paddingTop: "clamp(2px, 0.4vw, 6px)",
-  },
-
-  optionsWrap: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    gap: "clamp(10px, 1.5vw, 18px)",
-    width: "100%",
-    minWidth: 0,
-  },
-
-  imageButton: {
-    position: "relative",
-    width: "100%",
-    border: "3px solid transparent",
-    borderRadius: "999px",
-    background: "transparent",
-    padding: "clamp(6px, 1vw, 10px)",
-    cursor: "pointer",
-    transition: "all 0.2s ease",
-    boxSizing: "border-box",
-  },
-
-  imageBox: {
-    width: "100%",
-    aspectRatio: "1.3 / 1",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "#fff",
-    borderRadius: "16px",
-    boxSizing: "border-box",
-  },
-
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "contain",
-    display: "block",
-  },
-
-  sentence: {
-    fontSize: "clamp(18px, 2vw, 26px)",
-    lineHeight: 1.35,
-    color: TEXT_COLOR,
-    fontWeight: "500",
-    paddingLeft: "clamp(28px, 3vw, 38px)",
-  },
-
-  buttonsWrap: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "clamp(4px, 1vw, 10px)",
-    width: "100%",
-  },
-};
-
-export default function WB_Unit5_Page29_QF() {
-  const [answers, setAnswers] = useState(initialAnswers);
-  const [checked, setChecked] = useState(false);
-  const [showAns, setShowAns] = useState(false);
-  const [wrongAnswers, setWrongAnswers] = useState({});
-
-  const handleSelect = (questionId, optionId) => {
-    if (showAns) return;
-
-    setAnswers((prev) => ({
-      ...prev,
-      [questionId]: optionId,
-    }));
-
-    setChecked(false);
-    setWrongAnswers({});
-  };
-
-  const checkAnswers = () => {
-    if (showAns) return;
-
-    const allAnswered = Object.values(answers).every((value) => value !== null);
-
-    if (!allAnswered) {
-      ValidationAlert.info("Please answer all questions first.");
-      return;
-    }
-
-    let score = 0;
-    const newWrongAnswers = {};
-
-    QUESTIONS.forEach((item) => {
-      const isCorrect = answers[item.id] === item.correct;
-
-      if (isCorrect) {
-        score++;
-        newWrongAnswers[item.id] = false;
-      } else {
-        newWrongAnswers[item.id] = true;
-      }
+  const handleChange = (i, value) => {
+    setAnswers((prev) => {
+      const updated = [...prev];
+      updated[i] = value;
+      return updated;
     });
-
-    setWrongAnswers(newWrongAnswers);
-    setChecked(true);
-
-    if (score === QUESTIONS.length) {
-      ValidationAlert.success(`Score: ${score} / ${QUESTIONS.length}`);
-    } else if (score > 0) {
-      ValidationAlert.warning(`Score: ${score} / ${QUESTIONS.length}`);
-    } else {
-      ValidationAlert.error(`Score: ${score} / ${QUESTIONS.length}`);
-    }
   };
 
-  const handleShowAnswer = () => {
-    const filledAnswers = {};
-
-    QUESTIONS.forEach((item) => {
-      filledAnswers[item.id] = item.correct;
-    });
-
-    setAnswers(filledAnswers);
-    setChecked(true);
-    setShowAns(true);
-    setWrongAnswers({});
-  };
-
-  const handleStartAgain = () => {
-    setAnswers(initialAnswers);
-    setChecked(false);
-    setShowAns(false);
-    setWrongAnswers({});
-  };
-
-  const getCircleStyle = (question, optionId) => {
-    const isSelected = answers[question.id] === optionId;
-    const isWrongSelected =
-      checked &&
-      wrongAnswers[question.id] &&
-      answers[question.id] === optionId;
-
-    const isCorrectShown = showAns && question.correct === optionId;
-
-    if (isWrongSelected) {
-      return {
-        border: `4px solid ${RED_COLOR}`,
-        background: "rgba(239, 68, 68, 0.05)",
-      };
-    }
-
-    if (isSelected || isCorrectShown) {
-      return {
-        border: `4px solid ${YELLOW_COLOR}`,
-        background: "rgba(244, 180, 0, 0.06)",
-      };
-    }
-
-    return {
-      border: "4px solid transparent",
-      background: "transparent",
-    };
-  };
+  const handleReset = () => setAnswers(init());
 
   return (
-    <div className="main-container-component">
-      <style>{`
-        @media (max-width: 900px) {
-          .wb-f-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-
-        @media (max-width: 560px) {
-          .wb-f-options {
-            gap: 8px !important;
-          }
-        }
-      `}</style>
-
-      <div
-        className="div-forall"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "28px",
-          maxWidth: "1100px",
-          margin: "0 auto",
-
-        }}
-      >
-        <h1
-          className="WB-header-title-page8"
-          style={{
-            margin: 0,
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            flexWrap: "wrap",
-          }}
-        >
-          <span className="WB-ex-A">F</span>
-          Read, look, and circle.
-        </h1>
-
-        <div className="wb-f-grid" style={styles.grid}>
-          {QUESTIONS.map((question) => (
-            <div key={question.id} style={styles.item}>
-              <div style={styles.topRow}>
-                <div style={styles.number}>{question.id}</div>
-
-                <div
-                  className="wb-f-options"
-                  style={styles.optionsWrap}
-                >
-                  {question.options.map((option) => {
-                    const isWrongSelected =
-                      checked &&
-                      wrongAnswers[question.id] &&
-                      answers[question.id] === option.id;
-
-                    return (
-                      <button
-                        key={option.id}
-                        onClick={() => handleSelect(question.id, option.id)}
-                        style={{
-                          ...styles.imageButton,
-                          ...getCircleStyle(question, option.id),
-                          cursor: showAns ? "default" : "pointer",
-                        }}
-                      >
-                        <div style={styles.imageBox}>
-                          <img
-                            src={option.img}
-                            alt={`q${question.id}-${option.id}`}
-                            style={styles.image}
-                          />
-                        </div>
-
-                        {isWrongSelected && (
-                          <span
-                            style={{
-                              position: "absolute",
-                              top: "2px",
-                              right: "2px",
-                              width: "clamp(20px, 2vw, 24px)",
-                              height: "clamp(20px, 2vw, 24px)",
-                              borderRadius: "50%",
-                              background: RED_COLOR,
-                              color: "#fff",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "clamp(10px, 1vw, 12px)",
-                              fontWeight: "700",
-                              border: "2px solid #fff",
-                              boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
-                              boxSizing: "border-box",
-                            }}
-                          >
-                            ✕
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
+    <div className="flex flex-col items-center p-[30px]">
+      <div className="div-forall">
+<div style={{display : "flex" , flexDirection :"row"}}>
+        {/* Title */}
+        <h5 className="header-title-page8 mb-4" >
+          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
+        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
+         so . . . that and such . . . that.
+    </div> 
+        </h5>
+</div>
+        {/* Word Table */}
+        <table style={{
+          width: "100%", borderCollapse: "collapse",
+          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
+        }}>
+          <thead>
+            <tr>
+              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
+                Adjectives
+              </th>
+              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
+                Nouns
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
+                  {adjectives.map((w, i) => (
+                    <span key={i}>{w}</span>
+                  ))}
                 </div>
-              </div>
+              </td>
+              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
+                  {nouns.map((w, i) => (
+                    <span key={i}>{w}</span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-              <div style={styles.sentence}>{question.text}</div>
+        {/* Sentences */}
+        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+
+
+          {/* Q2, Q3, Q4 */}
+          {[1 ,2, 3, 4].map((num, i) => (
+            <div key={num} className="flex items-start gap-3">
+              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
+              <input
+                type="text"
+                value={answers[i]}
+                onChange={(e) => handleChange(i, e.target.value)}
+                style={{
+                  flex: 1,
+                  border: "none",
+                  borderBottom: "1.5px solid #999",
+                  outline: "none",
+                  background: "transparent",
+                  fontSize: "18px",
+                  color: "#333",
+                  paddingBottom: "4px",
+                }}
+              />
             </div>
           ))}
         </div>
 
-        <div style={styles.buttonsWrap}>
-          <Button
-            handleShowAnswer={handleShowAnswer}
-            handleStartAgain={handleStartAgain}
-            checkAnswers={checkAnswers}
-          />
-        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
       </div>
     </div>
   );
-}
+};
+
+export default WB_Unit2_Page11_C;

@@ -1,303 +1,154 @@
-import React, { useState } from "react";
-import Button from "../Button";
+import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-const ITEMS = [
-  {
-    id: 1,
-    sentence: "It’s the 7th month of the year.",
-    correct: "July",
-  },
-  {
-    id: 2,
-    sentence: "It’s the 2nd month of the year.",
-    correct: "February",
-  },
-  {
-    id: 3,
-    sentence: "It’s the 5th month of the year.",
-    correct: "May",
-  },
-  {
-    id: 4,
-    sentence: "It’s the 3rd month of the year.",
-    correct: "March",
-  },
-  {
-    id: 5,
-    sentence: "It’s the 9th month of the year.",
-    correct: "September",
-  },
-  {
-    id: 6,
-    sentence: "It’s the 12th month of the year.",
-    correct: "December",
-  },
-];
+const WB_Unit1_Page8_H = () => {
+  const questions = [
+    { id: 1, text: "I an item that is old enough to be put in a special category",        answer: "c" },
+    { id: 2, text: "a person who shoots a bow and arrow",                  answer: "e" },
+    { id: 3, text: "a group of items, usually of the same type",   answer: "b" },
+    { id: 4, text: "making clothes or other items by hand",       answer: "a" },
+    { id: 5, text: " items that one buys while traveling to keep or to give to friends as a memory of the place(s) visited", answer: "d" },
+  ];
 
-const OPTIONS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+  const responses = [
+    { label: "a", text: "sewing" },
+    { label: "b", text: "collection" },
+    { label: "c", text: "antique" },
+    { label: "d", text: "souvenirs" },
+    { label: "e", text: "archer" },
+  ];
 
-export default function WB_Unit3_Page20_QC() {
-  const [answers, setAnswers] = useState({});
-  const [showResults, setShowResults] = useState(false);
-  const [showAns, setShowAns] = useState(false);
+  const [answers, setAnswers] = useState(questions.map(() => ""));
+  const [result, setResult]   = useState([]);
+  const [locked, setLocked]   = useState(false);
+  const inputsRef = useRef({});
 
-  const handleSelectChange = (id, value) => {
-    if (showAns) return;
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+  const handleChange = (i, value) => {
+    if (locked || result[i] === true) return;
+    const updated = [...answers];
+    updated[i] = value.toLowerCase();
+    setAnswers(updated);
+    setResult((prev) => { const c = [...prev]; c[i] = undefined; return c; });
 
-    setAnswers((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-
-    setShowResults(false);
+    // auto move to next
+    if (value) {
+      const next = inputsRef.current[i + 1];
+      if (next) { next.focus(); next.select(); }
+    }
   };
 
-  const handleCheck = () => {
-    if (showAns) return;
-
-    const allAnswered = ITEMS.every((item) => answers[item.id]);
-
-    if (!allAnswered) {
-      ValidationAlert.info("Please answer all questions first.");
+  const checkAnswers = () => {
+    if (locked) return;
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info("Please complete all answers.");
       return;
     }
-
-    let score = 0;
-
-    ITEMS.forEach((item) => {
-      if (answers[item.id] === item.correct) {
-        score++;
-      }
+    let correct = 0;
+    const newResult = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i].answer);
+      if (ok) correct++;
+      return ok;
     });
-
-    setShowResults(true);
-
-    if (score === ITEMS.length) {
-      ValidationAlert.success(`Score: ${score} / ${ITEMS.length}`);
-    } else if (score > 0) {
-      ValidationAlert.warning(`Score: ${score} / ${ITEMS.length}`);
-    } else {
-      ValidationAlert.error(`Score: ${score} / ${ITEMS.length}`);
-    }
+    setResult(newResult);
+    const total = questions.length;
+    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  const handleShowAnswer = () => {
-    const filledAnswers = {};
-
-    ITEMS.forEach((item) => {
-      filledAnswers[item.id] = item.correct;
-    });
-
-    setAnswers(filledAnswers);
-    setShowResults(true);
-    setShowAns(true);
+  const showAnswers = () => {
+    setAnswers(questions.map((q) => q.answer));
+    setResult(questions.map(() => true));
+    setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers({});
-    setShowResults(false);
-    setShowAns(false);
-  };
-
-  const isWrong = (item) => {
-    if (!showResults) return false;
-    return answers[item.id] !== item.correct;
+    setAnswers(questions.map(() => ""));
+    setResult([]);
+    setLocked(false);
   };
 
   return (
-    <div className="main-container-component">
-      <style>{`
-        .wb-months-wrapper {
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 22px !important;
-          width: 100% !important;
-          max-width: 1120px !important;
-          margin: 0 auto !important;
-          padding: 8px 14px 20px !important;
-          box-sizing: border-box !important;
-        }
+    <div className="flex flex-col items-center p-[30px]">
+      <div className="div-forall">
+        {/* Title */}
+        <h5 className="header-title-page8 mb-10">
+          <span className="ex-A" style={{ marginRight: "10px" }}>B</span>
+         Match each vocabulary word to its definition.
 
-        .wb-months-list {
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 26px !important;
-          width: 100% !important;
-        }
+        </h5>
 
-        .wb-months-row {
-          display: grid !important;
-          grid-template-columns: 34px minmax(320px, 1fr) minmax(320px, 460px) !important;
-          gap: 16px !important;
-          align-items: center !important;
-          width: 100% !important;
-        }
+        {/* Two columns */}
+        <div className="flex gap-16 text-[18px]">
 
-        .wb-months-num {
-          font-size: 22px !important;
-          font-weight: 700 !important;
-          color: #222 !important;
-          line-height: 1 !important;
-        }
+          {/* LEFT — questions */}
+          <div className="flex flex-col gap-10 flex-1">
+            {questions.map((q, i) => {
+              const isWrong   = result[i] === false;
+              const isCorrect = result[i] === true;
+              return (
+                <div key={q.id} className="flex items-start gap-3">
+                  {/* input */}
+                  <span className="relative inline-block" style={{ marginTop: "2px" }}>
+                    <input
+                      ref={(el) => (inputsRef.current[i] = el)}
+                      type="text"
+                      maxLength={1}
+                      value={answers[i]}
+                      disabled={locked || isCorrect}
+                      onFocus={(e) => e.target.select()}
+                      onChange={(e) => handleChange(i, e.target.value)}
+                      className={`
+                        w-[40px] border-0 border-b outline-none bg-transparent
+                        text-[18px]  text-center px-1
+                        ${isWrong ? "border-[#D1232A]" : "border-black"}
+                      `}
+                    />
+                    {isWrong && (
+                      <span style={{
+                        position: "absolute", top: "-8px", right: "-6px",
+                        width: "18px", height: "18px", background: "#ef4444", color: "white",
+                        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+                        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                      }}>✕</span>
+                    )}
+                  </span>
 
-        .wb-months-sentence {
-          font-size: 24px !important;
-          color: #111 !important;
-          line-height: 1.4 !important;
-        }
+                  <span className="font-bold min-w-[20px]">{q.id}</span>
+                  <span>{q.text}</span>
+                </div>
+              );
+            })}
+          </div>
 
-        .wb-months-answer-wrap {
-          position: relative !important;
-          width: 100% !important;
-        }
-
-        .wb-months-select {
-          width: 100% !important;
-          min-height: 54px !important;
-          font-size: 28px !important;
-          color: #000000ff !important;
-          border: none !important;
-          border-bottom: 3px solid #222 !important;
-          outline: none !important;
-          background: transparent !important;
-          padding: 0 34px 2px 8px !important;
-          text-align: center !important;
-          text-align-last: center !important;
-          appearance: none !important;
-          -webkit-appearance: none !important;
-          -moz-appearance: none !important;
-          box-sizing: border-box !important;
-          cursor: pointer !important;
-        }
-
-        .wb-months-select:disabled {
-          opacity: 1 !important;
-          cursor: default !important;
-        }
-
-        .wb-months-arrow {
-          position: absolute !important;
-          right: 8px !important;
-          top: 50% !important;
-          transform: translateY(-50%) !important;
-          font-size: 14px !important;
-          color: #666 !important;
-          pointer-events: none !important;
-        }
-
-        .wb-months-wrong {
-          position: absolute !important;
-          top: -8px !important;
-          right: -8px !important;
-          width: 22px !important;
-          height: 22px !important;
-          border-radius: 50% !important;
-          background: #ef4444 !important;
-          color: #fff !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          font-size: 12px !important;
-          font-weight: 700 !important;
-          border: 2px solid #fff !important;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.18) !important;
-          box-sizing: border-box !important;
-        }
-
-        .wb-months-buttons {
-          display: flex !important;
-          justify-content: center !important;
-          margin-top: 8px !important;
-        }
-
-        @media (max-width: 900px) {
-          .wb-months-row {
-            grid-template-columns: 34px 1fr !important;
-          }
-
-          .wb-months-answer-wrap {
-            grid-column: 2 / 3 !important;
-          }
-        }
-      `}</style>
-
-      
-<div
-        className="div-forall"
-            style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "28px",
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
-      >
-        <h1
-          className="WB-header-title-page8"
-          style={{
-            margin: 0,
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          <span className="WB-ex-A">C</span> Read and write.
-        </h1>
-        <div className="wb-months-list">
-          {ITEMS.map((item) => (
-            <div key={item.id} className="wb-months-row">
-              <div className="wb-months-num">{item.id}</div>
-
-              <div className="wb-months-sentence">{item.sentence}</div>
-
-              <div className="wb-months-answer-wrap">
-                <select
-                  className="wb-months-select"
-                  value={answers[item.id] || ""}
-                  disabled={showAns}
-                  onChange={(e) => handleSelectChange(item.id, e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select month
-                  </option>
-
-                  {OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                {!showAns && <div className="wb-months-arrow">▼</div>}
-
-                {isWrong(item) && <div className="wb-months-wrong">✕</div>}
+          {/* RIGHT — responses */}
+          <div className="flex flex-col gap-10" style={{ minWidth: "300px" }}>
+            {responses.map((r) => (
+              <div key={r.label} className="flex gap-3">
+                <span className="font-bold min-w-[20px]">{r.label}</span>
+                <span>{r.text}</span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
         </div>
 
-        <div className="wb-months-buttons">
-          <Button
-            checkAnswers={handleCheck}
-            handleShowAnswer={handleShowAnswer}
-            handleStartAgain={handleReset}
-          />
-        </div>
+
+      </div>
+
+      {/* Buttons */}
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
+        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
-}
+};
+
+export default WB_Unit1_Page8_H;

@@ -54,9 +54,8 @@ The reaction he got from us is probably different from what he expected. He was 
   const [result, setResult] = useState({});
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,'']/g, "").replace(/\s+/g, " ").trim();
-
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
   const handleChange = (key, value) => {
     if (locked || result[key] === true) return;
     setAnswers((prev) => ({ ...prev, [key]: value }));

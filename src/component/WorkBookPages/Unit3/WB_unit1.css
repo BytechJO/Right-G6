@@ -1,36 +1,39 @@
 .q1-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 12% !important;
-  left: 40.5% !important;
+    top: 14% !important;
+    left: 75.5% !important;
+
 }
 
 .q2-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 43% !important;
-  left: 68.5% !important;
+    top: 73.5% !important;
+    left: 81.5% !important;
 }
 
 .q3-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 2% !important;
-  left: 56.5% !important;
+    top: 3% !important;
+    left: 93.5% !important;
+
 }
 
 .q4-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 48% !important;
-  left: 40.5% !important;
+    top: 60% !important;
+    left: 29.5% !important;
 }
 
 .q5-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 2% !important;
-  left: 65.5% !important;
+     top: 11% !important;
+    left: 32.5% !important;
+
 }
 
 .q6-3 {
@@ -43,8 +46,8 @@
 .q7-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 2% !important;
-  left: 55.5% !important;
+ top: 11% !important;
+    left: 23% !important;
 }
 
 .q8-3 {
@@ -57,29 +60,29 @@
 .q9-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 2% !important;
-  left: 39.5% !important;
+    top: 8% !important;
+    left: 23.9% !important;
 }
 
 .q10-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 45% !important;
-  left: 38.5% !important;
+    top: 54.5% !important;
+    left: 67.9% !important;
 }
 
 .q11-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 8% !important;
-  left: 72.5% !important;
+    top: 3% !important;
+    left: 45.5% !important;;
 }
 
 .q12-3 {
   position: absolute !important;
   padding: 5px !important;
-  top: 43% !important;
-  left: 75.5% !important;
+    top: 50.3% !important;
+    left: 31.5% !important;
 }
 
 .q13-3 {

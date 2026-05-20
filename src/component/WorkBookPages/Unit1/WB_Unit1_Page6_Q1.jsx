@@ -30,11 +30,7 @@ const WB_Unit1_Page6_E = () => {
   const [locked, setLocked] = useState(false);
 
   const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,'']/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;

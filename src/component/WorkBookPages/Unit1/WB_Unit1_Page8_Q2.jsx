@@ -24,8 +24,8 @@ const WB_Unit1_Page8_H = () => {
   const [locked, setLocked]   = useState(false);
   const inputsRef = useRef({});
 
-  const normalize = (s) => s.toLowerCase().trim();
-
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
     const updated = [...answers];
