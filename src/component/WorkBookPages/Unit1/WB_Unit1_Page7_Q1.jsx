@@ -1,285 +1,219 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G5 U1/Page 7/Asset 10.svg";
 
-const WB_Unit1_Page7_Q1 = () => {
+const WB_Unit1_Page7_F = () => {
+  const story = `"You can say that again!" I agree with my younger brother, who just said it is hot today. We have been camping for a week, and we are getting our supplies packed because we have to leave. It is 8:00 a.m., but the sun is already hot, and so are all of us. It's no fun to pack when it's hot outside.
+
+"Can I count on you to fold up the tent?" asks my mom. The stove is packed by my dad, the campsite is cleaned by my sister, and the car is packed by my older brother, so that leaves me to do the tent.
+
+"Sure," I say, but without much excitement in my voice.
+
+"I'm sorry to hear that," I hear my dad say, and I look over to see him talking to the park ranger. "Do you have any idea of when it's likely to be opened again?" my dad asks.
+
+My dad comes to our campfire and calls to all of us to come over. "I have some news that's likely to surprise or upset you," he says, "but don't worry, everything's going to work out well. The park ranger just told me that a set of big trucks were using the campground road late last night, and the road fell apart. So we have to stay another night."
+
+The reaction he got from us is probably different from what he expected. He was hugged by us, twirled around in circles by my brother, patted on the back by my sister, and stared at by my mother. We were all surprised and happy about staying for another day!`;
+
   const questions = [
-    "He only had 10 minutes to study.",
-    "John got 70% on his math exam.",
-    "He should study as soon as he gets home.",
+    {
+      id: 1,
+      question: "What has the narrator been doing for the last week?",
+      answer: "camping",
+      inline: true,
+    },
+    {
+      id: 2,
+      question: "Why is it difficult to start packing?",
+      answer: ["It is hot", "Camping was lots of fun, so they don't want to leave."],
+      subLabels: ["a)", "b)"],
+      multiLine: true,
+    },
+    {
+      id: 3,
+      question: "What surprising news does Dad have?",
+      answer: "The road is closed, so the family has to stay another day.",
+      inline: true,
+    },
+    {
+      id: 4,
+      question: "How does everyone react?",
+      answer: "Everyone is happy because they get to stay longer.",
+      inline: false,
+    },
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const initAnswers = () => ({
+    1: "",
+    "2a": "",
+    "2b": "",
+    3: "",
+    4: "",
+  });
 
-  const [result, setResult] = useState([]);
-
+  const [answers, setAnswers] = useState(initAnswers());
+  const [result, setResult] = useState({});
   const [locked, setLocked] = useState(false);
 
   const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,’'%]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+    str.toLowerCase().replace(/[.?!,'']/g, "").replace(/\s+/g, " ").trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true || (i === 3 && locked)) return;
-
-    const updated = [...answers];
-
-    updated[i] = value;
-
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+  const handleChange = (key, value) => {
+    if (locked || result[key] === true) return;
+    setAnswers((prev) => ({ ...prev, [key]: value }));
+    setResult((prev) => ({ ...prev, [key]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
 
-    // كل الحقول لازم تكون معبية
-    const hasEmpty = answers.some((a) => !a.trim());
-
+    const keys = [1, "2a", "2b", 3, 4];
+    const hasEmpty = keys.some((k) => !answers[k].trim());
     if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
       return;
     }
 
-    let correctCount = 0;
+    let correct = 0;
+    const newResult = {};
 
-    const newResults = answers.map((a, i) => {
-      // السؤال الرابع ما ينحسب
-      if (i === 3) {
-        return undefined;
-      }
+    const check = (key, expected) => {
+      const ok = normalize(answers[key]) === normalize(expected);
+      if (ok) correct++;
+      newResult[key] = ok;
+    };
 
-      const ok = normalize(a) === normalize(questions[i]);
+    check(1, questions[0].answer);
+    check("2a", questions[1].answer[0]);
+    check("2b", questions[1].answer[1]);
+    check(3, questions[2].answer);
+    check(4, questions[3].answer);
 
-      if (ok) correctCount++;
+    setResult(newResult);
 
-      return ok;
-    });
+    const total = keys.length;
+    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    setResult(newResults);
-
-    // السكور فقط لأول 3
-    const total = 3;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-    <div style="font-size:18px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${correctCount} / ${total}
-      </span>
-    </div>
-  `;
-
-    if (correctCount === total) {
-      setLocked(true);
-
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "He only had 10 minutes to study.",
-      "John got 70% on his math exam.",
-      "He should study as soon as he gets home.",
-    ]);
-
-    setResult([true, true, true, true]);
-
+    setAnswers({
+      1: "camping",
+      "2a": "It is hot",
+      "2b": "Camping was lots of fun, so they don't want to leave.",
+      3: "The road is closed, so the family has to stay another day.",
+      4: "Everyone is happy because they get to stay longer.",
+    });
+    setResult({ 1: true, "2a": true, "2b": true, 3: true, 4: true });
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-
-    setResult([]);
-
+    setAnswers(initAnswers());
+    setResult({});
     setLocked(false);
   };
 
-  const inputField = (i) => (
-    <div className="relative w-full">
-      <input
-        type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`
-          w-full
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-          px-1
-          placeholder:text-[#999]
-
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
-        `}
-      />
-
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: "bold",
-            border: "2px solid white",
+  const inputLine = (key, width = "w-full") => {
+    const isWrong = result[key] === false;
+    const isCorrect = result[key] === true;
+    return (
+      <span className="relative inline-block" style={{ flex: 1 }}>
+        <input
+          type="text"
+          value={answers[key]}
+          disabled={locked || isCorrect}
+          onChange={(e) => handleChange(key, e.target.value)}
+          className={`
+            w-full border-0 border-b outline-none bg-transparent
+            text-[17px]  px-1
+            ${isWrong ? "border-[#D1232A]" : "border-black"}
+          `}
+        />
+        {isWrong && (
+          <span style={{
+            position: "absolute", top: "-8px", right: "-8px",
+            width: "18px", height: "18px", background: "#ef4444", color: "white",
+            borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "11px", fontWeight: "bold", border: "2px solid white",
             boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </div>
-  );
+          }}>✕</span>
+        )}
+      </span>
+    );
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall "
-        style={{
-          lineHeight: "1.5",
-        }}
-      >
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-8">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            K
-          </span>
-          Read and write.
+      <div className="div-forall">
+        {/* Title */}
+        <h5 className="header-title-page8 mb-6">
+          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
+          Read the story and answer the questions.
         </h5>
 
-        {/* READING */}
-        <div className="flex gap-8 items-start mb-12 text-[17px]">
-          <div className="flex-1">
-            <p className="mb-5">
-              How many hours do you spend studying for an exam? How many times
-              have you fallen asleep while doing your homework or studying? Did
-              you ever sleep on your books? This happens to almost every
-              student. Studying takes up a lot of time. Sometimes, there just
-              isn’t enough time to study!
-            </p>
-
-            <p>
-              That’s what happened to John, a fifth grade student. He was
-              studying for a math exam when he fell asleep at his desk. In the
-              morning, his alarm went off. Uh-oh! It was already time to go to
-              school! John didn’t finish studying. He didn’t know what to do.
-              When he went to school, he tried to study, but there wasn’t enough
-              time. He only had 10 minutes to review before the math exam. When
-              it was time for the exam, John was not ready. He took the exam but
-              couldn’t figure out many of the answers. Sadly, John got 70% on
-              his math exam. “Next time, I will study as soon as I go home,” he
-              thought.
-            </p>
-          </div>
-
-          {/* IMAGE */}
-          <img
-            src={img1}
-            alt="sleeping-boy"
-            style={{
-              width: "260px",
-              height: "auto",
-              objectFit: "contain",
-              marginTop: "90px",
-            }}
-          />
+        {/* Story */}
+        <div className="mb-8 text-[16px] leading-[1.9]" style={{ whiteSpace: "pre-line", color: "#333" }}>
+          {story}
         </div>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-12 mb-10">
-          {/* 1 */}
-          <div>
-            <div className="flex gap-3 mb-4">
-              <span className="font-bold">1</span>
+        {/* Questions */}
+        <div className="flex flex-col gap-6 text-[17px] mb-15">
 
-              <span>How many minutes did John have to study at school?</span>
-            </div>
-
-            <div className="pl-7">{inputField(0)}</div>
+          {/* Q1 - inline */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-bold">1</span>
+            <span>{questions[0].question}</span>
+            {inputLine(1)}
           </div>
 
-          {/* 2 */}
-          <div>
-            <div className="flex gap-3 mb-4">
+          {/* Q2 - two lines */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
               <span className="font-bold">2</span>
-
-              <span>What mark did John get on his exam?</span>
+              <span>{questions[1].question}</span>
             </div>
-
-            <div className="pl-7">{inputField(1)}</div>
+            <div className="flex items-center gap-2 pl-5">
+              <span className="font-semibold min-w-[24px]">a)</span>
+              {inputLine("2a")}
+            </div>
+            <div className="flex items-center gap-2 pl-5">
+              <span className="font-semibold min-w-[24px]">b)</span>
+              {inputLine("2b")}
+            </div>
           </div>
 
-          {/* 3 */}
-          <div>
-            <div className="flex gap-3 mb-4">
-              <span className="font-bold">3</span>
-
-              <span>What should John do next time before an exam?</span>
-            </div>
-
-            <div className="pl-7">{inputField(2)}</div>
+          {/* Q3 - inline */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-bold">3</span>
+            <span>{questions[2].question}</span>
+            {inputLine(3)}
           </div>
 
-          {/* 4 */}
-          <div>
-            <div className="flex gap-3 mb-4">
+          {/* Q4 - below */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
               <span className="font-bold">4</span>
-
-              <span>How long does it take you to study?</span>
+              <span>{questions[3].question}</span>
             </div>
-
-            <div className="pl-7">{inputField(3, "Answers will vary")}</div>
+            <div className="pl-5">
+              {inputLine(4)}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
+      {/* Buttons */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>
@@ -288,4 +222,4 @@ const WB_Unit1_Page7_Q1 = () => {
   );
 };
 
-export default WB_Unit1_Page7_Q1;
+export default WB_Unit1_Page7_F;
