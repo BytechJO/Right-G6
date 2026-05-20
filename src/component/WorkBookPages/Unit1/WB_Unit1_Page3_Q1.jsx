@@ -1,259 +1,216 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-const WB_Unit1_Page3_Q1 = () => {
-  const questions = ["Uh-oh!", "alarm", "mirror", "right away", "counting"];
+const WB_Unit1_Page3_VocabMatch = () => {
+  const BORDER = "#84ad40";
 
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+  const questions = [
+    { id: 1, definition: "equipment, things, goods:", answer: "supplies", },
+    { id: 2, definition: "wonderful, excellent:", answer: "super" },
+    { id: 3, definition: "left over:", answer: "remaining" },
+    { id: 4, definition: "rough, hard to tear or break, difficult:", answer: "tough" },
+    { id: 5, definition: "topic, matter, area of study in school:", answer: "subject" },
+    { id: 6, definition: "a small computer to figure math problems:", answer: "calculator" },
+    { id: 7, definition: "what an ill or very tired person needs:", answer: "bed rest", multiInput: ["bed", "rest"] },
+    { id: 8, definition: "a group of items that goes together:", answer: "a set", multiInput: ["a", "set"] },
+    { id: 9, definition: "recently, just happened:", answer: "lately" },
+    { id: 10, definition: "probably will happen:", answer: "likely" },
+  ];
 
-  const [result, setResult] = useState([]);
+  const initAnswers = () => {
+    const ans = {};
+    questions.forEach((q) => {
+      if (q.prefilled) {
+        ans[q.id] = q.multiInput ? [...q.multiInput] : q.answer;
+      } else {
+        ans[q.id] = q.multiInput ? q.multiInput.map(() => "") : "";
+      }
+    });
+    return ans;
+  };
 
+  const [answers, setAnswers] = useState(initAnswers);
+  const [result, setResult] = useState({});
   const [locked, setLocked] = useState(false);
 
   const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,’']/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+    str.toLowerCase().replace(/[.?!,'']/g, "").replace(/\s+/g, " ").trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
-
-    const updated = [...answers];
-
-    updated[i] = value;
-
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
+  const handleChange = (id, value, subIndex = null) => {
+    if (locked || result[id] === true) return;
+    setAnswers((prev) => {
+      const updated = { ...prev };
+      if (subIndex !== null) {
+        const arr = [...updated[id]];
+        arr[subIndex] = value;
+        updated[id] = arr;
+      } else {
+        updated[id] = value;
+      }
+      return updated;
     });
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmpty = answers.some((a) => !a.trim());
+    const hasEmpty = questions.some((q) => {
+      if (q.prefilled) return false;
+      const ans = answers[q.id];
+      if (Array.isArray(ans)) return ans.some((a) => !a.trim());
+      return !ans.trim();
+    });
 
     if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
-
       return;
     }
 
     let correctCount = 0;
-
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
-
+    const newResult = {};
+    questions.forEach((q) => {
+      if (q.prefilled) { newResult[q.id] = true; correctCount++; return; }
+      const ans = answers[q.id];
+      const userAnswer = Array.isArray(ans) ? ans.join(" ") : ans;
+      const ok = normalize(userAnswer) === normalize(q.answer);
       if (ok) correctCount++;
-
-      return ok;
+      newResult[q.id] = ok;
     });
 
-    setResult(newResults);
-
-    const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
-      setLocked(true);
-
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    setResult(newResult);
+    const total = questions.filter((q) => !q.prefilled).length;
+    const scored = Object.values(newResult).filter(Boolean).length - 1;
+    const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
+    if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (scored === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setAnswers(["Uh-oh!", "alarm", "mirror", "right away", "counting"]);
-
-    setResult([true, true, true, true, true]);
-
+    const ans = {};
+    questions.forEach((q) => {
+      ans[q.id] = q.multiInput ? [...q.multiInput] : q.answer;
+    });
+    const res = {};
+    questions.forEach((q) => { res[q.id] = true; });
+    setAnswers(ans);
+    setResult(res);
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
-
-    setResult([]);
-
+    setAnswers(initAnswers());
+    setResult({});
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className="relative inline-block">
-      <input
-        type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`
-          ${width}
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-          px-1
+  const inputField = (q, subIndex = null) => {
+    const value = subIndex !== null ? answers[q.id][subIndex] : answers[q.id];
+    const isWrong = result[q.id] === false;
+    const isCorrect = result[q.id] === true;
+    const isDisabled = locked || isCorrect || q.prefilled;
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
-        `}
-      />
-
-      {result[i] === false && (
-        <span
+    return (
+      <span className="relative inline-block" style={{ marginRight: subIndex !== null ? "6px" : "0" }}>
+        <input
+          type="text"
+          value={value}
+          disabled={isDisabled}
+          onChange={(e) => handleChange(q.id, e.target.value, subIndex)}
+          className={`
+  border-0
+  border-b-1
+  bg-transparent
+  outline-none
+  focus:outline-none
+  focus:ring-0
+  focus:border-b-1
+  text-[18px]
+  text-[#6d2980]
+  font-semibold
+  w-[55px]
+  text-center
+  ${isWrong ? "border-[#D1232A]" : "border-black"}
+`}
           style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+            width: subIndex !== null ? "80px" : q.id >= 7 ? "80px" : "160px",
+            color:  "#333",
           }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
-  const wordBox = (word) => (
-    <div
-      style={{
-        border: "2px solid #7D3C98",
-        borderRadius: "12px",
-        padding: "8px 22px",
-        fontSize: "18px",
-        minWidth: "120px",
-        textAlign: "center",
-      }}
-    >
-      {word}
-    </div>
-  );
+        />
+        {isWrong && subIndex === null && (
+          <span style={{
+            position: "absolute", top: "-8px", right: "-8px",
+            width: "18px", height: "18px", background: "#ef4444", color: "white",
+            borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+          }}>✕</span>
+        )}
+      </span>
+    );
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px]">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-17">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            A
-          </span>
-          Read and write.
+      <div className="div-forall">
+        {/* Title */}
+        <h5 className="header-title-page8 mb-6">
+          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
+          Write the vocabulary word that matches the definition. The first one has been done for you.
         </h5>
 
-        {/* WORD BOXES */}
-        <div className="flex gap-5 mb-12 flex-wrap">
-          {wordBox("mirror")}
-          {wordBox("alarm")}
-          {wordBox("counting")}
-          {wordBox("right away")}
-          {wordBox("Uh-oh!")}
-        </div>
+        {/* Grid */}
+        <div style={{
+          display: "grid", gridTemplateColumns: "1fr 1fr",
+          border: `2px solid ${BORDER}`, borderRadius: "8px", overflow: "hidden",
+        }}>
+          {questions.map((q, i) => {
+            const isLastRow = i >= questions.length - 2;
+            const isLeft = i % 2 === 0;
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-10">
-          {/* 1 */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="font-bold">1</span>
+            return (
+              <div key={q.id} style={{
+                padding: "16px 20px",
+                borderRight: isLeft ? `1px solid ${BORDER}` : "none",
+                borderBottom: isLastRow ? "none" : `1px solid ${BORDER}`,
+                minHeight: "90px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}>
+                <div style={{ fontSize: "18px", color: "#444", marginBottom: "10px" }}>
+                  <span style={{ fontWeight: "bold", marginRight: "8px" }}>{q.id}</span>
+                  {q.definition}
+                  {q.id === 1 && (
+                    <span style={{ textDecoration: "underline", fontWeight: "bold", color: "#555", marginLeft: "4px" }}>
+                      supplies
+                    </span>
+                  )}
+                </div>
 
-            {inputField(0, "w-[180px]")}
-
-            <span>I dropped my papers on the floor.</span>
-          </div>
-
-          {/* 2 */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="font-bold">2</span>
-
-            <span>I did not hear the</span>
-
-            {inputField(1, "w-[180px]")}
-
-            <span>go off at 7:00 a.m.</span>
-          </div>
-
-          {/* 3 */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="font-bold">3</span>
-
-            <span>Look at your face in the</span>
-
-            {inputField(2, "w-[170px]")}
-
-            <span>.</span>
-          </div>
-
-          {/* 4 */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="font-bold">4</span>
-
-            <span>I know you need it fast, so I will do it</span>
-
-            {inputField(3, "w-[180px]")}
-
-            <span>.</span>
-          </div>
-
-          {/* 5 */}
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="font-bold">5</span>
-
-            <span>He was</span>
-
-            {inputField(4, "w-[180px]")}
-
-            <span>the number of apples in the basket.</span>
-          </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  {q.prefilled ? null : q.multiInput ? (
+                    q.multiInput.map((_, si) => inputField(q, si))
+                  ) : (
+                    inputField(q)
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* BUTTONS */}
+      {/* Buttons */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>
@@ -262,4 +219,4 @@ const WB_Unit1_Page3_Q1 = () => {
   );
 };
 
-export default WB_Unit1_Page3_Q1;
+export default WB_Unit1_Page3_VocabMatch;

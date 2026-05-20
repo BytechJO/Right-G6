@@ -1,287 +1,168 @@
-import React, { useState } from "react";
-
+import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import spainImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U1 Folder/SVG/Asset 13.svg";
 
-const WB_Unit1_Page8_Q2 = () => {
+const WB_Unit1_Page8_H = () => {
   const questions = [
-    "did you study",
-    "I can dive two feet.",
-    "We have to run half a mile.",
-    "How do you prepare to play football?",
-    "How long is your break?",
+    { id: 1, text: "Has he ever traveled to Spain?",        answer: "c" },
+    { id: 2, text: "Has he ever met Jim?",                  answer: "a" },
+    { id: 3, text: "Have they lived in that house long?",   answer: "d" },
+    { id: 4, text: "How many books has she written?",       answer: "e" },
+    { id: 5, text: "Has she been playing piano for a long time?", answer: "b" },
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+  const responses = [
+    { label: "a", text: "No, he hasn't met him yet, but he will soon." },
+    { label: "b", text: "Yes, she has been playing it for six years." },
+    { label: "c", text: "Yes, he has been before." },
+    { label: "d", text: "No, they haven't lived there long." },
+    { label: "e", text: "She has written five and plans to write one more." },
+  ];
 
-  const [result, setResult] = useState([]);
+  const [answers, setAnswers] = useState(questions.map(() => ""));
+  const [result, setResult]   = useState([]);
+  const [locked, setLocked]   = useState(false);
+  const inputsRef = useRef({});
 
-  const [locked, setLocked] = useState(false);
-
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,’'%]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+  const normalize = (s) => s.toLowerCase().trim();
 
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
-
     const updated = [...answers];
-
-    updated[i] = value;
-
+    updated[i] = value.toLowerCase();
     setAnswers(updated);
+    setResult((prev) => { const c = [...prev]; c[i] = undefined; return c; });
 
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+    // auto move to next
+    if (value) {
+      const next = inputsRef.current[i + 1];
+      if (next) { next.focus(); next.select(); }
+    }
   };
 
   const checkAnswers = () => {
     if (locked) return;
-
-    const hasEmpty = answers.some((a) => !a.trim());
-
-    if (hasEmpty) {
+    if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all answers.");
-
       return;
     }
-
-    let correctCount = 0;
-
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
-
-      if (ok) correctCount++;
-
+    let correct = 0;
+    const newResult = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i].answer);
+      if (ok) correct++;
       return ok;
     });
-
-    setResult(newResults);
-
+    setResult(newResult);
     const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
-      setLocked(true);
-
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "did you study",
-      "I can dive two feet.",
-      "We have to run half a mile.",
-      "How do you prepare to play football?",
-      "How long is your break?",
-    ]);
-
-    setResult([true, true, true, true, true]);
-
+    setAnswers(questions.map((q) => q.answer));
+    setResult(questions.map(() => true));
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
-
+    setAnswers(questions.map(() => ""));
     setResult([]);
-
     setLocked(false);
   };
 
-  const inputField = (i, width = "w-full") => (
-    <div className="relative inline-block flex-1">
-      <input
-        type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`
-          ${width}
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-          px-1
-
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
-        `}
-      />
-
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </div>
-  );
-
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall text-[18px]"
-        style={{
-          lineHeight: "1.8",
-        }}
-      >
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-10 leading-normal">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            M
-          </span>
-          Read and write questions for answers and answer some of the questions.
+      <div className="div-forall">
+        {/* Title */}
+        <h5 className="header-title-page8 mb-10">
+          <span className="ex-A" style={{ marginRight: "10px" }}>H</span>
+          Match each statement to its correct response.
         </h5>
 
-        {/* 1 */}
-        <div className="mb-2">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold">Teacher:</span>
+        {/* Two columns */}
+        <div className="flex gap-16 text-[18px]">
 
-            <span>How long</span>
+          {/* LEFT — questions */}
+          <div className="flex flex-col gap-10 flex-1">
+            {questions.map((q, i) => {
+              const isWrong   = result[i] === false;
+              const isCorrect = result[i] === true;
+              return (
+                <div key={q.id} className="flex items-start gap-3">
+                  {/* input */}
+                  <span className="relative inline-block" style={{ marginTop: "2px" }}>
+                    <input
+                      ref={(el) => (inputsRef.current[i] = el)}
+                      type="text"
+                      maxLength={1}
+                      value={answers[i]}
+                      disabled={locked || isCorrect}
+                      onFocus={(e) => e.target.select()}
+                      onChange={(e) => handleChange(i, e.target.value)}
+                      className={`
+                        w-[40px] border-0 border-b outline-none bg-transparent
+                        text-[18px]  text-center px-1
+                        ${isWrong ? "border-[#D1232A]" : "border-black"}
+                      `}
+                    />
+                    {isWrong && (
+                      <span style={{
+                        position: "absolute", top: "-8px", right: "-6px",
+                        width: "18px", height: "18px", background: "#ef4444", color: "white",
+                        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+                        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                      }}>✕</span>
+                    )}
+                  </span>
 
-            {inputField(0)}
-
-            <span>?</span>
+                  <span className="font-bold min-w-[20px]">{q.id}</span>
+                  <span>{q.text}</span>
+                </div>
+              );
+            })}
           </div>
 
-          <div>
-            <span className="font-bold">Student:</span> I only studied for about
-            an hour.
+          {/* RIGHT — responses */}
+          <div className="flex flex-col gap-10" style={{ minWidth: "300px" }}>
+            {responses.map((r) => (
+              <div key={r.label} className="flex gap-3">
+                <span className="font-bold min-w-[20px]">{r.label}</span>
+                <span>{r.text}</span>
+              </div>
+            ))}
           </div>
+
         </div>
 
-        <div className="mb-2 font-bold">*************</div>
+        {/* Image */}
+        <img
+          src={spainImg}
+          alt="Spain coast"
+          style={{
+            width: "100%",
+            maxHeight: "220px",
+            objectFit: "cover",
+            borderRadius: "8px",
+            marginTop: "32px",
+            marginBottom: "4em",
 
-        {/* 2 */}
-        <div className="mb-2">
-          <div>
-            <span className="font-bold">Nancy:</span> How deep can you dive?
-          </div>
+          }}
+        />
 
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold">Paula:</span>
-
-            {inputField(1)}
-          </div>
-        </div>
-
-        <div className="mb-2 font-bold">*************</div>
-
-        {/* 3 */}
-        <div className="mb-2">
-          <div>
-            <span className="font-bold">Team member:</span> How far do we have
-            to run today?
-          </div>
-
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold">Coach:</span>
-
-            {inputField(2)}
-          </div>
-        </div>
-
-        <div className="mb-2 font-bold">*************</div>
-
-        {/* 4 */}
-        <div className="mb-2">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold">Coach:</span>
-
-            {inputField(3)}
-
-            <span>?</span>
-          </div>
-
-          <div>
-            <span className="font-bold">Team member:</span> I do 50 push-ups
-            every morning during football season.
-          </div>
-        </div>
-
-        <div className="mb-2 font-bold">*************</div>
-
-        {/* 5 */}
-        <div className="mb-10">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold">Student 1:</span>
-
-            {inputField(4)}
-
-            <span>?</span>
-          </div>
-
-          <div>
-            <span className="font-bold">Student 2:</span> It’s for 30 minutes,
-            and then I have to go back to class.
-          </div>
-        </div>
       </div>
 
-      {/* BUTTONS */}
+      {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
-
-        <button className="show-answer-btn" onClick={showAnswers}>
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
+        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
 };
 
-export default WB_Unit1_Page8_Q2;
+export default WB_Unit1_Page8_H;
