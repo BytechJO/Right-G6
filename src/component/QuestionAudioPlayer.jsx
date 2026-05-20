@@ -6,7 +6,7 @@ import "./FourImagesWithAudio.css";
 import "./AudioWithCaption.css"
 import { forwardRef, useImperativeHandle } from "react";
 const QuestionAudioPlayer = forwardRef(function QuestionAudioPlayer(
-  { src, captions = [], stopAtSecond = null, onTimeUpdate },
+  { src, captions = [], stopAtSecond = null, onTimeUpdate ,justify="center"},
   ref,
 ) {
   const clickAudioRef = useRef(null);
@@ -127,7 +127,7 @@ const QuestionAudioPlayer = forwardRef(function QuestionAudioPlayer(
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: justify,
         margin: "20px 0px",
         width: "100%",
       }}

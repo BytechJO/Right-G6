@@ -1,404 +1,212 @@
 import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import Button from "../../Button";
+import ActionButtons from "../../Button";
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import sound from "../../../assets/audio/ClassBook/U2/P 14/CD10.Pg14_Instruction1_Adult Lady_Take 2.mp3";
+const QUESTIONS = [
+  { label: "First", correct: ["I wouldn't dare", "I would not dare"] },
+  {
+    label: "Second",
+    correct: [
+      "Where's your sense of adventure",
+      "Where is your sense of adventure",
+    ],
+  },
+  {
+    label: "Third",
+    correct: ["I wouldn't call that", "I would not call that"],
+  },
+  { label: "Fourth", correct: ["It's more like", "It is more like"] },
+];
 
-const Unit2_Page5_Q2 = () => {
-  const words = [
-    "fast",
-    "Not so fast",
-    "first thing",
-    "couple",
-    "crazy",
-    "begs",
-    "merry-go-round",
-    "few",
-    "keep my feet on the ground",
-  ];
+const captions = [
+  {
+    start: 0.459,
+    end: 3.579,
+    text: "Page 6, grammar. Present perfect.",
+  },
+  {
+    start: 4.199,
+    end: 6.259,
+    text: "Larry has seen the new movie.",
+  },
+  {
+    start: 6.739,
+    end: 8.159,
+    text: "Has Larry seen the new movie?",
+  },
+  {
+    start: 8.76,
+    end: 10.079,
+    text: "They have gone to the beach.",
+  },
+  {
+    start: 10.659,
+    end: 11.84,
+    text: "Have they gone to the beach?",
+  },
+  {
+    start: 12.259,
+    end: 13.759,
+    text: "You haven't gone to the beach.",
+  },
+  {
+    start: 14.679,
+    end: 16.02,
+    text: "Haven't you gone to the beach?",
+  },
+];
 
-  const correct = [
-    "crazy",
-    "fast",
-    "first thing",
-    "few",
-    "couple",
-    "begs",
-    "Not so fast",
-    "keep my feet on the ground",
-    "merry-go-round",
-  ];
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""'’;:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  const [answers, setAnswers] = useState(Array(9).fill(""));
-  const [result, setResult] = useState([]);
+const ListeningB = () => {
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
   const [locked, setLocked] = useState(false);
 
-  // 🎯 DRAG
-  const onDragEnd = (res) => {
-    if (!res.destination) return;
-
-    const word = res.draggableId.replace("word-", "");
-    const index = Number(res.destination.droppableId);
-
-    // 🔒 لا تعدل الصح
-    if (result[index] === true) return;
-
-    setAnswers((prev) => {
-      const updated = [...prev];
-
-      // 🔥 إذا الكلمة موجودة بمكان ثاني → احذفها
-      const existingIndex = updated.findIndex((a) => a === word);
-      if (existingIndex !== -1) {
-        updated[existingIndex] = "";
-      }
-
-      // 🔥 حط الكلمة بالمكان الجديد
-      updated[index] = word;
-
-      return updated;
-    });
-
-    // 🔥 امسح الخطأ
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[index] = undefined;
-      return copy;
-    });
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
+    if (errors[i] === true) {
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    }
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // ✅ CHECK
   const handleCheck = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a)) {
+    if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
 
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = a === correct[i];
-      if (ok) correctCount++;
-      return ok;
+    let correct = 0;
+    const newErrors = answers.map((a, i) => {
+      const ok = QUESTIONS[i].correct.some(
+        (c) => normalize(a) === normalize(c),
+      );
+      if (ok) correct++;
+      return ok ? false : true;
     });
 
-    setResult(res);
+    setErrors(newErrors);
 
-    const total = correct.length;
-
+    const total = QUESTIONS.length;
     const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  // 👁️ SHOW
   const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
+    setAnswers(QUESTIONS.map((q) => q.correct[0]));
+    setErrors(Array(QUESTIONS.length).fill(false));
     setLocked(true);
   };
 
-  // 🔄 RESET
   const handleReset = () => {
-    setAnswers(Array(correct.length).fill(""));
-    setResult([]);
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
   };
-  const getDropClass = (i) =>
-    `relative inline-block min-w-[90px] mx-1 text-center text-[#6D2980]
-   border-b-1
-   ${result[i] === false ? "border-red-500" : "border-black"}
-   ${answers[i] ? "cursor-pointer hover:bg-purple-100" : ""}
-  `;
-  const renderX = (i) =>
-    result[i] === false && (
-      <span
-        style={{
-          position: "absolute",
-          top: "-8px",
-          right: "-10px",
-          transform: "translateY(-50%)",
-          width: "20px",
-          height: "20px",
-          background: "#ef4444",
-          color: "white",
-          borderRadius: "50%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "12px",
-          fontWeight: "bold",
-          border: "2px solid white",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-          pointerEvents: "none",
-          zIndex: 3,
-        }}
-      >
-        ✕
-      </span>
-    );
-  const handleRemove = (i) => {
-    if (result[i] === true) return;
 
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = "";
-      return updated;
-    });
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
-  };
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "30px",
-        }}
-      >
-        <div className="div-forall">
-          <h5 className="header-title-page8 mb-15">
-            <span className="ex-A mr-2">B</span>
-            Using the words and phrases in the box, finish the story.
-          </h5>
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "30px" }}>
+        {/* العنوان */}
+        <h5 className="header-title-page8 mb-7">
+          <span className="ex-A mr-2">B</span>
+          Listen to the story, and then write the expressions in the order they
+          come in the story.
+        </h5>
+        <QuestionAudioPlayer
+          src={sound}
+          captions={captions}
+          stopAtSecond={2.5}
+        />
+        {/* الأسطر */}
+        <div className="flex flex-col gap-10 text-[18px] mt-5">
+          {QUESTIONS.map((q, i) => {
+            const hasError = errors[i] === true;
+            const isOk = errors[i] === false;
 
-          {/* 🟣 WORD BANK */}
-          <Droppable droppableId="bank" direction="horizontal" isDropDisabled>
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="flex flex-nowrap gap-3  rounded-xl items-center justify-start min-w-[1400px]"
-              >
-                {words.map((w, i) => {
-                  const used = answers.includes(w);
+            return (
+              <div key={i} className="flex items-center gap-3">
+                {/* Label */}
+                <span className="font-bold shrink-0 w-[70px]">{q.label}:</span>
 
-                  return (
-                    <Draggable
-                      key={w}
-                      draggableId={`word-${w}`}
-                      index={i}
-                      isDragDisabled={locked || used}
+                {/* Input */}
+                <div className="relative flex-1">
+                  <input
+                    value={answers[i]}
+                    disabled={locked || isOk}
+                    onChange={(e) => handleChange(i, e.target.value)}
+                    style={{
+                      width: "100%",
+                      borderBottom: hasError
+                        ? "2px solid #ef4444"
+                        : "1px solid #555",
+                      outline: "none",
+                      background: "transparent",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                      // color: isOk ? "#e53935" : undefined,
+                      padding: "2px 0",
+                    }}
+                  />
+                  {hasError && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        width: "22px",
+                        height: "22px",
+                        background: "#ef4444",
+                        color: "white",
+                        borderRadius: "50%",
+                        fontSize: "12px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        border: "2px solid white",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                        zIndex: 5,
+                      }}
                     >
-                      {(provided) => (
-                        <span
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="px-3 py-1 bg-white rounded-lg border cursor-pointer whitespace-nowrap"
-                          style={{
-                            opacity: used ? 0.5 : 1,
-                            ...provided.draggableProps.style,
-                          }}
-                        >
-                          {w}
-                        </span>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
+                      ✕
+                    </span>
+                  )}
+                </div>
               </div>
-            )}
-          </Droppable>
+            );
+          })}
+        </div>
 
-          {/* 📝 STORY */}
-          <div className="text-[18px] leading-9 flex flex-col gap-6 mt-10 mb-7">
-            {/* LINE 1 */}
-            <div>
-              Lynn is a girl who likes{" "}
-              <Droppable droppableId="0">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(0)}
-                    onClick={() => handleRemove(0)}
-                  >
-                    {answers[0]}
-                    {p.placeholder}
-                    {renderX(0)}
-                  </span>
-                )}
-              </Droppable>
-              ,{" "}
-              <Droppable droppableId="1">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(1)}
-                    onClick={() => handleRemove(1)}
-                  >
-                    {answers[1]}
-                    {p.placeholder}
-                    {renderX(1)}
-                  </span>
-                )}
-              </Droppable>{" "}
-              rides, but her friend Stacy likes the
-            </div>
-
-            {/* LINE 2 */}
-            <div>
-              slow rides. They decide to go to the carnival that is in town. The{" "}
-              <Droppable droppableId="2">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(2)}
-                    onClick={() => handleRemove(2)}
-                  >
-                    {answers[2]}
-                    {p.placeholder}
-                    {renderX(2)}
-                  </span>
-                )}
-              </Droppable>{" "}
-              they
-            </div>
-
-            {/* LINE 3 */}
-            <div>
-              do is buy a{" "}
-              <Droppable droppableId="3">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(3)}
-                    onClick={() => handleRemove(3)}
-                  >
-                    {answers[3]}
-                    {p.placeholder}
-                    {renderX(3)}
-                  </span>
-                )}
-              </Droppable>{" "}
-              tickets for a{" "}
-              <Droppable droppableId="4">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(4)}
-                    onClick={() => handleRemove(4)}
-                  >
-                    {answers[4]}
-                    {p.placeholder}
-                    {renderX(4)}
-                  </span>
-                )}
-              </Droppable>{" "}
-              of the rides. Lynn{" "}
-              <Droppable droppableId="5">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(5)}
-                    onClick={() => handleRemove(5)}
-                  >
-                    {answers[5]}
-                    {p.placeholder}
-                    {renderX(5)}
-                  </span>
-                )}
-              </Droppable>{" "}
-              Stacy to
-            </div>
-
-            {/* LINE 4 */}
-            <div>
-              go on the Ferris wheel with her, but Stacy says,“{" "}
-              <Droppable droppableId="6">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(6)}
-                    onClick={() => handleRemove(6)}
-                  >
-                    {answers[6]}
-                    {p.placeholder}
-                    {renderX(6)}
-                  </span>
-                )}
-              </Droppable>{" "}
-              !”
-            </div>
-
-            {/* LINE 5 */}
-            <div>
-              I like to{" "}
-              <Droppable droppableId="7">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(7)}
-                    onClick={() => handleRemove(7)}
-                  >
-                    {answers[7]}
-                    {p.placeholder}
-                    {renderX(7)}
-                  </span>
-                )}
-              </Droppable>
-              , so let’s go on the{" "}
-              <Droppable droppableId="8">
-                {(p) => (
-                  <span
-                    ref={p.innerRef}
-                    {...p.droppableProps}
-                    className={getDropClass(8)}
-                    onClick={() => handleRemove(8)}
-                  >
-                    {answers[8]}
-                    {p.placeholder}
-                    {renderX(8)}
-                  </span>
-                )}
-              </Droppable>{" "}
-            </div>
-            <div>
-              first. It goes in circles like the Ferris wheel, but it’s slow.”
-            </div>
-          </div>
-          {/* Buttons */}
-          <Button
+        {/* Buttons */}
+        <div className="flex justify-center gap-6 mt-8">
+          <ActionButtons
             handleShowAnswer={handleShow}
             handleStartAgain={handleReset}
             checkAnswers={handleCheck}
           />
         </div>
       </div>
-    </DragDropContext>
+    </div>
   );
 };
 
-export default Unit2_Page5_Q2;
+export default ListeningB;

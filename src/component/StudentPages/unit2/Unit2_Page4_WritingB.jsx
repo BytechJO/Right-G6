@@ -13,9 +13,9 @@ const WritingC = () => {
     <div className="space-y-4 w-full max-w-[900px] mx-auto">
       {/* العنوان */}
       <h5 className="header-title-page8-read pb-2.5">
-        <span className="ex-A-read mr-2">C</span>
-        Write a paragraph in your notebook about your character. Use at least
-        four relative clauses.
+        <span className="ex-A-read mr-2">B</span>
+      Now choose one of the topics from Exercise A. Tell about your experience in two to
+three paragraphs, using the writing tips from above.
       </h5>
 
       {/* textarea */}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import page_6 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 15.png";
+import page_6 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/Page 15.png";
 // import song from "../../../assets/img_unit2/sounds-unit2/Pg15.Sing_Adult Lady.mp3";
 import "./Unit2_Page6.css";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
@@ -21,7 +21,7 @@ const Unit2_Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 8 })}
+          onClick={() => openPopup("exercise", { startIndex: 9 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -43,7 +43,7 @@ const Unit2_Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 9 })}
+          onClick={() => openPopup("exercise", { startIndex:10 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -64,7 +64,7 @@ const Unit2_Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 10 })}
+          onClick={() => openPopup("exercise", { startIndex: 11 })}
           style={{ overflow: "visible" }}
         >
           <image

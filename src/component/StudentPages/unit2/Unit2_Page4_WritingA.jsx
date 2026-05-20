@@ -1,26 +1,22 @@
 import React, { useState } from "react";
 import { FaRedo } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
+
+const QUESTIONS = [
+  { label: "The funniest time I can remember:" },
+  { label: "The time I was the most scared:" },
+  { label: "The most unusual person I know:" },
+];
 
 const WritingA = () => {
-  const [answers, setAnswers] = useState({
-    name: "",
-    think: "",
-    look: "",
-    other: "",
-  });
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
 
-  const handleChange = (field, value) => {
-    setAnswers((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (i, val) => {
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // 🔄 Reset فقط
   const handleReset = () => {
-    setAnswers({
-      name: "",
-      think: "",
-      look: "",
-      other: "",
-    });
+    setAnswers(Array(QUESTIONS.length).fill(""));
   };
 
   return (
@@ -28,74 +24,35 @@ const WritingA = () => {
       {/* العنوان */}
       <h5 className="header-title-page8-read leading-7">
         <span className="ex-A-read mr-2">A</span>
-        Choose a character to write about. Give the character a name. Tell about
-        what the <br /> character thinks about, what the character does, what
-        they look like, etc.
+        Write a short description about each of the following items. Use{" "}
+        <span className="text-[#55c271] font-bold">so</span> and{" "}
+        <span className="text-[#e07b39] font-bold">such</span> in your
+        descriptions.
       </h5>
 
-      {/* 1 */}
-      <div className="flex items-center gap-3 mt-15">
-        <span className="font-bold">1</span>
-        <span className="whitespace-nowrap">Character’s name:</span>
-        <input
-          value={answers.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          className="flex-1 border-b border-black outline-none bg-transparent text-[#6D2980] font-bold"
-        />
-      </div>
+      <div className="flex flex-col gap-8 mt-5 text-[18px]">
+        {QUESTIONS.map((q, i) => (
+          <div key={i} className="flex flex-col gap-3">
+            {/* السؤال */}
+            <div className="flex items-start gap-2">
+              <span className="font-bold shrink-0">{i + 1}</span>
+              <span>{q.label}</span>
+            </div>
 
-      {/* 2 */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <span className="font-bold">2</span>
-          <span>What does the character think about?</span>
-        </div>
-
-        <input
-          value={answers.think}
-          onChange={(e) => handleChange("think", e.target.value)}
-          className="w-full border-b border-black outline-none bg-transparent text-[#6D2980] font-bold"
-        />
-      </div>
-
-      {/* 3 */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <span className="font-bold">3</span>
-          <span>What do they look like?</span>
-        </div>
-
-        <input
-          value={answers.look}
-          onChange={(e) => handleChange("look", e.target.value)}
-          className="w-full border-b border-black outline-none bg-transparent text-[#6D2980] font-bold"
-        />
-      </div>
-
-      {/* 4 */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-3">
-          <span className="font-bold">4</span>
-          <span>Other information about your character:</span>
-        </div>
-
-        <input
-          value={answers.other}
-          onChange={(e) => handleChange("other", e.target.value)}
-          className="w-full border-b border-black outline-none bg-transparent text-[#6D2980] font-bold"
-        />
-      </div>
-
-      {/* 🔄 Reset Button */}
-      <div className="flex justify-center mt-6">
-        <div
-          onClick={handleReset}
-          className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-        >
-          <div className="bg-white p-3 rounded-full shadow">
-            <FaRedo size={14} className="text-gray-700" />
+            {/* سطرين للكتابة */}
+            <input
+              value={answers[i]}
+              onChange={(e) => handleChange(i, e.target.value)}
+              className="w-full border-b border-black outline-none bg-transparent text-[18px]"
+            />
+           
           </div>
-        </div>
+        ))}
+      </div>
+
+      {/* Reset Button */}
+      <div className="flex justify-center mt-6">
+        <ActionButtons onReset={handleReset} />
       </div>
     </div>
   );

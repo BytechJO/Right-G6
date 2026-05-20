@@ -1,195 +1,184 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 21.svg";
+import ActionButtons from "../../Button";
+
+const QUESTIONS = [
+  { correct: ["has"] },
+  { correct: ["have"] },
+  { correct: [ "ridden"] },
+  { correct: ["have"] },
+  { correct: ["chosen"] },
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""'';:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
 const Review1_Page2_Q2 = () => {
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-  const [result, setResult] = useState([]);
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
   const [locked, setLocked] = useState(false);
 
-  const correct = ["many", "much", "many", "much"];
-
-  const normalize = (t) => t.toLowerCase().replace(/[.?]/g, "").trim();
-
   const handleChange = (i, val) => {
-    if (result[i] === true) return;
-
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
+    if (locked || errors[i] === false) return;
+    if (errors[i] === true)
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // ✅ CHECK
   const handleCheck = () => {
     if (locked) return;
-
     if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
-
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = normalize(a) === correct[i];
-      if (ok) correctCount++;
-      return ok;
+    let correct = 0;
+    const newErrors = answers.map((a, i) => {
+      const ok = QUESTIONS[i].correct.some(
+        (c) => normalize(a) === normalize(c),
+      );
+      if (ok) correct++;
+      return ok ? false : true;
     });
-
-    setResult(res);
-
-    const total = correct.length;
-
-    const msg = `Score: ${correctCount} / ${total}`;
-
-    
-    if (correctCount === total) {
+    setErrors(newErrors);
+    const total = QUESTIONS.length;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // 👀 SHOW
   const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
+    setAnswers(QUESTIONS.map((q) => q.correct[0]));
+    setErrors(Array(QUESTIONS.length).fill(false));
     setLocked(true);
   };
 
-  // 🔄 RESET
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-    setResult([]);
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
   };
 
-  // 🎯 input
-  const input = (i, width = "250px") => (
-    <span style={{ position: "relative", margin: "0 6px" }}>
-      <input
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        disabled={result[i] === true}
+  const renderInput = (i, width = "140px") => {
+    const hasError = errors[i] === true;
+    const isOk = errors[i] === false;
+    return (
+      <span
         style={{
-          borderBottom:
-            result[i] === false ? "1px solid red" : "1px solid black",
-          outline: "none",
-          textAlign: "center",
-          width: width,
-          fontSize: "18px",
-          fontWeight: "bold",
-          color: "#6D2980",
-          background: "transparent",
+          position: "relative",
+          display: "inline-block",
+          margin: "0 6px",
         }}
-      />
-
-      {result[i] === false && (
-        <span
+      >
+        <input
+          value={answers[i]}
+          disabled={locked || isOk}
+          onChange={(e) => handleChange(i, e.target.value)}
           style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
+            width,
+            borderBottom: hasError ? "2px solid #ef4444" : "1px solid #555",
+            outline: "none",
+            textAlign: "center",
+            background: "transparent",
+            fontSize: "18px",
+            fontWeight: 500,
+            padding: "2px 0",
           }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
-  return (
-    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-25">
-          <span className="mr-2">E</span>
-          Write the correct word <span className="text-[#31B7F5]">
-            much
-          </span> or <span className="text-[#31B7F5]">many</span>.
-        </h5>
-
-        {/* المحتوى */}
-        <div style={{ display: "flex", gap: "30px" }}>
-          {/* LEFT QUESTIONS */}
-          <div
+        />
+        {hasError && (
+          <span
             style={{
-              flex: 1,
-              fontSize: "18px",
-              lineHeight: "2",
-              display: "flex",
-              flexDirection: "column",
-              gap: "60px", // 👈 هذا الجاب
+              position: "absolute",
+              top: "-8px",
+              right: "-8px",
+              width: "22px",
+              height: "22px",
+              background: "#ef4444",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              zIndex: 5,
             }}
           >
-            <div>
-              <span style={{ fontWeight: "bold", marginRight: "10px" }}>1</span>
-              How {input(0)} kilometers can you run?
-            </div>
+            ✕
+          </span>
+        )}
+      </span>
+    );
+  };
 
-            <div>
-              <span style={{ fontWeight: "bold", marginRight: "10px" }}>2</span>
-              How {input(1)} syrup can I pour on my pancakes?
-            </div>
+  return (
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "50px" }}>
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-5">D</span>
+          Put the correct part of the verb in each blank. Some will need{" "}
+          <strong style={{ color: "#f79631" }}>have</strong> or{" "}
+          <strong style={{ color: "#f79631" }}>has</strong> and some will need a{" "}
+          <strong style={{ color: "#f79631" }}>participle</strong> from the
+          chart in Ex C.
+        </h5>
 
-            <div>
-              <span style={{ fontWeight: "bold", marginRight: "10px" }}>3</span>
-              How {input(2)} pancakes do you eat?
-            </div>
-
-            <div>
-              <span style={{ fontWeight: "bold", marginRight: "10px" }}>4</span>
-              How {input(3)} water shall we bring?
-            </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "50px",
+            fontSize: "18px",
+          }}
+        >
+          {/* 1 */}
+          <div>
+            <span style={{ fontWeight: "bold", marginRight: "10px" }}>1</span>
+            Steven {renderInput(0, "120px")} brought his new pet bird to show
+            us.
           </div>
 
-          {/* RIGHT IMAGE */}
+          {/* 2 */}
           <div>
-            <img
-              src={img1}
-              style={{
-                width: "250px",
-                height: "auto",
-                objectFit: "cover",
-                padding: "4px",
-              }}
-            />
+            <span style={{ fontWeight: "bold", marginRight: "10px" }}>2</span>
+            What {renderInput(1, "120px")} you written about in your report?
+          </div>
+
+          {/* 3 */}
+          <div>
+            <span style={{ fontWeight: "bold", marginRight: "10px" }}>3</span>
+            Why have they {renderInput(2, "140px")} their bikes in the rain?
+          </div>
+
+          {/* 4 */}
+          <div>
+            <span style={{ fontWeight: "bold", marginRight: "10px" }}>4</span>
+            The teachers {renderInput(3, "140px")} thought about our question,
+            and they have
+            <br />
+            <br />
+            <span style={{ marginTop: "20px", marginLeft: "28px" }}>
+              {renderInput(4, "140px")} to move the test date.
+            </span>
           </div>
         </div>
-        <div className="action-buttons-container">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
 
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
+        <div className="flex justify-center gap-6 mt-8">
+          <ActionButtons
+            handleShowAnswer={handleShow}
+            handleStartAgain={handleReset}
+            checkAnswers={handleCheck}
+          />
         </div>
       </div>
     </div>

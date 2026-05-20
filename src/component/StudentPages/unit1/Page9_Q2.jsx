@@ -33,7 +33,7 @@ const CORRECT = [
 const normalize = (str) =>
   str
     .toLowerCase()
-    .replace(/[.,!?''""’;:]/g, "")
+    .replace(/[,!''""’;:]/g, "")
     .replace(/\s+/g, " ")
     .trim();
 

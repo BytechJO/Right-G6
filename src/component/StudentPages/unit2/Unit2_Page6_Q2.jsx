@@ -1,204 +1,177 @@
 import React, { useState } from "react";
-import ValidationAlert from "../../Popup/ValidationAlert";
+import { FaRedo } from "react-icons/fa";
+import ActionButtons from "../../Button";
+import trueIcon from "../../../assets/imgs/true.svg";
+const CHART_ROWS = [
+  {
+    person: "Sam",
+    smart: true,
+    friendly: false,
+    strong: false,
+    funPerson: false,
+    soccerPlayers: false,
+  },
+  {
+    person: "Harry and Vince",
+    smart: false,
+    friendly: false,
+    strong: true,
+    funPerson: false,
+    soccerPlayers: false,
+  },
+  {
+    person: "Julie",
+    smart: false,
+    friendly: false,
+    strong: false,
+    funPerson: true,
+    soccerPlayers: false,
+  },
+  {
+    person: "Ellen",
+    smart: false,
+    friendly: true,
+    strong: false,
+    funPerson: false,
+    soccerPlayers: false,
+  },
+  {
+    person: "Judy and I",
+    smart: false,
+    friendly: false,
+    strong: false,
+    funPerson: false,
+    soccerPlayers: true,
+  },
+];
 
-const Unit2_Page6_Q2 = () => {
-  const [answers, setAnswers] = useState(["", "", ""]);
-  const [result, setResult] = useState([]);
-  const [locked, setLocked] = useState(false);
+const HEADERS = [
+  "",
+  "smart",
+  "friendly",
+  "strong",
+  "a fun person",
+  "expert soccer players",
+];
+const KEYS = ["smart", "friendly", "strong", "funPerson", "soccerPlayers"];
 
-  // ✅ الإجابات الصح
-  const correct = [
-    "The clown who rode the unicycle could also juggle",
-    "We went down the giant slide that was thirty feet high",
-    "I liked the clown that was chased by the bull",
-  ];
+const LINES = 5;
+
+const GrammarE = () => {
+  const [answers, setAnswers] = useState(Array(LINES).fill(""));
 
   const handleChange = (i, val) => {
-    if (result[i] === true) return; // 🔒 لا تعدل الصح
-
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
-
-    // 🔥 امسح الخطأ
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // ====================
-  // ✅ CHECK
-  // ====================
-  const handleCheck = () => {
-    if (locked) return;
-
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all fields.");
-      return;
-    }
-
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const normalize = (str) => str.toLowerCase().replace(/[.,]/g, "").trim();
-
-      const ok = normalize(a) === normalize(correct[i]);
-
-      if (ok) correctCount++;
-      return ok;
-    });
-
-    setResult(res);
-
-    const total = correct.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
-      setLocked(true);
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
-  };
-
-  // ====================
-  // 👀 SHOW
-  // ====================
-  const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
-    setLocked(true);
-  };
-
-  // ====================
-  // 🔄 RESET
-  // ====================
-  const handleReset = () => {
-    setAnswers(["", "", ""]);
-    setResult([]);
-    setLocked(false);
-  };
-
-  // 🎯 input
-  const input = (i) => (
-    <div className="relative mt-5">
-      <input
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        disabled={result[i] === true}
-        className={`w-full border-b-1 outline-none text-[#6D2980] font-bold
-          ${result[i] === false ? "border-red-500" : "border-black"}
-        `}
-      />
-
-      {/* ❌ */}
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-5px",
-            right: "0",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </div>
-  );
+  const handleReset = () => setAnswers(Array(LINES).fill(""));
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-      }}
-    >
-      <div className="div-forall">
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "10px" }}>
+        {/* العنوان */}
         <h5 className="header-title-page8 mb-7">
-          <span className="ex-A mr-2">D</span>
-          Put the relative clauses in the right order. Then rewrite the
-          sentences.
+          <span className="ex-A mr-2">E</span>
+          Read the chart, and then write a sentence about each person or group
+          of people.
         </h5>
 
-        <div className="text-[20px] leading-9 flex flex-col gap-10 mt-12">
-          {/* 1 */}
-          <div>
-            <span className="font-bold mr-4">1</span>
-            The clown{" "}
-            <span className="text-[#12C8F9]">
-              (unicycle / who / the / rode)
-            </span>{" "}
-            could also juggle.
-            {input(0)}
-          </div>
+        {/* الجدول */}
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            fontSize: "15px",
+            marginBottom: "28px",
+          }}
+        >
+          <thead>
+            <tr>
+              {HEADERS.map((h, i) => (
+                <th
+                  key={i}
+                  style={{
+                    background: "#c8ddb0",
+                    color: "#3a5a1a",
+                    fontWeight: 700,
+                    padding: "8px 10px",
+                    border: "1px solid #84ad40",
+                    textAlign: "center",
+                    fontSize: "15px",
+                  }}
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {CHART_ROWS.map((row, ri) => (
+              <tr key={ri}>
+                <td
+                  style={{
+                    border: "1px solid #84ad40",
+                    padding: "6px 10px",
+                    fontWeight: 600,
+                    background: "#f5f9f0",
+                    fontSize: "15px",
+                  }}
+                >
+                  {row.person}
+                </td>
+                {KEYS.map((key) => (
+                  <td
+                    key={key}
+                    style={{
+                      border: "1px solid #84ad40",
+                      textAlign: "center",
+                      padding: "6px",
 
-          {/* 2 */}
-          <div>
-            <span className="font-bold mr-4">2</span>
-            We went down the giant slide{" "}
-            <span className="text-[#12C8F9]">
-              (meters / was / 30 / high / that)
-            </span>
-            .{input(1)}
-          </div>
+                      background: "#fff",
+                      fontSize: "18px",
+                      color: "#e53935",
+                    }}
+                  >
+                    {row[key] ? (
+                      <div className="flex justify-center">
+                      <img src={trueIcon} style={{ height: "25px" }} /></div>
+                    ) : (
+                      ""
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-          {/* 3 */}
-          <div>
-            <span className="font-bold mr-4">3</span>I liked the clown{" "}
-            <span className="text-[#12C8F9]">
-              (chased / that / by / was / bull / the)
-            </span>
-            .{input(2)}
-          </div>
+        {/* أسطر الكتابة */}
+        <div className="flex flex-col gap-5 text-[18px]">
+          {Array.from({ length: LINES }).map((_, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <span className="font-bold shrink-0">{i + 1}</span>
+              <input
+                value={answers[i]}
+                onChange={(e) => handleChange(i, e.target.value)}
+                style={{
+                  flex: 1,
+                  borderBottom: "1px solid #555",
+                  outline: "none",
+                  background: "transparent",
+                  fontSize: "18px",
+                  padding: "2px 0",
+                }}
+              />
+            </div>
+          ))}
         </div>
-
-        <div className="action-buttons-container mt-6">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
-
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
-        </div>
+      </div>
+      {/* Reset بس */}
+      <div className="flex justify-center mt-8">
+        <ActionButtons handleStartAgain={handleReset} />
       </div>
     </div>
   );
 };
 
-export default Unit2_Page6_Q2;
+export default GrammarE;

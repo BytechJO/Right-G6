@@ -257,8 +257,8 @@ img {
   font-family: "Gill Sans MT", "Gill Sans", Calibri, "Trebuchet MS", sans-serif;
   color: #84ad40;
   font-weight: 700;
-  display: flex;
-  align-items: flex-start;
+  /* display: flex;
+  align-items: flex-start; */
   gap: 5px;
   /* white-space: nowrap;
   width: 70%; */

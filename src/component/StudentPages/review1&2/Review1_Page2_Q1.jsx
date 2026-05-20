@@ -1,302 +1,217 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 32.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 19.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 17/SVG/Asset 20.svg";
+import ActionButtons from "../../Button";
 
-const Page_D_Questions = () => {
-  const [answers, setAnswers] = useState([
-    { q: "", a: "" },
-    { q: "", a: "" },
-    { q: "", a: "" },
-  ]);
+const VERBS = [
+  { verb: "see", correct: "seen"},
+  { verb: "buy", correct: "bought" },
+  { verb: "choose", correct: "chosen" },
+  { verb: "run", correct: "run" },
+  { verb: "sleep", correct: "slept" },
+  { verb: "think", correct: "thought" },
+  { verb: "go", correct: "gone" },
+  { verb: "drive", correct: "driven" },
+  { verb: "ride", correct: "ridden" },
+  { verb: "read", correct: "read" },
+  { verb: "teach", correct: "taught" },
+  { verb: "write", correct: "written" },
+];
 
-  const [result, setResult] = useState([]);
+const normalize = (t) => t.toLowerCase().trim();
+
+const Page_C_Participles = () => {
+  const inputCount = VERBS.filter((v) => !v.example).length;
+  const [answers, setAnswers] = useState(Array(inputCount).fill(""));
+  const [result, setResult] = useState(Array(inputCount).fill(null));
   const [locked, setLocked] = useState(false);
 
-  // ✅ الإجابات الصح
-  const correct = [
-    {
-      q: "How much",
-      a: "one cup of milk",
-    },
-    {
-      q: "How many",
-      a: "a lot of photos",
-    },
-    {
-      q: "How tall is the elephant",
-      a: "is twenty feet tall",
-    },
-  ];
+  // نبني mapping: index في VERBS → index في answers
+  let inputIndex = -1;
+  const verbsWithIndex = VERBS.map((v) => {
+    if (v.example) return { ...v, inputIdx: null };
+    inputIndex++;
+    return { ...v, inputIdx: inputIndex };
+  });
 
-  const normalize = (t) => t.toLowerCase().replace(/[.?]/g, "").trim();
-
-  const handleChange = (i, field, val) => {
-    if (result[i]?.[field] === true) return;
-
-    const updated = [...answers];
-    updated[i][field] = val;
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      if (copy[i]) copy[i][field] = undefined;
-      return copy;
-    });
-  };
-
-  // ✅ CHECK
+ const handleChange = (idx, val) => {
+  setResult((prev) => prev.map((r, i) => (i === idx ? null : r)));
+  setAnswers((prev) => prev.map((a, i) => (i === idx ? val : a)));
+};
   const handleCheck = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a.q.trim() || !a.a.trim())) {
-      ValidationAlert.info("Complete all fields.");
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info("Please complete all fields.");
       return;
     }
-
-    let correctCount = 0;
-
-    const res = answers.map((ans, i) => {
-      const qOk = normalize(ans.q) === normalize(correct[i].q);
-      const aOk = normalize(ans.a) === normalize(correct[i].a);
-
-      if (qOk) correctCount++;
-      if (aOk) correctCount++;
-
-      return { q: qOk, a: aOk };
+    let correct = 0;
+    const newResult = answers.map((a, i) => {
+      const verbData = verbsWithIndex.find((v) => v.inputIdx === i);
+      const ok = normalize(a) === normalize(verbData.correct);
+      if (ok) correct++;
+      return ok;
     });
-
-    setResult(res);
-
-    const total = correct.length * 2;
-
-    const msg = `Score: ${correctCount} / ${total}`;
-
-    if (correctCount === total) {
+    setResult(newResult);
+    const total = inputCount;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // 👀 SHOW
   const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
+    const ans = verbsWithIndex
+      .filter((v) => v.inputIdx !== null)
+      .map((v) => v.correct);
+    setAnswers(ans);
+    setResult(Array(inputCount).fill(true));
     setLocked(true);
   };
 
-  // 🔄 RESET
   const handleReset = () => {
-    setAnswers([
-      { q: "", a: "" },
-      { q: "", a: "" },
-      { q: "", a: "" },
-    ]);
-    setResult([]);
+    setAnswers(Array(inputCount).fill(""));
+    setResult(Array(inputCount).fill(null));
     setLocked(false);
   };
 
-  // 🎯 input
-  const input = (i, field, width = "350px") => (
-    <span className="relative inline-block mx-2">
-      <input
-        value={answers[i][field]}
-        onChange={(e) => handleChange(i, field, e.target.value)}
-        disabled={result[i]?.[field] === true}
-        style={{
-          borderBottom:
-            result[i]?.[field] === false ? "1px solid red" : "1px solid black",
-          outline: "none",
-          textAlign: "center",
-          width: width,
-          fontWeight: "bold",
-          color: "#6D2980",
-          background: "transparent",
-        }}
-      />
-
-      {result[i]?.[field] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
+  const renderCell = (v) => {
+    if (v.example) {
+      return (
+        <td style={styles.td}>
+          <span
+            style={{ color: "#84ad40", fontWeight: "bold", fontSize: "17px" }}
+          >
+            {v.correct}
+          </span>
+        </td>
+      );
+    }
+    const idx = v.inputIdx;
+    const isWrong = result[idx] === false;
+    const isOk = result[idx] === true;
+    return (
+      <td style={styles.td}>
+        <span style={{ position: "relative", display: "inline-block" }}>
+          <input
+            value={answers[idx]}
+            disabled={locked || isOk}
+            onChange={(e) => handleChange(idx, e.target.value)}
+            style={{
+              width: "150px",
+              border: "none",
+              borderBottom: isWrong ? "2px solid #ef4444" : "1px solid #aaa",
+              outline: "none",
+              textAlign: "center",
+              background: "transparent",
+              fontSize: "18px",
+              fontWeight: 500,
+              color: isOk ? "#f79631" : "#333",
+              padding: "2px 4px",
+            }}
+          />
+          {isWrong && (
+            <span
+              style={{
+                position: "absolute",
+                top: "-8px",
+                right: "-8px",
+                width: "18px",
+                height: "18px",
+                background: "red",
+                color: "white",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "11px",
+                fontWeight: "bold",
+                border: "2px solid white",
+                pointerEvents: "none",
+                zIndex: 5,
+              }}
+            >
+              ✕
+            </span>
+          )}
         </span>
-      )}
-    </span>
-  );
+      </td>
+    );
+  };
+
+  // نقسم الكلمات: يسار (6) ويمين (6)
+  const leftVerbs = verbsWithIndex.slice(0, 6);
+  const rightVerbs = verbsWithIndex.slice(6, 12);
 
   return (
-    <div className="p-8 flex flex-col items-center">
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-15">
-          <span className="mr-2">D</span>
-          Look and write the questions and answers.
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{gap:"40px"}}>
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-2">C</span>
+          Complete the chart with the participles of irregular verbs.
         </h5>
-        <div className="mb-7">
-          {/* 🔥 السؤال 1 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              marginBottom: "40px",
-              fontSize: "18px",
-            }}
-          >
-            <div style={{ position: "relative" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-10px",
-                  left: "-10px",
-                  fontWeight: "bold",
-                  fontSize: "18px",
-                }}
-              >
-                1
-              </span>
 
-              <img
-                src={img1}
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  marginLeft: "20px",
-                  padding: "5px",
-                }}
-              />
-            </div>
+        <div style={{ display: "flex", gap: "0px" }}>
+          {/* الجدول الأيسر */}
+          <table style={styles.table}>
+            <tbody>
+              {leftVerbs.map((v, i) => (
+                <tr key={i}>
+                  <td style={styles.tdVerb}>{v.verb}</td>
+                  {renderCell(v)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-            <div style={{ flex: 1 }}>
-              <div>{input(0, "q")} milk does he drink?</div>
-              <div style={{ marginTop: "10px" }}>
-                He drinks {input(0, "a", "350px")}.
-              </div>
-            </div>
-          </div>
-
-          {/* 🔥 السؤال 2 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              marginBottom: "40px",
-              fontSize: "18px",
-            }}
-          >
-            <div style={{ position: "relative" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-10px",
-                  left: "-10px",
-                  fontWeight: "bold",
-                  fontSize: "18px",
-                }}
-              >
-                2
-              </span>
-
-              <img
-                src={img2}
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  marginLeft: "20px",
-                  padding: "5px",
-                }}
-              />
-            </div>
-
-            <div style={{ flex: 1 }}>
-              <div>{input(1, "q")} photos does he take?</div>
-              <div style={{ marginTop: "10px" }}>
-                He takes {input(1, "a", "350px")}.
-              </div>
-            </div>
-          </div>
-
-          {/* 🔥 السؤال 3 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              fontSize: "18px",
-            }}
-          >
-            <div style={{ position: "relative" }}>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-10px",
-                  left: "-10px",
-                  fontWeight: "bold",
-                  fontSize: "18px",
-                }}
-              >
-                3
-              </span>
-
-              <img
-                src={img3}
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  padding: "5px",
-                  marginLeft: "20px",
-                }}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div>{input(2, "q", "350px")}?</div>
-              <div style={{ marginTop: "10px" }}>
-                The elephant is {input(2, "a", "350px")}.
-              </div>
-            </div>
-          </div>
+          {/* الجدول الأيمن */}
+          <table style={{ ...styles.table, borderLeft: "none" }}>
+            <tbody>
+              {rightVerbs.map((v, i) => (
+                <tr key={i}>
+                  <td style={styles.tdVerb}>{v.verb}</td>
+                  {renderCell(v)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <div className="action-buttons-container">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
 
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
+        <div className="flex justify-center gap-6 mt-8">
+          <ActionButtons
+            handleShowAnswer={handleShow}
+            handleStartAgain={handleReset}
+            checkAnswers={handleCheck}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default Page_D_Questions;
+const styles = {
+  table: {
+    borderCollapse: "collapse",
+    border: "1px solid #84ad40",
+  },
+  tdVerb: {
+    border: "1px solid #84ad40",
+    padding: "10px 20px",
+    fontSize: "17px",
+    fontWeight: 500,
+    width: "150px",
+    height:"70px",
+    textAlign: "center",
+    color: "#333",
+  },
+  td: {
+    border: "1px solid #84ad40",
+    padding: "6px 10px",
+    textAlign: "center",
+    width: "140px",
+  },
+};
+
+export default Page_C_Participles;

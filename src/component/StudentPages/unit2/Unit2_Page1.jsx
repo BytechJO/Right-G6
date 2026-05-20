@@ -6,22 +6,7 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U2/PG 10/vocab_U2.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U2/PG 10/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U2/PG 10/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U2/PG 10/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U2/PG 10/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U2/PG 10/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U2/PG 10/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U2/PG 10/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U2/PG 10/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U2/PG 10/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U2/PG 10/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U2/PG 10/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U2/PG 10/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U2/PG 10/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U2/PG 10/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U2/PG 10/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U2/PG 10/sound16.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
 import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/1.svg";
 import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/2.svg";
@@ -38,20 +23,20 @@ const Unit2_Page1 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Sarah",
-          text: "Dad! Are we going to the carnival that is coming to town?",
+          speaker: "Harley",
+          text: "I always wanted to snowboard, but I am terrified to try it!",
         },
         {
-          speaker: "Jack",
-          text: "That will be fun! Let’s go!",
+          speaker: "Tom",
+          text: "Look at that snowboarder! He has such courage!",
         },
         {
-          speaker: "Dad",
-          text: "Not so fast. The man who trims the trees is coming tomorrow.",
+          speaker: "Harley",
+          text: "He’s moving so fast!",
         },
         {
-          speaker: "Sarah",
-          text: "Do you know what time?",
+          speaker: "Tom",
+          text: "You look so nervous that I’d think you’re next.",
         },
       ],
     },
@@ -60,16 +45,20 @@ const Unit2_Page1 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Dad",
-          text: "Let’s see. He just said in the morning, but maybe I could call and ask him to come by first thing.",
+          speaker: "Harley",
+          text: "No, it’s just that I’m afraid. I think I would faint.",
         },
         {
-          speaker: "Jack",
-          text: "Yeah, and we could go to the carnival after the fun rides are open.",
+          speaker: "Tom",
+          text: "Come on, Harley! Where’s your sense of adventure?",
         },
         {
-          speaker: "Sarah",
-          text: "Do you mean the rides that are crazy? You like to go on rides that are fast and twisty, don’t you, Jack?",
+          speaker: "Harley",
+          text: "I am still not sure I can do it.",
+        },
+        {
+          speaker: "Tom",
+          text: "Ha, ha! Look at that snowboarder come down the slope.It looks fun!",
         },
       ],
     },
@@ -78,16 +67,12 @@ const Unit2_Page1 = ({ openPopup }) => {
       image: imgConversation3,
       dialogues: [
         {
-          speaker: "Dad",
-          text: "It was just a couple of years ago I was taking you on the merry-go-round!",
+          speaker: "Harley",
+          text: "It looks so dangerous too! I don't feel comfortable watching.!",
         },
         {
-          speaker: "Jack",
-          text: "The merry-go-round is for small children who are still babies!",
-        },
-        {
-          speaker: "Dad",
-          text: "You used to beg me to take you on the giraffe!",
+          speaker: "Tom",
+          text: "Come along! Let's ask the snowboarder about his experience. Excuse me, would you please tell us how it felt to snowboard?",
         },
       ],
     },
@@ -96,108 +81,102 @@ const Unit2_Page1 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Sarah",
-          text: "Oh, I still like the merry-go-round! I might go on a few of the faster rides with Jack, too.",
+          speaker: "Snow -boarder",
+          text: "Sure! It felt thrilling! I felt like I was so light and free. But you need to learn how to do it with a professional trainer first.",
+        },
+
+        {
+          speaker: "Harley",
+          text: "Thanks for sharing this with us.",
         },
         {
-          speaker: "Sarah",
-          text: "I’ll be the one who stays behind to take pictures.",
+          speaker: "Snow -boarder",
+          text: "No problem!",
         },
         {
-          speaker: "Dad",
-          text: "Do you like fast rides, Dad?",
-        },
-        {
-          speaker: "Dad",
-          text: "No, I like to keep my feet on the ground… and my lunch in my stomach!",
-        },
-        {
-          speaker: "Jack",
-          text: "Well, that works out great! You can be the photographer.",
+          speaker: "Tom",
+          text: "Harley, let’s go learn snowboarding!",
         },
       ],
     },
   ];
   const captionsExample = [
     {
-      start: 0.219,
-      end: 5.359,
+      start: 0.259,
+      end: 5.819,
       text: "Page 10, Conversation. Listen and read, then say",
     },
     {
-      start: 5.359,
-      end: 8.679,
-      text: "Dad, are we going to the carnival that is coming to town?",
+      start: 5.819,
+      end: 10.439,
+      text: "I always wanted to snowboard, but I am terrified to try it.",
     },
     {
-      start: 9.719,
-      end: 12.219,
-      text: "That will be fun. Let's go.",
+      start: 10.439,
+      end: 13.92,
+      text: "Look at that snowboarder. He has such courage.",
     },
     {
-      start: 12.219,
-      end: 16.119,
-      text: "Not so fast. The man who trims the trees is coming tomorrow.",
+      start: 13.92,
+      end: 16.379,
+      text: "He's moving so fast.",
     },
     {
-      start: 16.119,
-      end: 17.579,
-      text: "Do you know what time?",
+      start: 16.379,
+      end: 19.739,
+      text: "You look so nervous that I'd think you're next.",
     },
     {
-      start: 17.579,
-      end: 23.519,
-      text: "Let's see. He just said in the morning, but maybe I could call and ask him to come by first thing.",
+      start: 19.739,
+      end: 24.259,
+      text: "No, it's just that I'm afraid. I think I would faint.",
     },
     {
-      start: 23.519,
-      end: 27.399,
-      text: "Yeah, and we could go to the carnival after the fun rides are open.",
+      start: 24.26,
+      end: 27.639,
+      text: "Come on, Harley. Where's your sense of adventure?",
     },
     {
-      start: 28.439,
-      end: 35.2,
-      text: "Do you mean the rides that are crazy? You like to go on rides that are fast and twisty, don't you, Jack?",
+      start: 27.639,
+      end: 30.459,
+      text: "I'm still not sure I can do it.",
     },
     {
-      start: 35.2,
-      end: 39.559,
-      text: "It was just a couple of years ago I was taking you on the merry-go-round.",
+      start: 30.459,
+      end: 35.179,
+      text: "Ha, ha!Look at that snowboarder come down the slope. It looks fun.",
     },
     {
-      start: 39.559,
-      end: 44.34,
-      text: "The merry-go-round is for small children who are still babies.",
+      start: 35.18,
+      end: 40.959,
+      text: "It looks so dangerous too! I don’t feel comfortable watching.",
+    },
+
+    {
+      start: 40.959,
+      end: 50.86,
+      text: "Come along! Let’s ask the snowboarder about his experience.Excuse me, would you please tell us how it felt to snowboard?",
+    },
+
+    {
+      start: 50.86,
+      end: 59.779,
+      text: "Sure! It felt thrilling! I felt like I was so light and free. But you need to learn how to do it with a professional trainer first.",
     },
     {
-      start: 44.34,
-      end: 47.359,
-      text: "You used to beg me to take you on the giraffe.",
+      start: 59.779,
+      end: 62.279,
+      text: "Thanks for sharing this with us.",
     },
     {
-      start: 47.36,
-      end: 55.139,
-      text: "Oh, I still like the merry-go-round. I might go on a few of the faster rides with Jack, too.",
+      start: 62.279,
+      end: 63.719,
+      text: "No problem.",
     },
     {
-      start: 55.139,
-      end: 58.199,
-      text: "I'll be the one who stays behind to take pictures.",
-    },
-    {
-      start: 58.199,
-      end: 60.779,
-      text: "Do you like fast rides, Dad?",
-    },
-    {
-      start: 60.779,
-      end: 65.339,
-      text: "No, I like to keep my feet on the ground, and my lunch in my stomach.",
-    },
-    {
-      start: 65.339,
-      end: 68.839,
-      text: "Well, that works out great. You can be the photographer.",
+      start: 63.719,
+      end: 66.239,
+      text: "Harley, let's go learn snowboarding",
     },
   ];
   const captionTimings = [
@@ -207,14 +186,18 @@ const Unit2_Page1 = ({ openPopup }) => {
       captionsExample[3],
       captionsExample[4], // 🔥 هاي أضفها
     ],
-    [captionsExample[5], captionsExample[6], captionsExample[7]],
-    [captionsExample[8], captionsExample[9], captionsExample[10]],
+    [
+      captionsExample[5],
+      captionsExample[6],
+      captionsExample[7],
+      captionsExample[8],
+    ],
+    [captionsExample[9], captionsExample[10]],
     [
       captionsExample[11],
       captionsExample[12],
       captionsExample[13],
       captionsExample[14],
-      captionsExample[15],
     ],
   ];
   const filteredSegments = wordJson.segments.slice(1);
@@ -230,89 +213,102 @@ const Unit2_Page1 = ({ openPopup }) => {
       filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
       filteredSegments[6]?.words || [],
-    ],
-    [
       filteredSegments[7]?.words || [],
-      filteredSegments[8]?.words || [],
-      filteredSegments[9]?.words || [],
     ],
+    [filteredSegments[8]?.words || [], filteredSegments[9]?.words || []],
     [
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
       filteredSegments[12]?.words || [],
       filteredSegments[13]?.words || [],
-      filteredSegments[14]?.words || [],
     ],
   ];
 
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-  ];
+
   const captionVoc = [
     {
-      start: 0.099,
-      end: 7.58,
+      start: 0.359,
+      end: 7.339,
       text: "Page 10, Unit 2, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
 
-    { start: 8.679, end: 11.019, text: "1. carnival." },
-    { start: 11.019, end: 13.579, text: "2. trims." },
-    { start: 13.579, end: 16.319, text: "3. crazy." },
-    { start: 16.319, end: 19.059, text: "4. twisty." },
+    { start: 7.839, end: 9.5, text: "1. snowboarding." },
+    { start: 10.079, end: 11.679, text: "2. terrified." },
+    { start: 12.3, end: 14.159, text: "3. courage." },
+    { start: 14.819, end: 16.679, text: "4. nervous." },
 
-    { start: 19.059, end: 21.619, text: "5. couple." },
-    { start: 21.619, end: 24.439, text: "6. merry-go-round." },
-    { start: 24.439, end: 27.099, text: "7. still." },
-    { start: 27.099, end: 29.639, text: "8. bag." },
+    { start: 17.299, end: 19.039, text: "5. faint." },
+    { start: 19.799, end: 21.379, text: "6. slope." },
+    { start: 22.18, end: 23.859, text: "7. comfortable." },
+    { start: 24.379, end: 26.399, text: "8. experience." },
 
-    { start: 29.639, end: 32.599, text: "9. a few." },
-    { start: 32.599, end: 34.779, text: "10. giraffe." },
-    { start: 34.779, end: 37.879, text: "11. not so fast." },
+    { start: 27.379, end: 29.239, text: "9. thrilling." },
+    { start: 29.819, end: 31.739, text: "10. adventure." },
+    { start: 32.459, end: 34.639, text: "11. professional." },
 
-    { start: 37.879, end: 40.779, text: "12. let's see." },
-    { start: 40.779, end: 44.159, text: "13. first thing." },
-    { start: 44.159, end: 47.419, text: "14. stays behind." },
+    {
+      start: 35.479,
+      end: 38.039,
+      text: "12. where's your sense of adventure?",
+    },
 
-    { start: 47.419, end: 51.18, text: "15. keep my feet on the ground." },
-    { start: 51.18, end: 53.419, text: "16. works out." },
+    {
+      start: 38.719,
+      end: 41.34,
+      text: "13. I am still not sure.",
+    },
+
+    {
+      start: 42.079,
+      end: 44.399,
+      text: "14. it looks so...",
+    },
+
+    {
+      start: 45.219,
+      end: 47.279,
+      text: "15. come along.",
+    },
   ];
   const wordTimingsVoc = [
-    { start: 8.679, end: 11.019 },
-    { start: 11.019, end: 13.579 },
-    { start: 13.579, end: 16.319 },
-    { start: 16.319, end: 19.059 },
+    { start: 7.839, end: 9.5, text: "1. snowboarding." },
+    { start: 10.079, end: 11.679, text: "2. terrified." },
+    { start: 12.3, end: 14.159, text: "3. courage." },
+    { start: 14.819, end: 16.679, text: "4. nervous." },
 
-    { start: 19.059, end: 21.619 },
-    { start: 21.619, end: 24.439 },
-    { start: 24.439, end: 27.099 },
-    { start: 27.099, end: 29.639 },
+    { start: 17.299, end: 19.039, text: "5. faint." },
+    { start: 19.799, end: 21.379, text: "6. slope." },
+    { start: 22.18, end: 23.859, text: "7. comfortable." },
+    { start: 24.379, end: 26.399, text: "8. experience." },
 
-    { start: 29.639, end: 32.599 },
-    { start: 32.599, end: 34.779 },
-    { start: 34.779, end: 37.879 },
+    { start: 27.379, end: 29.239, text: "9. thrilling." },
+    { start: 29.819, end: 31.739, text: "10. adventure." },
+    { start: 32.459, end: 34.639, text: "11. professional." },
 
-    { start: 37.879, end: 40.779 },
-    { start: 40.779, end: 44.159 },
-    { start: 44.159, end: 47.419 },
+    {
+      start: 35.479,
+      end: 38.039,
+      text: "12. where's your sense of adventure?",
+    },
 
-    { start: 47.419, end: 51.18 },
-    { start: 51.18, end: 53.419 },
+    {
+      start: 38.719,
+      end: 41.34,
+      text: "13. I am still not sure.",
+    },
+
+    {
+      start: 42.079,
+      end: 44.399,
+      text: "14. it looks so...",
+    },
+
+    {
+      start: 45.219,
+      end: 47.279,
+      text: "15. come along.",
+    },
   ];
   return (
     <div
@@ -338,11 +334,11 @@ const Unit2_Page1 = ({ openPopup }) => {
                 }}
               >
                 <Conversation
-                  title="Conversation"
+                  title="Listen and read. Then say."
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={5.2}
+                  stopAtSecond={5.8}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -387,26 +383,25 @@ const Unit2_Page1 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8}
-                  sounds={sounds}
+                  stopAtSecond={7.3}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "carnival",
-                    "trims",
-                    "crazy",
-                    "twisty",
-                    "couple",
-                    "merry-go-round",
-                    "still",
-                    "bag",
-                    "(a) few",
-                    "giraffe",
-                    "not so fast",
-                    "let's see",
-                    "first thing",
-                    "stays behind",
-                    "keep my feet on the ground",
-                    "works out",
+                    "snowboarding",
+                    "terrified",
+                    "courage",
+                    "nervous",
+                    "faint",
+                    "slope",
+                    "comfortable",
+                    "experience",
+                    "thrilling",
+                    "adventure",
+                    "professional",
+                    "Where’s your sense of adventure?",
+                    "I am still not sure ...",
+                    "It looks so ...",
+                    "Come along!",
                   ]}
                 />
               </div>,
@@ -437,7 +432,7 @@ const Unit2_Page1 = ({ openPopup }) => {
             openPopup(
               "html",
               <CriticalThinking
-                title={"Who is going to take pictures at the carnival?"}
+                title={"Do you think Harley would ever go snowboarding?"}
               />,
             )
           }

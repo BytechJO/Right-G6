@@ -1,5 +1,5 @@
 import React from "react";
-import page_4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 13.png";
+import page_4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/Page 13.png";
 import "./Unit2_Page4.css";
 import WritingSection_U2 from "./Unit2_Page4_WritingSection_U2";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";

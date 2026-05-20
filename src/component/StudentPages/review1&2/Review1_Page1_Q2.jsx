@@ -1,32 +1,33 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../Button";
+import girlsImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/9.svg"; // غير المسار
 
 const Review1_Page1_Q2 = () => {
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", "", "", "", "", ""]);
   const [result, setResult] = useState([]);
   const [locked, setLocked] = useState(false);
 
   const questions = [
-    { scrambled: "hh-ou!", correct: "uh-oh!" },
-    { scrambled: "lelf scelep", correct: "fell asleep" },
-    { scrambled: "ghtir yawa", correct: "right away" },
-    { scrambled: "no neo dise", correct: "on one side" },
-    { scrambled: "ohw od ouy ownk?", correct: "how do you know?" },
+    { correct: "supplies" },
+    { correct: "calculator" },
+    { correct: "subject" },
+    { correct: "terrific" },
+    { correct: "no fun" },
+    { correct: "likely" },
+    { correct: "I’m sorry to hear that" },
+    { correct: "lately" },
+    { correct: "count on you" },
   ];
 
   const normalize = (text) =>
-    text
-      .toLowerCase()
-      .replace(/[!?.]/g, "") // 🔥 يشيل علامات الترقيم
-      .replace(/\s+/g, " ")
-      .trim();
+    text.toLowerCase().replace(/[!?.]/g, "").replace(/\s+/g, " ").trim();
+
   const handleChange = (i, value) => {
     if (result[i] === true) return;
-
     const updated = [...answers];
     updated[i] = value;
     setAnswers(updated);
-
     setResult((prev) => {
       const copy = [...prev];
       copy[i] = undefined;
@@ -36,42 +37,26 @@ const Review1_Page1_Q2 = () => {
 
   const handleCheck = () => {
     if (locked) return;
-
     if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
-
     let correctCount = 0;
-
     const res = answers.map((answer, i) => {
       const ok = normalize(answer) === normalize(questions[i].correct);
       if (ok) correctCount++;
       return ok;
     });
-
     setResult(res);
-
     const total = questions.length;
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correctCount} / ${total}</span></div>`;
     if (correctCount === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (correctCount === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const handleShow = () => {
@@ -81,23 +66,30 @@ const Review1_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
+    setAnswers(["", "", "", "", "", "", "", "", ""]);
     setResult([]);
     setLocked(false);
   };
 
-  const input = (i, width = "w-[260px]") => (
-    <span className="relative inline-block ml-2">
+  const renderInput = (index, width = "140px") => (
+    <span className="relative inline-block mx-1">
       <input
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`border-b outline-none text-center text-[#6D2980] font-bold bg-transparent ${width}
-          ${result[i] === false ? "border-red-500" : "border-black"}
-        `}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
+        style={{
+          width,
+          borderBottom:
+            result[index] === false ? "2px solid red" : "1px solid #333",
+          outline: "none",
+          textAlign: "center",
+          background: "transparent",
+          fontSize: "18px",
+          fontWeight: 500,
+          padding: "2px 4px",
+        }}
       />
-
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -105,7 +97,7 @@ const Review1_Page1_Q2 = () => {
             right: "-10px",
             width: "20px",
             height: "20px",
-            background: "#ef4444",
+            background: "red",
             color: "white",
             borderRadius: "50%",
             display: "flex",
@@ -123,59 +115,145 @@ const Review1_Page1_Q2 = () => {
       )}
     </span>
   );
+  const nameStyle = (color) => ({
+    fontWeight: "bold",
+    color,
+    minWidth: "70px",
+    display: "inline-block",
+    fontSize: "17px",
+  });
+
+  const lineStyle = {
+    display: "flex",
+    alignItems: "baseline",
+    gap: "4px",
+    fontSize: "17px",
+    flexWrap: "wrap",
+  };
+
+  const indent = { marginLeft: "78px", fontSize: "18px", marginTop: "6px" };
 
   return (
     <div className="p-8 flex flex-col items-center">
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-30">
-          <span className=" mr-2">B</span>
-          Unscramble and write the expression.
+      <div
+        className="div-forall"
+        style={{
+          gap: "25px",
+        }}
+      >
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-2">B</span>
+          Complete the conversation with vocabulary words and expressions.
         </h5>
 
-        <div className="grid grid-cols-2 gap-x-16 gap-y-20 text-[20px]">
-          <div>
-            <span className="font-bold mr-4">1</span>
-            {questions[0].scrambled}
-            {input(0)}
-          </div>
+        <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
+          {/* المحادثة */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "25px",
+            }}
+          >
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
 
-          <div>
-            <span className="font-bold mr-4">2</span>
-            {questions[1].scrambled}
-            {input(1)}
-          </div>
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "25px",
+                }}
+              >
+                {/* Shirley 1 */}
+                <div style={lineStyle}>
+                  <span style={nameStyle("#84ad40")}>Shirley:</span>
+                  <span>Do you have all your school</span>
+                  {renderInput(0, "140px")}
+                  <span>now?</span>
+                </div>
 
-          <div>
-            <span className="font-bold mr-4">3</span>
-            {questions[2].scrambled}
-            {input(2)}
-          </div>
+                {/* Stacey 1 */}
+                <div>
+                  <div style={lineStyle}>
+                    <span style={nameStyle("#f79631")}>Stacey:</span>
+                    <span>No, I still need to get a</span>
+                    {renderInput(1, "140px")}
+                    <span>for math,</span>
+                  </div>
+                  <div style={indent}>
+                    my favorite {renderInput(2, "140px")}.
+                  </div>
+                </div>
 
-          <div>
-            <span className="font-bold mr-4">4</span>
-            {questions[3].scrambled}
-            {input(3)}
-          </div>
+                {/* Shirley 2 */}
+                <div>
+                  <div style={lineStyle}>
+                    <span style={nameStyle("#84ad40")}>Shirley:</span>
+                    <span>Wow, that's</span>
+                    {renderInput(3, "140px")}
+                    <span>that you like math.</span>
+                  </div>
+                  <div style={indent}>
+                    It's {renderInput(4, "140px")} for me, so I'm not
+                  </div>
+                  <div style={indent}>
+                    {renderInput(5, "140px")} to get good grades in it.
+                  </div>
+                </div>
+              </div>
+              {/* الصورة */}
+              <img
+                src={girlsImg}
+                alt="students"
+                style={{
+                  width: "250px",
+                  height: "auto",
+                  objectFit: "contain",
+                  borderRadius: "8px",
+                  marginTop: "8px",
+                }}
+              />
+            </div>
+            {/* Stacey 2 */}
+            <div>
+              <div style={lineStyle}>
+                <span style={nameStyle("#f79631")}>Stacey:</span>
+                {renderInput(6, "140px")}
+                <span>
+                  ! I hope it gets better for you. Didn't you say you had been
+                </span>
+              </div>
+              <div style={indent}>
+                doing well in math {renderInput(7, "140px")}?
+              </div>
+            </div>
 
-          <div className="col-span-2">
-            <span className="font-bold mr-4">5</span>
-            {questions[4].scrambled}
-            {input(4, "w-[470px]")}
+            {/* Shirley 3 */}
+            <div>
+              <div style={lineStyle}>
+                <span style={nameStyle("#E67E22")}>Shirley:</span>
+                <span>Yes, thanks for reminding me. I can always</span>
+                {renderInput(8, "140px")}
+              </div>
+              <div style={indent}>for an encouraging word.</div>
+            </div>
           </div>
         </div>
 
-        <div className="action-buttons-container mt-8">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
-
-          <button className="show-answer-btn" onClick={handleShow}>
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
+        <div className="flex justify-center gap-6 mt-8">
+          <ActionButtons
+            handleShowAnswer={handleShow}
+            handleStartAgain={handleReset}
+            checkAnswers={handleCheck}
+          />
         </div>
       </div>
     </div>

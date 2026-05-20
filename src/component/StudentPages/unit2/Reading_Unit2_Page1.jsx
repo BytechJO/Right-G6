@@ -1,4 +1,4 @@
-import page24 from "../../../assets/imgs/pages/classbook/Right 5 Unit 2 Whos the One Folder/Page 20.png";
+import page24 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/Page 20.png";
 import React, { useEffect, useState } from "react";
 import "./Reading_Unit2_Page1.css";
 import sound1 from "../../../assets/audio/ClassBook/U2/PG 20/reading.mp3";
@@ -9,7 +9,7 @@ import sound5 from "../../../assets/audio/ClassBook/U2/PG 20/Pg20_1.4_Adult Lady
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video from "../../../assets/videos/grade 5 unit 2 reading page 20-21.mp4";
+import video from "../../../assets/videos/grade 6 unit 1 page 4.mp4";
 
 const Reading_Unit2_Page1 = ({
   openPopup,
