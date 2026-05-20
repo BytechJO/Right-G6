@@ -27,12 +27,8 @@ const WB_Unit1_Page4_Q3 = () => {
   const [Shans, setShans] = useState(false);
 
 
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,'']/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+const normalize = (str) =>
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();;
 
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;

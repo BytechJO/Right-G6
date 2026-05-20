@@ -1,285 +1,124 @@
 import React, { useState } from "react";
-import Button from "../Button";
-import ValidationAlert from "../../Popup/ValidationAlert";
 
-import img1 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U9 Folder/Page 54/SVG/1.svg";
-import img2 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U9 Folder/Page 54/SVG/2.svg";
-import img3 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U9 Folder/Page 54/SVG/3.svg";
-import img4 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U9 Folder/Page 54/SVG/4.svg";
-
-const YELLOW_COLOR = "#f39b42";
-const RED_COLOR = "#ef4444";
-const TEXT_COLOR = "#222";
-
-const DATA = [
-  {
-    id: 1,
-    question: "Are they on the playground?",
-    img: img1,
-    options: ["Yes, they are.", "No, they aren't."],
-    correct: "Yes, they are.",
-  },
-  {
-    id: 2,
-    question: "Are they at the zoo?",
-    img: img2,
-    options: ["Yes, they are.", "No, they aren't."],
-    correct: "No, they aren't.",
-  },
-  {
-    id: 3,
-    question: "Are they at the clinic?",
-    img: img3,
-    options: ["Yes, they are.", "No, they aren't."],
-    correct: "Yes, they are.",
-  },
-  {
-    id: 4,
-    question: "Are they at the circus?",
-    img: img4,
-    options: ["Yes, they are.", "No, they aren't."],
-    correct: "No, they aren't.",
-  },
+const adjectives = [
+  "modern", "rapid", "sweet", "melted",
+  "wooden", "bumpy", "freezing", "damp",
+  "cozy", "creepy", "pleasant", "noisy",
+  "brave", "peaceful", "risky", "delightful",
+  "lively", "melodic", "nervous", "brave",
+  "thankful", "terrifying", "comfortable", "thrilling",
 ];
 
-const initialSelections = { 1: null, 2: null, 3: null, 4: null };
+const nouns = [
+  "coach", "grade", "hobby", "kite",
+  "furniture", "language", "idea", "picture",
+  "ocean", "landscape", "squirrel", "friend",
+  "career", "skateboard", "novel", "musical",
+  "movie", "vacation", "roller coaster",
+  "sports car", "house", "experience",
+  "snowboarding",
+];
 
-const WB_Unit9_Page54_QG = () => {
-  const [userSelections, setUserSelections] = useState(initialSelections);
-  const [showAnswers, setShowAnswers] = useState(false);
-  const [wrongAnswers, setWrongAnswers] = useState({});
-  const [checkedAnswers, setCheckedAnswers] = useState(false);
+const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
 
-  const handleSelect = (id, option) => {
-    if (showAnswers) return;
-    setUserSelections((prev) => ({ ...prev, [id]: option }));
-    setCheckedAnswers(false);
-    setWrongAnswers({});
-  };
+const WB_Unit2_Page11_C = () => {
+  const init = () => ["", "", ""];
+  const [answers, setAnswers] = useState(init);
 
-  const checkAnswers = () => {
-    const allAnswered = DATA.every((item) => userSelections[item.id] !== null);
-    if (!allAnswered) {
-      ValidationAlert.info("Please answer all questions!");
-      return;
-    }
-    let score = 0;
-    const newWrong = {};
-    DATA.forEach((item) => {
-      if (userSelections[item.id] === item.correct) {
-        score++;
-        newWrong[item.id] = false;
-      } else {
-        newWrong[item.id] = true;
-      }
+  const handleChange = (i, value) => {
+    setAnswers((prev) => {
+      const updated = [...prev];
+      updated[i] = value;
+      return updated;
     });
-    setWrongAnswers(newWrong);
-    setCheckedAnswers(true);
-    if (score === DATA.length) ValidationAlert.success(`Score: ${score} / ${DATA.length}`);
-    else if (score > 0) ValidationAlert.warning(`Score: ${score} / ${DATA.length}`);
-    else ValidationAlert.error(`Score: ${score} / ${DATA.length}`);
   };
 
-  const handleShowAnswer = () => {
-    const answers = {};
-    DATA.forEach((item) => { answers[item.id] = item.correct; });
-    setUserSelections(answers);
-    setShowAnswers(true);
-    setCheckedAnswers(false);
-    setWrongAnswers({});
-  };
-
-  const handleStartAgain = () => {
-    setUserSelections(initialSelections);
-    setShowAnswers(false);
-    setWrongAnswers({});
-    setCheckedAnswers(false);
-  };
-
-  // ── لون وشكل كل option ──
-  const getOptionStyle = (item, option) => {
-    const isSelected = userSelections[item.id] === option;
-    const isCorrect = option === item.correct;
-    const isWrongSelected = checkedAnswers && wrongAnswers[item.id] && isSelected;
-
-    const base = {
-      position: "relative",
-      background: "transparent",
-      border: "2.5px solid transparent",
-      borderRadius: "999px",
-      padding: "clamp(4px,0.6vw,8px) clamp(18px,2.5vw,32px)",
-      fontSize: "clamp(14px,1.8vw,20px)",
-      fontWeight: "500",
-      color: TEXT_COLOR,
-      cursor: showAnswers ? "default" : "pointer",
-      lineHeight: 1.3,
-      whiteSpace: "nowrap",
-      transition: "all 0.2s ease",
-    };
-
-    if (showAnswers && isCorrect) return { ...base, border: `2.5px solid ${YELLOW_COLOR}` };
-    if (isWrongSelected) return { ...base, border: `2.5px solid ${RED_COLOR}` };
-    if (isSelected) return { ...base, border: `2.5px solid ${YELLOW_COLOR}` };
-    return base;
-  };
+  const handleReset = () => setAnswers(init());
 
   return (
-    <div className="main-container-component">
-      <div
-        className="div-forall"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "clamp(20px,3vw,36px)",
-          maxWidth: "1100px",
-          margin: "0 auto",
-        }}
-      >
+    <div className="flex flex-col items-center p-[30px]">
+      <div className="div-forall">
+<div style={{display : "flex" , flexDirection :"row"}}>
         {/* Title */}
-        <h1
-          className="WB-header-title-page8"
-          style={{ margin: 0, display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}
-        >
-          <span className="WB-ex-A">G</span>
-          Read, look, and circle.
-        </h1>
+        <h5 className="header-title-page8 mb-4" >
+          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
+        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
+         so . . . that and such . . . that.
+    </div> 
+        </h5>
+</div>
+        {/* Word Table */}
+        <table style={{
+          width: "100%", borderCollapse: "collapse",
+          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
+        }}>
+          <thead>
+            <tr>
+              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
+                Adjectives
+              </th>
+              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
+                Nouns
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
+                  {adjectives.map((w, i) => (
+                    <span key={i}>{w}</span>
+                  ))}
+                </div>
+              </td>
+              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
+                  {nouns.map((w, i) => (
+                    <span key={i}>{w}</span>
+                  ))}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        {/* Grid 2×2 */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, minmax(0,1fr))",
-            gap: "clamp(24px,4vw,48px) clamp(28px,5vw,60px)",
-            width: "100%",
-          }}
-        >
-          {DATA.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "clamp(8px,1.2vw,14px)",
-                minWidth: 0,
-              }}
-            >
-              {/* ── السؤال ── */}
-              <div
+        {/* Sentences */}
+        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+
+
+          {/* Q2, Q3, Q4 */}
+          {[1 ,2, 3, 4].map((num, i) => (
+            <div key={num} className="flex items-start gap-3">
+              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
+              <input
+                type="text"
+                value={answers[i]}
+                onChange={(e) => handleChange(i, e.target.value)}
                 style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  gap: "clamp(6px,0.8vw,10px)",
+                  flex: 1,
+                  border: "none",
+                  borderBottom: "1.5px solid #999",
+                  outline: "none",
+                  background: "transparent",
+                  fontSize: "18px",
+                  color: "#333",
+                  paddingBottom: "4px",
                 }}
-              >
-                <span
-                  style={{
-                    fontSize: "clamp(16px,2vw,24px)",
-                    fontWeight: "700",
-                    color: TEXT_COLOR,
-                    flexShrink: 0,
-                  }}
-                >
-                  {item.id}
-                </span>
-                <span
-                  style={{
-                    fontSize: "clamp(14px,1.7vw,20px)",
-                    fontWeight: "500",
-                    color: TEXT_COLOR,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {item.question}
-                </span>
-              </div>
-
-              {/* ── الصورة ── */}
-              <div
-                style={{
-                  width: "100%",
-                  aspectRatio: "4 / 3",
-                  overflow: "hidden",
-                  borderRadius: "clamp(8px,1vw,14px)",
-                  border: `2px solid #d4d4d4`,
-                  background: "#f5f5f5",
-                  flexShrink: 0,
-                }}
-              >
-                <img
-                  src={item.img}
-                  alt={`img-${item.id}`}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block"                           ,  border: "2px solid #f39b42", }}
-                />
-              </div>
-
-              {/* ── الخيارات تحت الصورة ── */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "clamp(6px,1vw,10px)",
-                  width: "100%",
-                  marginTop: "clamp(2px,0.4vw,6px)",
-                }}
-              >
-                {item.options.map((option) => {
-                  const isWrongSelected =
-                    checkedAnswers && wrongAnswers[item.id] && userSelections[item.id] === option;
-
-                  return (
-                    <button
-                      key={option}
-                      onClick={() => handleSelect(item.id, option)}
-                      style={getOptionStyle(item, option)}
-                    >
-                      {option}
-
-                      {/* ✕ badge للإجابة الخاطئة */}
-                      {isWrongSelected && (
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "-8px",
-                            right: "-8px",
-                            width: "clamp(16px,1.8vw,22px)",
-                            height: "clamp(16px,1.8vw,22px)",
-                            borderRadius: "50%",
-                            background: RED_COLOR,
-                            color: "#fff",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "clamp(9px,0.9vw,12px)",
-                            fontWeight: "700",
-                            border: "2px solid #fff",
-                            boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
-                            boxSizing: "border-box",
-                          }}
-                        >
-                          ✕
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+              />
             </div>
           ))}
         </div>
 
-        {/* Buttons */}
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "clamp(4px,1vw,12px)" }}>
-          <Button
-            handleShowAnswer={handleShowAnswer}
-            handleStartAgain={handleStartAgain}
-            checkAnswers={checkAnswers}
-          />
-        </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
       </div>
     </div>
   );
 };
 
-export default WB_Unit9_Page54_QG;
+export default WB_Unit2_Page11_C;

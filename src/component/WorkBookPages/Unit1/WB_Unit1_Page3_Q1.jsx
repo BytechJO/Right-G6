@@ -34,7 +34,7 @@ const WB_Unit1_Page3_VocabMatch = () => {
   const [locked, setLocked] = useState(false);
 
   const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,'']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
   const handleChange = (id, value, subIndex = null) => {
     if (locked || result[id] === true) return;

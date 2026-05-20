@@ -1,367 +1,230 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
-import Button from "../Button";
+import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import char1 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U3 Folder/Page 15/Ex A 1.svg";
-import char2 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U3 Folder/Page 15/Ex A 2.svg";
-import char3 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U3 Folder/Page 15/Ex A 3.svg";
-import char4 from "../../../assets/imgs/pages/WB_Right_3/Right Int WB G3 U3 Folder/Page 15/Ex A 4.svg";
 
+const WB_Unit3_Page15_A = () => {
 
-const DOT_COLOR = "#9ca3af";
-const ACTIVE_COLOR = "#f39b42";
-const BORDER_COLOR = "#e0e0e0";
-const WRONG_COLOR = "#ef4444";
-const PATH_COLOR = "#f39b42";
-const TEXT_COLOR = "#111";
+  // Words definition
+  // row, col: 0-indexed top-left of word in grid
+  const words = [
+    { key: "d1", num: 1,  dir: "down",   row: 0,  col: 7,  word: "mashedpotatoes" },
+    { key: "d2", num: 2,  dir: "down",   row: 2,  col: 9, word: "unwind" },
+    { key: "d3", num: 3,  dir: "down",   row: 2,  col: 18, word: "diner" },
+    { key: "d5", num: 5,  dir: "down",   row: 5,  col: 2,  word: "offer" },
+    { key: "d7", num: 7,  dir: "down",   row: 5,  col: 13,  word: "exhausted" },
+    { key: "a4", num: 4,  dir: "across", row: 3,  col: 17, word: "liver" },
+    { key: "a6", num: 6,  dir: "across", row: 5,  col: 12,  word: "leftovers" },
+    { key: "a8", num: 8,  dir: "across", row: 7,  col: 2,  word: "fastfoods" },
+    { key: "a9", num: 9,  dir: "across", row: 12, col: 4,  word: "acceptable" },
+  ];
 
-const LEFT_ITEMS = [
-  { id: 1, img: char1, text: "Does he have any ink?" },
-  { id: 2, img: char2, text: "Does she have any paper?" },
-  { id: 3, img: char3, text: "Does he have any eggplants?" },
-  { id: 4, img: char4, text: "Does he have any grapes?" },
-];
+  const ROWS = 16;
+  const COLS = 25;
+  const CELL = 40;
 
-const RIGHT_ITEMS = [
-  { id: 1, text: "Yes, he has some." },
-  { id: 2, text: "No, he hasn't any." },
-  { id: 3, text: "Yes, she has some." },
-  { id: 4, text: "Yes, he has a little." },
-];
+  // Build render map: "r-c" -> { wi, li } (primary)
+  const renderMap = {};
+  const numberMap = {}; // "r-c" -> number label
 
-const CORRECT_MATCHES = { 1: 2, 2: 3, 3: 1, 4: 4 };
-
-export default function WB_ReadLookMatch_PageA() {
-  const [selectedLeft, setSelectedLeft] = useState(null);
-  const [matches, setMatches] = useState({});
-  const [showResults, setShowResults] = useState(false);
-  const [showAns, setShowAns] = useState(false);
-  const [paths, setPaths] = useState([]);
-
-  const boardRef = useRef(null);
-  const pointRefs = useRef({});
-
-  useLayoutEffect(() => {
-    const update = () => {
-      if (!boardRef.current) return;
-      const br = boardRef.current.getBoundingClientRect();
-
-      const newPaths = Object.entries(matches).map(([leftId, rightId]) => {
-        const s = pointRefs.current[`left-${leftId}`];
-        const e = pointRefs.current[`right-${rightId}`];
-        if (!s || !e) return null;
-
-        const sr = s.getBoundingClientRect();
-        const er = e.getBoundingClientRect();
-        const x1 = sr.left + sr.width / 2 - br.left;
-        const y1 = sr.top + sr.height / 2 - br.top;
-        const x2 = er.left + er.width / 2 - br.left;
-        const y2 = er.top + er.height / 2 - br.top;
-        const dx = Math.abs(x2 - x1);
-        const isWrong = showResults && matches[leftId] !== CORRECT_MATCHES[Number(leftId)];
-
-        return {
-          id: `path-${leftId}-${rightId}`,
-          d: `M ${x1} ${y1} C ${x1 + dx * 0.42} ${y1}, ${x2 - dx * 0.42} ${y2}, ${x2} ${y2}`,
-          color: isWrong ? WRONG_COLOR : PATH_COLOR,
-        };
-      }).filter(Boolean);
-
-      setPaths(newPaths);
-    };
-
-    update();
-    window.addEventListener("resize", update);
-    let obs;
-    if (boardRef.current && typeof ResizeObserver !== "undefined") {
-      obs = new ResizeObserver(update);
-      obs.observe(boardRef.current);
+  words.forEach((w, wi) => {
+    for (let li = 0; li < w.word.length; li++) {
+      const r = w.dir === "down" ? w.row + li : w.row;
+      const c = w.dir === "across" ? w.col + li : w.col;
+      const key = `${r}-${c}`;
+      if (!renderMap[key]) renderMap[key] = { wi, li };
     }
-    return () => { window.removeEventListener("resize", update); obs?.disconnect(); };
-  }, [matches, showResults]);
+    // number at start
+    const numKey = `${w.row}-${w.col}`;
+    if (!numberMap[numKey]) numberMap[numKey] = [];
+    numberMap[numKey].push(w.num);
+  });
 
-  const handleLeftSelect = (id) => {
-    if (showAns) return;
-    setSelectedLeft((prev) => prev === id ? null : id);
-    setShowResults(false);
+  const activeCells = new Set(Object.keys(renderMap));
+
+  // State
+  const initAnswers = () => words.map((w) => Array(w.word.length).fill(""));
+  const [answers, setAnswers] = useState(initAnswers());
+  const [result, setResult]   = useState({});
+  const [locked, setLocked]   = useState(false);
+  const inputsRef = useRef({});
+
+  const handleChange = (wi, li, value) => {
+    if (locked || result[`${wi}-${li}`] === true) return;
+    const updated = answers.map((a) => [...a]);
+    updated[wi][li] = value.toLowerCase().slice(-1);
+    setAnswers(updated);
+    setResult((prev) => ({ ...prev, [`${wi}-${li}`]: undefined }));
+
+    // auto-advance within same word
+    if (value) {
+      const next = inputsRef.current[`${wi}-${li + 1}`];
+      if (next) { next.focus(); next.select(); }
+    }
   };
 
-  const handleRightSelect = (rightId) => {
-    if (showAns || selectedLeft === null) return;
-    const upd = { ...matches };
-    Object.keys(upd).forEach((k) => { if (upd[k] === rightId) delete upd[k]; });
-    upd[selectedLeft] = rightId;
-    setMatches(upd);
-    setSelectedLeft(null);
-    setShowResults(false);
+  const checkAnswers = () => {
+    if (locked) return;
+    const hasEmpty = answers.some((wArr) => wArr.some((l) => !l));
+    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+
+    let correct = 0; let total = 0;
+    const newResult = {};
+    answers.forEach((wArr, wi) => {
+      wArr.forEach((letter, li) => {
+        total++;
+        const ok = letter === words[wi].word[li];
+        if (ok) correct++;
+        newResult[`${wi}-${li}`] = ok;
+      });
+    });
+    setResult(newResult);
+    const color = correct===total?"green":correct===0?"red":"orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct===total){setLocked(true);ValidationAlert.success(msg);}
+    else if (correct===0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  const handleCheck = () => {
-    if (showAns) return;
-    const allConnected = LEFT_ITEMS.every((i) => matches[i.id]);
-    if (!allConnected) { ValidationAlert.info("Please connect all items first."); return; }
-
-    let score = 0;
-    LEFT_ITEMS.forEach((i) => { if (matches[i.id] === CORRECT_MATCHES[i.id]) score++; });
-    setShowResults(true);
-    const total = LEFT_ITEMS.length;
-    if (score === total) ValidationAlert.success(`Score: ${score} / ${total}`);
-    else if (score > 0) ValidationAlert.warning(`Score: ${score} / ${total}`);
-    else ValidationAlert.error(`Score: ${score} / ${total}`);
+  const showAnswers = () => {
+    const ans = words.map((w) => w.word.split(""));
+    const res = {};
+    words.forEach((w,wi)=>w.word.split("").forEach((_,li)=>{res[`${wi}-${li}`]=true;}));
+    setAnswers(ans);
+    setResult(res);
+    setLocked(true);
   };
 
-  const handleShowAnswer = () => {
-    setMatches({ ...CORRECT_MATCHES });
-    setShowResults(true);
-    setShowAns(true);
-    setSelectedLeft(null);
+  const handleReset = () => {
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
   };
-
-  const handleStartAgain = () => {
-    setSelectedLeft(null);
-    setMatches({});
-    setShowResults(false);
-    setShowAns(false);
-    setPaths([]);
-  };
-
-  const getLeftConn = (id) => !!matches[id];
-  const getRightConn = (id) => Object.values(matches).includes(id);
-  const isWrongMatch = (leftId) =>
-    showResults && !showAns && !!matches[leftId] && matches[leftId] !== CORRECT_MATCHES[leftId];
-
-  const WrongBadge = () => (
-    <div
-      style={{
-        position: "absolute",
-        top: "-8px",
-        right: "-8px",
-        width: "clamp(16px,1.8vw,22px)",
-        height: "clamp(16px,1.8vw,22px)",
-        borderRadius: "50%",
-        border: `1px solid #fff`,
-
-        backgroundColor: WRONG_COLOR,
-        color: "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "clamp(9px,0.9vw,12px)",
-        fontWeight: 700,
-        boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
-        zIndex: 5,
-        pointerEvents: "none",
-      }}
-    >
-      ✕
-    </div>
-  );
 
   return (
-    <div className="main-container-component">
-      <div
-        className="div-forall"
-        style={{ display: "flex", flexDirection: "column", gap: "18px", maxWidth: "1100px", margin: "0 auto" }}
-      >
+    <div className="flex flex-col items-center p-[30px]">
+      <div className="div-forall">
         {/* Title */}
-        <h1
-          className="WB-header-title-page8"
-          style={{ margin: 0, display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}
-        >
-          <span className="WB-ex-A">A</span> Read, look, and match.
-        </h1>
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
+          Complete the puzzle. Use the vocabulary words.
+        </h5>
 
-        {/* Board */}
-        <div ref={boardRef} style={{ position: "relative", width: "100%" }}>
+        {/* Grid */}
+        <div style={{  marginBottom: "28px" }}>
+          <div style={{
+            display: "inline-grid",
+            gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,
+            gridTemplateRows:    `repeat(${ROWS}, ${CELL}px)`,
+            gap: "1px",
+          }}>
+            {Array.from({ length: ROWS }, (_, r) =>
+              Array.from({ length: COLS }, (_, c) => {
+                const key     = `${r}-${c}`;
+                const isActive = activeCells.has(key);
+                const entry   = renderMap[key];
+                const nums    = numberMap[key];
 
-          {/* SVG lines */}
-          <svg
-            style={{
-              position: "absolute", inset: 0,
-              width: "100%", height: "100%",
-              pointerEvents: "none", overflow: "visible", zIndex: 1,
-            }}
-          >
-            {paths.map((p) => (
-              <path key={p.id} d={p.d} fill="none"
-                stroke={p.color} strokeWidth="2.4" strokeLinecap="round" />
-            ))}
-          </svg>
+                const val       = entry ? answers[entry.wi][entry.li] : "";
+                const isWrong   = entry && result[`${entry.wi}-${entry.li}`] === false;
+                const isCorrect = entry && result[`${entry.wi}-${entry.li}`] === true;
 
-          {/* Grid: number | image | sentence | left-dot ‖ right-dot | answer-text */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "auto auto 1fr auto auto 1fr",
-              columnGap: "clamp(8px,1.5vw,20px)",
-              rowGap: "clamp(14px,2vw,28px)",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            {LEFT_ITEMS.map((lItem, idx) => {
-              const rItem = RIGHT_ITEMS[idx];
-              const lConn = getLeftConn(lItem.id);
-              const rConn = getRightConn(rItem.id);
-              const lSelected = selectedLeft === lItem.id;
-              const wrong = isWrongMatch(lItem.id);
-
-              return (
-                <React.Fragment key={lItem.id}>
-
-                  {/* ── number ── */}
-                  <span
-                    style={{
-                      fontSize: "clamp(16px,1.9vw,26px)",
-                      fontWeight: 700,
-                      color: TEXT_COLOR,
-                      lineHeight: 1,
-                      flexShrink: 0,
-                      zIndex: 2,
-                    }}
-                  >
-                    {lItem.id}
-                  </span>
-
-                  {/* ── image ── */}
+                return (
                   <div
-                    onClick={() => handleLeftSelect(lItem.id)}
+                    key={key}
                     style={{
-                      width: "clamp(52px,7vw,90px)",
-                      aspectRatio: "1 / 1",
-                      flexShrink: 0,
-                      zIndex: 2,
-                      cursor: showAns ? "default" : "pointer",
-                      overflow: "hidden",
-                      borderRadius: "clamp(6px,0.8vw,12px)",
-                      border: `2px solid ${lSelected ? ACTIVE_COLOR : BORDER_COLOR}`,
-                      background: "#f7f7f7",
-                      transition: "border-color 0.2s",
-                      boxSizing: "border-box",
-                    }}
-                  >
-                    <img
-                      src={lItem.img}
-                      alt={`img-${lItem.id}`}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", userSelect: "none", pointerEvents: "none" }}
-                    />
-                  </div>
-
-                  {/* ── sentence ── */}
-                  <div
-                    onClick={() => handleLeftSelect(lItem.id)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      minWidth: 0,
-                      zIndex: 2,
-                      padding: "clamp(4px,0.6vw,8px) clamp(8px,1vw,14px)",
-                      borderRadius: "clamp(8px,1vw,12px)",
-                      /* بوردر بس وقت الاختيار، بعد الوصل يروح */
-                      border: lSelected
-                        ? `2.5px solid ${ACTIVE_COLOR}`
-                        : "2px solid transparent",
-                      background: lSelected ? "rgba(243,155,66,0.08)" : "transparent",
-                      cursor: showAns ? "default" : "pointer",
-                      transition: "border-color 0.2s, background 0.2s",
-                      userSelect: "none",
+                      width: CELL, height: CELL,
+                      border: isActive ? "1.5px solid #84ad40" : "none",
+                      background: isActive ? "#fff" : "transparent",
                       position: "relative",
                     }}
                   >
-                    <span
-                      style={{
-                        fontSize: "clamp(13px,1.6vw,21px)",
-                        fontWeight: 500,
-                        color: wrong ? WRONG_COLOR : lSelected ? ACTIVE_COLOR : TEXT_COLOR,
-                        lineHeight: 1.3,
-                        wordBreak: "break-word",
-                        transition: "color 0.2s",
-                      }}
-                    >
-                      {lItem.text}
-                    </span>
+                    {/* Number label */}
+                    {nums && (
+                      <span style={{
+                        position: "absolute", top: "1px", left: "2px",
+                        fontSize: "10px", fontWeight: "bold", color: "#555",
+                        lineHeight: 1, zIndex: 2,
+                      }}>
+                        {nums.join("/")}
+                      </span>
+                    )}
 
-                    {/* بادج ✕ على الجملة اليسار بس */}
-                    {wrong && <WrongBadge />}
+                    {/* Input */}
+                    {isActive && (
+                      <input
+                        ref={(el) => entry && (inputsRef.current[`${entry.wi}-${entry.li}`] = el)}
+                        type="text"
+                        maxLength={1}
+                        value={val}
+                        disabled={locked || isCorrect}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => entry && handleChange(entry.wi, entry.li, e.target.value)}
+                        style={{
+                          width: "100%", height: "100%",
+                          border: "none", outline: "none",
+                          background: "transparent",
+                          textAlign: "center",
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          color:  "black",
+                          paddingTop:  "0",
+                          cursor: "text",
+                        }}
+                      />
+                    )}
+
+                    {/* Wrong X */}
+                    {isWrong && (
+                      <span style={{
+                        position: "absolute", top: "-6px", right: "-6px",
+                        width: "14px", height: "14px", background: "#ef4444", color: "white",
+                        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "9px", fontWeight: "bold", border: "1px solid white", zIndex: 5,
+                      }}>✕</span>
+                    )}
                   </div>
-
-                  {/* ── left dot ── */}
-                  <div
-                    ref={(el) => (pointRefs.current[`left-${lItem.id}`] = el)}
-                    onClick={() => handleLeftSelect(lItem.id)}
-                    style={{
-                      width: "clamp(10px,1.3vw,15px)",
-                      height: "clamp(10px,1.3vw,15px)",
-                      borderRadius: "50%",
-                      flexShrink: 0,
-                      background: lSelected
-                        ? ACTIVE_COLOR
-                        : lConn
-                          ? (wrong ? WRONG_COLOR : ACTIVE_COLOR)
-                          : DOT_COLOR,
-                      cursor: showAns ? "default" : "pointer",
-                      transition: "background 0.2s",
-                      boxShadow: lSelected ? `0 0 0 3px rgba(243,155,66,0.3)` : "none",
-                      zIndex: 2,
-                    }}
-                  />
-
-                  {/* ── right dot ── */}
-                  <div
-                    ref={(el) => (pointRefs.current[`right-${rItem.id}`] = el)}
-                    onClick={() => handleRightSelect(rItem.id)}
-                    style={{
-                      width: "clamp(10px,1.3vw,15px)",
-                      height: "clamp(10px,1.3vw,15px)",
-                      borderRadius: "50%",
-                      flexShrink: 0,
-                      background: rConn ? ACTIVE_COLOR : DOT_COLOR,
-                      cursor: showAns || selectedLeft === null ? "default" : "pointer",
-                      transition: "background 0.2s",
-                      zIndex: 2,
-                    }}
-                  />
-
-                  {/* ── answer text (right side) — بدون بوردر أو بادج ── */}
-                  <div
-                    onClick={() => handleRightSelect(rItem.id)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      minWidth: 0,
-                      zIndex: 2,
-                      padding: "clamp(4px,0.6vw,8px) clamp(8px,1vw,14px)",
-                      cursor: showAns || selectedLeft === null ? "default" : "pointer",
-                      userSelect: "none",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "clamp(13px,1.6vw,21px)",
-                        fontWeight: 500,
-                        color: TEXT_COLOR,
-                        lineHeight: 1.3,
-                        wordBreak: "break-word",
-                      }}
-                    >
-                      {rItem.text}
-                    </span>
-                  </div>
-
-                </React.Fragment>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
 
-        {/* Buttons */}
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "clamp(8px,1.5vw,16px)", zIndex: 100 }}>
-          <Button
-            checkAnswers={handleCheck}
-            handleShowAnswer={handleShowAnswer}
-            handleStartAgain={handleStartAgain}
-          />
+        {/* Clues */}
+        <div className="flex gap-8 text-[16px] mb-12">
+          {/* Down */}
+          <div style={{
+            border: "1.5px solid #84ad40", borderRadius: "8px",
+            padding: "14px 20px", flex: 1,
+          }}>
+            <h4 className="font-bold mb-3">Down</h4>
+            <p className="mb-2"><b className="mr-2">1</b>a dish of potatoes that is cooked and whipped</p>
+            <p className="mb-2"><b className="mr-2">2</b>relax</p>
+            <p className="mb-2"><b className="mr-2">3</b>a small restaurant with a long counter</p>
+            <p className="mb-2"><b className="mr-2">5</b>make available</p>
+            <p><b className="mr-2">7</b>very tired</p>
+          </div>
+
+          {/* Across */}
+          <div style={{
+            border: "1.5px solid #84ad40", borderRadius: "8px",
+            padding: "14px 20px", flex: 1,
+          }}>
+            <h4 className="font-bold mb-3">Across</h4>
+            <p className="mb-2"><b className="mr-2">4</b>a part of an animal that many eat</p>
+            <p className="mb-2"><b className="mr-2">6</b>food that remains after a meal is finished</p>
+            <p className="mb-2"><b className="mr-2">8</b>restaurant foods that are made quickly or usually to go</p>
+            <p><b className="mr-2">9</b>okay or satisfactory</p>
+          </div>
         </div>
+      </div>
+
+      {/* Buttons */}
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
+        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
-}
+};
+
+export default WB_Unit3_Page15_A;
