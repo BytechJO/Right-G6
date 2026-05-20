@@ -1,213 +1,288 @@
 import React, { useState } from "react";
-// import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 9/SVG/Asset 1.svg";
-// import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 9/SVG/Asset 2.svg";
-// import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 9/SVG/Asset 3.svg";
-// import img4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 9/SVG/Asset 4.svg";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import trueIcon from "../../../assets/imgs/true.svg";
+import falseIcon from "../../../assets/imgs/false.svg";
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import sound from "../../../assets/audio/ClassBook/U1/PG 9/CD5.Pg9_Instruction1_Adult Lady.mp3";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 9.svg"
+const SENTENCES = [
+  { id: 0, text: "Jane hasn't been to the mall this week." },
+  { id: 1, text: "Mike has visited his grandparents." },
+  { id: 2, text: "Suzy has already seen the new movie." },
+  { id: 3, text: "Mark and Tom haven't eaten at the cafeteria." },
+  { id: 4, text: "The cousins haven't bought a new bike to share." },
+];
+
+// الإجابات الصحيحة: true = ✓ | false = ✗
+const CORRECT = [true, false, true, false, true];
 
 const Page9_Q1 = () => {
-  const [answers, setAnswers] = useState(Array(8).fill(""));
+  // null = لم يختر بعد | true = ✓ | false = ✗
+  const [answers, setAnswers] = useState(Array(SENTENCES.length).fill(null));
+  const [errors, setErrors] = useState(Array(SENTENCES.length).fill(null));
   const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState([]);
 
-  const correct = [
-    "far",
-    "200 centimeters",
-    "tall",
-    "five feet",
-    "many",
-    "five",
-    "much",
-    "ten dollars",
-  ];
+  const handleSelect = (idx, value) => {
+    if (locked || errors[idx] === false) return;
 
-  const normalize = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
-
-  const handleChange = (i, val) => {
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
-
-    // يخفي X لما تعدل الغلط
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
+    // امسح الخطأ فور التغيير
+    if (errors[idx] === true) {
+      setErrors((prev) => prev.map((e, i) => (i === idx ? null : e)));
+    }
+    setAnswers((prev) => prev.map((a, i) => (i === idx ? value : a)));
   };
 
-  const input = (i, width = "w-[130px]") => (
-    <span className="relative inline-block mx-1">
-      <input
-        disabled={locked || result[i] === true}
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`border-b outline-none text-center text-[#6D2980] font-medium ${width}
-        ${result[i] === false ? "border-red-500" : "border-black"}
-      `}
-      />
+  const captions = [
+    {
+      start: 0.459,
+      end: 3.579,
+      text: "Page 6, grammar. Present perfect.",
+    },
+    {
+      start: 4.199,
+      end: 6.259,
+      text: "Larry has seen the new movie.",
+    },
+    {
+      start: 6.739,
+      end: 8.159,
+      text: "Has Larry seen the new movie?",
+    },
+    {
+      start: 8.76,
+      end: 10.079,
+      text: "They have gone to the beach.",
+    },
+    {
+      start: 10.659,
+      end: 11.84,
+      text: "Have they gone to the beach?",
+    },
+    {
+      start: 12.259,
+      end: 13.759,
+      text: "You haven't gone to the beach.",
+    },
+    {
+      start: 14.679,
+      end: 16.02,
+      text: "Haven't you gone to the beach?",
+    },
+  ];
 
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-  // ====================
-  // ✅ CHECK
-  // ====================
-  const checkAnswers = () => {
+  const handleCheck = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a?.trim())) {
-      ValidationAlert.info("Please complete all fields.");
+    if (answers.some((a) => a === null)) {
+      ValidationAlert.info("Please answer all questions.");
       return;
     }
 
-    let correctCount = 0;
-
-    // ✅ احسب النتائج لكل input
-    const res = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(correct[i]);
-      if (ok) correctCount++;
-      return ok;
+    let correct = 0;
+    const newErrors = answers.map((a, i) => {
+      const ok = a === CORRECT[i];
+      if (ok) correct++;
+      return ok ? false : true;
     });
 
-    setResult(res); // 🔥 هون الصح
+    setErrors(newErrors);
 
-    const total = correct.length;
-
+    const total = SENTENCES.length;
     const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    const msg = `
-    <div style="font-size:20px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${correctCount} / ${total}
-      </span>
-    </div>
-  `;
-
-    if (correctCount === total) {
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  // ====================
-  // 👀 SHOW ANSWERS
-  // ====================
-  const showAnswers = () => {
-    setAnswers(correct);
+  const handleShow = () => {
+    setAnswers([...CORRECT]);
+    setErrors(Array(SENTENCES.length).fill(false));
     setLocked(true);
   };
 
-  // ====================
-  // 🔄 RESET
-  // ====================
-  const reset = () => {
-    setAnswers(Array(8).fill(""));
-    setResult([]);
+  const handleReset = () => {
+    setAnswers(Array(SENTENCES.length).fill(null));
+    setErrors(Array(SENTENCES.length).fill(null));
     setLocked(false);
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-      }}
-    >
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-18">
-          <span className="ex-A mr-2.5">D</span>
-          Write the correct adjective in each blank, and then answer the
-          question.
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "20px" }}>
+        {/* Title */}
+        <h5 className="header-title-page8">
+          <span className="ex-A mr-2">D</span>
+          Listen, and then write <b className="text-red-500">✓</b> or{" "}
+          <b className="text-red-500">✗</b>.
         </h5>
+        <QuestionAudioPlayer
+          src={sound}
+          captions={captions}
+          stopAtSecond={2.5}
+        />
+        <div className="flex gap-5 w-full items-center">
+        {/* Sentences list */}
+        <div className="flex flex-col gap-10">
+          {SENTENCES.map((sent, i) => {
+            const hasError = errors[i] === true;
+            const isOk = errors[i] === false;
 
-        {/* <div className="space-y-8 text-[18px] ">
-         
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <div>
-              <span className="font-bold mr-3">1</span> How {input(0)} did
-              Marcia jump?
-            </div>
-            <img src={img1} alt="" style={{ width: "120px", height: "auto" }} />
-            <div>She jumped {input(1)}.</div>
-          </div>
+            return (
+              <div key={i} className="flex items-center gap-4 text-[18px]">
+                {/* رقم السؤال */}
+                <span className="font-bold w-[20px] text-right shrink-0">
+                  {i + 1}
+                </span>
 
-    
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
-            <div>
-              <span className="font-bold mr-3">2</span> How {input(2)} is Peter?
-            </div>
-            <img src={img2} alt="" style={{ width: "120px", height: "auto" }} />
-            <div>Peter is {input(3)} tall.</div>
-          </div>
+                {/* أزرار ✓ ✗ */}
+                <div className="flex gap-2 shrink-0">
+                  {/* ✓ */}
+                  <button
+                    disabled={locked || isOk}
+                    onClick={() => handleSelect(i, true)}
+                    style={{
+                      width: "38px",
+                      height: "38px",
+                      // borderRadius: "8px",
+                      borderBottom: ` ${
+                        answers[i] === true
+                          ? hasError
+                            ? "2px solid #ef4444"
+                            : "1px solid #84ad40"
+                          : "1px solid #ccc"
+                      }`,
+                      background:
+                        answers[i] === true
+                          ? hasError
+                            ? "#f0fdf4"
+                            : "#f0fdf4"
+                          : "white",
 
-      
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
-            <div>
-              <span className="font-bold mr-3">3</span> How {input(4)} apples
-              are there?
-            </div>
-            <img src={img3} alt="" style={{ width: "120px", height: "auto" }} />
-            <div>There are {input(5)} apples.</div>
-          </div>
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      cursor: locked || isOk ? "default" : "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "all 0.15s",
+                      position: "relative",
+                    }}
+                  >
+                    <img src={trueIcon} style={{ height: "25px" }} />
+                    {hasError && answers[i] === true && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: "-8px",
+                          width: "22px",
+                          height: "22px",
+                          background: "red",
+                          color: "white",
+                          borderRadius: "50%",
+                          fontSize: "12px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                          zIndex: 5,
+                        }}
+                      >
+                        ✕
+                      </span>
+                    )}
+                  </button>
 
-      
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
-            <div>
-              <span className="font-bold mr-3">4</span> How {input(6)} does this
-              cost?
-            </div>
-            <img src={img4} alt="" style={{ width: "120px", height: "auto" }} />
-            <div>It costs {input(7)}.</div>
-          </div>
-        </div> */}
-      </div>
+                  {/* ✗ */}
+                  <button
+                    disabled={locked || isOk}
+                    onClick={() => handleSelect(i, false)}
+                    style={{
+                      width: "38px",
+                      height: "38px",
+                      // borderRadius: "8px",
+                      borderBottom: `${
+                        answers[i] === false
+                          ? hasError
+                            ? "2px solid #ef4444"
+                            : "1px solid #16a34a"
+                          : "1px solid #ccc"
+                      }`,
+                      background:
+                        answers[i] === false
+                          ? hasError
+                            ? "#f0fdf4"
+                            : "#f0fdf4"
+                          : "white",
 
-      {/* Buttons */}
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={reset}>
-          Start Again ↻
-        </button>
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      cursor: locked || isOk ? "default" : "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      transition: "all 0.15s",
+                      position: "relative",
+                    }}
+                  >
+                    <img src={falseIcon} style={{ height: "25px" }} />
+                    {hasError && answers[i] === false && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: "-8px",
+                          width: "22px",
+                          height: "22px",
+                          background: "red",
+                          color: "white",
+                          borderRadius: "50%",
+                          fontSize: "12px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                          zIndex: 5,
+                        }}
+                      >
+                        ✕
+                      </span>
+                    )}
+                  </button>
+                </div>
 
-        <button onClick={showAnswers} className="show-answer-btn">
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+                {/* نص الجملة */}
+                <span className="text-gray-800">{sent.text}</span>
+              </div>
+            );
+          })}
+        </div>
+        <img src={img} style={{height:"200px" ,width:"auto"}}/>
+</div>
+        {/* Buttons */}
+        <div className="action-buttons-container">
+          <button className="try-again-button" onClick={handleReset}>
+            Start Again ↻
+          </button>
+          <button onClick={handleShow} className="show-answer-btn">
+            Show Answer
+          </button>
+          <button className="check-button2" onClick={handleCheck}>
+            Check Answer ✓
+          </button>
+        </div>
       </div>
     </div>
   );

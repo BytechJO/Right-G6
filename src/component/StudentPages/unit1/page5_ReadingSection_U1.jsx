@@ -14,34 +14,78 @@ const ReadingSection_U1 = () => {
     "How do they do that? No, they don’t spank them or do anything mean to them. They simply let them be held ... by a giant sumo wrestler! A clown stands by to keep the babies entertained, and the baby that starts crying first is the winner!",
   ];
 
-  const captions = [
-    {
-      start: 0.439,
-      end: 5.96,
-      text: "Page five, Reading. Is there something that you can do better than most people? What is it?",
-    },
-    {
-      start: 6.86,
-      end: 27.719,
-      text: "How fast can you run? How deep can you dive? How long are your fingernails? Probably not as fast, deep, or long as some people who have made it into the record books! For some reason, people like to try to set records. They want to be the best at something. Here are some amazing records that people have set over the years.",
-    },
-    {
-      start: 28.979,
-      end: 42.059,
-      text: "How tightly can your mom or dad park a car? In 2015, Alistair Moffatt set a record for parallel parking. He only needed 7.5 cm more than the length of his car.",
-    },
-    {
-      start: 43.079,
-      end: 61.84,
-      text: "How fast can you put on your socks? In 2016, Pavol Durdik from Slovakia put 52 socks on his foot in one minute! How far can you walk on your hands? Sarah Chapman walked over 5,000 meters in eight hours on her hands in 2002.",
-    },
-    {
-      start: 62.919,
-      end: 66.559,
-      text: "For some of us, the question might be, how can we walk on our hands?",
-    },
-  ];
-
+const captions = [
+  {
+    start: 0.359,
+    end: 6.879,
+    text: "Page 5 reading. Do you celebrate any festivals in your city? What kinds of festivals have you gone to?",
+  },
+  {
+    start: 7.539,
+    end: 19.559,
+    text: "Some unusual celebrations. Around the world, there are many festivals such as Christmas, Eid, and Carnival. Did you know that there are some unusual festivals that happen around the world?",
+  },
+  {
+    start: 20.079,
+    end: 25.279,
+    text: "Lately, one that has become a popular tourist attraction is the Monkey Buffet Festival.",
+  },
+  {
+    start: 26.159,
+    end: 33.239,
+    text: "In Lopburi, Thailand, so many monkeys have come to the town that tourists have started to visit to see them.",
+  },
+  {
+    start: 33.819,
+    end: 39.419,
+    text: "To encourage the monkeys to stay, the local businessmen have planned a terrific dinner once a year.",
+  },
+  {
+    start: 40.399,
+    end: 44.159,
+    text: "The dinner is not for the people, though. It's for the monkeys.",
+  },
+  {
+    start: 44.84,
+    end: 53.439,
+    text: "A countless supply of fruits and other foods are put on tables in an outdoor gathering area of the city, and the monkeys swarm in like bees.",
+  },
+  {
+    start: 53.899,
+    end: 57.0,
+    text: "In Japan, they have a festival called Konaki Sumo.",
+  },
+  {
+    start: 57.719,
+    end: 62.299,
+    text: 'It is based on the Japanese proverb, "Crying babies grow fast."',
+  },
+  {
+    start: 62.419,
+    end: 67.079,
+    text: "Parents from all around the country bring their babies to see if they can get them to grow well.",
+  },
+  {
+    start: 67.68,
+    end: 68.58,
+    text: "How do they do that?",
+  },
+  {
+    start: 69.119,
+    end: 71.919,
+    text: "No, they don't spank them or do anything mean to them.",
+  },
+  {
+    start: 72.519,
+    end: 76.299,
+    text: "They simply let them be held by a giant sumo wrestler.",
+  },
+  {
+    start: 76.68,
+    end: 82.439,
+    text: "A clown stands by to keep the babies entertained, and the baby that starts crying first is the winner.",
+  },
+];
   return (
     <div className=" flex flex-col items-center">
       <ReadingSection
@@ -53,7 +97,7 @@ of festivals have you gone to?"
         question={question}
         sound={readingAudio}
         captions={captions}
-        stopAtSecond={6.1}
+        stopAtSecond={7.0}
       />
 
       <div className="w-[60%] mt-4 space-y-6 mb-7">

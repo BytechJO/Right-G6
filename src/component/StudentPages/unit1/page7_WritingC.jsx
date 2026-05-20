@@ -13,15 +13,14 @@ const WritingC = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+
       }}
     >
-      <div className="div-forall">
+      <div className="flex flex-col gap-2 mb-7 mt-5">
         <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read mr-2">C</span>
-          In your notebook, write a paragraph about your topic, including all
-          the information from the{" "}
-          <span className=" text-[#31B7F5]">WH- question words</span>.
+          In your notebook, write an organized description of the festival you
+          chose. Check your writing carefully for punctuation and grammar.{" "}
         </h5>
 
         <textarea

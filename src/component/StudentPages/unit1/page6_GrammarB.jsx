@@ -1,31 +1,62 @@
 import React, { useState } from "react";
 import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../ActionButtons";
 
 const GrammarB = () => {
-  const correct = ["How long", "How much", "How far", "How high"];
-
   const questions = [
-    "are your fingernails?",
-    "does this cost?",
-    "can you run?",
-    "can you climb?",
+    {
+      sentence: "Hasn't Dora gone to the store?",
+      type: ".", // statement
+      answer: "Dora hasn't gone to the store.",
+    },
+    {
+      sentence: "You have heard that concert before.",
+      type: "?", // question
+      answer: "Have you heard that concert before?",
+    },
+    {
+      sentence: "Haven't they finished the job?",
+      type: ".", // statement
+      answer: "They haven't finished the job.",
+    },
+    {
+      sentence: "Alan has been to Italy.",
+      type: "X", // negative
+      answer: "Alan hasn't been to Italy.",
+    },
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const exampleIndex = 0; // Q1 is pre-filled as example
+
+  const initialAnswers = questions.map((q, i) => "");
+
+  const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
   const [locked, setLocked] = useState(false);
 
-  // 🔥 normalize
-  const normalize = (text) => {
-    return text.trim().toLowerCase().replace(/\.$/, "").replace(/\s+/g, " ");
-  };
+const normalize = (text) => {
+  return text
+    .trim()
+    .toLowerCase()
 
-  // ✅ CHECK
+    // contractions
+    .replace(/\bhave not\b/g, "haven't")
+    .replace(/\bhas not\b/g, "hasn't")
+
+    // remove punctuation
+    .replace(/’/g, "'")
+
+    // normalize spaces
+    .replace(/\s+/g, " ")
+    .trim();
+};
   const handleCheck = () => {
     if (locked) return;
 
-    const isEmpty = answers.some((a) => !a || a.trim() === "");
+    const isEmpty = answers.some((a, i) =>
+      i === exampleIndex ? false : !a || a.trim() === "",
+    );
 
     if (isEmpty) {
       ValidationAlert.info("Please complete all fields.");
@@ -35,18 +66,18 @@ const GrammarB = () => {
     let correctCount = 0;
     const newErrors = [];
 
-    answers.forEach((ans, i) => {
-      if (normalize(ans) === normalize(correct[i])) {
+    questions.forEach((q, i) => {
+      if (normalize(answers[i]) === normalize(q.answer)) {
         correctCount++;
-        newErrors[i] = false; // ✅
+        newErrors[i] = false;
       } else {
-        newErrors[i] = true; // ❌
+        newErrors[i] = true;
       }
     });
 
     setErrors(newErrors);
 
-    const total = correct.length;
+    const total = questions.length;
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
@@ -68,128 +99,130 @@ const GrammarB = () => {
     }
   };
 
-  // 👁️ SHOW
   const handleShow = () => {
-    setAnswers(correct);
-    setErrors([]); // 🔥 يمسح الأخطاء
+    setAnswers(questions.map((q) => q.answer));
+    setErrors([]);
     setLocked(true);
   };
 
-  // 🔄 RESET
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setAnswers(initialAnswers);
     setErrors([]);
     setLocked(false);
   };
 
-  const renderInput = (i) => (
-    <span className="relative inline-block mx-2">
-      <input
-        value={answers[i]}
-        disabled={locked || errors[i] === false}
-        onChange={(e) => {
-          const updated = [...answers];
-          updated[i] = e.target.value;
-          setAnswers(updated);
-        }}
-        className={`border-b outline-none w-[210px] text-center text-[#6D2980] font-semibold pr-6
-          ${errors[i] ? "border-red-500" : "border-black"}
-        `}
-      />
-
-      {/* ❌ X */}
-      {errors[i] && (
-        <div
-          style={{
-            position: "absolute",
-            top: "15px",
-            left: "250%",
-            transform: "translateY(-50%)",
-            width: "22px",
-            height: "22px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            fontSize: "12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-          }}
-        >
-          ✕
-        </div>
-      )}
-    </span>
-  );
+  const getTypeLabel = (type) => {
+    if (type === ".") return ".";
+    if (type === "?") return "?";
+    if (type === "X") return "X";
+    return "";
+  };
 
   return (
     <div>
       {/* Title */}
       <h5 className="header-title-page8-read mb-12">
         <span className="ex-A-read mr-2">B</span>
-        Read and complete the questions.
+        Read, and then change to a statement (
+        <span
+          className={`font-bold text-[#f79631]
+                  `}
+        >
+          .
+        </span>
+        ), question (
+        <span
+          className={`font-bold text-[#f79631]
+                  `}
+        >
+          ?
+        </span>
+        ), or negative (
+        <span
+          className={`font-bold text-[#f79631]
+                  `}
+        >
+          X
+        </span>
+        ).
       </h5>
 
       {/* Questions */}
-      <div className="grid grid-cols-2 gap-x-20 gap-y-12 text-[15px] mt-15">
-        {questions.map((q, i) => (
-          <div key={i}>
-            <span className="font-bold mr-1">{i + 1}</span>
-            {renderInput(i)} {q}
-          </div>
-        ))}
+      <div className="flex flex-col gap-6 text-[16px] mt-4">
+        {questions.map((q, i) => {
+          const isLocked = locked || errors[i] === false;
+
+          return (
+            <div key={i} className="flex flex-col gap-1">
+              {/* Question row */}
+              <div className="flex items-center gap-2">
+                <span className="font-bold min-w-[20px]">{i + 1}</span>
+                <span>{q.sentence}</span>
+                <span>(</span>
+                <span
+                  className={`font-bold text-[#f79631]
+                  `}
+                >
+                  {getTypeLabel(q.type)}
+                </span>
+                <span>)</span>
+                {/* ❌ error badge */}
+                {errors[i] === true && (
+                  <div
+                    style={{
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✕
+                  </div>
+                )}
+              </div>
+
+              {/* Answer input row */}
+              <div className="ml-6">
+                <input
+                  value={answers[i]}
+                  disabled={isLocked}
+                  onChange={(e) => {
+                    const updated = [...answers];
+                    updated[i] = e.target.value;
+                    setAnswers(updated);
+                    // احذف الخطأ فقط للانبوت الحالي
+                    setErrors((prev) => ({
+                      ...prev,
+                      [i]: undefined,
+                    }));
+                  }}
+                  className={`border-b outline-none w-full max-w-[480px] font-semibold
+                    ${errors[i] === true ? "border-red-500" : "border-black"}
+                  `}
+                  placeholder={"Write your answer here..."}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-center gap-6 mt-8">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      <div className="flex justify-center gap-6 mt-10">
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );
