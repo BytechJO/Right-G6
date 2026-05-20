@@ -11,7 +11,7 @@ import stbookCover from "../assets/imgs/pages/classbook-cover.png";
 import teacherBookCover from "../assets/imgs/pages/classbook-cover.png";
 
 // === VIEWERS ===
-import FlashCardViewer from "./FlashCardPages/FlashCardPages";
+// import FlashCardViewer from "./FlashCardPages/FlashCardPages";
 
 // === POPUP ===
 import Popup from "./Popup/Popup";
@@ -39,7 +39,7 @@ import {
   studentPages,
   workbookPages,
   teacherPages,
-  flashPages,
+  // flashPages,
 } from "./BookData";
 import WorkBookNavigator from "./WorkBookPages/WorkBookNavigator";
 // import { postersVocabPages } from "./BookData/postersVocabPages";
@@ -79,7 +79,7 @@ export default function Book() {
     student: studentPages(openPopup, goToUnit),
     work: workbookPages(openPopup, goToUnit),
     teacher: teacherPages.map((t) => <TeacherBook teacher={t} />),
-    flash: flashPages,
+    // flash: flashPages,
   }[activeTab];
 
   // ===========================================================
@@ -409,9 +409,9 @@ export default function Book() {
     },
   ];
 
-  const flashUnits = [
-    { id: 1, label: "Flashcards", start: 2, pages: flashPages.length },
-  ];
+  // const flashUnits = [
+  //   { id: 1, label: "Flashcards", start: 2, pages: flashPages.length },
+  // ];
 
   // const posterUnits = [
   //   { id: 1, label: "Posters", start: 2, pages: posterPages.length },
@@ -425,9 +425,9 @@ export default function Book() {
   //                 📌 PAGE RENDERER
   // ===========================================================
   function renderPage(content) {
-    if (activeTab === "flash") {
-      return <FlashCardViewer card={content} openPopup={openPopup} />;
-    }
+    // if (activeTab === "flash") {
+    //   return <FlashCardViewer card={content} openPopup={openPopup} />;
+    // }
     if (typeof content === "string") {
       return <img src={content} className="w-full h-full object-contain" />;
     }
@@ -441,7 +441,7 @@ export default function Book() {
     { id: "student", label: "Student’s Book" },
     { id: "work", label: "Workbook" },
     { id: "teacher", label: "Teacher’s Book" },
-    { id: "flash", label: "Flashcards" },
+    // { id: "flash", label: "Flashcards" },
     // { id: "poster", label: "Grammar Poster" },
     // { id: "posterVocab", label: "Posters" },
   ];
@@ -449,7 +449,7 @@ export default function Book() {
     student: studentUnits,
     work: workbookUnits,
     teacher: teacherUnits,
-    flash: flashUnits,
+    // flash: flashUnits,
     // poster: posterUnits,
     // posterVocab: posterVocabUnits,
   }[activeTab];

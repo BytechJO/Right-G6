@@ -1,142 +1,127 @@
 import React, { useState } from "react";
 import { FaRedo } from "react-icons/fa";
-
+import ActionButtons from "../../ActionButtons";
 const WritingB = () => {
   const [answers, setAnswers] = useState({
-    topic: "",
-    who: "",
-    what: "",
-    when: "",
-    where: "",
-    how: "",
-    why: "",
+    festivalName: "",
+    whereItIs: "",
+    whenHeld: "",
+    events1: "",
+    events2: "",
+    events3: "",
+    reasons: "",
+    anythingElse: "",
   });
 
-  const handleChange = (key, value) => {
+  const handleChange = (key, value) =>
     setAnswers((prev) => ({ ...prev, [key]: value }));
-  };
 
-  const handleReset = () => {
+  const handleReset = () =>
     setAnswers({
-      topic: "",
-      who: "",
-      what: "",
-      when: "",
-      where: "",
-      how: "",
-      why: "",
+      festivalName: "",
+      whereItIs: "",
+      whenHeld: "",
+      events1: "",
+      events2: "",
+      events3: "",
+      reasons: "",
+      anythingElse: "",
     });
-  };
 
   const inputStyle =
-    "border-b border-black outline-none w-full  text-[#6D2980] font-semibold disabled:bg-gray-100";
+    "border-b border-black outline-none flex-1 text-[#6D2980] font-semibold bg-transparent";
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <div className="div-forall">
-        <h5 className="header-title-page8-read ">
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex flex-col gap-2 mb-7 mt-5">
+        {/* Title */}
+        <h5 className="header-title-page8-read mb-8">
           <span className="ex-A-read mr-2">B</span>
-          Choose a topic that interests you. Answer the questions below about
-          your topic.
+          Choose one festival from Exercise A that you would like to write about. Then answer the questions below.
         </h5>
 
-        <div className="space-y-4 text-sm mt-10">
-          {/* Topic */}
-          <div className="flex items-center gap-2">
-            <span>Topic:</span>
+        <div className="flex flex-col gap-5 text-[14px]">
+
+          {/* Row 1: Festival's name + Where it is */}
+          <div className="flex gap-8 items-end">
+            <div className="flex items-end gap-2 flex-1">
+              <span className="whitespace-nowrap">Festival's name:</span>
+              <input
+                value={answers.festivalName}
+                onChange={(e) => handleChange("festivalName", e.target.value)}
+                className={inputStyle}
+              />
+            </div>
+            <div className="flex items-end gap-2 flex-1">
+              <span className="whitespace-nowrap">Where it is:</span>
+              <input
+                value={answers.whereItIs}
+                onChange={(e) => handleChange("whereItIs", e.target.value)}
+                className={inputStyle}
+              />
+            </div>
+          </div>
+
+          {/* Row 2: When it is held */}
+          <div className="flex items-end gap-2">
+            <span className="whitespace-nowrap">When it is held:</span>
             <input
-              value={answers.topic}
-              onChange={(e) => handleChange("topic", e.target.value)}
+              value={answers.whenHeld}
+              onChange={(e) => handleChange("whenHeld", e.target.value)}
               className={inputStyle}
             />
           </div>
 
-          {/* Who */}
-          <div className="flex items-center gap-2">
-            <span>Who?</span>
+          {/* Row 3: Events of the festival — 3 lines */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-end gap-2">
+              <span className="whitespace-nowrap">Events of the festival:</span>
+              <input
+                value={answers.events1}
+                onChange={(e) => handleChange("events1", e.target.value)}
+                className={inputStyle}
+              />
+            </div>
             <input
-              value={answers.who}
-              onChange={(e) => handleChange("who", e.target.value)}
+              value={answers.events2}
+              onChange={(e) => handleChange("events2", e.target.value)}
+              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold bg-transparent"
+            />
+            <input
+              value={answers.events3}
+              onChange={(e) => handleChange("events3", e.target.value)}
+              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold bg-transparent"
+            />
+          </div>
+
+          {/* Row 4: Reason(s) */}
+          <div className="flex items-end gap-2">
+            <span className="whitespace-nowrap">Reason(s) for the festival:</span>
+            <input
+              value={answers.reasons}
+              onChange={(e) => handleChange("reasons", e.target.value)}
               className={inputStyle}
             />
           </div>
 
-          {/* What */}
-          <div className="flex items-center gap-2">
-            <span>What?</span>
+          {/* Row 5: Anything else */}
+          <div className="flex items-end gap-2">
+            <span className="whitespace-nowrap">Anything else important about the festival:</span>
             <input
-              value={answers.what}
-              onChange={(e) => handleChange("what", e.target.value)}
+              value={answers.anythingElse}
+              onChange={(e) => handleChange("anythingElse", e.target.value)}
               className={inputStyle}
             />
           </div>
 
-          {/* When + Where */}
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2 flex-1">
-              <span>When?</span>
-              <input
-                value={answers.when}
-                onChange={(e) => handleChange("when", e.target.value)}
-                className={inputStyle}
-              />
-            </div>
-
-            <div className="flex items-center gap-2 flex-1">
-              <span>Where?</span>
-              <input
-                value={answers.where}
-                onChange={(e) => handleChange("where", e.target.value)}
-                className={inputStyle}
-              />
-            </div>
-          </div>
-
-          {/* How + Why */}
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2 flex-1">
-              <span>How?</span>
-              <input
-                value={answers.how}
-                onChange={(e) => handleChange("how", e.target.value)}
-                className={inputStyle}
-              />
-            </div>
-
-            <div className="flex items-center gap-2 flex-1">
-              <span>Why?</span>
-              <input
-                value={answers.why}
-                onChange={(e) => handleChange("why", e.target.value)}
-                className={inputStyle}
-              />
-            </div>
-          </div>
         </div>
 
-        {/* Reset Icon */}
+        {/* Reset only */}
         <div className="flex justify-center mt-8">
-          <div className="relative group">
-            <div
-              onClick={handleReset}
-              className="flex items-center justify-center w-15 h-15 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-            >
-              <div className="bg-white p-3 rounded-full shadow">
-                <FaRedo size={14} className="text-gray-700" />
-              </div>
-            </div>
-
-            {/* Tooltip */}
-            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-              Reset
-            </span>
-          </div>
+      <ActionButtons
+                onReset={handleReset}
+               
+              />
         </div>
       </div>
     </div>

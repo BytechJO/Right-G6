@@ -1,315 +1,370 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-// import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 8/SVG/Asset 1.svg";
-// import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 8/SVG/Asset 2.svg";
-// import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 8/SVG/Asset 3.svg";
-// import img4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 8/SVG/Asset 4.svg";
-// import img5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 8/SVG/Asset 5.svg";
+// ─── data ────────────────────────────────────────────────────────────────────
+// null = خانة فارغة للطالب | string = خانة مملوءة (ثابتة)
 
+const LEFT_TABLE = [
+  { verb: "do", pastTense: "did", pastParticiple: "done" },
+  { verb: null, pastTense: "went", pastParticiple: null },
+  { verb: "run", pastTense: null, pastParticiple: null },
+  { verb: "buy", pastTense: null, pastParticiple: null },
+  { verb: null, pastTense: "ate", pastParticiple: null },
+];
+
+const RIGHT_TABLE = [
+  { verb: null, pastTense: "brought", pastParticiple: null },
+  { verb: "see", pastTense: null, pastParticiple: "seen" },
+  { verb: null, pastTense: "came", pastParticiple: null },
+  { verb: null, pastTense: null, pastParticiple: "taken" },
+  { verb: "drink", pastTense: null, pastParticiple: null },
+];
+
+// الإجابات الصحيحة
+const LEFT_ANSWERS = [
+  { verb: "do", pastTense: "did", pastParticiple: "done" },
+  { verb: "go", pastTense: "went", pastParticiple: "gone" },
+  { verb: "run", pastTense: "ran", pastParticiple: "run" },
+  { verb: "buy", pastTense: "bought", pastParticiple: "bought" },
+  { verb: "eat", pastTense: "ate", pastParticiple: "eaten" },
+];
+
+const RIGHT_ANSWERS = [
+  { verb: "bring", pastTense: "brought", pastParticiple: "brought" },
+  { verb: "see", pastTense: "saw", pastParticiple: "seen" },
+  { verb: "come", pastTense: "came", pastParticiple: "come" },
+  { verb: "take", pastTense: "took", pastParticiple: "taken" },
+  { verb: "drink", pastTense: "drank", pastParticiple: "drunk" },
+];
+
+// ─── helpers ─────────────────────────────────────────────────────────────────
+function buildInitialState(tableData) {
+  return tableData.map((row) => ({
+    verb: row.verb === null ? "" : row.verb,
+    pastTense: row.pastTense === null ? "" : row.pastTense,
+    pastParticiple: row.pastParticiple === null ? "" : row.pastParticiple,
+  }));
+}
+
+function buildInitialErrors(tableData) {
+  return tableData.map((row) => ({
+    verb: null,
+    pastTense: null,
+    pastParticiple: null,
+  }));
+}
+
+// ─── sub-component: one table ─────────────────────────────────────────────────
+const VerbTable = ({
+  tableData,
+  answers,
+  values,
+  errors,
+  onChange,
+  locked,
+}) => {
+  const cols = ["verb", "pastTense", "pastParticiple"];
+  const headers = [
+    "verb",
+    "past tense",
+    "past participle (for present perfect)",
+  ];
+
+  return (
+    <table style={{ borderCollapse: "collapse", flex: 1 }}>
+      <thead>
+        <tr>
+          {headers.map((h, i) => (
+            <th
+              key={i}
+              style={{
+                background: "#e2ead1",
+                color: "#84ad40",
+                padding: "8px 12px",
+                fontSize: "17px",
+                fontWeight: "600",
+              
+                textAlign: "center",
+                border: "1px solid #84ad40",
+                minWidth: i === 2 ? "140px" : "80px",
+              }}
+            >
+              {h}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {tableData.map((row, rowIdx) => (
+          <tr
+            key={rowIdx}
+            style={{ }}
+          >
+            {cols.map((col) => {
+              const isFixed = row[col] !== null;
+              const hasError = errors[rowIdx]?.[col] === true;
+              const isCorrect = errors[rowIdx]?.[col] === false;
+
+              return (
+                <td
+                  key={col}
+                  style={{
+                    border: "1px solid #84ad40",
+                    padding: "4px 8px",
+                    textAlign: "center",
+                     height: "52px",
+                    position: "relative",
+                  }}
+                >
+                  {isFixed ? (
+                    <span
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "500",
+                        
+                        // color: "#2d5a27",
+                      }}
+                    >
+                      {row[col]}
+                    </span>
+                  ) : (
+                    <div
+                      style={{ position: "relative", display: "inline-block" }}
+                    >
+                      <input
+                        value={values[rowIdx]?.[col] ?? ""}
+                        disabled={locked || isCorrect}
+                        onChange={(e) => onChange(rowIdx, col, e.target.value)}
+                        style={{
+                          width: col === "pastParticiple" ? "120px" : "100px",
+                          height: "52px",
+                          borderBottom: `${hasError ? "2px solid red" : "1px solid #424242ff"}`,
+                          // borderRadius: "8px",
+                          outline: "none",
+                          textAlign: "center",
+                          fontSize: "18px",
+                          fontWeight: "500",
+                          // color: "#6D2980",
+                         
+                          padding: "0 6px",
+                        }}
+                      />
+                      {/* ❌ فوق يمين الـ input */}
+                      {hasError && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-8px",
+                            right: "-8px",
+                            width: "22px",
+                            height: "22px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            fontSize: "12px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            zIndex: 5,
+                          }}
+                        >
+                          ✕
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+// ─── main component ───────────────────────────────────────────────────────────
 const Page8_Q3 = () => {
-  const [selectedImg, setSelectedImg] = useState(null);
-  const [matches, setMatches] = useState({});
-  const [showResult, setShowResult] = useState(false);
+  const [leftValues, setLeftValues] = useState(buildInitialState(LEFT_TABLE));
+  const [rightValues, setRightValues] = useState(
+    buildInitialState(RIGHT_TABLE),
+  );
+  const [leftErrors, setLeftErrors] = useState(buildInitialErrors(LEFT_TABLE));
+  const [rightErrors, setRightErrors] = useState(
+    buildInitialErrors(RIGHT_TABLE),
+  );
   const [locked, setLocked] = useState(false);
-  const [validatedMatches, setValidatedMatches] = useState({});
-  const imageRefs = useRef([]);
-  const sentenceRefs = useRef([]);
-  const containerRef = useRef(null);
 
-  const images = [
-    // { id: 0, img: img1 },
-    // { id: 1, img: img2 },
-    // { id: 2, img: img3 },
-    // { id: 3, img: img4 },
-    // { id: 4, img: img5 },
-  ];
+  const handleChange = (side, rowIdx, col, value) => {
+    const setter = side === "left" ? setLeftValues : setRightValues;
+    const errSetter = side === "left" ? setLeftErrors : setRightErrors;
+    const errState = side === "left" ? leftErrors : rightErrors;
 
-  const sentences = [
-    { id: 0, text: "pancakes" },
-    { id: 1, text: "mirror" },
-    { id: 2, text: "face" },
-    { id: 3, text: "notebook" },
-    { id: 4, text: "pillow" },
-  ];
-
-  const correct = {
-    0: 4,
-    1: 1,
-    2: 0,
-    3: 3,
-    4: 2,
-  };
-
-  const selectImage = (id) => {
-    if (showResult && validatedMatches[id] === correct[id]) return;
-
-    setSelectedImg(id);
-
-    // أول ما يبدأ يعدل شيل التقييم القديم
-    setValidatedMatches((prev) => {
-      const updated = { ...prev };
-      delete updated[id];
-      return updated;
-    });
-  };
-
-  const selectSentence = (id) => {
-    if (selectedImg === null) return;
-
-    // إذا الصورة مثبتة صح لا تعدلها
-    if (showResult && validatedMatches[selectedImg] === correct[selectedImg]) {
-      setSelectedImg(null);
-      return;
-    }
-
-    // إذا الجملة مثبتة صح لا تستخدمها
-    const alreadyCorrectlyUsed =
-      showResult &&
-      Object.entries(validatedMatches).some(
-        ([imgId, sentId]) =>
-          Number(sentId) === id &&
-          correct[imgId] === Number(sentId) &&
-          Number(imgId) !== selectedImg,
+    // امسح الخطأ فور الكتابة
+    if (errState[rowIdx]?.[col] === true) {
+      errSetter((prev) =>
+        prev.map((r, i) => (i === rowIdx ? { ...r, [col]: null } : r)),
       );
-
-    if (alreadyCorrectlyUsed) {
-      return;
     }
 
-    setMatches((prev) => {
-      const updated = { ...prev };
-
-      // احذف الربط القديم لنفس الكلمة
-      Object.keys(updated).forEach((imgKey) => {
-        // إذا الكلمة مستخدمة بصورة ثانية
-        if (updated[imgKey] === id) {
-          // إذا الصورة مثبتة صح لا تحذفها
-          if (showResult && validatedMatches[imgKey] === correct[imgKey]) {
-            return;
-          }
-
-          // غير هيك احذف الربط القديم
-          delete updated[imgKey];
-        }
-      });
-
-      updated[selectedImg] = id;
-
-      return updated;
-    });
-
-    setSelectedImg(null);
+    setter((prev) =>
+      prev.map((r, i) => (i === rowIdx ? { ...r, [col]: value } : r)),
+    );
   };
-  const checkAnswers = () => {
+
+  const isFixed = (tableData, rowIdx, col) => tableData[rowIdx][col] !== null;
+
+  const handleCheck = () => {
     if (locked) return;
 
-    if (Object.keys(matches).length !== images.length) {
-      ValidationAlert.info("Please match all.");
+    // تحقق إن كل الخانات الفارغة مكتوبة
+    const cols = ["verb", "pastTense", "pastParticiple"];
+    const leftEmpty = LEFT_TABLE.some((row, i) =>
+      cols.some((c) => !isFixed(LEFT_TABLE, i, c) && !leftValues[i][c].trim()),
+    );
+    const rightEmpty = RIGHT_TABLE.some((row, i) =>
+      cols.some(
+        (c) => !isFixed(RIGHT_TABLE, i, c) && !rightValues[i][c].trim(),
+      ),
+    );
+
+    if (leftEmpty || rightEmpty) {
+      ValidationAlert.info("Please complete all fields.");
       return;
     }
 
-    let correctCount = 0;
+    let correct = 0;
+    let total = 0;
 
-    Object.entries(matches).forEach(([imgId, sentId]) => {
-      if (correct[imgId] === sentId) correctCount++;
-    });
+    const newLeftErrors = LEFT_TABLE.map((row, i) =>
+      cols.reduce((acc, col) => {
+        if (isFixed(LEFT_TABLE, i, col)) return { ...acc, [col]: null };
+        total++;
+        const ok =
+          leftValues[i][col].trim().toLowerCase() ===
+          LEFT_ANSWERS[i][col].toLowerCase();
+        if (ok) correct++;
+        return { ...acc, [col]: ok ? false : true };
+      }, {}),
+    );
 
-    const total = images.length;
+    const newRightErrors = RIGHT_TABLE.map((row, i) =>
+      cols.reduce((acc, col) => {
+        if (isFixed(RIGHT_TABLE, i, col)) return { ...acc, [col]: null };
+        total++;
+        const ok =
+          rightValues[i][col].trim().toLowerCase() ===
+          RIGHT_ANSWERS[i][col].toLowerCase();
+        if (ok) correct++;
+        return { ...acc, [col]: ok ? false : true };
+      }, {}),
+    );
 
-    const message = `
-        Score: ${correctCount} / ${total}
-  `;
+    setLeftErrors(newLeftErrors);
+    setRightErrors(newRightErrors);
 
-    if (correctCount === total) {
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+
+    if (correct === total) {
       setLocked(true);
-      ValidationAlert.success(message);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(message);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) {
+      ValidationAlert.error(msg);
     } else {
-      ValidationAlert.warning(message);
+      ValidationAlert.warning(msg);
     }
-    setValidatedMatches(matches);
-    setShowResult(true);
   };
 
-  const showAnswers = () => {
-    setMatches(correct);
+  const handleShow = () => {
+    setLeftValues(LEFT_ANSWERS.map((a) => ({ ...a })));
+    setRightValues(RIGHT_ANSWERS.map((a) => ({ ...a })));
+    const cols = ["verb", "pastTense", "pastParticiple"];
+    setLeftErrors(
+      LEFT_TABLE.map((row, i) =>
+        cols.reduce(
+          (acc, col) => ({
+            ...acc,
+            [col]: isFixed(LEFT_TABLE, i, col) ? null : false,
+          }),
+          {},
+        ),
+      ),
+    );
+    setRightErrors(
+      RIGHT_TABLE.map((row, i) =>
+        cols.reduce(
+          (acc, col) => ({
+            ...acc,
+            [col]: isFixed(RIGHT_TABLE, i, col) ? null : false,
+          }),
+          {},
+        ),
+      ),
+    );
     setLocked(true);
-    setShowResult(true);
   };
 
-  const reset = () => {
-    setSelectedImg(null);
-    setValidatedMatches({});
-    setMatches({});
-    setShowResult(false);
+  const handleReset = () => {
+    setLeftValues(buildInitialState(LEFT_TABLE));
+    setRightValues(buildInitialState(RIGHT_TABLE));
+    setLeftErrors(buildInitialErrors(LEFT_TABLE));
+    setRightErrors(buildInitialErrors(RIGHT_TABLE));
     setLocked(false);
   };
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-        position: "relative",
-      }}
-    >
-      <div
-        className="div-forall"
-        style={{
-          width: "100%",
-          maxWidth: "900px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
-        }}
-      >
-        <h5 className="header-title-page8  mb-12">
-          <span className="ex-A mr-2.5">C</span>
-          Look, read, and match.{" "}
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "70px" }}>
+        {/* Title */}
+        <h5 className="header-title-page8">
+          <span className="ex-A mr-2">C</span>
+          Complete the chart.
         </h5>
 
-        <div className="w-full flex flex-col items-center gap-50">
-          {/* 🔥 الصور فوق */}
-          <div className="grid grid-cols-5 w-full">
-            {images.map((img, i) => (
-              <div
-                key={i}
-                onClick={() => selectImage(i)}
-                className="relative  flex flex-col items-center gap-2 cursor-pointer transition"
-              >
-                {/* <img
-                  src={img.img}
-                  style={{
-                    width: "200px",
-                    height: "100px",
-                    objectFit: "contain",
-                    border:
-                      selectedImg === i
-                        ? "3px solid #6d2980"
-                        : "3px solid transparent",
-                    borderRadius: "12px",
-                    padding: "4px",
-                    backgroundColor:
-                      selectedImg === i ? "#6d2980" : "transparent",
-                  }}
-                /> */}
-                {showResult &&
-                  validatedMatches[i] !== undefined &&
-                  correct[i] !== validatedMatches[i] && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        right: "10px",
-                        width: "20px",
-                        height: "20px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                        zIndex: 5,
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                <div
-                  ref={(el) => (imageRefs.current[i] = el)} // 🔥 الريف هون على الدوت
-                  className="w-3 h-3 rounded-full mt-2 transition"
-                  style={{
-                    backgroundColor: selectedImg === i ? "#00AEEF" : "#00AEEF",
-                    transform: selectedImg === i ? "scale(1.4)" : "scale(1)",
-                  }}
-                ></div>
-              </div>
-            ))}
-          </div>
-
-          {/* 🔥 الجمل تحت */}
-          <div className="grid grid-cols-5 w-full">
-            {sentences.map((sent, i) => (
-              <div
-                key={i}
-                onClick={() => selectSentence(i)}
-                className="relative flex flex-col items-center cursor-pointer "
-              >
-                {/* 🔥 الدوت */}
-                <div
-                  ref={(el) => (sentenceRefs.current[i] = el)} // 🔥 هون كمان
-                  className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full z-10 transition"
-                  style={{
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: "#00AEEF",
-                  }}
-                ></div>
-
-                {/* 🔥 البوكس */}
-                <div className="relative px-4 py-2 rounded-2xl text-sm text-center transition text-[20px]">
-                  <span className="font-bold mr-3">{i + 1}</span>
-                  {sent.text}
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* ── Two tables side by side ── */}
+        <div
+          style={{
+            display: "flex",
+            gap: "24px",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <VerbTable
+            tableData={LEFT_TABLE}
+            answers={LEFT_ANSWERS}
+            values={leftValues}
+            errors={leftErrors}
+            onChange={(r, c, v) => handleChange("left", r, c, v)}
+            locked={locked}
+          />
+          <VerbTable
+            tableData={RIGHT_TABLE}
+            answers={RIGHT_ANSWERS}
+            values={rightValues}
+            errors={rightErrors}
+            onChange={(r, c, v) => handleChange("right", r, c, v)}
+            locked={locked}
+          />
         </div>
-      </div>
 
-      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {Object.entries(matches).map(([imgId, sentId], i) => {
-          const imgDot = imageRefs.current[imgId];
-          const sentDot = sentenceRefs.current[sentId];
-
-          if (!imgDot || !sentDot || !containerRef.current) return null;
-
-          const imgRect = imgDot.getBoundingClientRect();
-          const sentRect = sentDot.getBoundingClientRect();
-          const containerRect = containerRef.current.getBoundingClientRect();
-
-          const x1 = sentRect.left + sentRect.width / 2 - containerRect.left;
-          const y1 = sentRect.top + sentRect.height / 2 - containerRect.top;
-
-          const x2 = imgRect.left + imgRect.width / 2 - containerRect.left;
-          const y2 = imgRect.top + imgRect.height / 2 - containerRect.top;
-          return (
-            <g key={i}>
-              <line
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke="#6d2980"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            </g>
-          );
-        })}
-      </svg>
-
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={reset}>
-          Start Again ↻
-        </button>
-
-        <button onClick={showAnswers} className="show-answer-btn">
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        {/* Buttons */}
+        <div className="action-buttons-container">
+          <button className="try-again-button" onClick={handleReset}>
+            Start Again ↻
+          </button>
+          <button onClick={handleShow} className="show-answer-btn">
+            Show Answer
+          </button>
+          <button className="check-button2" onClick={handleCheck}>
+            Check Answer ✓
+          </button>
+        </div>
       </div>
     </div>
   );

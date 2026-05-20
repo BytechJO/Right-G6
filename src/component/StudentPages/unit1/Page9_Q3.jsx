@@ -1,173 +1,242 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 14.svg";
+import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 13.svg";
+import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 12.svg";
+import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 11.svg";
+
+const QUESTIONS = [
+  {
+    img: img1,
+    icon: "✗", // أيقونة حمراء
+    example: "Don hasn't ridden a school bus yet this week.",
+    isExample: false,
+  },
+  {
+    img: img2,
+    icon: "✓", // أيقونة خضراء
+    isExample: false,
+  },
+  {
+    img: img3,
+    icon: "✗",
+    isExample: false,
+  },
+  {
+    img: img4,
+    icon: "✓",
+    isExample: false,
+  },
+];
+
+const CORRECT = [
+  // index 0 = السؤال 2 (الأول مثال)
+  ["Don hasn't ridden a school bus yet this week."],
+  [
+    "Don has visited the park this week.",
+    "He has visited the park this week.",
+    "Don has been to the park this week.",
+  ],
+  [
+    "Don hasn't run a race yet this week.",
+    "He hasn't run a race this week.",
+    "Don has not run a race this week.",
+  ],
+  [
+    "Don has drunk water this week.",
+    "He has drunk water this week.",
+    "Don has had water this week.",
+  ],
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""';:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
 const Page9_Q3 = () => {
   const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [errors, setErrors] = useState([null, null, null, null]);
   const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState([]);
-
-  // ✅ الإجابات الصح
-  const correct = ["b", "c", "d", "a"];
 
   const handleChange = (i, val) => {
-    const updated = [...answers];
-    updated[i] = val.toLowerCase();
-    setAnswers(updated);
-
-    // 🔥 امسح حالة الغلط أول ما يعدّل
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
+    if (locked || errors[i] === false) return;
+    if (errors[i] === true) {
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    }
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  const input = (i) => (
-    <span className="relative mx-2">
-      <input
-        disabled={locked || result[i] === true}
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        maxLength={1}
-        className={`w-[40px] border-b outline-none text-center font-bold uppercase
-        ${result[i] === false ? "border-red-500 text-[#6D2980]" : "border-black text-[#6D2980]"}
-      `}
-      />
-
-      {/* ❌ */}
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
-  // ====================
-  // ✅ CHECK
-  // ====================
-  const checkAnswers = () => {
+  const handleCheck = () => {
     if (locked) return;
-
     if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
 
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = a === correct[i];
-      if (ok) correctCount++;
-      return ok;
+    let correct = 0;
+    const newErrors = answers.map((a, i) => {
+      const ok = CORRECT[i].some((ans) => normalize(a) === normalize(ans));
+      if (ok) correct++;
+      return ok ? false : true;
     });
 
-    setResult(res);
+    setErrors(newErrors);
 
-    const total = correct.length;
-
+    const total = answers.length;
     const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  // ====================
-  // 👀 SHOW ANSWERS
-  // ====================
-  const showAnswers = () => {
-    setAnswers(correct);
+  const handleShow = () => {
+    setAnswers(CORRECT.map((c) => c[0]));
+    setErrors([false, false, false]);
     setLocked(true);
   };
 
-  // ====================
-  // 🔄 RESET
-  // ====================
-  const reset = () => {
-    setAnswers(["", "", "", ""]);
+  const handleReset = () => {
+    setAnswers(["", "", "",""]);
+    setErrors([null, null, null,null]);
     setLocked(false);
-    setResult([]);
   };
 
+  let inputIdx = -1;
+
   return (
-    <div className="p-8 flex flex-col items-center">
-      <div className="w-full max-w-[900px]">
-        <h5 className="header-title-page8 mb-25">
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "40px" }}>
+        {/* Title */}
+        <h5 className="header-title-page8">
           <span className="ex-A mr-2">F</span>
-          Match each question to its answer.
+          What has Don done? Look at the picture, and then write a sentence
+          telling what he has or hasn't done this week.
         </h5>
 
-        <div className="grid grid-cols-2 gap-25 text-[22px]">
-          {/* LEFT */}
-          <div className="space-y-15">
-            <div>{input(0)} 1. How do you spell your name?</div>
+        {/* Questions */}
+        <div className="flex flex-col gap-6 w-full">
+          {QUESTIONS.map((q, i) => {
+            if (!q.isExample) inputIdx++;
+            const idx = inputIdx;
+            const hasError = !q.isExample && errors[idx] === true;
+            const isOk = !q.isExample && errors[idx] === false;
+            const isX = q.icon === "✗";
 
-            <div>{input(1)} 2. How far is it to your house?</div>
+            return (
+              <div key={i} className="flex items-center gap-4">
+                {/* رقم */}
 
-            <div>{input(2)} 3. How many hours do you study?</div>
+                {/* صورة */}
+                <div
+                  className="flex gap-5 items-start"
+                  style={{
+                    borderRadius: "12px",
+                    // border: "2px solid #ccc",
+                    // background: "#f5f5f5",
+                    // flexShrink: 0,
+                    // overflow: "hidden",
+                    position: "relative",
+                  }}
+                >
+                  <span className="font-bold text-[18px] w-[16px] shrink-0">
+                    {i + 1}
+                  </span>
+                  <img
+                    src={q.img}
+                    style={{
+                      width: "150px",
+                      height: "100px",
+                      objectFit: "contain",
+                    }}
+                  />
+                </div>
 
-            <div>{input(3)} 4. How tall is the elephant?</div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="space-y-15">
-            <div>a. It’s two meters tall.</div>
-            <div>b. I spell it S-T-E-V-E-N.</div>
-            <div>c. It’s about two kilometers from here.</div>
-            <div>d. I study about two hours every day.</div>
-          </div>
+                {/* Input أو المثال */}
+                {q.isExample ? (
+                  <span
+                    style={{
+                      textDecoration: "underline",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                      flex: 1,
+                    }}
+                  >
+                    {q.example}
+                  </span>
+                ) : (
+                  <div style={{ flex: 1, position: "relative" }}>
+                    <input
+                      value={answers[idx]}
+                      disabled={locked || isOk}
+                      onChange={(e) => handleChange(idx, e.target.value)}
+                      style={{
+                        width: "100%",
+                        borderBottom: hasError
+                          ? "2px solid red"
+                          : "1px solid #555",
+                        outline: "none",
+                        background: "transparent",
+                        fontSize: "18px",
+                        fontWeight: "500",
+                        padding: "2px 0",
+                        // color: "#6D2980",
+                      }}
+                    />
+                    {hasError && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: "-8px",
+                          width: "22px",
+                          height: "22px",
+                          background: "red",
+                          color: "white",
+                          borderRadius: "50%",
+                          fontSize: "12px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                          zIndex: 5,
+                        }}
+                      >
+                        ✕
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
-      </div>
 
-      {/* Buttons */}
-      <div className="action-buttons-container mt-6">
-        <button className="try-again-button" onClick={reset}>
-          Start Again ↻
-        </button>
-
-        <button onClick={showAnswers} className="show-answer-btn">
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        {/* Buttons */}
+        <div className="action-buttons-container">
+          <button className="try-again-button" onClick={handleReset}>
+            Start Again ↻
+          </button>
+          <button onClick={handleShow} className="show-answer-btn">
+            Show Answer
+          </button>
+          {/* <button className="check-button2" onClick={handleCheck}>
+            Check Answer ✓
+          </button> */}
+        </div>
       </div>
     </div>
   );

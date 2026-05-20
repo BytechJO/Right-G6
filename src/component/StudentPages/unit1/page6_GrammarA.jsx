@@ -1,76 +1,76 @@
 import React from "react";
-import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/SVG/Asset 19.svg";
+import Rabbit from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
+
 const GrammarA = () => {
+  // ✅ Dynamic Data
+  const questions = [
+    {
+      sentence: (
+        <>
+          We <span className="text-[#F28C28]">have gone to</span> the mountains.
+        </>
+      ),
+
+      options: [
+        "have hiked in",
+        "have seen",
+        "have traveled to",
+        "have climbed",
+      ],
+    },
+
+    {
+      sentence: (
+        <>
+          Emily <span className="text-[#F28C28]">has run</span> the race.
+        </>
+      ),
+
+      options: ["hasn't lost", "has finished", "has won", "has watched"],
+    },
+  ];
+
   return (
     <div>
-      {/* العنوان */}
-      <div className="flex items-center gap-2 mb-5 mt-5">
+      {/* Title */}
+      <div className="flex items-center gap-2 mb-7 mt-5">
         <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read" style={{ marginRight: "10px" }}>
             A
           </span>
-          Read and say. Replace the highlighted words with the new words.
+          Read, change, and say. Replace the highlighted words with the new
+          words.
         </h5>
       </div>
 
-      {/* السؤال 1 */}
-      <div className="mb-12">
-        <div className="flex items-start gap-5">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
+      {/* Questions */}
+      <div className="flex flex-col gap-10">
+        {questions.map((q, index) => (
+          <div key={index} className="flex items-start gap-4">
+            {/* Rabbit */}
+            <img
+              src={Rabbit}
+              alt=""
+              style={{ height: "34px", width: "34px" }}
+              className="w-[34px] h-[34px] mt-[-2px]"
+            />
 
-          <div >
-            <p className="text-[18px]">
-              How <span className="text-[#12C8F9]">far</span> can you{" "}
-              <span className="text-[#12C8F9]">walk</span>?
-            </p>
+            {/* Content */}
+            <div>
+              {/* Sentence */}
+              <p className="text-[18px] leading-[1.8]">{q.sentence}</p>
 
-            <div className="grid grid-cols-3 mt-5 text-[17px] w-[500px]">
-              <span>
-                <b>1</b> deep, dive
-              </span>
-              <span>
-                <b>2</b> low, sing
-              </span>
-              <span>
-                <b>3</b> high, reach
-              </span>
+              {/* Options */}
+              <div className="grid grid-cols-4 gap-8 mt-3 text-[17px]">
+                {q.options.map((option, i) => (
+                  <span key={i}>
+                    <b>{i + 1}</b>&nbsp;&nbsp;{option}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* السؤال 2 */}
-      <div>
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
-
-          <div>
-            <p className=" text-[18px]">
-              I can <span className="text-[#12C8F9]">jump</span>{" "}
-              <span className="text-[#12C8F9]">three meters</span>.
-            </p>
-
-            <div className="grid grid-cols-3 mt-5 text-[17px] w-[500px]">
-              <span>
-                <b>1</b> dive 10 meters
-              </span>
-              <span>
-                <b>2</b> sing a low C
-              </span>
-              <span>
-                <b>3</b> reach two meters
-              </span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

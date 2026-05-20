@@ -3,7 +3,7 @@ import { TbMessageCircle } from "react-icons/tb";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import "./FourImagesWithAudio.css";
-
+import "./AudioWithCaption.css"
 import { forwardRef, useImperativeHandle } from "react";
 const QuestionAudioPlayer = forwardRef(function QuestionAudioPlayer(
   { src, captions = [], stopAtSecond = null, onTimeUpdate },
@@ -128,7 +128,7 @@ const QuestionAudioPlayer = forwardRef(function QuestionAudioPlayer(
       style={{
         display: "flex",
         justifyContent: "center",
-        margin: "30px 0px",
+        margin: "20px 0px",
         width: "100%",
       }}
     >
