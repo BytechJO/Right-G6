@@ -1,117 +1,123 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+const SENTENCES = [
+  { id: 1, prefix: "If I had", prefilled: null},
+  { id: 2, prefix: "If I went to",  prefilled: null },
+  { id: 3, prefix: "If I had",      prefilled: null },
+  { id: 4, prefix: "If I saw",      prefilled: null },
+  { id: 5, prefix: "If I didn't have to", prefilled: null },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+const initAnswers = () => {
+  const a = {};
+  SENTENCES.forEach(({ id, prefilled }) => {
+    a[`${id}-line1`] = prefilled || "";
+    a[`${id}-line2`] = "";
+  });
+  return a;
+};
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+// ── Sub-components defined OUTSIDE parent to prevent remount on render ──
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+const LineInput = ({ value, onChange, disabled, style = {} }) => (
+  <input
+    type="text"
+    value={value}
+    disabled={disabled}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      flex: 1,
+      border: "none",
+      borderBottom: "1.5px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "17px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+      minWidth: 0,
+      ...style,
+    }}
+  />
+);
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+const FullLineInput = ({ value, onChange }) => (
+  <input
+    type="text"
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      width: "100%",
+      border: "none",
+      borderBottom: "1.5px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "17px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+    }}
+  />
+);
+
+// ── Main Component ──
+
+const WB_Unit_SecondConditional_G = () => {
+  const [answers, setAnswers] = useState(initAnswers);
+
+  const handleChange = (key, value) => {
+    setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () => setAnswers(initAnswers());
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>G</span>
+          Read each of the following sentence starters and write a{" "}
+          <span style={{ color: "orange" }}>second conditional</span> sentence of what you might
+          do in each situation.{" "}
+ 
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
         {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px", marginBottom: "3em" }}>
+          {SENTENCES.map(({ id, prefix, prefilled }) => (
+            <div key={id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 
+              {/* Line 1: prefix + input */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
+                <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>
+                  {id}
+                </span>
+                <span style={{ fontSize: "17px", whiteSpace: "nowrap" }}>{prefix}</span>
+                <LineInput
+                  value={answers[`${id}-line1`]}
+                  disabled={!!prefilled}
+                  onChange={(val) => handleChange(`${id}-line1`, val)}
+                  style={{ color: prefilled ? "#c0392b" : "#333" }}
+                />
+              </div>
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
+              {/* Line 2: full blank line */}
+              <div style={{ paddingLeft: "28px" }}>
+                <FullLineInput
+                  value={answers[`${id}-line2`]}
+                  onChange={(val) => handleChange(`${id}-line2`, val)}
+                />
+              </div>
+
             </div>
           ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
+      {/* Reset only — Students' answers will vary */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +127,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit_SecondConditional_G;

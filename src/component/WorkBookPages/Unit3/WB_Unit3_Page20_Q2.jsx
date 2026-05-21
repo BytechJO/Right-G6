@@ -1,117 +1,193 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
-];
+// ── صور وهمية — بدّل المسارات للمسارات الفعلية ──
+import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U3 Folder/SVG/Asset 1.svg";
+import img2 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U3 Folder/SVG/Asset 2.svg";
+import img3 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U3 Folder/SVG/Asset 3.svg";
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+// ─────────────────────────────────────────────
+//  SVG Wave Arrow — defined OUTSIDE parent
+// ─────────────────────────────────────────────
+const WaveArrow = () => (
+  <svg
+    width="100%"
+    height="32"
+    viewBox="0 0 500 32"
+    preserveAspectRatio="none"
+    style={{ display: "block", overflow: "visible" }}
+  >
+    {/* موجة خضراء */}
+    <path
+      d="M 490 20 Q 420 4, 350 20 Q 280 36, 210 20 Q 140 4, 70 20 Q 35 28, 10 18"
+      fill="none"
+      stroke="#84ad40"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    {/* سهم صغير في النهاية — جهة اليسار */}
+    <polyline
+      points="17,13 8,18 17,27"
+      fill="none"
+      stroke="#84ad40"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+// ─────────────────────────────────────────────
+//  Free Input — defined OUTSIDE parent
+// ─────────────────────────────────────────────
+const FreeInput = ({ value, onChange, flex = true }) => (
+  <input
+    type="text"
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      flex: flex ? 1 : undefined,
+      width: flex ? undefined : "100%",
+      border: "none",
+      borderBottom: "1.5px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "17px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+      minWidth: 0,
+    }}
+  />
+);
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+// ─────────────────────────────────────────────
+//  MAIN COMPONENT
+// ─────────────────────────────────────────────
+const WB_Unit3_ChainConditional_J = () => {
+  const [answers, setAnswers] = useState({
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+  });
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+  const handleChange = (key, value) => {
+    setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () =>
+    setAnswers({ 1: "", 2: "", 3: "", 4: "", 5: "" });
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>J</span>
+          Use the{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>"then"</span>{" "}
+          clause from the sentence before to make the next{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>"if"</span>{" "}
+          clause.{" "}
+
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
         {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0px", marginBottom: "2em" }}>
 
+          {/* ── Sentence 1 — full input ── */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "6px", paddingBottom: "6px" }}>
+            <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "22px" }}>1</span>
+            <FreeInput
+              value={answers[1]}
+              onChange={(val) => handleChange(1, val)}
+            />
+          </div>
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
-            </div>
+          {/* wave */}
+          <div style={{ paddingLeft: "28px", margin: "2px 0 2px" }}>
+            <WaveArrow />
+          </div>
+
+          {/* ── Sentence 2 — full input ── */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "6px", paddingBottom: "6px" }}>
+            <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "22px" }}>2</span>
+            <FreeInput
+              value={answers[2]}
+              onChange={(val) => handleChange(2, val)}
+            />
+          </div>
+
+          {/* wave */}
+          <div style={{ paddingLeft: "28px", margin: "2px 0 2px" }}>
+            <WaveArrow />
+          </div>
+
+          {/* ── Sentence 3 — full input ── */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "6px", paddingBottom: "6px" }}>
+            <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "22px" }}>3</span>
+            <FreeInput
+              value={answers[3]}
+              onChange={(val) => handleChange(3, val)}
+            />
+          </div>
+
+          {/* wave */}
+          <div style={{ paddingLeft: "28px", margin: "2px 0 2px" }}>
+            <WaveArrow />
+          </div>
+
+          {/* ── Sentence 4 — full input ── */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "6px", paddingBottom: "6px" }}>
+            <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "22px" }}>4</span>
+            <FreeInput
+              value={answers[4]}
+              onChange={(val) => handleChange(4, val)}
+            />
+          </div>
+
+          {/* wave */}
+          <div style={{ paddingLeft: "28px", margin: "2px 0 2px" }}>
+            <WaveArrow />
+          </div>
+
+          {/* ── Sentence 5 — full input ── */}
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "6px", paddingBottom: "6px" }}>
+            <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "22px" }}>5</span>
+            <FreeInput
+              value={answers[5]}
+              onChange={(val) => handleChange(5, val)}
+            />
+          </div>
+
+        </div>
+
+        {/* ── 3 Beach Images ── */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          gap: "16px",
+          marginBottom: "3em",
+        }}>
+          {[img1, img2, img3].map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt={`beach ${i + 1}`}
+              style={{
+                width: "100%",
+                height: "AUTO",
+                objectFit: "cover",
+              }}
+            />
           ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
+      {/* Reset only */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +197,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit3_ChainConditional_J;

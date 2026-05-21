@@ -86,7 +86,7 @@ const normalize = (str) =>
         <div className="flex gap-16 text-[18px]">
 
           {/* LEFT — questions */}
-          <div className="flex flex-col gap-10 flex-1">
+          <div className="flex flex-col gap-15 flex-1">
             {questions.map((q, i) => {
               const isWrong   = result[i] === false;
               const isCorrect = result[i] === true;
@@ -127,7 +127,7 @@ const normalize = (str) =>
           </div>
 
           {/* RIGHT — responses */}
-          <div className="flex flex-col gap-10" style={{ minWidth: "300px" }}>
+          <div className="flex flex-col gap-18" style={{ minWidth: "300px" }}>
             {responses.map((r) => (
               <div key={r.label} className="flex gap-3">
                 <span className="font-bold min-w-[20px]">{r.label}</span>

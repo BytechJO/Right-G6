@@ -35,7 +35,7 @@ const normalize = (str) =>
 
     // auto move to next
     if (value) {
-      const next = inputsRef.current[i + 1];
+      const nexat = inputsRef.current[i + 1];
       if (next) { next.focus(); next.select(); }
     }
   };
