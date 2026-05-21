@@ -148,7 +148,7 @@ const WB_Unit3_Page15_A = () => {
         </h5>
 
         {/* Grid */}
-        <div style={{ marginBottom: "28px", overflowX: "auto" }}>
+        <div style={{ marginBottom: "28px", }}>
           <div style={{
             display: "inline-grid",
             gridTemplateColumns: `repeat(${COLS}, ${CELL}px)`,

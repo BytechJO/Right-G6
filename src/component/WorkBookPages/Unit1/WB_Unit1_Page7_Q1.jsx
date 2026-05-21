@@ -120,7 +120,7 @@ const normalize = (str) =>
     const isWrong = result[key] === false;
     const isCorrect = result[key] === true;
     return (
-      <span className="relative inline-block" style={{ flex: 1 }}>
+      <span className="relative" style={{ flex: 1 }}>
         <input
           type="text"
           value={answers[key]}

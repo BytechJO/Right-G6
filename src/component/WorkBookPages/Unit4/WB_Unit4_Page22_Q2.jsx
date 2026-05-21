@@ -38,7 +38,7 @@ const InlineInput = ({ blankId, value, onChange, isCorrect, isWrong, disabled, w
       style={{
         width,
         border: "none",
-        borderBottom: `2px solid ${isWrong ? "#D1232A" : "#555"}`,
+        borderBottom: `1px solid ${isWrong ? "#D1232A" : "#555"}`,
         outline: "none",
         background: "transparent",
         fontSize: "18px",

@@ -52,7 +52,7 @@ const WB_Unit5_StatementOrTag_G = () => {
         </h5>
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "60px", margin: "8% 0 " }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "60px", margin: "10% 0 " }}>
 
           {/* 1: prefix + input + ? */}
           <div style={rowStyle}>

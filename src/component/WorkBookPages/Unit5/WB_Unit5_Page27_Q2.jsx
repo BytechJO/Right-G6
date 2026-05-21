@@ -119,7 +119,7 @@ const WB_Unit5_Rhyme_B = () => {
         </h5>
 
         {/* Body: rhymes + image */}
-        <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", marginBottom: "3em" }}>
+        <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", margin: "1em 0" }}>
 
           {/* Rhymes */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -185,11 +185,11 @@ const WB_Unit5_Rhyme_B = () => {
           </div>
 
           {/* Books Image */}
-          <div style={{ flexShrink: 0 , alignSelf : "center" }}>
+          <div style={{ flexShrink: 0 , alignSelf : "end" }}>
             <img
               src={booksImg}
               alt="stack of books"
-              style={{ width: "50%", height: "auto", objectFit: "contain" }}
+              style={{ width: "60%", height: "auto", objectFit: "contain" }}
             />
           </div>
 

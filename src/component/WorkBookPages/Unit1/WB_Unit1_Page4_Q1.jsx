@@ -33,7 +33,6 @@ const WB_Unit1_Page4_PastParticiple = () => {
       key: "g2",
       header: "−n or −en",
       headerBold: "added at the end",
-      prefilled: "broken",
       answers: ["broken", "chosen", "seen", "spoken"],
     },
     {
@@ -254,7 +253,7 @@ const normalize = (str) =>
         {/* Title */}
         <h5 className="header-title-page8 mb-8" >
           <span className="ex-A" style={{ marginRight: "10px" }}>B</span>
-          The past participle in English is often irregular. Sometimes the irregular verbs form a pattern. <br /> First find the past participle form. Then put each past participle into the correct group.
+          The past participle in English is often irregular. Sometimes the irregular verbs form a pattern. First find the past participle form. Then put each past participle into the correct group.
         </h5>
 
         {/* Verb Table */}

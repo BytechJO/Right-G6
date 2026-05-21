@@ -61,7 +61,7 @@ const WB_Unit5_QuestionTag_C = () => {
         </h5>
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "45px", marginBottom: "3em" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "50px", marginBottom: "3em" }}>
           {QUESTIONS.map(({ id, tag, prefilled }) => (
             <div key={id} style={{
               display: "flex",

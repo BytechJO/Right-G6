@@ -9,7 +9,7 @@ const EQUATIONS = [
     id: 1,
     equation: "L E S S O N S − ON + US − LS + CC =",
     answer: "success",
-    prefilled: true,
+    prefilled: false,
   },
   {
     id: 2,
@@ -141,7 +141,7 @@ const WB_Unit6_WordMath_A = () => {
           display: "flex",
           gap: "32px",
           alignItems: "center",
-          marginBottom: "3em",
+          margin: "3.5em 0",
           flexWrap: "wrap",
         }}>
 
