@@ -29,7 +29,7 @@ import Reading_Unit2_Page1 from "../StudentPages/unit2/Reading_Unit2_Page1";
 import Reading_Unit2_Page2 from "../StudentPages/unit2/Reading_Unit2_Page2";
 
 // // ==================== unit 3 pages
-// import Unit3_Page1 from "../StudentPages/unit3/Unit3_Page1";
+import Unit3_Page1 from "../StudentPages/unit3/Unit3_Page1";
 // import Unit3_Page2 from "../StudentPages/unit3/Unit3_Page2";
 // import Unit3_Page3 from "../StudentPages/unit3/Unit3_Page3";
 // import Unit3_Page4 from "../StudentPages/unit3/Unit3_Page4";
@@ -179,7 +179,7 @@ export const studentPages = (openPopup, goToUnit) => {
     />,
     // //===================== unit 3 pages
 
-    // <Unit3_Page1 openPopup={openPopup} />,
+    <Unit3_Page1 openPopup={openPopup} />,
     // <Unit3_Page2 openPopup={openPopup} />,
     // <Unit3_Page3 openPopup={openPopup} />,
     // <Unit3_Page4 openPopup={openPopup} />,

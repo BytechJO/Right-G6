@@ -1,4 +1,4 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 22.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/Page 22.png";
 import "./Unit3_Page1.css";
 import longAudio from "../../../assets/audio/ClassBook/U3/PG 22/pg22-conversation.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
@@ -6,30 +6,14 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U3/PG 22/vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U3/PG 22/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U3/PG 22/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U3/PG 22/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U3/PG 22/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U3/PG 22/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U3/PG 22/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U3/PG 22/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U3/PG 22/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U3/PG 22/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U3/PG 22/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U3/PG 22/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U3/PG 22/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U3/PG 22/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U3/PG 22/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U3/PG 22/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U3/PG 22/sound16.mp3";
-import sound17 from "../../../assets/audio/ClassBook/U3/PG 22/sound17.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 22/SVG/Asset 1.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 22/SVG/Asset 2.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 22/SVG/Asset 22.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 22/SVG/Asset 4.svg";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/1.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/2.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/3.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/4.svg";
 import wordJson from "../../../assets/json/pg22-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 3 page 22.mp4";
+import video from "../../../assets/videos/grade 6 unit 3 page 22.mp4";
 
 const Unit3_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
