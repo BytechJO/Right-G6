@@ -407,7 +407,7 @@ const captionVoc = [
               "html",
               <CriticalThinking
                 title={
-                  "Why do you think Sarah asks to make the sandwich herself?"
+                  "Why didn’t Helen, Stella, and Harley want to try some of Tom’s food?"
                 }
               />,
             )

@@ -1,23 +1,21 @@
 import WritingA from "./Unit4_Page4_WritingA";
-import Unit4_Page4_WritingB from "./Unit4_Page4_WritingB";
-import WritingC from "./Unit4_Page4_WritingC";
-import ReadingBG from "../../../assets/imgs/conversation.svg";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 31/SVG/Asset 28.svg";
+import WritingB from "./Unit4_Page4_WritingB";
+import WritingC from "./Unit4_Page4_WritingC"
+import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 36.svg";
 
 const WritingSection_U1 = () => {
   return (
     <div>
       {/* العنوان */}
       <div className="w-[60%] mx-auto mb-4 flex items-center">
-        <div
-          className="px-4 py-1 font-bold text-black w-fit"
+        <img
+          src={ReadingBG}
           style={{
-            backgroundImage: `url(${ReadingBG})`,
-            backgroundSize: "cover",
+            height: "70px",
+            width: "auto",
           }}
-        >
-          Writing
-        </div>
+        />
       </div>
 
       {/* المحتوى */}
@@ -28,7 +26,7 @@ const WritingSection_U1 = () => {
           style={{ width: "auto", height: "100%", objectFit: "contain" }}
         />
         <WritingA />
-        <Unit4_Page4_WritingB />
+        <WritingB />
         <WritingC />
       </div>
     </div>
