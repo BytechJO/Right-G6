@@ -1,19 +1,147 @@
 import React, { useState } from "react";
-import { FaRedo } from "react-icons/fa";
-import familyImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 29/SVG/Asset 7.svg";
+import { FaRedo, FaCheck, FaEye } from "react-icons/fa";
+import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../ActionButtons";
 
 const Unit4_Page2_ComprehensionB = () => {
-  const [answers, setAnswers] = useState(["", ""]);
+  const words = [
+    { word: "architecture", fixedSyllables: null },
+    { word: "renewable", fixedSyllables: null },
+    { word: "resources", fixedSyllables: null },
+    { word: "developed", fixedSyllables: null },
+  ];
 
-  // reset
-  const handleReset = () => {
-    setAnswers(["", ""]);
+  const correctAnswers = [
+    { syllables: "4", meaning: "a" },
+    { syllables: "4", meaning: "c" },
+    { syllables: "3", meaning: "b" },
+    { syllables: "3", meaning: "d" },
+  ];
+
+  const meanings = [
+    { letter: "a", text: "building design and study" },
+    { letter: "b", text: "supplies, usable things" },
+    { letter: "c", text: "able to be replaced" },
+    { letter: "d", text: "caused to grow or become more advanced" },
+  ];
+
+  const [answers, setAnswers] = useState(
+    words.map((w) => ({
+      syllables: w.fixedSyllables || "",
+      meaning: "",
+    })),
+  );
+
+  const [errors, setErrors] = useState(
+    words.map(() => ({ syllables: false, meaning: false })),
+  );
+
+  const [lockedFields, setLockedFields] = useState(
+    words.map((w) => ({ syllables: !!w.fixedSyllables, meaning: false })),
+  );
+
+  const [locked, setLocked] = useState(false);
+
+  const normalize = (text) => text.trim().toLowerCase().replace(/\s+/g, " ");
+
+  const updateField = (index, field, value) => {
+    const updated = [...answers];
+    updated[index][field] = value;
+    setAnswers(updated);
+
+    const updatedErrors = [...errors];
+    updatedErrors[index][field] = false;
+    setErrors(updatedErrors);
   };
 
-  const updateAnswer = (index, value) => {
-    const updated = [...answers];
-    updated[index] = value;
-    setAnswers(updated);
+  const handleCheck = () => {
+    if (locked) return;
+
+    const isEmpty = answers.some((a, i) => {
+      if (!words[i].fixedSyllables && normalize(a.syllables) === "")
+        return true;
+      if (normalize(a.meaning) === "") return true;
+      return false;
+    });
+
+    if (isEmpty) {
+      ValidationAlert.info("Please complete all fields.");
+      return;
+    }
+
+    let score = 0;
+    const newErrors = answers.map((ans, i) => {
+      const syllablesCorrect =
+        words[i].fixedSyllables ||
+        normalize(ans.syllables) === normalize(correctAnswers[i].syllables);
+      const meaningCorrect =
+        normalize(ans.meaning) === normalize(correctAnswers[i].meaning);
+
+      if (syllablesCorrect && meaningCorrect) score++;
+
+      return {
+        syllables: !syllablesCorrect,
+        meaning: !meaningCorrect,
+      };
+    });
+
+    const newLocked = answers.map((ans, i) => {
+      const syllablesCorrect =
+        !!words[i].fixedSyllables ||
+        normalize(ans.syllables) === normalize(correctAnswers[i].syllables);
+      const meaningCorrect =
+        normalize(ans.meaning) === normalize(correctAnswers[i].meaning);
+      return {
+        syllables: syllablesCorrect,
+        meaning: meaningCorrect,
+      };
+    });
+
+    setErrors(newErrors);
+    setLockedFields(newLocked);
+
+    const total = words.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color}; font-weight:bold;">Score: ${score} / ${total}</span>
+      </div>
+    `;
+
+    if (score === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (score === 0) {
+      ValidationAlert.error(msg);
+    } else {
+      ValidationAlert.warning(msg);
+    }
+  };
+
+  const handleShow = () => {
+    setAnswers(
+      correctAnswers.map((a, i) => ({
+        syllables: a.syllables,
+        meaning: a.meaning,
+      })),
+    );
+    setErrors(words.map(() => ({ syllables: false, meaning: false })));
+    setLockedFields(words.map(() => ({ syllables: true, meaning: true })));
+    setLocked(true);
+  };
+
+  const handleReset = () => {
+    setAnswers(
+      words.map((w) => ({
+        syllables: w.fixedSyllables || "",
+        meaning: "",
+      })),
+    );
+    setErrors(words.map(() => ({ syllables: false, meaning: false })));
+    setLockedFields(
+      words.map((w) => ({ syllables: !!w.fixedSyllables, meaning: false })),
+    );
+    setLocked(false);
   };
 
   return (
@@ -21,72 +149,146 @@ const Unit4_Page2_ComprehensionB = () => {
       {/* HEADER */}
       <h5 className="header-title-page8-read mb-8">
         <span className="ex-A-read mr-2">B</span>
-        Answer the questions.
+        Write the number of syllables for each word and match it to its meaning.
       </h5>
 
-      <div className="flex justify-between items-start gap-10">
-        {/* QUESTIONS */}
-        <div className="flex-1 space-y-10 text-[18px] mt-10">
-          {/* Q1 */}
-          <div>
-            <div className="mb-3">
-              <span className="font-bold mr-3">1</span>
-              Why do most parents work?
-            </div>
+      <div className="flex gap-10 items-start mt-6">
+        {/* TABLE */}
+        <div className="flex-1">
+          <table className="w-full border-collapse text-[18px]">
+            <thead>
+              <tr className="bg-[#dee7ca] text-[#84ad40]">
+                <th className="border border-[#84ad40] px-4 py-2 text-center">
+                  word
+                </th>
+                <th className="border border-[#84ad40] px-4 py-2 text-center">
+                  syllables
+                </th>
+                <th className="border border-[#84ad40] px-4 py-2 text-center">
+                  meaning
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {words.map((w, i) => (
+                <tr key={i} className="text-center">
+                  {/* WORD */}
+                  <td className="border border-[#84ad40] px-4 py-2 font-semibold">
+                    {w.word}
+                  </td>
 
-            <input
-              type="text"
-              value={answers[0]}
-              onChange={(e) => updateAnswer(0, e.target.value)}
-              className="w-full border-b border-black outline-none text-[#6D2980] font-bold px-2 py-1 bg-transparent"
-            />
-          </div>
+                  {/* SYLLABLES */}
+                  <td className="border border-[#84ad40] px-4 py-2 relative">
+                    {w.fixedSyllables ? (
+                      <span className="font-bold text-[#4caf50]">
+                        {w.fixedSyllables}
+                      </span>
+                    ) : (
+                      <div className="relative inline-block">
+                        <input
+                          type="text"
+                          value={answers[i].syllables}
+                          disabled={locked || lockedFields[i].syllables}
+                          maxLength={1}
+                          onChange={(e) =>
+                            updateField(i, "syllables", e.target.value)
+                          }
+                          className={`w-12 text-center border-b outline-none font-bold
+                            ${errors[i].syllables ? "border-red-500" : "border-gray-400"}`}
+                        />
+                        {errors[i].syllables && (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "50%",
+                              right: "-28px",
+                              transform: "translateY(-50%)",
+                              width: "22px",
+                              height: "22px",
+                              background: "red",
+                              color: "white",
+                              borderRadius: "50%",
+                              fontSize: "12px",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontWeight: "bold",
+                              border: "2px solid white",
+                              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            }}
+                          >
+                            ✕
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </td>
 
-          {/* Q2 */}
-          <div>
-            <div className="mb-3">
-              <span className="font-bold mr-3">2</span>
-              Do you think being a parent is a hard job? Why?
-            </div>
+                  {/* MEANING */}
+                  <td className="border border-[#84ad40] px-4 py-2">
+                    <div className="relative inline-block">
+                      <input
+                        type="text"
+                        value={answers[i].meaning}
+                        disabled={locked || lockedFields[i].meaning}
+                          maxLength={1}
 
-            <input
-              type="text"
-              value={answers[1]}
-              onChange={(e) => updateAnswer(1, e.target.value)}
-              className="w-full border-b border-black outline-none text-[#6D2980] font-bold px-2 py-1 bg-transparent"
-            />
-          </div>
+                        onChange={(e) =>
+                          updateField(i, "meaning", e.target.value)
+                        }
+                        className={`w-12 text-center border-b outline-none font-bold 
+                          ${errors[i].meaning ? "border-red-500" : "border-gray-400"}`}
+                      />
+                      {errors[i].meaning && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            right: "-28px",
+                            transform: "translateY(-50%)",
+                            width: "22px",
+                            height: "22px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            fontSize: "12px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                          }}
+                        >
+                          ✕
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* IMAGE */}
-        <img
-          src={familyImg}
-          alt="family"
-          style={{
-            width: "170px",
-            height: "180px",
-            objectFit: "contain",
-            marginTop: "32px",
-          }}
-        />
+        {/* MEANINGS LIST */}
+        <div className="bg-[#f0f7f0] h-[220px] rounded-xl px-6 py-4 text-[17px] min-w-[220px] space-y-2 flex flex-col gap-2 justify-between">
+          {meanings.map((m) => (
+            <div key={m.letter} className="flex gap-2 h-full ">
+              <span className="font-bold text-[#4caf50]">{m.letter}</span>
+              <span>{m.text}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* RESET BUTTON */}
-      <div className="flex justify-center mt-10">
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
+      {/* BUTTONS */}
+      <div className="flex justify-center gap-6 mt-10">
+        <ActionButtons
+          onShow={handleShow}
+          onReset={handleReset}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

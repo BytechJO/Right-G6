@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaRedo } from "react-icons/fa";
 
-const Unit4_Page4_WritingC = () => {
+const WritingC = () => {
   const [text, setText] = useState("");
 
   // 🔄 reset داخلي
@@ -14,7 +14,9 @@ const Unit4_Page4_WritingC = () => {
       {/* العنوان */}
       <h5 className="header-title-page8-read pb-2.5">
         <span className="ex-A-read mr-2">C</span>
-        In your notebook, write a paragraph about what you do during the day.
+        Now write a description in your notebook of the space you chose in
+        Exercise B. Use at least three present simple passive verbs and use the
+        writing tips as well.
       </h5>
 
       {/* textarea */}
@@ -40,4 +42,4 @@ const Unit4_Page4_WritingC = () => {
   );
 };
 
-export default Unit4_Page4_WritingC;
+export default WritingC;

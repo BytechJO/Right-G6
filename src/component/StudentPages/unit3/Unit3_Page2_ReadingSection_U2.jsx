@@ -8,19 +8,7 @@ import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
 import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 const ReadingSection_U2 = () => {
-  const paragraphs = [
-    "Susan: Oh, I missed the bus! If I woke up earlier today, I would get to school on time.",
-    "Lana: Well, I’m late, too. If I’d known I would miss the bus, I would have asked my mom if I could ride my bike.",
-    "Susan: Good idea. If we rode our bikes, we would get to school faster.",
-    "Lana: Yes. Now that we have to walk, we’re going to be really late.",
-    "Susan: I hope our teacher doesn’t get mad. At least there’s no test today.",
-    "Lana: Yes, being late on test day is terrible! Well, we’d better start walking! My books already feel heavy.",
-    "Susan: So did you get up late, too?",
-    "Lana: No, but my little brother needs lots of help in the morning. I’m from a big family, so the older children help the younger ones get ready.",
-    "Susan: Oh, that’s a big responsibility! I already have a hard time getting myself ready. If I had to get someone else ready, too, then I’d be late all the time!",
-    "Lana: You might be surprised. I have to set a good example. Plus, I know I have a lot to do in a short amount of time, so I learn to be careful and fast at the same time.",
-    "Susan: Maybe, I need to borrow some of your younger brothers and sisters for a while so I can learn to get ready more quickly!",
-  ];
+
 
   const captions = [
     {
