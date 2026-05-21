@@ -188,28 +188,21 @@ const WB_Unit8_ReadChooseMatch_A = () => {
 
         {/* Word Bank */}
         <div style={{
-          border: `1.5px solid #aaa`,
+          border: `2px solid #84ad40`,
           borderRadius: "6px",
           padding: "12px 16px",
           marginBottom: "16px",
-          fontSize: "15px",
+          marginTop: "16px",
+
+          fontSize: "16px",
           color: "#333",
         }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 32px", marginBottom: "4px" }}>
-            {WORD_BANK.slice(0, 5).map(({ label, word }) => (
+          <div style={{ display: "flex", justifyContent :"space-between", flexWrap: "wrap", gap: "4px 32px", marginBottom: "4px" }}>
+            {WORD_BANK.map(({ label, word }) => (
               <span key={label}><strong>{label}</strong> {word}</span>
             ))}
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 32px", marginBottom: "4px" }}>
-            {WORD_BANK.slice(5, 9).map(({ label, word }) => (
-              <span key={label}><strong>{label}</strong> {word}</span>
-            ))}
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 32px" }}>
-            {WORD_BANK.slice(9).map(({ label, word }) => (
-              <span key={label}><strong>{label}</strong> {word}</span>
-            ))}
-          </div>
+
         </div>
 
         {/* Picture Grid */}

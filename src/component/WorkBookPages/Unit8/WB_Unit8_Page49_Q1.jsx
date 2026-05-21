@@ -1,124 +1,180 @@
 import React, { useState } from "react";
+import ValidationAlert from "../../Popup/ValidationAlert";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+const BORDER = "#84ad40";
+
+// الكلمات — correct: true = يمكن استخدامها بدلاً من said
+const WORDS = [
+  { id: 1,  word: "told",           correct: true  },
+  { id: 2,  word: "spoke (speak)",  correct: true  },
+  { id: 3,  word: "spotted",        correct: false },
+  { id: 4,  word: "saw",            correct: false },
+  { id: 5,  word: "asked",          correct: false },
+  { id: 6,  word: "came",           correct: false },
+  { id: 7,  word: "typed",          correct: false },
+  { id: 8,  word: "questioned",     correct: true  },
+  { id: 9,  word: "stated",         correct: true  },
+  { id: 10, word: "replied",        correct: true  },
+  { id: 11, word: "did",            correct: false },
+  { id: 12, word: "exclaimed",      correct: true  },
+  { id: 13, word: "skipped",        correct: false },
+  { id: 14, word: "shouted",        correct: true  },
+  { id: 15, word: "made",           correct: false },
+  { id: 16, word: "rode",           correct: false },
+  { id: 17, word: "talked",         correct: true  },
+  { id: 18, word: "thought",        correct: false },
+  { id: 19, word: "dreamed",        correct: false },
+  { id: 20, word: "knew",           correct: false },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
+// ترتيب الجدول: 5 أعمدة × 4 صفوف
+const ROWS = [
+  [1, 2, 3, 4, 5],
+  [6, 7, 8, 9, 10],
+  [11,12,13,14,15],
+  [16,17,18,19,20],
 ];
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+const initSelected = () => {
+  const s = {};
+  WORDS.forEach(({ id }) => { s[id] = false; });
+  return s;
+};
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+// ── WordCircle — OUTSIDE parent ──
+const WordCircle = ({ word, selected, isCorrect, isWrong, isDisabled, onToggle }) => (
+  <span
+    onClick={() => !isDisabled && onToggle()}
+    style={{
+      position: "relative",
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "5px 14px",
+      borderRadius: "50px",
+      border: selected
+        ? `2px solid ${isWrong ? "#D1232A" : BORDER}`
+        : "2px solid transparent",
+      fontSize: "17px",
+      color: "#333",
+      cursor: isDisabled ? "default" : "pointer",
+      userSelect: "none",
+      transition: "border 0.15s",
+      whiteSpace: "nowrap",
+    }}
+  >
+    {word}
+    {/* Wrong badge */}
+    {isWrong && (
+      <span style={{
+        position: "absolute", top: "-7px", right: "-7px",
+        width: "16px", height: "16px", background: "#ef4444", color: "white",
+        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "10px", fontWeight: "bold", border: "2px solid white",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.25)", pointerEvents: "none",
+      }}>✕</span>
+    )}
+  </span>
+);
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+// ── MAIN COMPONENT ──
+const WB_Unit8_CircleWords_H = () => {
+  const [selected, setSelected] = useState(initSelected);
+  const [result,   setResult]   = useState({});  // { id: true|false }
+  const [locked,   setLocked]   = useState(false);
+
+  const handleToggle = (id) => {
+    if (locked || result[id] === true) return;
+    setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const checkAnswers = () => {
+    if (locked) return;
+
+    // تحقق: كل الكلمات الصحيحة مُحددة، وأي كلمة غلط محددة = خطأ
+    const nr = {};
+    let correct = 0;
+    let total = WORDS.filter((w) => w.correct).length;
+
+    WORDS.forEach(({ id, correct: isRight }) => {
+      const sel = selected[id];
+      if (isRight && sel) { nr[id] = true; correct++; }
+      else if (isRight && !sel) { nr[id] = false; }        // صحيحة لم تُحدد
+      else if (!isRight && sel) { nr[id] = false; }        // خاطئة وُحددت
+      else { nr[id] = undefined; }                         // خاطئة ولم تُحدد (صواب)
+    });
+
+    setResult(nr);
+    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
+  };
+
+  const showAnswers = () => {
+    const s = {}; const r = {};
+    WORDS.forEach(({ id, correct: isRight }) => {
+      s[id] = isRight;
+      r[id] = isRight ? true : undefined;
+    });
+    setSelected(s); setResult(r); setLocked(true);
+  };
+
+  const handleReset = () => { setSelected(initSelected()); setResult({}); setLocked(false); };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>H</span>
+          Circle each word that could be used instead of{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>said</span>{" "}
+          in a dialog.
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
+
+        {/* Word Grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gap: "18px 8px",
+          margin: "10% 0 ",
         }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          {ROWS.flat().map((id) => {
+            const word = WORDS.find((w) => w.id === id);
+            const sel      = selected[id];
+            const isCorrect = result[id] === true;
+            const isWrong   = result[id] === false && sel;
+            const isDisabled = locked || result[id] === true;
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
-
-
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
-            </div>
-          ))}
+            return (
+              <div key={id} style={{ display: "flex", justifyContent: "center" }}>
+                <WordCircle
+                  word={word.word}
+                  selected={sel}
+                  isCorrect={isCorrect}
+                  isWrong={isWrong}
+                  isDisabled={isDisabled}
+                  onToggle={() => handleToggle(id)}
+                />
+              </div>
+            );
+          })}
         </div>
 
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
+        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
+        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit8_CircleWords_H;
