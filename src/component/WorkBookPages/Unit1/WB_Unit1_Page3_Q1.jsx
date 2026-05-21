@@ -183,11 +183,7 @@ const WB_Unit1_Page3_VocabMatch = () => {
                 <div style={{ fontSize: "18px", color: "#444", marginBottom: "10px" }}>
                   <span style={{ fontWeight: "bold", marginRight: "8px" }}>{q.id}</span>
                   {q.definition}
-                  {q.id === 1 && (
-                    <span style={{ textDecoration: "underline", fontWeight: "bold", color: "#555", marginLeft: "4px" }}>
-                      supplies
-                    </span>
-                  )}
+            
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>

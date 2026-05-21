@@ -1,117 +1,109 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+const CHORES = [
+  { id: 1,  label: "wash the dishes:",    prefix: null },
+  { id: 2,  label: "sweep the floors:",   prefix: null },
+  { id: 3,  label: "mow the lawn:",       prefix: null },
+  { id: 4,  label: "dust the furniture:", prefix: null },
+  { id: 5,  label: "vacuum the carpet:",  prefix: null },
+  { id: 6,  label: "cook dinner:",        prefix: null },
+  { id: 7,  label: "feed the animal(s):", prefix: null },
+  { id: 8,  label: "mop the floors:",     prefix: null },
+  { id: 9,  label: "clean the bathroom:", prefix: null },
+  { id: 10, label: "do the shopping:",    prefix: null },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+const initAnswers = () => {
+  const a = {};
+  CHORES.forEach(({ id }) => { a[id] = ""; });
+  return a;
+};
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+// ── FreeInput — OUTSIDE parent ──
+const FreeInput = ({ choreId, value, onChange, flex = false }) => (
+  <input
+    type="text"
+    value={value}
+    onChange={(e) => onChange(choreId, e.target.value)}
+    style={{
+      flex: flex ? 1 : undefined,
+      width: flex ? undefined : "100%",
+      border: "none",
+      borderBottom: "1.5px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "17px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+      minWidth: 0,
+    }}
+  />
+);
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+// ── MAIN COMPONENT ──
+const WB_Unit4_ChoresSurvey_I = () => {
+  const [answers, setAnswers] = useState(initAnswers);
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+  const handleChange = (id, value) => {
+    setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () => setAnswers(initAnswers());
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>I</span>
+          Take a survey in your family to see who does which chores. Read each chore, and then write a{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>present simple passive</span>{" "}
+          that tells who does it. If a chore is not done by anyone, write "N/A."{" "}
+   
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        {/* Chores list */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "3em" }}>
+          {CHORES.map(({ id, label, prefix }) => (
+            <div key={id} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
 
+              {/* Chore label */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "18px" }}>
+                <span style={{ fontWeight: "bold", minWidth: "26px" }}>{id}</span>
+                <span>{label}</span>
+              </div>
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
+              {/* Input line */}
+              <div style={{ paddingLeft: "34px" }}>
+                {prefix ? (
+                  /* جملة 1: prefix ثابت + input */
+                  <div style={{ display: "flex", alignItems: "flex-end", gap: "6px" }}>
+                    <span style={{
+                      fontSize: "17px",
+                      whiteSpace: "nowrap",
+                      borderBottom: "1.5px solid #555",
+                      paddingBottom: "2px",
+                      color: "#333",
+                    }}>
+                      {prefix}
+                    </span>
+                    <FreeInput choreId={id} value={answers[id]} onChange={handleChange} flex />
+                  </div>
+                ) : (
+                  /* باقي الجمل: سطر فارغ كامل */
+                  <FreeInput choreId={id} value={answers[id]} onChange={handleChange} />
+                )}
+              </div>
+
             </div>
           ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
+      {/* Reset only */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +113,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit4_ChoresSurvey_I;

@@ -38,15 +38,12 @@ const WB_Unit2_Page11_C = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
-        {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-6">
+          <span className="ex-A" style={{ marginRight: "10px" }}>J</span>
+        Below is a list of adjectives and nouns. Use some of each of
+them to make sentences with <span style={{ color: "orange", fontWeight: "bold" }}> so .. . that</span>{" "} and <span style={{ color: "orange", fontWeight: "bold" }}>such ... that</span>{" "} {" "}
+
         </h5>
-</div>
         {/* Word Table */}
         <table style={{
           width: "100%", borderCollapse: "collapse",

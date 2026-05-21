@@ -248,7 +248,7 @@ const WB_Unit2_Page9_A_Crossword = () => {
         {/* Title */}
         <h5 className="header-title-page8 mb-6">
           <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
-          Write the vocabulary words in the correct squares. Use the chart to find the value for each letter <br />
+          Write the vocabulary words in the correct squares. Use the chart to find the value for each letter
           The total value of the letters in each word is placed at the end of the word.
         </h5>
 

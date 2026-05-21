@@ -203,7 +203,7 @@ const WB_Unit2_Page13_H = () => {
             D
           </span>
 
-         Write<strong style={{ color: "red" }}>✓</strong> or  <strong style={{ color: "red" }}>✕</strong>. to show if the second conditional sentence is
+         Write{" "} <strong style={{ color: "red" }}>✓</strong> or  <strong style={{ color: "red" }}>✕</strong>.{" "}  to show if the{" "} <strong style={{ color: "orange" }}>second conditional</strong>  sentence is
 correct or not.
          
         </h5>

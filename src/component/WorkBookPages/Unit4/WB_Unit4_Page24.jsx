@@ -17,7 +17,7 @@ const WB_Unit4_Page24 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 46 })}
+          onClick={() => openPopup("exercise", { startIndex: 33 })}
           // className="click-icon-page8-1 hover:scale-110 transition"
           style={{ overflow: "visible" }}
         >
@@ -40,7 +40,7 @@ const WB_Unit4_Page24 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 46 })}
+          onClick={() => openPopup("exercise", { startIndex: 34 })}
           // className="click-icon-page8-1 hover:scale-110 transition"
           style={{ overflow: "visible" }}
         >
