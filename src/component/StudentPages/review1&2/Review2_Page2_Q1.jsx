@@ -1,268 +1,274 @@
 import React, { useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../Button";
+
+const TABLE_DATA = [
+  {
+    subject: "The doctor",
+    adverb: "so",
+    adjNoun: "helpful",
+    clause: "felt better within a day",
+  },
+  {
+    subject: "Greg",
+    adverb: "such",
+    adjNoun: "athlete",
+    clause: "won a medal",
+  },
+  {
+    subject: "Camping",
+    adverb: "so much",
+    adjNoun: "fun",
+    clause: "we want to go again",
+  },
+  { subject: "Mom", adverb: "so", adjNoun: "happy", clause: "she hugged us" },
+];
+
+const QUESTIONS = [
+  {
+    correct: ["The doctor was so helpful that I felt better within a day"],
+    
+  },
+  { correct: ["Greg is such a good athlete that he won a gold medal"] },
+  { correct: ["Camping is so much fun that we all want to go again"] },
+  { correct: ["Mom was so happy that she hugged each one of us"] },
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""'';:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const Review2_Page2_Q1 = () => {
-  const words = [
-    "who made his first soccer goal today",
-    "which has very long legs",
-    "that is coming to town next week",
-    "who is a nurse",
-  ];
-
-  const correct = [
-    "that is coming to town next week",
-    "which has very long legs",
-    "who made his first soccer goal today",
-    "who is a nurse",
-  ];
-
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-  const [result, setResult] = useState([]);
+  const inputCount = QUESTIONS.filter((q) => !q.example).length;
+  const [answers, setAnswers] = useState(Array(inputCount).fill(""));
+  const [errors, setErrors] = useState(Array(inputCount).fill(null));
   const [locked, setLocked] = useState(false);
 
-  // 🎯 drag
-  const onDragEnd = (res) => {
-    if (!res.destination) return;
-    if (locked) return;
+  let counter = -1;
+  const mapped = QUESTIONS.map((q) => {
+    if (q.example) return { ...q, aIdx: null };
+    counter++;
+    return { ...q, aIdx: counter };
+  });
 
-    const word = words[res.source.index];
-    const dropIndex = parseInt(res.destination.droppableId);
-
-    const updated = [...answers];
-    updated[dropIndex] = word;
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[dropIndex] = undefined;
-      return copy;
-    });
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
+    if (errors[i] === true)
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // 🔥 click remove
-  const removeWord = (i) => {
-    if (locked) return;
-
-    const updated = [...answers];
-    updated[i] = "";
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
-  };
-
-  // ✅ CHECK
   const handleCheck = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a)) {
-      ValidationAlert.info("Fill all blanks.");
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info("Please complete all fields.");
       return;
     }
-
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = a === correct[i];
-      if (ok) correctCount++;
-      return ok;
+    let correct = 0;
+    const newErrors = answers.map((a, i) => {
+      const q = mapped.find((q) => q.aIdx === i);
+      const ok = q.correct.some((c) => normalize(a) === normalize(c));
+      if (ok) correct++;
+      return ok ? false : true;
     });
-
-    setResult(res);
-
-    const msg = `Score: ${correctCount} / 4`;
-
-   if (correctCount === 4) {
+    setErrors(newErrors);
+    const total = inputCount;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // 👀 SHOW
   const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
+    setAnswers(mapped.filter((q) => q.aIdx !== null).map((q) => q.correct[0]));
+    setErrors(Array(inputCount).fill(false));
     setLocked(true);
   };
 
-  // 🔄 RESET
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-    setResult([]);
+    setAnswers(Array(inputCount).fill(""));
+    setErrors(Array(inputCount).fill(null));
     setLocked(false);
   };
 
-  const DropBox = (i, width = "350px") => (
-    <Droppable droppableId={`${i}`}>
-      {(provided) => (
-        <span
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          onClick={() => removeWord(i)}
+  const renderInput = (q, num) => {
+    if (q.example) {
+      return (
+        <div
           style={{
-            display: "inline-block",
-            position: "relative", // 🔥 مهم
-            minWidth: width,
-            borderBottom:
-              result[i] === false ? "1px solid red" : "1px solid black",
-            margin: "0 5px",
-            fontWeight: "bold",
-            color: "#6D2980",
-            cursor: "pointer",
+            display: "flex",
+            alignItems: "baseline",
+            gap: "10px",
+            fontSize: "18px",
           }}
         >
-          {answers[i]}
-          {provided.placeholder}
+          <span style={{ fontWeight: "bold", minWidth: "20px" }}>{num}</span>
+          <span
+            style={{
+              borderBottom: "1px solid #555",
+              flex: 1,
+              fontSize: "18px",
+              textDecoration: "underline",
+              color: "#333",
+              paddingBottom: "2px",
+            }}
+          >
+            {q.correct[0]}
+          </span>
+        </div>
+      );
+    }
 
-          {/* ❌ */}
-          {result[i] === false && answers[i] && (
+    const i = q.aIdx;
+    const hasError = errors[i] === true;
+    const isOk = errors[i] === false;
+
+    return (
+      <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+        <span
+          style={{ fontWeight: "bold", minWidth: "20px", fontSize: "18px" }}
+        >
+          {num}
+        </span>
+        <div style={{ position: "relative", flex: 1 }}>
+          <input
+            value={answers[i]}
+            disabled={locked || isOk}
+            onChange={(e) => handleChange(i, e.target.value)}
+            style={{
+              width: "100%",
+              borderBottom: hasError ? "2px solid red" : "1px solid #555",
+              borderTop: "none",
+              borderLeft: "none",
+              borderRight: "none",
+              outline: "none",
+              background: "transparent",
+              fontSize: "18px",
+              fontWeight: 500,
+              padding: "2px 0",
+            }}
+          />
+          {hasError && (
             <span
               style={{
                 position: "absolute",
-                top: "-10px",
-                right: "-10px",
-                transform: "translateY(-50%)",
-                width: "20px",
-                height: "20px",
-                background: "#ef4444",
+                top: "-8px",
+                right: "-8px",
+                width: "22px",
+                height: "22px",
+                background: "red",
                 color: "white",
                 borderRadius: "50%",
-                display: "flex",
+                fontSize: "12px",
+                display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "12px",
                 fontWeight: "bold",
                 border: "2px solid white",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                pointerEvents: "none",
-                zIndex: 3,
+                boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                zIndex: 5,
               }}
             >
               ✕
             </span>
           )}
-        </span>
-      )}
-    </Droppable>
-  );
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
+    <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall">
-        <h5 className="header-title-page8 mb-15">
-          <span className="mr-3">D</span>Write the relative clause to complete
-          each sentence.
-        </h5>
+        {/* العنوان */}
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-2">C</span>
+       Put the sentence parts from the chart below together, to make sentences that make sense and then write them in the blank lines. </h5>
 
-        <DragDropContext onDragEnd={onDragEnd}>
-          {/* 🔥 بنك الكلمات */}
-          <Droppable droppableId="bank" direction="horizontal" isDropDisabled>
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr", // 🔥 عمودين
-                  gap: "10px",
-                  padding: "15px",
-                  borderRadius: "10px",
-                  marginBottom: "30px",
-                }}
+        {/* الجدول */}
+        <table
+          style={{
+            borderCollapse: "collapse",
+            width: "100%",
+            marginBottom: "32px",
+            border: "1.5px solid #84ad40",
+          }}
+        >
+          <thead>
+            <tr style={{ background: "#e6f0d6" }}>
+              {[
+                "subject",
+                "adverb (so, such)",
+                "adjective or noun",
+                "that",
+                "clause",
+              ].map((h, i) => (
+                <th
+                  key={i}
+                  style={{
+                    border: "1.5px solid #84ad40",
+                    padding: "8px 12px",
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    color: "#84ad40",
+                    textAlign: "left",
+                  }}
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {TABLE_DATA.map((row, i) => (
+              <tr
+                key={i}
+                // style={{ background: i % 2 === 0 ? "white" : "#f5faf0" }}
               >
-                {words.map((w, i) => {
-                  const used = answers.includes(w);
+                <td style={tdStyle}>
+                  <span style={{ fontWeight: "bold", marginRight: "6px" }}>
+                    {i + 1}
+                  </span>
+                  {row.subject}
+                </td>
+                <td style={tdStyle}>{row.adverb}</td>
+                <td style={tdStyle}>{row.adjNoun}</td>
+                <td style={tdStyle}>that</td>
+                <td style={tdStyle}>{row.clause}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-                  return (
-                    <Draggable
-                      key={w}
-                      draggableId={w}
-                      index={i}
-                      isDragDisabled={locked || used}
-                    >
-                      {(provided) => (
-                        <span
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            padding: "6px 10px",
-                            fontSize: "20px",
-                            background: "white",
-                            borderRadius: "8px",
-                            border: "1px solid #ccc",
-                            cursor: "grab",
-                            opacity: used ? 0.4 : 1,
-                            ...provided.draggableProps.style,
-                          }}
-                        >
-                          {w}
-                        </span>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+        {/* الأسئلة */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {mapped.map((q, i) => renderInput(q, i + 1))}
+        </div>
 
-          {/* 🔥 الجمل */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "30px",
-              fontSize: "20px",
-            }}
-          >
-            <div>
-              <span className="font-bold mr-4">1</span> Would you like to go to
-              the carnival {DropBox(0)}?
-            </div>
-
-            <div>
-              <span className="font-bold mr-4">2</span> The giraffe,{" "}
-              {DropBox(1)}, is an unusual looking animal.
-            </div>
-
-            <div>
-              <span className="font-bold mr-4">3</span> Are you surprised about
-              Carl {DropBox(2)}?
-            </div>
-
-            <div>
-              <span className="font-bold mr-4">4</span> My aunt, {DropBox(3)},
-              works at Red Cross Hospital.
-            </div>
-          </div>
-        </DragDropContext>
-
-        {/* buttons */}
-        <div className="action-buttons-container">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
-
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
+        <div className="flex justify-center gap-6 mt-8">
+          <ActionButtons
+            handleShowAnswer={handleShow}
+            handleStartAgain={handleReset}
+            checkAnswers={handleCheck}
+          />
         </div>
       </div>
     </div>
   );
+};
+
+const tdStyle = {
+  border: "1.5px solid #84ad40",
+  padding: "8px 12px",
+  fontSize: "16px",
+  color: "#333",
 };
 
 export default Review2_Page2_Q1;

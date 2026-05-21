@@ -17,68 +17,109 @@ const Reading_Unit2_Page1 = ({
   activeAudio,
   setActiveAudio,
 }) => {
+
   const [hoveredAreaIndex, setHoveredAreaIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   useEffect(() => {
     setActiveAudio(null);
   }, [setActiveAudio]);
-  const captionsExample = [
-    {
-      start: 0.38,
-      end: 1.2,
-      text: "Page twenty.",
-    },
-    {
-      start: 3.0,
-      end: 15.62,
-      text: "A desert drought ends. How hot is it in the desert? Some desert temperatures can be over fifty-five degrees Celsius. The animals that live there are trying to stay cool. How can they find water?",
-    },
-    {
-      start: 16.96,
-      end: 23.32,
-      text: "It isn't easy. In fact, a terrible drought has dried up the only water there was in Dry Desert.",
-    },
-    {
-      start: 24.46,
-      end: 87.02,
-      text: "Kathy the kangaroo rat, who jumps along her back legs, hasn't had a drink of water in a long time. How far has she jumped in search of water? Probably, she has jumped several kilometers now. Toad rests in the shade of a tall cactus. When will we get some rain? asks Leo the lizard. Kathy the kangaroo doesn't know. Some of the animals live inside the cactus, which keeps them cool.",
-    },
-    {
-      start: 87.02,
-      end: 147.02,
-      text: 'Tiny Bird and Teeny Bird are neighbors. They live in this cactus. "When are we going to get some rain?" asks Teeny Bird. Tiny Bird doesn\'t know. Kathy the kangaroo rat is exhausted from running around. She decides to go back to her home that is underground. She needs to rest and stay cool.',
-    },
-    {
-      start: 147.02,
-      end: 176.88,
-      text: 'Kathy settles down in her home. She wonders to herself, "When are we going to get some rain?" Suddenly, the sky gets dark. Toad starts running down the dry riverbed. No water has flowed in this river for a long time. There is a crash of thunder. Lightning lights up the dark sky.',
-    },
-    {
-      start: 88.07,
-      end: 116.88,
-      text: '"We are getting some rain, finally," yells Toad. The long drought is over. "Hooray for the rain," shout all the animals. Toad is very happy to see the water falling from the sky.',
-    },
-    {
-      start: 116.88,
-      end: 136.88,
-      text: 'The insects come out from the ground. Toad eats the insects with his long tongue. "Mm," says Toad, "I love the rain. How long will it last?"',
-    },
-    {
-      start: 136.88,
-      end: 156.88,
-      text: "By evening, the rain clouds are gone. The rain has stopped, but the ground is wet. The river flows with water again.",
-    },
-    {
-      start: 159.04,
-      end: 166.9,
-      text: 'Coyote, who stands on a cliff by herself, is in a happy mood now that the drought has ended. "Ahooo," she calls to the moon.',
-    },
-  ];
+const captions = [
+  {
+    start: 0.32,
+    end: 3.0,
+    text: "Page 20. Best sisters.",
+  },
+  {
+    start: 3.7,
+    end: 18.74,
+    text: "Carla and Louisa are sisters. Carla is eleven years old, and Louisa is eight. They are the only children in their family. They have been best friends for as long as they can remember. The sisters play together all the time.",
+  },
+  {
+    start: 18.8,
+    end: 29.27,
+    text: "Carla and Louisa go to the park. Carla is pushing Louisa on the swing, and they are having such a good time that they are laughing and smiling.",
+  },
+  {
+    start: 29.32,
+    end: 38.6,
+    text: "A girl walks over to them. Louisa hasn't seen her before, but Carla knows her right away. It is Erin, Carla's friend from school.",
+  },
+  {
+    start: 38.629,
+    end: 45.85,
+    text: "\"Hello, Carla,\" says Erin. \"Have you tried the big new slide yet? It's so fast that I felt like I was on a roller coaster.\"",
+  },
+  {
+    start: 46.81,
+    end: 52.68,
+    text: "\"No, I haven't,\" answers Carla. \"Do you want to show it to me? It would be fun to try it together.\"",
+  },
+  {
+    start: 54.0,
+    end: 56.68,
+    text: "Carla and Erin run to another part of the park.",
+  },
+  {
+    start: 57.82,
+    end: 66.35,
+    text: "Louisa does not go with them. She feels very sad. \"Carla has found a friend that she likes better than me,\" Louisa thinks to herself.",
+  },
+  {
+    start: 67.0,
+    end: 76.24,
+    text: "The next day, Erin comes over to play with Carla. They sing songs and play games. Louisa's mom reads her a story, but Louisa is still sad.",
+  },
+  {
+    start: 76.66,
+    end: 80.94,
+    text: "She feels all alone. \"What's wrong, honey?\" asks Mama.",
+  },
+  {
+    start: 81.8,
+    end: 91.76,
+    text: "\"Carla is having so much fun with Erin that she doesn't want to play with me anymore,\" said Louisa. \"They are such good friends that Carla doesn't have time for me.\"",
+  },
+  {
+    start: 92.79,
+    end: 101.38,
+    text: "\"Carla still loves you,\" said Mama, \"but she has friends her own age too.\" Mama takes Louisa to play in the park.",
+  },
+  {
+    start: 101.86,
+    end: 114.31,
+    text: "Louisa swings on the swings. She starts to get off when a girl close to Louisa's age comes over to her. \"Hi, my name is Karen,\" the girl says. \"My name is Louisa,\" Louisa answers.",
+  },
+  {
+    start: 114.89,
+    end: 124.76,
+    text: "\"Have you played on the new slide yet?\" asks Karen. Louisa says, \"No, but I'd love to try it.\" The girls tell their moms and run over to the slide.",
+  },
+  {
+    start: 125.3,
+    end: 138.42,
+    text: "Louisa and Karen have such an enjoyable time together. They laugh, talk, play, and sing songs. Louisa starts thinking about what Mama had said. It is nice for Louisa to have a friend her own age.",
+  },
+  {
+    start: 138.46,
+    end: 152.26,
+    text: "Karen has to go home, but the two friends talk about meeting in the park again soon. Louisa has made a new friend. Carla meets Louisa and Mama at the park, and Louisa tells her sister all about her new friend.",
+  },
+  {
+    start: 152.74,
+    end: 160.79,
+    text: "Carla is happy for Louisa. \"It's so nice to have a new friend,\" explains Louisa, \"but you will always be my best friend.\"",
+  },
+  {
+    start: 161.489,
+    end: 168.17,
+    text: "\"Yes, I will,\" agrees Carla. \"We are best sisters. How would you like to go on the slide together?\"",
+  },
+];
   const clickableAreas = [
-    { x1: 15.11, y1: 34.06, x2: 52.38, y2: 49.29, sound: sound2 },
-    { x1: 55.4, y1: 34.23, x2: 93.81, y2: 50.29, sound: sound3 },
-    { x1: 16.0, y1: 84.0, x2: 52.9, y2: 95.5, sound: sound4 },
-    { x1: 56.0, y1: 83.5, x2: 93.7, y2: 95.9, sound: sound5 },
+    { x1: 15.27, y1: 36.14, x2: 53.55, y2: 50.45, sound: sound2 },
+    { x1: 55.4, y1: 36.14, x2: 93.81, y2: 50.45, sound: sound3 },
+    { x1: 15.29, y1: 74.72, x2: 53.75, y2: 95.97, sound: sound4 },
+    { x1: 55.39, y1: 74.72, x2: 94.08, y2: 95.97, sound: sound5 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();
@@ -164,7 +205,7 @@ const Reading_Unit2_Page1 = ({
                   alignContent: "center",
                 }}
               >
-                <AudioWithCaption src={sound1} captions={captionsExample} />
+                <AudioWithCaption src={sound1} captions={captions} />
               </div>,
             );
           }}

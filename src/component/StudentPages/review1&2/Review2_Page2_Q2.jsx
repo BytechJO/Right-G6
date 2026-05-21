@@ -1,81 +1,111 @@
 import React, { useState } from "react";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/11.svg";
+import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/12.svg";
+import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/13.svg";
+import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/14.svg";
+
+const ITEMS = [{ img: img1 }, { img: img2 }, { img: img3 }, { img: img4 }];
 
 const Review2_Page2_Q2 = () => {
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState(ITEMS.map(() => ["", ""]));
 
-  const handleChange = (i, val) => {
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
+  const handleChange = (i, line, val) => {
+    setAnswers((prev) =>
+      prev.map((a, idx) =>
+        idx === i ? a.map((v, li) => (li === line ? val : v)) : a,
+      ),
+    );
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setAnswers(ITEMS.map(() => ["", ""]));
   };
 
-  const input = (i, width = "300px") => (
-    <input
-      value={answers[i]}
-      onChange={(e) => handleChange(i, e.target.value)}
-      style={{
-        display: "inline-block", // 🔥 مهم
-        width: width, // 🔥 نتحكم بالطول
-        borderBottom: "2px solid black",
-        outline: "none",
-        fontSize: "18px",
-        color: "#6D2980",
-        fontWeight: "bold",
-        background: "transparent",
-        margin: "0 6px",
-      }}
-    />
-  );
+  const lineStyle = {
+    width: "100%",
+    borderBottom: "1.5px solid #555",
+    borderTop: "none",
+    borderLeft: "none",
+    borderRight: "none",
+    outline: "none",
+    background: "transparent",
+    fontSize: "18px",
+    padding: "2px 0",
+    marginBottom: "12px",
+  };
 
   return (
-    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
+    <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall">
-        <h5 className="header-title-page8 mb-25">
-          <span className="mr-3">E</span>
-          Add a relative clause that tells about the noun next to it.
+        {/* العنوان */}
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-2">D</span>
+          Look at the picture, and then write a sentence using{" "}
+          <span style={{ color: "#f79631", fontWeight: "bold" }}>
+            so
+          </span> or{" "}
+          <span style={{ color: "#f79631", fontWeight: "bold" }}>such</span>.
         </h5>
 
         {/* الأسئلة */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "50px",
-            fontSize: "20px",
-          }}
-        >
-          <div>
-            <span style={{ fontWeight: "bold", marginRight: "10px" }}>1</span>I
-            found a small bird {input(0, "400px")}.
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          {ITEMS.map((item, i) => (
+            <div
+              key={i}
+              style={{ display: "flex", alignItems: "flex-start", gap: "20px" }}
+            >
+              {/* الصورة */}
+              <img
+                src={item.img}
+                alt={`item ${i + 1}`}
+                style={{
+                  width: "auto",
+                  height: "120px",
+                  objectFit: "contain",
+                  padding: "6px",
+                  flexShrink: 0,
+                }}
+              />
 
-          <div>
-            <span style={{ fontWeight: "bold", marginRight: "10px" }}>2</span>
-            Does Jimmy, {input(1, "300px")}, live in this neighborhood?
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div>
-              <span style={{ fontWeight: "bold", marginRight: "10px" }}>3</span>
-              Perhaps someone can bake a cake for Sally’s birthday,
+              {/* الرقم + السطرين */}
+              <div style={{ flex: 1, paddingTop: "8px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: "8px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                      minWidth: "20px",
+                    }}
+                  >
+                    {i + 1}
+                  </span>
+                  <input
+                    value={answers[i][0]}
+                    onChange={(e) => handleChange(i, 0, e.target.value)}
+                    style={{ ...lineStyle, marginBottom: 0 }}
+                  />
+                </div>
+                <div style={{ paddingLeft: "28px" }}>
+                  <input
+                    value={answers[i][1]}
+                    onChange={(e) => handleChange(i, 1, e.target.value)}
+                    style={{ ...lineStyle, marginBottom: 0 }}
+                  />
+                </div>
+              </div>
             </div>
-
-            {/* 🔥 السطر الثاني */}
-            <div style={{ marginLeft: "30px" }}>{input(2, "600px")}.</div>
-          </div>
-
-          <div>
-            <span style={{ fontWeight: "bold", marginRight: "10px" }}>4</span>
-            If we have a race, maybe Tim, {input(3, "350px")}, could win it.
-          </div>
+          ))}
         </div>
 
-        {/* 🔄 Reset */}
-        <div className="action-buttons-container">
+        {/* زر Reset فقط */}
+        <div className="flex justify-center mt-8">
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>

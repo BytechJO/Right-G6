@@ -1,278 +1,115 @@
 import React, { useState } from "react";
-import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../Button";
+import snowboardImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/10.svg"; // غير المسار
+
+const LINES = [
+  { type: "fixed",  text: "Snowboards are out" },
+  { type: "input",  letter: "N" },
+  { type: "input",  letter: "O" },
+  { type: "fixed",  text: "Wheee! Down we go!" },
+  { type: "fixed",  text: "Be alert!" },
+  { type: "fixed",  text: "Out in the snow!" },
+  { type: "fixed",  text: "Act fast!" },
+  { type: "input",  letter: "R" },
+  { type: "input",  letter: "D" },
+  { type: "input",  letter: "I" },
+  { type: "input",  letter: "N" },
+  { type: "fixed",  text: "Geronimo! (a word that is said as a jump or big action is done)" },
+];
+
+const inputLines = LINES.filter((l) => l.type === "input");
 
 const Review2_Page1_Q2 = () => {
-  const sentences = [
-    ["let’s", "sight"],
-    ["not", "much", "fast"],
-    ["keep", "my", "knees", "on", "the", "ground"],
-  ];
+  const [answers, setAnswers] = useState(Array(inputLines.length).fill(""));
 
-  const correctWordIndex = [1, 1, 2];
-  const correctAnswer = ["see", "not so fast", "keep my feet on the ground"];
+  let inputCounter = -1;
+  const mappedLines = LINES.map((l) => {
+    if (l.type === "fixed") return l;
+    inputCounter++;
+    return { ...l, idx: inputCounter };
+  });
 
-  const [selected, setSelected] = useState([null, null, null]);
-  const [answers, setAnswers] = useState(["", "", ""]);
-  const [result, setResult] = useState([]);
-  const [locked, setLocked] = useState(false);
-
-  const normalize = (t) => t.toLowerCase().replace(/[.]/g, "").trim();
-
-  // 🎯 اختيار الكلمة
-  const handleSelect = (i, wi) => {
-    if (result[i]?.word === true) return;
-
-    const updated = [...selected];
-    updated[i] = wi;
-    setSelected(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      if (copy[i]) copy[i].word = undefined;
-      return copy;
-    });
+  const handleChange = (idx, val) => {
+    setAnswers((prev) => prev.map((a, i) => (i === idx ? val : a)));
   };
 
-  // ✍️ كتابة التصحيح
-  const handleChange = (i, val) => {
-    if (result[i]?.answer === true) return;
-
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      if (copy[i]) copy[i].answer = undefined;
-      return copy;
-    });
-  };
-
-  // ✅ CHECK
-  const handleCheck = () => {
-    if (locked) return;
-
-    if (answers.some((a) => !a.trim()) || selected.includes(null)) {
-      ValidationAlert.info("Complete all answers.");
-      return;
-    }
-
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const wordCorrect = selected[i] === correctWordIndex[i];
-      const answerCorrect = normalize(a) === normalize(correctAnswer[i]);
-
-      if (wordCorrect) correctCount++;
-      if (answerCorrect) correctCount++;
-
-      return {
-        word: wordCorrect,
-        answer: answerCorrect,
-      };
-    });
-
-    setResult(res);
-
-    const total = 6;
-    const msg = `Score: ${correctCount} / ${total}`;
-
-    if (correctCount === total) {
-      setLocked(true);
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
-  };
-
-  // 👀 SHOW
-  const handleShow = () => {
-    setSelected(correctWordIndex);
-    setAnswers(correctAnswer);
-    setResult([]);
-    setLocked(true);
-  };
-
-  // 🔄 RESET
   const handleReset = () => {
-    setSelected([null, null, null]);
-    setAnswers(["", "", ""]);
-    setResult([]);
-    setLocked(false);
+    setAnswers(Array(inputLines.length).fill(""));
   };
 
   return (
-    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
+    <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall">
-        <h5 className="header-title-page8 mb-27">
-          <span className="mr-3">B</span>
-          What’s wrong? Find the one word that is wrong in each expression and
-          correct it.
-          <br /> Rewrite the expression.
+
+        {/* العنوان */}
+        <h5 className="header-title-page8 mb-7">
+          <span className="mr-2">B</span>
+          Make a special type of poem called an{" "}
+          <span style={{ color: "#f79631", fontWeight: "bold"}}>acrostic poem</span>{" "}
+          by putting words that describe{" "}
+          <span style={{ color: "#f79631", fontWeight: "bold" }}>snowboarding</span>{" "}
+          next to each letter. Use at least three vocabulary words or expressions found on page 10.
         </h5>
 
-        {/* الجمل */}
-        {sentences.map((sentence, i) => (
-          <div
-            key={i}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "16px",
-              marginBottom: "50px",
-              position: "relative", // 👈 مهم
-              paddingLeft: "40px", // 👈 مساحة للرقم
-            }}
-          >
-            {/* 🔢 الرقم */}
-            <span
-              style={{
-                position: "absolute",
-                left: 0,
-                top: "2px", // 👈 عدّلها (0 / 2 / 4) حسب ما يزبط معك
-                fontWeight: "bold",
-                fontSize: "22px",
-              }}
-            >
-              {i + 1}
-            </span>
+        {/* المحتوى */}
+        <div style={{ display: "flex", gap: "32px", alignItems: "flex-start" }}>
 
-            {/* 🔥 الجملة + الانبوت */}
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "baseline", // 👈 هذا الحل
-                gap: "10px",
-                flexWrap: "wrap",
-              }}
-            >
-              {/* الجملة */}
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "6px",
-                }}
-              >
-                {sentence.map((word, wi) => (
-                  <span
-                    key={wi}
-                    onClick={() => handleSelect(i, wi)}
+          {/* الأسطر */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "18px", fontSize: "18px" }}>
+            {mappedLines.map((line, i) => {
+              if (line.type === "fixed") {
+                return (
+                  <div key={i} style={{ fontSize: "18px", color: "#333" }}>
+                    {line.text}
+                  </div>
+                );
+              }
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "flex-end", gap: "6px" }}>
+                  <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "16px" }}>
+                    {line.letter}
+                  </span>
+                  <input
+                    value={answers[line.idx]}
+                    onChange={(e) => handleChange(line.idx, e.target.value)}
                     style={{
+                      flex: 1,
+                      borderBottom: "1px solid #555",
+                      borderTop: "none",
+                      borderLeft: "none",
+                      borderRight: "none",
+                      outline: "none",
+                      background: "transparent",
+                      fontSize: "18px",
                       padding: "2px 4px",
-                      cursor: "pointer",
-                      fontSize: "22px",
-                      border:
-                        result[i]?.word === false && selected[i] === wi
-                          ? "2px solid red" // ❌ غلط
-                          : selected[i] === wi
-                            ? "2px solid #00AEEF" // 🔵 مختار
-                            : "2px solid transparent",
-                      borderRadius: "20px",
-                      position: "relative",
                     }}
-                  >
-                    {word}
-
-                    {/* ❌ على الكلمة */}
-                    {result[i]?.word === false && selected[i] === wi && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: "-8px",
-                          right: "-8px",
-                          transform: "translateY(-50%)",
-                          width: "20px",
-                          height: "20px",
-                          background: "#ef4444",
-                          color: "white",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          border: "2px solid white",
-                          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                          pointerEvents: "none",
-                          zIndex: 3,
-                        }}
-                      >
-                        ✕
-                      </span>
-                    )}
-                  </span>
-                ))}
-              </div>
-
-              {/* 🔥 الانبوت */}
-              <div style={{ position: "relative", flex: 1, minWidth: "250px" }}>
-                <input
-                  value={answers[i]}
-                  onChange={(e) => handleChange(i, e.target.value)}
-                  disabled={result[i]?.answer === true}
-                  style={{
-                    width: "100%",
-                    borderBottom:
-                      result[i]?.answer === false
-                        ? "1px solid red"
-                        : "1px solid black",
-                    outline: "none",
-                    fontSize: "18px",
-                    color: "#6D2980",
-                    fontWeight: "bold",
-                    background: "transparent",
-                  }}
-                />
-
-                {/* ❌ على الانبوت */}
-                {result[i]?.answer === false && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "-10px",
-                      right: "-10px",
-                      transform: "translateY(-50%)",
-                      width: "20px",
-                      height: "20px",
-                      background: "#ef4444",
-                      color: "white",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      border: "2px solid white",
-                      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                      pointerEvents: "none",
-                      zIndex: 3,
-                    }}
-                  >
-                    ✕
-                  </span>
-                )}
-              </div>
-            </div>
+                  />
+                </div>
+              );
+            })}
           </div>
-        ))}
-        {/* buttons */}
-        <div className="action-buttons-container">
+
+          {/* الصورة */}
+          <img
+            src={snowboardImg}
+            alt="snowboarding"
+            style={{
+              width: "200px",
+              height: "240px",
+              objectFit: "contain",
+              borderRadius: "8px",
+              marginTop: "80px",
+            }}
+          />
+        </div>
+
+        {/* زر Reset فقط */}
+        <div className="flex justify-center mt-8">
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
         </div>
+
       </div>
     </div>
   );
