@@ -1,117 +1,104 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+const ITEMS = [
+  { id: 1, prefilled:null },
+  { id: 2, prefilled: null },
+  { id: 3, prefilled: null },
+  { id: 4, prefilled: null },
+  { id: 5, prefilled: null },
+  { id: 6, prefilled: null },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+const initAnswers = () => {
+  const a = {};
+  ITEMS.forEach(({ id, prefilled }) => { a[id] = prefilled || ""; });
+  return a;
+};
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+// ── FreeInput — OUTSIDE parent ──
+const FreeInput = ({ qId, value, onChange, disabled }) => (
+  <input
+    type="text"
+    value={value}
+    disabled={disabled}
+    onChange={(e) => onChange(qId, e.target.value)}
+    style={{
+      flex: 1,
+      border: "none",
+      borderBottom: "1px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "17px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+      minWidth: 0,
+      textDecoration: disabled ? "underline" : "none",
+    }}
+  />
+);
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+// ── MAIN COMPONENT ──
+const WB_Unit5_ShortAnswer_F = () => {
+  const [answers, setAnswers] = useState(initAnswers);
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+  const handleChange = (id, value) => {
+    setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () => setAnswers(initAnswers());
+
+  // جدول 2 عمود: [1,2] [3,4] [5,6]
+  const pairs = [[1, 2], [3, 4], [5, 6]];
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
+          For each of the sentences in Exercise E, write a short answer. You can decide if the
+          answer is{" "}
+          <span style={{ color: "#84ad40", fontWeight: "bold" }}>yes</span> or{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>no</span>, but the verb must
+          be correct.
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        {/* Grid 2 columns */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "70px", margin: "7% 0" }}>
+          {pairs.map(([left, right]) => (
+            <div key={left} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
 
+              {/* Left */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", fontSize: "17px" }}>
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>{left}</span>
+                <FreeInput
+                  qId={left}
+                  value={answers[left]}
+                  onChange={handleChange}
+                  disabled={!!ITEMS.find((i) => i.id === left)?.prefilled}
+                />
+              </div>
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
+              {/* Right */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", fontSize: "17px" }}>
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>{right}</span>
+                <FreeInput
+                  qId={right}
+                  value={answers[right]}
+                  onChange={handleChange}
+                  disabled={!!ITEMS.find((i) => i.id === right)?.prefilled}
+                />
+              </div>
+
             </div>
           ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
+      {/* Reset only */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +108,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit5_ShortAnswer_F;
