@@ -28,12 +28,12 @@ import Review2_Page2_Q2 from "./review1&2/Review2_Page2_Q2";
 // import Review2_Page2_Q3 from "./review1&2/Review2_Page2_Q3";
 
 // //unit3
-// import Unit3_Page5_Q1 from "./unit3/Unit3_Page5_Q1";
-// import Unit3_Page5_Q2 from "./unit3/Unit3_Page5_Q2";
-// import Unit3_Page5_Q3 from "./unit3/Unit3_Page5_Q3";
-// import Unit3_Page6_Q1 from "./unit3/Unit3_Page6_Q1";
-// import Unit3_Page6_Q2 from "./unit3/Unit3_Page6_Q2";
-// import Unit3_Page6_Q3 from "./unit3/Unit3_Page6_Q3";
+import Unit3_Page5_Q1 from "./unit3/Unit3_Page5_Q1";
+import Unit3_Page5_Q2 from "./unit3/Unit3_Page5_Q2";
+import Unit3_Page5_Q3 from "./unit3/Unit3_Page5_Q3";
+import Unit3_Page6_Q1 from "./unit3/Unit3_Page6_Q1";
+import Unit3_Page6_Q2 from "./unit3/Unit3_Page6_Q2";
+import Unit3_Page6_Q3 from "./unit3/Unit3_Page6_Q3";
 
 // // unit4
 // import Unit4_Page5_Q1 from "./unit4/Unit4_Page5_Q1";
@@ -169,18 +169,17 @@ export const lessons = [
 
   { component: Review2_Page1_Q1, unit: 2, isReview: true }, //17
   { component: Review2_Page1_Q2, unit: 2, isReview: true }, //18
-  // { component: Review2_Page1_Q3, unit: 2, isReview: true }, //19
-  { component: Review2_Page2_Q1, unit: 2, isReview: true }, //20
-  { component: Review2_Page2_Q2, unit: 2, isReview: true }, //21
-  // { component: Review2_Page2_Q3, unit: 2, isReview: true, lastOfUnit: true }, //22
+
+  { component: Review2_Page2_Q1, unit: 2, isReview: true }, //19
+  { component: Review2_Page2_Q2, unit: 2, isReview: true }, //20
 
   // //unit3
-  // { component: Unit3_Page5_Q1, unit: 3 }, //23
-  // { component: Unit3_Page5_Q2, unit: 3 }, //24
-  // { component: Unit3_Page5_Q3, unit: 3 }, //25
-  // { component: Unit3_Page6_Q1, unit: 3 }, //26
-  // { component: Unit3_Page6_Q2, unit: 3 }, //27
-  // { component: Unit3_Page6_Q3, unit: 3, lastOfUnit: true }, //28
+  { component: Unit3_Page5_Q1, unit: 3 }, //21
+  { component: Unit3_Page5_Q2, unit: 3 }, //22
+  { component: Unit3_Page5_Q3, unit: 3 }, //23
+  { component: Unit3_Page6_Q1, unit: 3 }, //24
+  { component: Unit3_Page6_Q2, unit: 3 }, //25
+  { component: Unit3_Page6_Q3, unit: 3, lastOfUnit: true }, //26
 
   // //unit4
   // { component: Unit4_Page5_Q1, unit: 4 }, //29

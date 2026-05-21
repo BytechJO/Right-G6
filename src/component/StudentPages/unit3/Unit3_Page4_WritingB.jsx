@@ -12,24 +12,17 @@ const WritingC = () => {
   return (
     <div className="space-y-4 w-full max-w-[900px] mx-auto">
       {/* العنوان */}
-      <div className="header-title-page8-read pb-2.5">
-        <span className="ex-A-read mr-2">C</span>
-        <div style={{ display: "block" }}>
-          In your notebook, write a conversation between you and one of your
-          parents about one of your friends.
-          <div style={{ marginTop: "4px" }}>
-            Use <span className="text-[#00AEEF]">he is</span> and{" "}
-            <span className="text-[#00AEEF]">she is</span> for your description
-            of your friend. Your conversation should be at least 10 lines long.
-          </div>
-        </div>
-      </div>
+      <h5 className="header-title-page8-read pb-2.5">
+        <span className="ex-A-read mr-2">B</span>
+        In your notebook, organize an essay that talks about the notes you made
+        above. Use at least two second conditional sentences.
+      </h5>
 
       {/* textarea */}
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="w-full h-[120px] border border-gray-300 p-2 outline-none mt-4 ml-12"
+        className="w-full h-[120px] border border-gray-300 p-2 outline-none mt-10"
         placeholder="Write your paragraph here..."
       />
 

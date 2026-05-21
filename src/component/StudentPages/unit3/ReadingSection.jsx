@@ -1,9 +1,9 @@
 import React from "react";
-import ReadingBG from "../../../assets/imgs/conversation.svg";
+import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
 import think from "../../../assets/imgs/pages/classbook/think.svg";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 import Button from "../../Button";
-
+import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
 const ReadingSection = ({
   mainTitle,
   title,
@@ -17,17 +17,13 @@ const ReadingSection = ({
   return (
     <div className="p-6 flex flex-col items-center ">
       <div className="flex items-center gap-4 mb-4 w-[60%]">
-        <div
-          className="px-4 py-1 font-bold text-black"
+        <img
+          src={ReadingBG}
           style={{
-            backgroundImage: `url(${ReadingBG})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
+            height: "60px",
+            width: "auto",
           }}
-        >
-          Reading
-        </div>
+        />
 
         <h2 className="font-bold text-[18px] text-black">{mainTitle}</h2>
       </div>
@@ -77,17 +73,13 @@ const ReadingSection = ({
 
       <div className="w-[60%] mt-3 space-y-6">
         <div className="flex items-center gap-4">
-          <div
-            className="px-4 py-1 font-bold text-black"
+          <img
+            src={comprehesion}
             style={{
-              backgroundImage: `url(${ReadingBG})`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
+              height: "60px",
+              width: "auto",
             }}
-          >
-            Comprehension
-          </div>
+          />
         </div>
       </div>
     </div>

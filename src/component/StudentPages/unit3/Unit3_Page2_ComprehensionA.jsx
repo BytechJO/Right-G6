@@ -1,205 +1,177 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
+
+const QUESTIONS = [
+  { id: 1, text: "Susan didn't get on the bus.", correct: "true" },
+  {
+    id: 2,
+    text: "Susan and Lana will probably arrive at school early.",
+    correct: "false",
+  },
+  { id: 3, text: "Lana has a small family.", correct: "false" },
+  {
+    id: 4,
+    text: "Susan and Lana don't have tests in school today.",
+    correct: "true",
+  },
+  { id: 5, text: "Lana doesn't carry any books.", correct: "false" },
+];
+
+const normalize = (str) => str.toLowerCase().trim();
 
 const Unit3_Page2_ComprehensionA = () => {
-  const options = [
-    "a wife and mother",
-    "a chef",
-    "married",
-    "a well-known writer",
-    "busy",
-    "lazy",
-    "a dolphin trainer",
-    "a famous news commentator and analyst",
-  ];
-
-  const correct = [
-    "a wife and mother",
-    "married",
-    "a well-known writer",
-    "busy",
-    "a famous news commentator and analyst",
-  ];
-
-  const [selected, setSelected] = useState([]);
-  const [result, setResult] = useState({});
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
   const [locked, setLocked] = useState(false);
 
-  // 🎯 select
-  const toggle = (opt) => {
-    if (locked) return;
-
-    setSelected((prev) =>
-      prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt],
-    );
-
-    setResult({});
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
+    if (errors[i] === true)
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // ✅ check
   const handleCheck = () => {
     if (locked) return;
-
-    if (selected.length === 0) {
-      ValidationAlert.info("Select at least one answer.");
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info("Please complete all fields.");
       return;
     }
-
-    let score = 0;
-    let res = {};
-
-    options.forEach((opt) => {
-      const isCorrect = correct.includes(opt);
-      const isSelected = selected.includes(opt);
-
-      if (isCorrect && isSelected) {
-        score++;
-        res[opt] = true;
-      } else if (!isCorrect && isSelected) {
-        res[opt] = false;
-      }
+    let correct = 0;
+    const newErrors = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(QUESTIONS[i].correct);
+      if (ok) correct++;
+      return ok ? false : true;
     });
-
-    setResult(res);
-
-    const msg = `Score: ${score} / ${correct.length}`;
-
-    if (score === correct.length) {
+    setErrors(newErrors);
+    const total = QUESTIONS.length;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (score === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // 👀 show
   const handleShow = () => {
-    setSelected(correct);
-    setResult({});
+    setAnswers(QUESTIONS.map((q) => q.correct));
+    setErrors(Array(QUESTIONS.length).fill(false));
     setLocked(true);
   };
 
-  // 🔄 reset
   const handleReset = () => {
-    setSelected([]);
-    setResult({});
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
   };
 
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read  mb-5">
-        <span className="ex-A-read" style={{ marginRight: "10px" }}>
-          A
-        </span>
-        Circle the phrases that are true.
+      <h5 className="header-title-page8-read mb-5">
+        <span className="ex-A-read mr-2">A</span>
+        Write <span style={{ color: "#f79631", fontWeight: "bold" }}>
+          true
+        </span>{" "}
+        or <span style={{ color: "#f79631", fontWeight: "bold" }}>false</span>{" "}
+        next to each statement.
       </h5>
 
-      <p className="mb-4 text-[18px] mt-10">Linda Robinson is ...</p>
-
-      {/* BOX */}
-      <div className="bg-[#D4C7DC] p-6 rounded-2xl grid grid-cols-3 gap-4 text-[18px] ">
-        {options.map((opt, i) => {
-          const isSelected = selected.includes(opt);
-
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          marginTop: "24px",
+        }}
+      >
+        {QUESTIONS.map((q, i) => {
+          const hasError = errors[i] === true;
+          const isOk = errors[i] === false;
           return (
             <div
               key={i}
-              onClick={() => toggle(opt)}
-              className="cursor-pointer relative"
               style={{
-                padding: "6px 10px",
-                borderRadius: "20px",
-                border:
-                  result[opt] === false
-                    ? "2px solid red" // ❌ إذا غلط
-                    : isSelected
-                      ? "2px solid #00AEEF" // 🔵 إذا مختار
-                      : "2px solid transparent", // ⚪ غير مختار
+                display: "flex",
+                alignItems: "baseline",
+                gap: "12px",
+                fontSize: "18px",
               }}
             >
-              {opt}
-
-              {/* ❌ */}
-              {result[opt] === false && (
-                <span
+              {/* الـ input */}
+              <span
+                style={{
+                  position: "relative",
+                  display: "inline-block",
+                  minWidth: "90px",
+                }}
+              >
+                <input
+                  value={answers[i]}
+                  disabled={locked || isOk}
+                  onChange={(e) => handleChange(i, e.target.value)}
                   style={{
-                    position: "absolute",
-                    top: "-8px",
-                    right: "-8px",
-                    transform: "translateY(-50%)",
-                    width: "20px",
-                    height: "20px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    pointerEvents: "none",
-                    zIndex: 3,
+                    width: "90px",
+                    borderBottom: hasError
+                      ? "2px solid red"
+                      : "1px solid #555",
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: "18px",
+                    fontWeight: 500,
+                    textAlign: "center",
+                    padding: "2px 0",
                   }}
-                >
-                  ✕
-                </span>
-              )}
+                />
+                {hasError && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      zIndex: 5,
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </span>
+
+              {/* الرقم */}
+              <span style={{ fontWeight: "bold", minWidth: "20px" }}>
+                {q.id}
+              </span>
+
+              {/* النص */}
+              <span>{q.text}</span>
             </div>
           );
         })}
       </div>
-      <div className="flex justify-center gap-6 mt-8">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
 
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      <div className="flex justify-center gap-6">
+        <ActionButtons
+          onShow={handleShow}
+            onReset={handleReset}
+            onCheck={handleCheck}
+        />
       </div>
     </div>
   );

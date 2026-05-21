@@ -23,16 +23,8 @@ const Unit3_Page1 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Jack",
-          text: "Hi, Sarah! This curry tastes great! Try some!",
-        },
-        {
-          speaker: "Sarah",
-          text: "Thanks, Jack, but no way! Curry tastes funny. Can I make a sandwich?",
-        },
-        {
-          speaker: "Jack",
-          text: "Sure! Help yourself from the fridge and cupboards.",
+          speaker: "Tom",
+          text: "I’m exhausted and thirsty. If I drank some water,I wouldn’t be so tired.",
         },
       ],
     },
@@ -42,242 +34,255 @@ const Unit3_Page1 = ({ openPopup }) => {
 
       dialogues: [
         {
-          speaker: "Sarah",
-          text: "You have rye bread. It is very tasty.",
+          speaker: "Helen",
+          text: "If we walked a little faster, we would be close to a restaurant by now.",
         },
         {
-          speaker: "Jack",
-          text: "Rye bread is my favorite.",
+          speaker: "Harley",
+          text: "Oh, look. There’s a fast food restaurant right there.",
         },
         {
-          speaker: "Sarah",
-          text: "Oh, here is a can of sardines. They are small salty fish. I love them!",
+          speaker: "Tom",
+          text: "I don’t think so! I don’t like fast foods.",
+        },
+        {
+          speaker: "Stella",
+          text: "I would have brought some food if I knew you’d be hungry. We had lots of leftovers from lunch.",
+        },
+        {
+          speaker: "Tom",
+          text: "Thanks, Stella, but I think I found what I’m looking for. Do you see that diner over there, Harley?",
+        },
+        {
+          speaker: "Harley",
+          text: "Yeah, it looks acceptable. Let’s take a look. (They reach the diner.)",
         },
       ],
     },
     {
       number: 3,
-      image: imgConversation3,
+      image: imgConversation4,
       dialogues: [
         {
-          speaker: "Jack",
-          text: "Really! That doesn’t sound good to me.",
+          speaker: "Tom",
+          text: "OK, here’s the menu. I’ll try the fried liver.",
         },
         {
-          speaker: "Sarah",
-          text: "Do you have any peanut butter?",
+          speaker: "Stella",
+          text: "If I were you, I wouldn’t eat that. I’d eat mashed potatoes.",
         },
         {
-          speaker: "Jack",
-          text: "Yes, there’s some peanut butter in the cupboard.",
+          speaker: "Helen",
+          text: "It’s too late. He’s already ordering.",
         },
       ],
     },
     {
       number: 4,
-      image: imgConversation4,
+      image: imgConversation3,
 
       dialogues: [
         {
-          speaker: "Sarah",
-          text: "Now, I’ll just top off my sandwich with some marshmallows.",
+          speaker: "Waiter",
+          text: "OK, one plate of fried livers and one bottle of water. What would the rest of you like to order?",
         },
         {
-          speaker: "Jack",
-          text: "Are you going to eat that sandwich?",
+          speaker: "Stella",
+          text: "Water, please. We’re not hungry. We just want to unwind.",
         },
         {
-          speaker: "Sarah",
-          text: "You bet! This is delicious. Have some.",
+          speaker: "Waiter",
+          text: "Your food will be ready in five minutes. (After five minutes, Tom is eating the fried liver.)",
         },
         {
-          speaker: "Jack",
-          text: "No, thank you. My curry is yummy!",
+          speaker: "Tom",
+          text: "Yummy! It tastes great. I wouldn’t mind if you all tried some.",
+        },
+        {
+          speaker: "Helen",
+          text: "Thanks for your offer, but I’ll pass.",
+        },
+        {
+          speaker: "Stella and Harley",
+          text: "No, thanks!",
         },
       ],
     },
   ];
   const captionsExample = [
     {
-      start: 0.219,
-      end: 5.939,
+      start: 0.399,
+      end: 5.42,
       text: "Page 22, conversation. Listen and read, then say",
     },
     {
-      start: 5.94,
-      end: 9.46,
-      text: "Hi, Sarah. This curry tastes great. Try some.",
+      start: 6.519,
+      end: 12.259,
+      text: "I'm exhausted and thirsty. If I drank some water, I wouldn't be so tired.",
     },
     {
-      start: 10.479,
-      end: 15.819,
-      text: "Thanks, Jack, but no way. Curry tastes funny. Can I make a sandwich?",
+      start: 13.38,
+      end: 17.719,
+      text: "If we walked a little faster, we would be close to a restaurant by now.",
     },
     {
-      start: 16.94,
-      end: 19.499,
-      text: "Sure. Help yourself from the fridge and cupboards.",
+      start: 17.719,
+      end: 22.0,
+      text: "Oh, look, there's a fast food restaurant right there. I don't think so.",
     },
     {
-      start: 20.559,
-      end: 23.279,
-      text: "You have rye bread. It is very tasty.",
+      start: 22.0,
+      end: 24.959,
+      text: "I don't like fast foods.",
     },
     {
-      start: 24.34,
-      end: 25.819,
-      text: "Rye bread is my favorite.",
+      start: 24.959,
+      end: 31.739,
+      text: "I would have brought some food if I knew you'd be hungry. We had lots of leftovers from lunch.",
     },
     {
-      start: 26.859,
-      end: 32.52,
-      text: "Oh, here's a can of sardines. They are small, salty fish. I love them.",
+      start: 31.739,
+      end: 39.019,
+      text: "Thanks, Stella. But I think I found what I'm looking for. Do you see that diner over there, Harley?",
     },
     {
-      start: 33.68,
-      end: 36.879,
-      text: "Really? That doesn't sound good to me.",
+      start: 39.02,
+      end: 43.319,
+      text: "Yeah, it looks acceptable. Let's take a look.",
     },
     {
-      start: 36.88,
-      end: 38.419,
-      text: "Do you have any peanut butter?",
+      start: 43.319,
+      end: 48.059,
+      text: "Okay, here's the menu. I'll try the fried liver.",
     },
     {
-      start: 39.479,
-      end: 42.239,
-      text: "Yes, there's some peanut butter in the cupboard.",
+      start: 48.059,
+      end: 53.199,
+      text: "If I were you, I wouldn't eat that. I'd eat mashed potatoes.",
     },
     {
-      start: 42.239,
-      end: 46.119,
-      text: "Now I'll just top off my sandwich with some marshmallows.",
+      start: 53.199,
+      end: 56.339,
+      text: "It's too late. He's already ordering.",
     },
     {
-      start: 47.139,
-      end: 48.819,
-      text: "Are you going to eat that sandwich?",
+      start: 56.34,
+      end: 62.379,
+      text: "Okay, one plate of fried livers and one bottle of water. What would the rest of you like to order?",
     },
     {
-      start: 50.0,
-      end: 53.219,
-      text: "You bet. This is delicious. Have some.",
+      start: 62.379,
+      end: 66.819,
+      text: "Water, please. We're not hungry. We just want to unwind.",
     },
     {
-      start: 54.259,
-      end: 56.079,
-      text: "No, thank you. My curry is yummy.",
+      start: 66.819,
+      end: 71.839,
+      text: "Your food will be ready in five minutes. After five minutes, Tom is eating the fried liver.",
+    },
+    {
+      start: 72.86,
+      end: 77.72,
+      text: "Yummy. It tastes great. I wouldn't mind if you all tried some.",
+    },
+    {
+      start: 77.72,
+      end: 80.319,
+      text: "Thanks for your offer, but I'll pass.",
+    },
+    {
+      start: 81.439,
+      end: 83.5,
+      text: "No, thanks.",
     },
   ];
   const captionTimings = [
-    [captionsExample[1], captionsExample[2], captionsExample[3]],
-    [captionsExample[4], captionsExample[5], captionsExample[6]],
-    [captionsExample[7], captionsExample[8], captionsExample[9]],
+    [captionsExample[1]],
     [
-      captionsExample[10],
+      captionsExample[2],
+      captionsExample[3],
+      captionsExample[4],
+      captionsExample[5],
+      captionsExample[6],
+      captionsExample[7],
+    ],
+    [captionsExample[8], captionsExample[9], captionsExample[10]],
+    [
       captionsExample[11],
       captionsExample[12],
       captionsExample[13],
+      captionsExample[14],
+      captionsExample[15],
+      captionsExample[16],
     ],
   ];
   const filteredSegments = wordJson.segments.slice(1);
 
   const Voc = [
+    [filteredSegments[0]?.words || []],
     [
-      filteredSegments[0]?.words || [],
       filteredSegments[1]?.words || [],
       filteredSegments[2]?.words || [],
-    ],
-    [
       filteredSegments[3]?.words || [],
       filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
+      filteredSegments[6]?.words || [],
     ],
     [
-      filteredSegments[6]?.words || [],
       filteredSegments[7]?.words || [],
       filteredSegments[8]?.words || [],
+      filteredSegments[9]?.words || [],
     ],
     [
-      filteredSegments[9]?.words || [],
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
       filteredSegments[12]?.words || [],
+      filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
+      filteredSegments[15]?.words || [],
     ],
   ];
 
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-    sound17,
-  ];
-  const captionVoc = [
-    {
-      start: 0.14,
-      end: 8.079,
-      text: "Page 22, Unit 3, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
-    },
 
-    { start: 9.099, end: 10.599, text: "1. curry." },
-    { start: 11.479, end: 13.199, text: "2. fridge." },
-    { start: 14.079, end: 15.979, text: "3. cupboards." },
-    { start: 16.879, end: 19.239, text: "4. rye bread." },
-
-    { start: 20.219, end: 22.079, text: "5. tasty." },
-    { start: 23.079, end: 25.079, text: "6. sardines." },
-    { start: 26.0, end: 27.819, text: "7. salty." },
-    { start: 28.68, end: 30.639, text: "8. peanut butter." },
-
-    { start: 31.5, end: 33.579, text: "9. marshmallows." },
-    { start: 34.34, end: 36.059, text: "10. yummy." },
-    { start: 37.059, end: 39.18, text: "11. try some." },
-
-    { start: 40.2, end: 42.18, text: "12. no way." },
-    { start: 43.139, end: 45.539, text: "13. tastes funny." },
-    { start: 46.539, end: 48.599, text: "14. help yourself." },
-    { start: 49.52, end: 51.399, text: "15. really?" },
-
-    { start: 52.459, end: 55.379, text: "16. that doesn't sound good." },
-
-    { start: 56.419, end: 58.36, text: "17. top off." },
-  ];
+const captionVoc = [
+  {
+    start: 0.179,
+    end: 8.659,
+    text: "Page 22, unit three vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
+  },
+  { start: 8.659, end: 10.8, text: "1. exhausted." },
+  { start: 10.8, end: 13.179, text: "2. fast foods." },
+  { start: 13.179, end: 15.579, text: "3. leftovers." },
+  { start: 15.579, end: 17.659, text: "4. dinner." },
+  { start: 17.659, end: 20.1, text: "5. acceptable." },
+  { start: 20.1, end: 22.299, text: "6. liver." },
+  { start: 22.299, end: 24.34, text: "7. offer." },
+  { start: 24.34, end: 27.479, text: "8. mashed potatoes." },
+  { start: 27.479, end: 29.939, text: "9. unwind." },
+  { start: 29.939, end: 33.239, text: "10. I don't think so." },
+  { start: 33.239, end: 36.219, text: "11. let's take a look." },
+  { start: 36.219, end: 38.919, text: "12. if I were you." },
+  { start: 38.919, end: 41.84, text: "13. it's too late." },
+  { start: 41.84, end: 45.059, text: "14. I wouldn't mind." },
+  { start: 45.059, end: 47.08, text: "15. I'll pass." },
+];
   const wordTimingsVoc = [
-    { start: 9.099, end: 10.599 }, // curry
-    { start: 11.479, end: 13.199 }, // fridge
-    { start: 14.079, end: 15.979 }, // cupboards
-    { start: 16.879, end: 19.239 }, // rye bread
-
-    { start: 20.219, end: 22.079 }, // tasty
-    { start: 23.079, end: 25.079 }, // sardines
-    { start: 26.0, end: 27.819 }, // salty
-    { start: 28.68, end: 30.639 }, // peanut butter
-
-    { start: 31.5, end: 33.579 }, // marshmallows
-    { start: 34.34, end: 36.059 }, // yummy
-    { start: 37.059, end: 39.18 }, // try some
-
-    { start: 40.2, end: 42.18 }, // no way
-    { start: 43.139, end: 45.539 }, // tastes funny
-    { start: 46.539, end: 48.599 }, // help yourself
-    { start: 49.52, end: 51.399 }, // really
-
-    { start: 52.459, end: 55.379 }, // that doesn't sound good
-    { start: 56.419, end: 58.36 }, // top off
+    { start: 8.659, end: 10.8, text: "1. exhausted." },
+  { start: 10.8, end: 13.179, text: "2. fast foods." },
+  { start: 13.179, end: 15.579, text: "3. leftovers." },
+  { start: 15.579, end: 17.659, text: "4. dinner." },
+  { start: 17.659, end: 20.1, text: "5. acceptable." },
+  { start: 20.1, end: 22.299, text: "6. liver." },
+  { start: 22.299, end: 24.34, text: "7. offer." },
+  { start: 24.34, end: 27.479, text: "8. mashed potatoes." },
+  { start: 27.479, end: 29.939, text: "9. unwind." },
+  { start: 29.939, end: 33.239, text: "10. I don't think so." },
+  { start: 33.239, end: 36.219, text: "11. let's take a look." },
+  { start: 36.219, end: 38.919, text: "12. if I were you." },
+  { start: 38.919, end: 41.84, text: "13. it's too late." },
+  { start: 41.84, end: 45.059, text: "14. I wouldn't mind." },
+  { start: 45.059, end: 47.08, text: "15. I'll pass." },
   ];
   return (
     <div
@@ -307,7 +312,7 @@ const Unit3_Page1 = ({ openPopup }) => {
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={6}
+                  stopAtSecond={5.42}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -352,27 +357,25 @@ const Unit3_Page1 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8}
-                  sounds={sounds}
+                  stopAtSecond={8.2}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "curry",
-                    "fridge",
-                    "cupboards",
-                    "rye bread",
-                    "tasty",
-                    "sardines",
-                    "salty",
-                    "peanut butter",
-                    "marshmallows",
-                    "yummy",
-                    "try some",
-                    "no way",
-                    "tastes funny",
-                    "help yourself",
-                    "really",
-                    "that doesn't sound good",
-                    "top off",
+                    "exhausted",
+                    "fast foods",
+                    "leftovers",
+                    "diner",
+                    "acceptable",
+                    "liver",
+                    "offer",
+                    "mashed potatoes",
+                    "unwind",
+                    "I don’t think so!",
+                    "Let’s take a look.",
+                    "If I were you, ...",
+                    "It’s too late.",
+                    "I wouldn’t mind ...",
+                    "I’ll pass.",
                   ]}
                 />
               </div>,

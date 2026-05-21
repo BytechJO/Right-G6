@@ -1,228 +1,290 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 27/Asset 19.svg"; // حط صورتك
 import grammer_u1 from "../../../assets/audio/ClassBook/U3/PG 27/pg27.mp3";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
-const Unit3_Page6_Q2 = () => {
-  const questions = [
-    "Some graduates are going to the ceremony.",
-    "Sally has a nice dress to wear.",
-    "Sally goes shopping at the mall.",
-    "Sally is confused by the many stores.",
-    "She goes into a big shop at the corner.",
-  ];
 
-  const correct = ["false", "false", "true", "true", "false"];
-  const captions = [
-    {
-      start: 0.159,
-      end: 34.48,
-      text: "Page 27, write activities. Exercise E. Read, listen, and circle true or false. Sally is graduating from high school tomorrow. Every graduate is going to the graduation ceremony. Sally doesn't have a nice dress to wear. She decides to go shopping at the mall near her house. There are many stores to choose from. Sally is confused. She goes into a small shop at the corner. She finds a beautiful pink and white shirt and skirt. Sally is happy with her new outfit. Now she is ready for her graduation ceremony.",
-    },
-  ];
-  const [answers, setAnswers] = useState(Array(5).fill(""));
-  const [result, setResult] = useState([]);
+const QUESTIONS = [
+  {
+    id: 1,
+    symbol: "x",
+    symbolColor: "#f79631",
+    parts: [
+      {
+        prefix: "The teachers couldn't",
+        inputKey: "q1_p1",
+        suffix: "if we didn't have",
+      },
+      { inputKey: "q1_p2", suffix: "." },
+    ],
+  },
+  {
+    id: 2,
+    symbol: "?",
+    symbolColor: "#f79631",
+    parts: [
+      { prefix: "If they", inputKey: "q2_p1", suffix: ", " },
+      { prefix: "wold", inputKey: "q2_p2", suffix: " " },
+      { inputKey: "q2_p3", prefix: "open", suffix: "?" },
+    ],
+  },
+  {
+    id: 3,
+    symbol: "x",
+    symbolColor: "#f79631",
+    parts: [{ inputKey: "q3_p1", suffix: "." }],
+  },
+  {
+    id: 4,
+    symbol: ".",
+    symbolColor: "#f79631",
+    parts: [{ inputKey: "q4_p1", suffix: "." }],
+  },
+];
+
+const CORRECT = {
+  q1_p1: ["grade the tests easily"],
+  q1_p2: ["multiple choice tests"],
+  q2_p1: ["had more books"],
+  q2_p2: ["it on weekends"],
+  q2_p3: ["soon"],
+  q3_p1: ["Karl wouldn’t buy a bicycle if he didn’t save his money from work."],
+  q4_p1: ["We would get a swimming pool if we moved to the desert."],
+};
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""''’;:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+// LineInput خارج الكومبوننت
+const LineInput = ({ inputKey, answers, errors, locked, onChange }) => {
+  const isOk = errors[inputKey] === true;
+  const isWrong = errors[inputKey] === false;
+  return (
+    <span
+      style={{
+        position: "relative",
+        display: "inline-block",
+        flex: 1,
+        minWidth: "120px",
+      }}
+    >
+      <input
+        value={answers[inputKey] || ""}
+        disabled={locked || isOk}
+        onChange={(e) => onChange(inputKey, e.target.value)}
+        style={{
+          width: "100%",
+          border: "none",
+          borderBottom: isWrong ? "2px solid #ef4444" : "1.5px solid #888",
+          outline: "none",
+          background: "transparent",
+          fontSize: "18px",
+          fontWeight: 500,
+          // color: isOk ? "#84ad40" : "#6D2980",
+        }}
+      />
+      {isWrong && (
+        <span
+          style={{
+            position: "absolute",
+            top: "-8px",
+            right: "-8px",
+            width: "22px",
+            height: "22px",
+            background: "red",
+            color: "white",
+            borderRadius: "50%",
+            fontSize: "12px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+            zIndex: 5,
+            pointerEvents: "none",
+          }}
+        >
+          ✕
+        </span>
+      )}
+    </span>
+  );
+};
+
+const Unit3_Page6_Q2 = () => {
+  const allKeys = Object.keys(CORRECT);
+  const initAnswers = () => Object.fromEntries(allKeys.map((k) => [k, ""]));
+  const initErrors = () => Object.fromEntries(allKeys.map((k) => [k, null]));
+
+  const [answers, setAnswers] = useState(initAnswers);
+  const [errors, setErrors] = useState(initErrors);
   const [locked, setLocked] = useState(false);
 
-  // ✅ CHECK
-  const handleCheck = () => {
-    if (locked) return;
-
-    if (answers.some((a) => !a)) {
-      ValidationAlert.info("Please select all answers.");
-      return;
-    }
-
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = a === correct[i];
-      if (ok) correctCount++;
-      return ok;
-    });
-
-    setResult(res);
-
-    const total = correct.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
-      setLocked(true);
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+  const handleChange = (key, val) => {
+    if (locked || errors[key] === true) return;
+    setAnswers((prev) => ({ ...prev, [key]: val }));
+    setErrors((prev) => ({ ...prev, [key]: null }));
   };
 
-  // 👀 SHOW
+  const handleCheck = () => {
+    if (locked) return;
+    if (allKeys.some((k) => !answers[k].trim())) {
+      ValidationAlert.info();
+      return;
+    }
+    let score = 0;
+    const newErr = {};
+    allKeys.forEach((k) => {
+      const ok = CORRECT[k].some((c) => normalize(answers[k]) === normalize(c));
+      if (ok) score++;
+      newErr[k] = ok;
+    });
+    setErrors(newErr);
+    const total = allKeys.length;
+    const msg = `Score: ${score} / ${total}`;
+    if (score === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
+  };
+
   const handleShow = () => {
-    setAnswers(correct);
-    setResult([]);
+    const shown = {};
+    allKeys.forEach((k) => (shown[k] = CORRECT[k][0]));
+    setAnswers(shown);
+    const okErr = {};
+    allKeys.forEach((k) => (okErr[k] = true));
+    setErrors(okErr);
     setLocked(true);
   };
 
-  // 🔄 RESET
   const handleReset = () => {
-    setAnswers(Array(5).fill(""));
-    setResult([]);
+    setAnswers(initAnswers());
+    setErrors(initErrors());
     setLocked(false);
   };
 
+  const inputProps = { answers, errors, locked, onChange: handleChange };
+
   return (
     <div className="flex flex-col items-center p-8">
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-10">
+      <div className="div-forall"  style={{ gap: "20px" }}>
+        {/* العنوان */}
+        <h5 className="header-title-page8 mb-4">
           <span className="ex-A mr-2.5">E</span>
-          Read, listen, and circle <span className="text-blue-500">
-            true
-          </span>{" "}
-          or <span className="text-blue-500">false</span>.
+          Listen to each sentence, and then change it to a positive statement{" "}
+          <span style={{ color: "#f79631" }}>(.)</span>, a question{" "}
+          <span style={{ color: "#f79631" }}>(?)</span>, or a negative statement{" "}
+          <span style={{ color: "#f79631" }}>(×)</span>.
         </h5>
-        <QuestionAudioPlayer
-          src={grammer_u1}
-          captions={captions}
-          stopAtSecond={7.4}
-        />
-        {/* BOX */}
-        <div
-          className="rounded-2xl p-6 mb-10 text-[18px] leading-10 text-black"
-          style={{
-            backgroundImage: `url(${img})`,
-            backgroundSize: "contain",
-            backgroundPosition: "right",
-            backgroundRepeat: "no-repeat",
-            minHeight: "300px",
-          }}
-        >
-          <div className="max-w-[500px]">
-            Sally is graduating from high school tomorrow. Every graduate is
-            going to the graduation ceremony. Sally doesn’t have a nice dress to
-            wear. She decides to go shopping at the mall near her house. There
-            are many stores to choose from. Sally is confused. She goes into a
-            small shop at the corner. She finds a beautiful pink and white shirt
-            and skirt. Sally is happy with her new outfit. Now, she is ready for
-            her graduation ceremony.
-          </div>
+
+        {/* مشغل الصوت */}
+        <div className="mb-6">
+          <QuestionAudioPlayer src={grammer_u1} captions={[]} />
         </div>
 
-        {/* QUESTIONS */}
-        <div className="space-y-6 text-[18px] mb-20">
-          {questions.map((q, i) => (
-            <div key={i} className="flex justify-between items-center">
-              <div>
-                <span className="font-bold mr-3">{i + 1}</span>
-                {q}
-              </div>
-
-              <div className="relative flex gap-6 items-center">
-                {/* TRUE */}
-                <span
-                  onClick={() => {
-                    if (locked || result[i] === true) return;
-
-                    const updated = [...answers];
-                    updated[i] = "true";
-                    setAnswers(updated);
-
-                    setResult((prev) => {
-                      const copy = [...prev];
-                      copy[i] = undefined;
-                      return copy;
-                    });
-                  }}
-                  className={`cursor-pointer px-2 rounded-full border-2
-                      ${
-                        result[i] === false && answers[i] === "true"
-                          ? "border-red-500"
-                          : answers[i] === "true"
-                            ? "border-[#6D2980]"
-                            : "border-transparent"
-                      }`}
-                >
-                  true
+        {/* الأسئلة */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "28px",
+            fontSize: "17px",
+          }}
+        >
+          {QUESTIONS.map((q) => (
+            <div key={q.id}>
+              {/* السطر الأول: رقم + رمز + أول part */}
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <span style={{ fontWeight: "bold", minWidth: "20px" }}>
+                  {q.id}
                 </span>
 
-                {/* FALSE */}
-                <span
-                  onClick={() => {
-                    if (locked || result[i] === true) return;
-
-                    const updated = [...answers];
-                    updated[i] = "false";
-                    setAnswers(updated);
-
-                    setResult((prev) => {
-                      const copy = [...prev];
-                      copy[i] = undefined;
-                      return copy;
-                    });
-                  }}
-                  className={`cursor-pointer px-2 rounded-full border-2
-                    ${
-                      result[i] === false && answers[i] === "false"
-                        ? "border-red-500 "
-                        : answers[i] === "false"
-                          ? "border-[#6D2980]"
-                          : "border-transparent"
-                    }`}
-                >
-                  false
-                </span>
-
-                {/* ❌ */}
-                {result[i] === false && (
+                {/* الرمز */}
+                <span className="flex justify-center">
+                  ({" "}
                   <span
                     style={{
-                      position: "absolute",
-                      top: "15px",
-                      right: "-50px",
-                      transform: "translateY(-50%)",
-                      width: "20px",
-                      height: "20px",
-                      background: "#ef4444",
-                      color: "white",
-                      borderRadius: "50%",
+                      width: "28px",
+                      height: "28px",
+                      // borderRadius: "50%",
+                      // border: `2px solid ${q.symbolColor}`,
+                      color: q.symbolColor,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "12px",
+                      fontSize: "20px",
                       fontWeight: "bold",
-                      border: "2px solid white",
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                      pointerEvents: "none",
-                      zIndex: 3,
+                      flexShrink: 0,
                     }}
                   >
-                    ✕
+                    {q.symbol}
+                  </span>
+                  )
+                </span>
+                {/* الـ part الأول */}
+                {q.parts[0].prefix && (
+                  <span
+                    style={{
+                      color: "#333",
+                      fontSize: "18px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {q.parts[0].prefix}
+                  </span>
+                )}
+                <LineInput inputKey={q.parts[0].inputKey} {...inputProps} />
+                {q.parts[0].suffix && (
+                  <span style={{ color: "#333", whiteSpace: "nowrap" }}>
+                    {q.parts[0].suffix}
                   </span>
                 )}
               </div>
+
+              {/* السطر الثاني إن وجد */}
+              {q.parts[1] && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginTop: "10px",
+                    paddingLeft: "56px",
+                  }}
+                >
+                  {q.parts[1].prefix && (
+                    <span style={{ color: "#333", whiteSpace: "nowrap" }}>
+                      {q.parts[1].prefix}
+                    </span>
+                  )}
+                  <LineInput inputKey={q.parts[1].inputKey} {...inputProps} />
+                  {q.parts[1].suffix && (
+                    <span style={{ color: "#333", whiteSpace: "nowrap" }}>
+                      {q.parts[1].suffix}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        {/* BUTTONS */}
-        <div className="action-buttons-container mt-6">
+        {/* Buttons */}
+        <div className="action-buttons-container mt-8">
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-
           <button onClick={handleShow} className="show-answer-btn">
             Show Answer
           </button>
-
           <button className="check-button2" onClick={handleCheck}>
             Check Answer ✓
           </button>
