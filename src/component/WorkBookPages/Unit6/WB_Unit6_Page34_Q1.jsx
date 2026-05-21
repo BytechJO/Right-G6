@@ -1,117 +1,86 @@
 import React, { useState } from "react";
+import babyImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/2-cropped (3).svg";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
-];
+const SENTENCES = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+const initAnswers = () => {
+  const a = {};
+  SENTENCES.forEach(({ id }) => { a[id] = ""; });
+  return a;
+};
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+const FullLineInput = ({ value, onChange }) => (
+  <input
+    type="text"
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    style={{
+      flex: 1,
+      border: "none",
+      borderBottom: "1.5px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "17px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+      minWidth: 0,
+    }}
+  />
+);
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+const WB_Unit_IAmUsedTo_D = () => {
+  const [answers, setAnswers] = useState(initAnswers);
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+  const handleChange = (id, value) => {
+    setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () => setAnswers(initAnswers());
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>D</span>
+          Think of three things that you have done for at least three years. Write about them here,
+          using the form{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>I am used to + -ing verb</span>.
+          {" "}Example:{" "}
+          <span style={{ color: "orange", fontStyle: "italic" }}>
+            I am used to taking care of my little brother.
+          </span>
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        {/* Inputs + Image side by side */}
+        <div style={{ display: "flex", alignItems: "center", gap: "24px", margin: "2em 0" }}>
 
+          {/* Sentences — take remaining space */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "50px", flex: 1 }}>
+            {SENTENCES.map(({ id }) => (
+              <div key={id} style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}>
+                <span style={{ fontWeight: "bold", fontSize: "20px", minWidth: "20px" }}>{id}</span>
+                <FullLineInput
+                  value={answers[id]}
+                  onChange={(val) => handleChange(id, val)}
+                />
+              </div>
+            ))}
+          </div>
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
-            </div>
-          ))}
+          {/* Image — pinned to the right */}
+          <img
+            src={babyImg}
+            alt="baby"
+            style={{ width: "20%", height: "auto", objectFit: "contain", flexShrink: 0  ,alignSelf : "center"}}
+          />
+
         </div>
 
       </div>
 
-      {/* Buttons */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +90,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit_IAmUsedTo_D;

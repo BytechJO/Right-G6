@@ -1,124 +1,182 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/4.svg";
+import img2 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/5.svg";
+import img3 from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/6.svg";
+import img4 from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/7.svg";
+import img5 from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/8.svg";
+
+const BORDER = "#84ad40";
+
+const ROWS = [
+  { id: 1, img: img1, answer: "Stella isn't used to planting flowers." },
+  { id: 2, img: img2, answer: "Stella is used to helping Sarah."        },
+  { id: 3, img: img3, answer: "Stella is used to riding her bike."      },
+  { id: 4, img: img4, answer: "Stella isn't used to riding a camel."    },
+  { id: 5, img: img5, answer: "Stella isn't used to riding on an airplane." },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+const initAnswers = () => {
+  const a = {};
+  ROWS.forEach(({ id }) => { a[id] = ""; });
+  return a;
+};
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+const normalize = (str) =>
+  str.toLowerCase().replace(/[.?!,'''’]/g, "").replace(/\s+/g, " ").trim();
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+// ── Sub-components OUTSIDE parent ──
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+const RowInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
+  <div style={{ position: "relative", flex: 1 }}>
+    <input
+      type="text"
+      value={value}
+      disabled={disabled}
+      onChange={(e) => onChange(e.target.value)}
+      style={{
+        width: "100%",
+        border: "none",
+        borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
+        outline: "none",
+        background: "transparent",
+        fontSize: "16px",
+        color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        fontWeight: isCorrect ? "600" : "400",
+        paddingBottom: "2px",
+        fontFamily: "inherit",
+      }}
+    />
+    {isWrong && (
+      <span style={{
+        position: "absolute", top: "-8px", right: "-8px",
+        width: "18px", height: "18px", background: "#ef4444", color: "white",
+        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+      }}>✕</span>
+    )}
+  </div>
+);
+
+// ── Main Component ──
+
+const WB_Unit_StellaUsedTo_E = () => {
+  const [answers, setAnswers] = useState(initAnswers);
+  const [result,  setResult]  = useState({});
+  const [locked,  setLocked]  = useState(false);
+
+  const handleChange = (id, value) => {
+    if (locked || result[id] === true) return;
+    setAnswers((prev) => ({ ...prev, [id]: value }));
+    setResult((prev)  => ({ ...prev, [id]: undefined }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const checkAnswers = () => {
+    if (locked) return;
+    const hasEmpty = ROWS.some(({ id }) => !answers[id].trim());
+    if (hasEmpty) { alert("Please complete all answers."); return; }
+
+    let correct = 0;
+    const nr = {};
+    ROWS.forEach(({ id, answer }) => {
+      const ok = normalize(answers[id]) === normalize(answer);
+      if (ok) correct++;
+      nr[id] = ok;
+    });
+    setResult(nr);
+    const total = ROWS.length;
+    if (correct === total) { setLocked(true); }
+  };
+
+  const showAnswers = () => {
+    const a = {}; const r = {};
+    ROWS.forEach(({ id, answer }) => { a[id] = answer; r[id] = true; });
+    setAnswers(a); setResult(r); setLocked(true);
+  };
+
+  const handleReset = () => {
+    setAnswers(initAnswers()); setResult({}); setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-6">
+          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
+          Look at the picture and write a sentence that tells what Stella{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>used to</span> or{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>didn't use to</span> do.
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
+
+        {/* Table */}
+        <div style={{
+          border: `2px solid ${BORDER}`,
+          borderRadius: "10px",
+          overflow: "hidden",
+          marginBottom: "3em",
         }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          {ROWS.map((row, i) => (
+            <div
+              key={row.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "160px 1fr",
+                borderBottom: i < ROWS.length - 1 ? `1.5px solid ${BORDER}` : "none",
+                minHeight: "120px",
+              }}
+            >
+              {/* Left: image only — badge is part of the image */}
+              <div style={{
+                borderRight: `1.5px solid ${BORDER}`,
+                overflow: "hidden",
+              }}>
+                <img
+                  src={row.img}
+                  alt={`scene ${row.id}`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+              {/* Right: number + input */}
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                padding: "16px 20px",
+              }}>
+                <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "18px" }}>
+                  {row.id}
+                </span>
+                <RowInput
+                  value={answers[row.id]}
+                  onChange={(val) => handleChange(row.id, val)}
+                  disabled={locked || result[row.id] === true}
+                  isWrong={result[row.id] === false}
+                  isCorrect={result[row.id] === true}
+                />
+              </div>
 
-
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
             </div>
           ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
+        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
+        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit_StellaUsedTo_E;
