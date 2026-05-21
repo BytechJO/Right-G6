@@ -1,51 +1,105 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 24/SVG/Asset 12.svg"; // غيرها
 import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
 
 const GrammarC = () => {
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-  const [result, setResult] = useState([]);
+  // إجابتين محتملتان لكل سؤال
+  const correct = [
+    [
+      "would you bring your soccer ball if you had a bigger backpack?",
+      "if you had a bigger backpack would you bring your soccer ball?",
+    ],
+    [
+      "would jack sail to hawaii if he had a sailboat?",
+      "if jack had a sailboat would he sail to hawaii?",
+    ],
+    [
+      "would they feel better if they drank more water?",
+      "if they drank more water would they feel better?",
+    ],
+  ];
+
+  const questions = [
+    "You would bring your soccer ball if you had a bigger backpack.",
+    "If Jack had a sailboat, he would sail to Hawaii.",
+    "They would feel better if they drank more water.",
+  ];
+
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.,!;:'"-/]/g, "")
+      .trim();
+
+  const [answers, setAnswers] = useState(["", "", ""]);
+  const [result, setResult] = useState([null, null, null]);
   const [locked, setLocked] = useState(false);
 
-  const correct = ["tastes", "feel", "taste", "sounds"];
-
-  const normalize = (t) => t.toLowerCase().trim();
-
   const handleChange = (i, val) => {
-    if (result[i] === true) return;
-
+    if (locked || result[i] === true) return;
     const updated = [...answers];
     updated[i] = val;
     setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
+    const updatedResult = [...result];
+    updatedResult[i] = null;
+    setResult(updatedResult);
   };
 
-  const input = (i, width = "180px") => (
-    <span
-      style={{
-        position: "relative",
-      }}
-    >
+  const checkAnswers = () => {
+    if (locked) return;
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info();
+      return;
+    }
+
+    let score = 0;
+    const res = answers.map((a, i) => {
+      const norm = normalize(a);
+      const ok = correct[i].some((c) => normalize(c) === norm);
+      if (ok) score++;
+      return ok;
+    });
+
+    setResult(res);
+    const msg = `Score: ${score} / 3`;
+    if (score === 3) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (score === 0) {
+      ValidationAlert.error(msg);
+    } else {
+      ValidationAlert.warning(msg);
+    }
+  };
+
+  const showAnswers = () => {
+    setAnswers(correct.map((c) => c[0]));
+    setResult([true, true, true]);
+    setLocked(true);
+  };
+
+  const reset = () => {
+    setAnswers(["", "", ""]);
+    setResult([null, null, null]);
+    setLocked(false);
+  };
+
+  const inputField = (i) => (
+    <div className="relative mt-1">
       <input
         value={answers[i]}
         onChange={(e) => handleChange(i, e.target.value)}
-        disabled={result[i] === true}
+        disabled={locked || result[i] === true}
+        className="w-full outline-none bg-transparent font-semibold text-[17px]"
         style={{
-          width,
           borderBottom:
-            result[i] === false ? "1px solid red" : "1px solid black",
-          outline: "none",
-          fontSize: "18px",
-          fontWeight: "bold",
-          color: "#6D2980",
-          background: "transparent",
-          margin: "0 6px",
+            result[i] === false
+              ? "2px solid #ef4444"
+              : result[i] === true
+              ? "1px solid #aaa"
+              : "1px solid #aaa",
+          paddingBottom: "2px",
         }}
       />
       {result[i] === false && (
@@ -54,10 +108,9 @@ const GrammarC = () => {
             position: "absolute",
             top: "-8px",
             right: "-8px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
+            width: "22px",
+            height: "22px",
+            background: "red",
             color: "white",
             borderRadius: "50%",
             display: "flex",
@@ -74,141 +127,37 @@ const GrammarC = () => {
           ✕
         </span>
       )}
-    </span>
+  
+    </div>
   );
-
-  // ✅ CHECK
-  const checkAnswers = () => {
-    if (locked) return;
-
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Complete all answers.");
-      return;
-    }
-
-    let score = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = normalize(a) === correct[i];
-      if (ok) score++;
-      return ok;
-    });
-
-    setResult(res);
-
-    const msg = `Score: ${score} / 4`;
-
-    if (score === 4) {
-      setLocked(true);
-      ValidationAlert.success(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
-  };
-
-  // 👀 SHOW
-  const showAnswers = () => {
-    setAnswers(correct);
-    setResult([]);
-    setLocked(true);
-  };
-
-  // 🔄 RESET
-  const reset = () => {
-    setAnswers(["", "", "", ""]);
-    setResult([]);
-    setLocked(false);
-  };
 
   return (
     <div>
       <h5 className="header-title-page8-read mb-5">
         <span className="ex-A-read mr-2">C</span>
-        Read and write a form of <span className="text-[#00AEEF]">sound</span>,
-        <span className="text-[#00AEEF]">feel</span>, or
-        <span className="text-[#00AEEF]">taste</span>.
+        Change the statement to a question.
       </h5>
 
-      <div className="flex justify-between items-start">
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-8 text-[18px] flex-1 mt-8">
-          <div>
-            <span className="font-bold mr-3">1</span>
-            The spaghetti {input(0)} spicy.
+      <div className="flex flex-col gap-10 mt-8 text-[18px]">
+        {questions.map((q, i) => (
+          <div key={i}>
+            <div className="flex gap-2">
+              <span className="font-bold">{i + 1}</span>
+              <span>{q}</span>
+            </div>
+            <div className="mt-2 ml-5">{inputField(i)}</div>
           </div>
-
-          <div>
-            <span className="font-bold mr-3">2</span>
-            Does the elephant {input(1)} rough?
-          </div>
-
-          <div>
-            <span className="font-bold mr-3">3</span>
-            The cherries {input(2)} sweet and delicious.
-          </div>
-
-          <div>
-            <span className="font-bold mr-3">4</span>
-            The recording {input(3)} too loud.
-          </div>
-        </div>
-
-        {/* IMAGE */}
-        <img
-          src={img1}
-          style={{
-            width: "240px",
-            height: "140px",
-            objectFit: "contain",
-            marginLeft: "20px",
-          }}
-        />
+        ))}
       </div>
-      <div className="flex justify-center gap-6 mt-8">
+
+      {/* Buttons */}
+      <div className="flex justify-center gap-6 mt-10">
         {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={reset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={showAnswers}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={checkAnswers}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+        <ActionButtons
+          onReset={reset}
+          onShow={showAnswers}
+          onCheck={checkAnswers}
+        />
       </div>
     </div>
   );

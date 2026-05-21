@@ -1,4 +1,4 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 28.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/Page 28.png";
 import "./Unit4_Page1.css";
 import longAudio from "../../../assets/audio/ClassBook/U4/PG 28/pg28-conversation.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
@@ -6,27 +6,14 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U4/PG 28/cd17pg28-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U4/PG 28/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U4/PG 28/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U4/PG 28/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U4/PG 28/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U4/PG 28/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U4/PG 28/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U4/PG 28/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U4/PG 28/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U4/PG 28/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U4/PG 28/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U4/PG 28/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U4/PG 28/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U4/PG 28/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U4/PG 28/sound14.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 28/SVG/Asset 32.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 28/SVG/Asset 33.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 28/SVG/Asset 34.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 28/SVG/Asset 36.svg";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 30.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 31.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 32.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 33.svg";
 import wordJson from "../../../assets/json/pg28-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 4 page 28.mp4";
+import video from "../../../assets/videos/grade 6 unit 4 page 28.mp4";
 
 const Unit4_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
@@ -187,22 +174,7 @@ const Unit4_Page1 = ({ openPopup }) => {
   ];
 
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-  ];
+
   const captionVoc = [
     {
       start: 0.479,
@@ -323,7 +295,7 @@ const Unit4_Page1 = ({ openPopup }) => {
                   sound={VocabularAudio}
                   captions={captionVoc}
                   stopAtSecond={8}
-                  sounds={sounds}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
                     "grocery store",

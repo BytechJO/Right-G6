@@ -1,317 +1,327 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import Button from "../../Button";
+import trueIcon from "../../../assets/imgs/true.svg";
+import falseIcon from "../../../assets/imgs/false.svg";
+const QUESTIONS = [
+  { id: 1, text: "I don't see so!" },
+  { id: 2, text: "I'll pass." },
+  { id: 3, text: "If I am you, ..." },
+  { id: 4, text: "It's too early." },
+  { id: 5, text: "Let's try a look." },
+];
+
+// الإجابات الصحيحة: true = ✓ صح، false = ✗ غلط
+const CORRECT_MARKS = [false, true, false, true, false];
+
+// التصحيح للعبارات الغلط
+const CORRECTIONS = [
+  "I don't think so!",
+  "",
+  "If I were you",
+  "",
+  "Let's take a look.",
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""''’;:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const Unit3_Page5_Q2 = () => {
-  const [result, setResult] = useState({});
+  // كل سؤال: { mark: null | true | false, correction: "" }
+  const initState = () => QUESTIONS.map(() => ({ mark: null, correction: "" }));
+
+  const [answers, setAnswers] = useState(initState);
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
   const [locked, setLocked] = useState(false);
-  const inputsRef = React.useRef({});
-  const [direction, setDirection] = useState("across");
-  const [grid, setGrid] = useState(
-    Array(10)
-      .fill("")
-      .map(() => Array(12).fill("")),
-  );
 
-  const words = [
-    { key: "d1", word: "cupboards", row: 0, col: 3, dir: "down" },
-    { key: "a2", word: "yummy", row: 1, col: 2, dir: "across" },
-    { key: "a3", word: "fridge", row: 5, col: 5, dir: "across" },
-    { key: "d4", word: "rye", row: 5, col: 6, dir: "down" },
-    { key: "a5", word: "sardines", row: 7, col: 0, dir: "across" },
-  ];
-  const normalize = (str) => str.toLowerCase().trim();
-
-  // ✅ change
-  const handleChange = (row, col, value) => {
-    if (locked) return;
-
-    const newGrid = grid.map((r) => [...r]);
-    newGrid[row][col] = value;
-    setGrid(newGrid);
-
-    if (value) {
-      let next = null;
-
-      if (direction === "across") {
-        next = inputsRef.current[`${row}-${col + 1}`];
-      }
-
-      if (direction === "down") {
-        next = inputsRef.current[`${row + 1}-${col}`];
-      }
-
-      if (next) next.focus();
-    }
+  // toggle ✓
+  const handleCheck = (i) => {
+    if (locked || errors[i] === true) return;
+    setAnswers((prev) =>
+      prev.map((a, idx) =>
+        idx === i ? { ...a, mark: a.mark === true ? null : true } : a,
+      ),
+    );
+    clearError(i);
   };
 
-  // ✅ check active cell
-  const isCellActive = (row, col) => {
-    return words.some((w) => {
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-        if (r === row && c === col) return true;
-      }
-      return false;
-    });
+  // toggle ✗
+  const handleCross = (i) => {
+    if (locked || errors[i] === true) return;
+    setAnswers((prev) =>
+      prev.map((a, idx) =>
+        idx === i ? { ...a, mark: a.mark === false ? null : false } : a,
+      ),
+    );
+    clearError(i);
   };
 
-  // ✅ check answers
+  const handleCorrectionChange = (i, val) => {
+    if (locked || errors[i] === true) return;
+    setAnswers((prev) =>
+      prev.map((a, idx) => (idx === i ? { ...a, correction: val } : a)),
+    );
+    clearError(i);
+  };
+
+  const clearError = (i) =>
+    setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+
   const checkAnswers = () => {
     if (locked) return;
 
-    // تحقق تعبئة
-    for (let w of words) {
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
+    // تحقق أن كل سؤال فيه اختيار
+    if (answers.some((a) => a.mark === null)) {
+      ValidationAlert.info();
+      return;
+    }
 
-        if (!grid[r][c]) {
-          ValidationAlert.info("Please complete all fields.");
-          return;
-        }
+    // تحقق التصحيح للعبارات الغلط
+    for (let i = 0; i < answers.length; i++) {
+      if (answers[i].mark === false && !answers[i].correction.trim()) {
+        ValidationAlert.info();
+        return;
       }
     }
 
-    let correctCount = 0;
-    let newResult = {};
-
-    words.forEach((w) => {
-      let user = "";
-
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-        user += grid[r][c];
-      }
-
-      const ok = normalize(user) === normalize(w.word);
-
-      if (ok) correctCount++;
-
-      newResult[w.key] = ok;
+    let score = 0;
+    const newErrors = answers.map((a, i) => {
+      const markOk = a.mark === CORRECT_MARKS[i];
+      const corrOk =
+        CORRECT_MARKS[i] === false
+          ? normalize(a.correction) === normalize(CORRECTIONS[i])
+          : true;
+      const ok = markOk && corrOk;
+      if (ok) score++;
+      return ok;
     });
 
-    setResult(newResult);
-
-    const total = words.length;
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    setErrors(newErrors);
+    const total = QUESTIONS.length;
+    const msg = `Score: ${score} / ${total}`;
+    if (score === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // ✅ show answers
   const showAnswers = () => {
-    const newGrid = grid.map((r) => [...r]);
-
-    words.forEach((w) => {
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-
-        newGrid[r][c] = w.word[i];
-      }
-    });
-
-    setGrid(newGrid);
+    setAnswers(
+      QUESTIONS.map((_, i) => ({
+        mark: CORRECT_MARKS[i],
+        correction: CORRECTIONS[i],
+      })),
+    );
+    setErrors(Array(QUESTIONS.length).fill(true));
     setLocked(true);
   };
 
   const reset = () => {
-    setGrid(
-      Array(10)
-        .fill("")
-        .map(() => Array(12).fill("")),
-    );
-    setResult({});
+    setAnswers(initState());
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
-  };
-
-  // ✅ numbers
-  const getNumber = (row, col) => {
-    if (row === 0 && col === 3) return 1;
-    if (row === 1 && col === 2) return 2;
-    if (row === 5 && col === 5) return 3;
-    if (row === 5 && col === 6) return 4;
-    if (row === 7 && col === 0) return 5;
-    return null;
   };
 
   return (
     <div className="flex flex-col items-center p-8">
       <div className="div-forall">
-        <h5 className="header-title-page8 mb-20">
+        <h5 className="header-title-page8 mb-5">
           <span className="ex-A mr-2.5">B</span>
-          Use the clues to complete the puzzle.
+          Read the expressions and write{" "}
+          <strong className="text-red-600">✓</strong> or{" "}
+          <strong className="text-red-600">✗</strong>. Correct the expressions
+          that are incorrect.
         </h5>
 
-        <div className="flex gap-16">
-          {/* GRID */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(12, 40px)",
-              gridTemplateRows: "repeat(10, 40px)",
-              gap: "1px",
-            }}
-          >
-            {grid.map((rowArr, row) =>
-              rowArr.map((_, col) => {
-                const active = isCellActive(row, col);
-                const number = getNumber(row, col);
+        <div className="flex flex-col gap-12 mt-6">
+          {QUESTIONS.map((q, i) => {
+            const isOk = errors[i] === true;
+            const isWrong = errors[i] === false;
+            const needsCorrection = answers[i].mark === false;
 
-                return (
-                  <div
-                    key={`${row}-${col}`}
+            return (
+              <div key={q.id} className="flex items-center gap-4 text-[22px]">
+                {/* الرقم */}
+                <span className="font-bold w-4">{q.id}</span>
+
+                {/* زر ✓ */}
+                <button
+                  onClick={() => handleCheck(i)}
+                  disabled={locked || isOk}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderBottom:
+                      answers[i].mark === true
+                        ? isWrong
+                          ? "2px solid red"
+                          : "2px solid #84ad40"
+                        : "1px solid #565656ff",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    cursor: locked ? "default" : "pointer",
+                    transition: "all 0.15s",
+                    position: "relative", // ✅ مضاف
+                  }}
+                >
+                  {answers[i].mark === true ? (
+                    <img src={trueIcon} style={{ height: "25px" }} />
+                  ) : (
+                    ""
+                  )}
+
+                  {/* ✅ علامة الخطأ فوق يمين زر ✓ لما الطالب يختاره غلط */}
+                  {isWrong && answers[i].mark === true && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        width: "22px",
+                        height: "22px",
+                        background: "red",
+                        color: "white",
+                        borderRadius: "50%",
+                        fontSize: "12px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        border: "2px solid white",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                        zIndex: 5,
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ✕
+                    </span>
+                  )}
+                </button>
+
+                {/* زر ✗ */}
+                <button
+                  onClick={() => handleCross(i)}
+                  disabled={locked || isOk}
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderBottom:
+                      answers[i].mark === false
+                        ? isWrong
+                          ? "2px solid red"
+                          : "2px solid #84ad40"
+                        : "1px solid #565656ff",
+                    fontWeight: "bold",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontSize: "16px",
+                    cursor: locked ? "default" : "pointer",
+                    transition: "all 0.15s",
+                    position: "relative", // ✅ مضاف
+                  }}
+                >
+                  {answers[i].mark === false ? (
+                    <img src={falseIcon} style={{ height: "25px" }} />
+                  ) : (
+                    ""
+                  )}
+
+                  {/* ✅ علامة الخطأ فوق يمين زر ✗ لما الطالب يختاره غلط */}
+                  {isWrong && answers[i].mark === false && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        width: "22px",
+                        height: "22px",
+                        background: "red",
+                        color: "white",
+                        borderRadius: "50%",
+                        fontSize: "12px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        border: "2px solid white",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                        zIndex: 5,
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ✕
+                    </span>
+                  )}
+                </button>
+
+                {/* نص السؤال */}
+                <span
+                  style={{ minWidth: "160px", fontSize: "18px", color: "#333" }}
+                >
+                  {q.text}
+                </span>
+
+                {/* حقل التصحيح - يظهر بس لما يختار ✗ */}
+                <span style={{ position: "relative", flex: 1 }}>
+                  <input
+                    value={answers[i].correction}
+                    onChange={(e) => handleCorrectionChange(i, e.target.value)}
+                    disabled={locked || isOk || !needsCorrection}
+                    placeholder={
+                      needsCorrection ? "Write the correction..." : ""
+                    }
                     style={{
-                      width: "40px",
-                      height: "40px",
-                      border: active ? "2px solid #713083" : "none",
-                      position: "relative",
+                      width: "100%",
+                      borderBottom: isWrong
+                        ? "2px solid #ef4444"
+                        : "1px solid #565656ff",
+                      outline: "none",
+                      background: "transparent",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                      // color: isOk ? "#84ad40" : "#6D2980",
+                      opacity: needsCorrection ? 1 : 0.3,
+                      cursor: needsCorrection ? "text" : "default",
                     }}
-                  >
-                    {number && (
-                      <>
-                        {(() => {
-                          const wordObj = words.find(
-                            (w) => w.row === row && w.col === col,
-                          );
-
-                          if (!wordObj || result[wordObj.key] !== false)
-                            return null;
-
-                          const isAcross = wordObj.dir === "across";
-                          const isDown = wordObj.dir === "down";
-
-                          return (
-                            <span
-                              style={{
-                                position: "absolute",
-
-                                // 📍 المكان حسب الاتجاه
-                                top: isDown ? "-25px" : "50%",
-                                left: isAcross ? "-25px" : "50%",
-
-                                transform: isAcross
-                                  ? "translateY(-50%)"
-                                  : "translateX(-50%)",
-
-                                width: "18px",
-                                height: "18px",
-                                background: "#ef4444",
-                                color: "white",
-                                borderRadius: "50%",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "12px",
-                                fontWeight: "bold",
-                                border: "2px solid white",
-                                boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                                zIndex: 5,
-                              }}
-                            >
-                              ✕
-                            </span>
-                          );
-                        })()}
-
-                        <span
-                          style={{
-                            position: "absolute",
-                            top: "0px",
-                            left: "2px",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {number}
-                        </span>
-                      </>
-                    )}
-
-                    {active && (
-                      <input
-                        ref={(el) => (inputsRef.current[`${row}-${col}`] = el)}
-                        onClick={() => {
-                          if (inputsRef.current[`${row}-${col + 1}`]) {
-                            setDirection("across");
-                          } else {
-                            setDirection("down");
-                          }
-                        }}
-                        onFocus={(e) => e.target.select()} // 🔥 المهم
-                        value={grid[row][col]}
-                        maxLength={1}
-                        disabled={
-                          locked ||
-                          words.some((w) => {
-                            if (result[w.key] !== true) return false;
-
-                            for (let i = 0; i < w.word.length; i++) {
-                              const r = w.dir === "down" ? w.row + i : w.row;
-                              const c = w.dir === "across" ? w.col + i : w.col;
-
-                              if (r === row && c === col) return true;
-                            }
-
-                            return false;
-                          })
-                        }
-                        onChange={(e) =>
-                          handleChange(row, col, e.target.value.toLowerCase())
-                        }
-                        className="w-full h-full text-center font-bold text-[#6D2980]"
-                      />
-                    )}
-                  </div>
-                );
-              }),
-            )}
-          </div>
-
-          {/* CLUES */}
-          <div style={{ width: "300px" }}>
-            <div className="p-4 bg-[#D4C7DC] rounded-xl mb-10">
-              <h4 className="font-bold mb-2 text-[#713083]">Down</h4>
-              <p>
-                <b>1</b> kitchen closets
-              </p>
-              <p>
-                <b>4</b> bread made with caraway seed
-              </p>
-            </div>
-
-            <div className="p-4 bg-[#D4C7DC] rounded-xl">
-              <h4 className="font-bold mb-2 text-[#713083]">Across</h4>
-              <p>
-                <b>2</b> said about something that is tasty
-              </p>
-              <p>
-                <b>3</b> a short way to say refrigerator
-              </p>
-              <p>
-                <b>5</b> small salty fish
-              </p>
-            </div>
-          </div>
+                  />
+                  {isWrong && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        width: "22px",
+                        height: "22px",
+                        background: "red",
+                        color: "white",
+                        borderRadius: "50%",
+                        fontSize: "12px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        border: "2px solid white",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                        zIndex: 5,
+                      }}
+                    >
+                      ✕
+                    </span>
+                  )}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         <Button

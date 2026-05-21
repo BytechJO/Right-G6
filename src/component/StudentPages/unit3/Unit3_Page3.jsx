@@ -1,5 +1,5 @@
 import React from "react";
-import page_3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 3 Curry Tastes Great! Folder/Page 24.png";
+import page_3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/Page 24.png";
 import "./Unit3_Page3.css";
 import GrammarSection_U1 from "./Unit3_Page3_GrammarSection_U1";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";

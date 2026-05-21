@@ -2,106 +2,104 @@ import React, { useState } from "react";
 import { FaRedo } from "react-icons/fa";
 
 const WritingA = () => {
-  const [answers, setAnswers] = useState([
-    ["", ""], // Mike
-    ["", ""], // Gary
-    ["", ""], // Joe
-  ]);
-
-  const handleChange = (row, col, value) => {
-    const updated = [...answers];
-    updated[row][col] = value;
-    setAnswers(updated);
+  const emptyState = {
+    event: "",
+    good: ["", "", ""],
+    improve: ["", "", ""],
+    results: "",
   };
 
-  const reset = () => {
-    setAnswers([
-      ["", ""],
-      ["", ""],
-      ["", ""],
-    ]);
-  };
+  const [answers, setAnswers] = useState({ ...emptyState, good: ["", "", ""], improve: ["", "", ""] });
 
-  const input = (row, col) => (
+  const reset = () =>
+    setAnswers({ event: "", good: ["", "", ""], improve: ["", "", ""], results: "" });
+
+  const lineInput = (value, onChange, width = "100%") => (
     <input
-      value={answers[row][col]}
-      onChange={(e) => handleChange(row, col, e.target.value)}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
       style={{
-        width: "100%",
+        width,
         outline: "none",
-        fontSize: "18px",
-        color: "#6D2980",
+        fontSize: "17px",
+        // color: "#6D2980",
         background: "transparent",
+        borderBottom: "1px solid #aaa",
+        paddingBottom: "2px",
       }}
     />
   );
 
-  return (
-    <div className="space-y-4 w-full max-w-[900px] mx-auto">
-      {/* العنوان */}
-      <h5 className="header-title-page8-read mb-5">
-        <span className="ex-A-read mr-2">A</span>
-        Write down two things that you know about each person. Start with "{" "}
-        <span className="text-[#00AEEF]">He is</span>."
-      </h5>
-      {/* TABLE */}
-      <div
-        style={{
-          border: "2px solid #6D2980",
-          borderRadius: "15px",
-          overflow: "hidden",
-          marginTop: 10,
-          marginLeft: 45,
-        }}
-      >
-        {/* ROW */}
-        {["Mike", "Gary", "Joe"].map((name, rowIndex) => (
-          <div
-            key={rowIndex}
-            style={{
-              display: "flex",
-              borderBottom: rowIndex !== 2 ? "2px solid #6D2980" : "none",
-            }}
-          >
-            {/* الاسم */}
-            <div
-              style={{
-                width: "150px",
-                padding: "15px",
-                borderRight: "2px solid #6D2980",
-                background: "#e9e4eb",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              {name}
-            </div>
+  const updateList = (key, i, val) => {
+    const updated = [...answers[key]];
+    updated[i] = val;
+    setAnswers({ ...answers, [key]: updated });
+  };
 
-            {/* الجمل */}
-            <div
-              style={{
-                flex: 1,
-                padding: "10px 15px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <div> {input(rowIndex, 0)}</div>
+  return (
+    <div className="w-full max-w-[900px] mx-auto">
+      {/* العنوان */}
+      <h5 className="header-title-page8-read mb-6">
+        <span className="ex-A-read mr-2">A</span>
+        Choose an event to talk about that can be improved. Use the outline
+        below to help you plan an essay like the one above.
+      </h5>
+
+      {/* The event */}
+      <div className="flex items-center gap-3 mb-8 text-[17px]">
+        <span className="font-semibold whitespace-nowrap">The event:</span>
+        {lineInput(answers.event, (v) => setAnswers({ ...answers, event: v }), "300px")}
+      </div>
+
+      {/* Two-column table */}
+      <div className="grid grid-cols-2 gap-x-10 mb-8 ml-4">
+        {/* Headers */}
+        <div className="text-center font-semibold text-[17px] mb-4">
+          What Was Good
+        </div>
+        <div className="text-center font-semibold text-[17px] mb-4">
+          What Needs Improvement
+        </div>
+
+        {/* 3 rows of inputs */}
+        {[0, 1, 2].map((i) => (
+          <React.Fragment key={i}>
+            <div className="mb-5">
+              {lineInput(answers.good[i], (v) => updateList("good", i, v))}
             </div>
-          </div>
+            <div className="mb-5">
+              {lineInput(answers.improve[i], (v) => updateList("improve", i, v))}
+            </div>
+          </React.Fragment>
         ))}
       </div>
 
-      {/* 🔄 فقط Reset */}
+      {/* The results of improving */}
+      <div className="flex items-center gap-3 text-[17px] mb-8">
+        <span className="font-semibold whitespace-nowrap">
+          The results of improving:
+        </span>
+        {lineInput(
+          answers.results,
+          (v) => setAnswers({ ...answers, results: v }),
+          "350px"
+        )}
+      </div>
+
+      {/* Reset only */}
       <div className="flex justify-center mt-4">
-        <div
-          onClick={reset}
-          className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-        >
-          <div className="bg-white p-3 rounded-full shadow">
-            <FaRedo size={14} className="text-gray-700" />
+        <div className="relative group">
+          <div
+            onClick={reset}
+            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
+          >
+            <div className="bg-white p-3 rounded-full shadow">
+              <FaRedo size={14} className="text-gray-700" />
+            </div>
           </div>
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+            Reset
+          </span>
         </div>
       </div>
     </div>

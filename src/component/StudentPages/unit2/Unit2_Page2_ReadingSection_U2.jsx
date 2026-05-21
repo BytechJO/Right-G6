@@ -74,7 +74,7 @@ const ReadingSection_U1 = () => {
           />
         </div>
         <div className="relative w-[60%] mt-2">
-          <div className="absolute -top-3 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-md text-sm font-bold">
+          <div className="absolute -top-10 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[22px] font-bold w-[200px]" style={{borderRadius:"20px 20px 0px 0px "}}>
             Challenging Activities
           </div>
 
