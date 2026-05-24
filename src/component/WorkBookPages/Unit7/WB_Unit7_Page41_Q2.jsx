@@ -1,117 +1,157 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+// بدّل المسارات للصور الفعلية
+import imgA from "../../../assets/imgs/pages/workbook/Right Int WB G6 U7 Folder/SVG/9.svg";
+import imgB from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U7 Folder/SVG/10.svg";
+const BORDER = "#84ad40";
+
+const CARDS = [
+  {
+    id: "A",
+    img: imgA,
+    example: "If we had planted more trees in our yard, we would have had more trees.",
+  },
+  {
+    id: "B",
+    img: imgB,
+    example: "If I had more time this weekend, I would have watched a movie.",
+  },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+const LINES_PER_CARD = 4;
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+const initAnswers = () => {
+  const a = {};
+  CARDS.forEach(({ id }) => {
+    for (let i = 0; i < LINES_PER_CARD; i++) {
+      a[`${id}-${i}`] = "";
+    }
+  });
+  return a;
+};
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+// ── LineInput — OUTSIDE parent ──
+const LineInput = ({ fieldKey, value, onChange }) => (
+  <input
+    type="text"
+    value={value}
+    onChange={(e) => onChange(fieldKey, e.target.value)}
+    style={{
+      width: "100%",
+      border: "none",
+      borderBottom: "1.5px solid #aaa",
+      outline: "none",
+      background: "transparent",
+      fontSize: "15px",
+      color: "#333",
+      paddingBottom: "3px",
+      fontFamily: "inherit",
+    }}
+  />
+);
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+// ── MAIN COMPONENT ──
+const WB_Unit7_ThirdConditional_E = () => {
+  const [answers, setAnswers] = useState(initAnswers);
+
+  const handleChange = (key, value) => {
+    setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () => setAnswers(initAnswers());
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8" style={{whiteSpace : "nowrap"}}>
+          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
+          Look at the pictures below, and then write a{" "}
+          <span style={{ color: "orange", fontWeight: "bold" }}>third conditional</span>{" "}
+          sentence about each one.
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
+
+        {/* Two Cards */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "20px",
+          marginBottom: "3em",
         }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          {CARDS.map(({ id, img, example }) => (
+            <div key={id} style={{
+              border: `2px solid ${BORDER}`,
+              borderRadius: "12px",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}>
+              {/* Card label */}
+              <div style={{
+                width: "32px", height: "32px",
+                background: "white",
+                borderRadius: "50%",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontWeight: "bold", fontSize: "16px", color: "#000000ff",
+                margin: "10px 10px 0",
+                flexShrink: 0,
+              border: `2px solid ${BORDER}`,
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+              }}>
+                {id}
+              </div>
 
+              {/* Image */}
+              <div style={{ padding: "8px 12px"    ,   width: "300px",   display: "flex", alignItems: "center", justifyContent: "center",
+                    height: "300px",}}>
+                <img
+                  src={img}
+                  alt={`card ${id}`}
+                  style={{
+                    width: "300px",
+                    height: "300px",
+                    objectFit: "contain",
+                    display: "block",
+                  }}
+                />
+              </div>
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
+              {/* Example */}
+              <div style={{
+                padding: "8px 14px",
+                fontSize: "14px",
+                color: "#333",
+                lineHeight: "1.5",
+              }}>
+                <span style={{ fontWeight: "bold" }}>Example: </span>
+                {example}
+              </div>
+
+              {/* 4 writing lines */}
+              <div style={{
+                padding: "8px 14px 16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                flex: 1,
+              }}>
+                {Array.from({ length: LINES_PER_CARD }).map((_, i) => (
+                  <LineInput
+                    key={i}
+                    fieldKey={`${id}-${i}`}
+                    value={answers[`${id}-${i}`]}
+                    onChange={handleChange}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
+      {/* Reset only */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +161,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit7_ThirdConditional_E;

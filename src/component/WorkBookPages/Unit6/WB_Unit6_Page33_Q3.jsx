@@ -1,117 +1,79 @@
 import React, { useState } from "react";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
-];
+const initAnswers = () => ({ 1: "", 2: "", 3: "" });
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
-];
+// ── FreeInput — OUTSIDE parent ──
+const FreeInput = ({ qId, value, onChange, flex = true }) => (
+  <input
+    type="text"
+    value={value}
+    onChange={(e) => onChange(qId, e.target.value)}
+    style={{
+      flex: flex ? 1 : undefined,
+      width: flex ? undefined : "100%",
+      border: "none",
+      borderBottom: "1px solid #555",
+      outline: "none",
+      background: "transparent",
+      fontSize: "18px",
+      color: "#333",
+      paddingBottom: "2px",
+      fontFamily: "inherit",
+      minWidth: 0,
+    }}
+  />
+);
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+// ── MAIN COMPONENT ──
+const WB_Unit5_StatementOrTag_G = () => {
+  const [answers, setAnswers] = useState(initAnswers);
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
-
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+  const handleChange = (id, value) => {
+    setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const handleReset = () => setAnswers(initAnswers());
+
+  const rowStyle = {
+    display: "flex",
+    alignItems: "flex-end",
+    gap: "6px",
+    fontSize: "18px",
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-10">
+          <span className="ex-A" style={{ marginRight: "10px" }}>G</span>
+          Write either a statement or a question tag.
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        {/* Questions */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "60px", margin: "15% 0 " }}>
+
+          {/* 1: prefix + input + ? */}
+          <div style={rowStyle}>
+            <span style={{ fontWeight: "bold", minWidth: "22px" }}>1</span>
+            <span style={{ whiteSpace: "nowrap" }}>familiar:</span>
+            <FreeInput qId={1} value={answers[1]} onChange={handleChange} />
+          </div>
+
+          {/* 2: input + suffix */}
+       <div style={rowStyle}>
+            <span style={{ fontWeight: "bold", minWidth: "22px" }}>2</span>
+            <span style={{ whiteSpace: "nowrap" }}>success:</span>
+            <FreeInput qId={1} value={answers[1]} onChange={handleChange} />
+          </div>
 
 
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
-            </div>
-          ))}
         </div>
 
       </div>
 
-      {/* Buttons */}
+      {/* Reset only */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
@@ -121,4 +83,4 @@ const WB_Unit2_Page11_C = () => {
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit5_StatementOrTag_G;
