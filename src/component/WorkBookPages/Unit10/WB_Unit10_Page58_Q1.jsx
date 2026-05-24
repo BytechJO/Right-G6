@@ -50,13 +50,11 @@ const WB_Unit10_GerundRewrite_C = () => {
           verb into a{" "}
           <span style={{ color: "orange", fontWeight: "bold" }}>gerund</span>{" "}
           by adding a stative verb. Rewrite the new sentence.{" "}
-          <span style={{ color: "#c0392b", fontStyle: "italic", fontSize: "15px" }}>
-            Students' answers will vary.
-          </span>
+    
         </h5>
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px", marginBottom: "3em" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "60px", margin: "2em 0" }}>
           {QUESTIONS.map(({ id, sentence }) => (
             <div key={id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {/* Original sentence */}
