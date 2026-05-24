@@ -6,16 +6,16 @@ const QUESTIONS = [
     id: 1,
     clue: "Although one is an adjective and the other is an adverb, these two words are synonyms.",
     words: [
-      { prefix: "f", answer: "flawless",     fullAnswer: "flawless" },
-      { prefix: "p", answer: "perfectly",    fullAnswer: "perfectly" },
+      { prefix: "f", answer: "lawless",     fullAnswer: "lawless" },
+      { prefix: "p", answer: "erfectly",    fullAnswer: "erfectly" },
     ],
   },
   {
     id: 2,
     clue: "Someone who is this first word in music will probably be the second word.",
     words: [
-      { prefix: "t", answer: "talented",     fullAnswer: "talented" },
-      { prefix: "e", answer: "entertaining", fullAnswer: "entertaining" },
+      { prefix: "t", answer: "alented",     fullAnswer: "alented" },
+      { prefix: "e", answer: "ntertaining", fullAnswer: "ntertaining" },
     ],
   },
   {
@@ -23,23 +23,23 @@ const QUESTIONS = [
     clue: "If you do all of this first word well, your parents will be (second word) of you!",
     clueUnderline: "second word",
     words: [
-      { prefix: "l", answer: "lessons",      fullAnswer: "lessons" },
-      { prefix: "p", answer: "proud",        fullAnswer: "proud" },
+      { prefix: "l", answer: "essons",      fullAnswer: "essons" },
+      { prefix: "p", answer: "roud",        fullAnswer: "roud" },
     ],
   },
   {
     id: 4,
     clue: "This compound word is something many students don't like.",
     words: [
-      { prefix: "s", answer: "ummer",        fullAnswer: "summer" },
-      { prefix: "s", answer: "chool",        fullAnswer: "school" },
+      { prefix: "s", answer: "ummer",        fullAnswer: "ummer" },
+      { prefix: "s", answer: "chool",        fullAnswer: "chool" },
     ],
   },
   {
     id: 5,
     clue: "It rhymes with nation, and many people enjoy having one.",
     words: [
-      { prefix: "c", answer: "elebration",   fullAnswer: "celebration" },
+      { prefix: "c", answer: "elebration",   fullAnswer: "elebration" },
     ],
   },
 ];
@@ -64,7 +64,7 @@ const PrefixInput = ({ fKey, prefix, value, onChange, onKeyDown, inputRef, isCor
       fontSize: "18px", fontWeight: "700",
       color: "#333",
       borderBottom: "1.5px solid #555",
-      paddingBottom: "2px",
+      paddingBottom: "5px",
       lineHeight: 1,
     }}>
       {prefix}
@@ -87,7 +87,6 @@ const PrefixInput = ({ fKey, prefix, value, onChange, onKeyDown, inputRef, isCor
           fontSize: "18px",
           color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
           fontWeight: isCorrect ? "700" : "400",
-          paddingBottom: "2px",
           fontFamily: "inherit",
         }}
       />

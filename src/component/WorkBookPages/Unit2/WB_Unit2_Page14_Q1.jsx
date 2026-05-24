@@ -131,7 +131,7 @@ const WB_Unit2_Page13_I = () => {
               outline: "none",
               background: "transparent",
               fontSize: "17px",
-              color: isCorrect ? "#2d6a0f" : isWrong ? "#D1232A" : "#333",
+              color: isCorrect ? "#333" : isWrong ? "#D1232A" : "#333",
               textAlign: "center",
               padding: "0 4px",
               verticalAlign: "baseline",

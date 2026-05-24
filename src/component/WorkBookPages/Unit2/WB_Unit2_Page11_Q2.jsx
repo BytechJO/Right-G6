@@ -25,7 +25,7 @@ const questions = [
 ];
 
 const WB_Unit2_Page11_D = () => {
-  const init = () => ({ 2: "", 3: "" });
+  const init = () => ({ 1: "", 2: "", 3: "" });
   const [answers, setAnswers] = useState(init);
   const [result, setResult]   = useState({});
   const [locked, setLocked]   = useState(false);

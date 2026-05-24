@@ -7,13 +7,13 @@ import imgHelicopter   from "../../../assets/imgs/pages/workbook/Right Int WB G6
 import imgTableLamp    from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/3.svg";
 import imgGlows        from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/4.svg";
 import imgTablet       from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/5.svg";
-import imgTimer        from"../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 15.svg";
-import imgRemote       from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 10.svg";
-import imgMemo         from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 11.svg";
-import imgCanOpener    from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 12.svg";
-import imgWireless     from"../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 15.svg";
-import imgGadget       from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 15.svg";
-import imgElectric     from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 15.svg";
+import imgTimer        from"../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 6.svg";
+import imgRemote       from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 7.svg";
+import imgMemo         from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 8.svg";
+import imgCanOpener    from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 9.svg";
+import imgWireless     from"../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 10.svg";
+import imgGadget       from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 11.svg";
+import imgElectric     from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 12.svg";
 
 const BORDER = "#84ad40";
 
@@ -197,7 +197,7 @@ const WB_Unit8_ReadChooseMatch_A = () => {
           fontSize: "16px",
           color: "#333",
         }}>
-          <div style={{ display: "flex", justifyContent :"space-between", flexWrap: "wrap", gap: "4px 32px", marginBottom: "4px" }}>
+          <div style={{ display: "flex", justifyContent :"flex-start", flexWrap: "wrap", gap: "4px 32px", marginBottom: "4px" }}>
             {WORD_BANK.map(({ label, word }) => (
               <span key={label}><strong>{label}</strong> {word}</span>
             ))}

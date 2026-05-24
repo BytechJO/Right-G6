@@ -65,7 +65,7 @@ const WB_Unit4_ChoresSurvey_I = () => {
         </h5>
 
         {/* Chores list */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "3em" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "45px", marginBottom: "3em" }}>
           {CHORES.map(({ id, label, prefix }) => (
             <div key={id} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
 

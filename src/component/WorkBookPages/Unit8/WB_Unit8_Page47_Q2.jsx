@@ -6,7 +6,7 @@ const QUESTIONS = [
     id: 1,
     sentence: "My dad told me he was going to the store today.",
     answer: `Dad said, "I am going to the store today."`,
-    prefilled: true,
+    prefilled: false,
   },
   {
     id: 2,
