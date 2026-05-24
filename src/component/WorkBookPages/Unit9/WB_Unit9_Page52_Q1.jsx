@@ -1,124 +1,225 @@
 import React, { useState } from "react";
+import ValidationAlert from "../../Popup/ValidationAlert";
 
-const adjectives = [
-  "modern", "rapid", "sweet", "melted",
-  "wooden", "bumpy", "freezing", "damp",
-  "cozy", "creepy", "pleasant", "noisy",
-  "brave", "peaceful", "risky", "delightful",
-  "lively", "melodic", "nervous", "brave",
-  "thankful", "terrifying", "comfortable", "thrilling",
+// بدّل المسار للصورة الفعلية
+import girlsImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 2.svg";
+
+const QUESTIONS = [
+  { id: 1,  scrambled: "csaracterh",  word: "characters", match: "j" },
+  { id: 2,  scrambled: "loven",       word: "novel",      match: "c" },
+  { id: 3,  scrambled: "pcahtre",     word: "chapter",    match: "a" },
+  { id: 4,  scrambled: "scsudis",     word: "discuss",    match: "d" },
+  { id: 5,  scrambled: "gdisaens",    word: "assigned",   match: "f" },
+  { id: 6,  scrambled: "msatcselas",  word: "classmates", match: "h" },
+  { id: 7,  scrambled: "esrpehap",    word: "perhaps",    match: "b" },
+  { id: 8,  scrambled: "edla",        word: "deal",       match: "g" },
+  { id: 9,  scrambled: "imna",        word: "main",       match: "e" },
+  { id: 10, scrambled: "casitdtr",    word: "distract",   match: "i" },
 ];
 
-const nouns = [
-  "coach", "grade", "hobby", "kite",
-  "furniture", "language", "idea", "picture",
-  "ocean", "landscape", "squirrel", "friend",
-  "career", "skateboard", "novel", "musical",
-  "movie", "vacation", "roller coaster",
-  "sports car", "house", "experience",
-  "snowboarding",
+const SECTION_B = [
+  { label: "a", word: "chapter"    },
+  { label: "b", word: "perhaps"    },
+  { label: "c", word: "novel"      },
+  { label: "d", word: "discuss"    },
+  { label: "e", word: "main"       },
+  { label: "f", word: "assigned"   },
+  { label: "g", word: "deal"       },
+  { label: "h", word: "classmates" },
+  { label: "i", word: "distract"   },
+  { label: "j", word: "characters" },
 ];
 
-const EXAMPLE = "We had such a delightful vacation that I wished it could have been a year long!";
+const normalize = (str) =>
+  str.toLowerCase().replace(/\s+/g, " ").trim();
 
-const WB_Unit2_Page11_C = () => {
-  const init = () => ["", "", ""];
-  const [answers, setAnswers] = useState(init);
+const initAnswers = () => {
+  const a = {};
+  QUESTIONS.forEach(({ id }) => { a[`${id}-w`] = ""; a[`${id}-m`] = ""; });
+  return a;
+};
 
-  const handleChange = (i, value) => {
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[i] = value;
-      return updated;
-    });
+// ── WordInput — OUTSIDE parent ──
+const WordInput = ({ fKey, value, onChange, isCorrect, isWrong, disabled, width = "140px" }) => (
+  <span style={{ position: "relative", display: "inline-block" }}>
+    <input
+      type="text"
+      value={value}
+      disabled={disabled}
+      onChange={(e) => onChange(fKey, e.target.value)}
+      style={{
+        width,
+        border: "none",
+        borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
+        outline: "none",
+        background: "transparent",
+        fontSize: "16px",
+        color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        fontWeight: isCorrect ? "600" : "400",
+        paddingBottom: "2px",
+        fontFamily: "inherit",
+        textAlign: "center",
+      }}
+    />
+    {isWrong && (
+      <span style={{
+        position: "absolute", top: "-7px", right: "-7px",
+        width: "14px", height: "14px", background: "#ef4444", color: "white",
+        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+      }}>✕</span>
+    )}
+  </span>
+);
+
+// ── MAIN COMPONENT ──
+const WB_Unit9_UnscrambleMatch_C = () => {
+  const [answers, setAnswers] = useState(initAnswers);
+  const [result,  setResult]  = useState({});
+  const [locked,  setLocked]  = useState(false);
+
+  const handleChange = (key, value) => {
+    if (locked || result[key] === true) return;
+    setAnswers((prev) => ({ ...prev, [key]: value.toLowerCase() }));
+    setResult((prev)  => ({ ...prev, [key]: undefined }));
   };
 
-  const handleReset = () => setAnswers(init());
+  const checkAnswers = () => {
+    if (locked) return;
+    const hasEmpty = Object.values(answers).some((v) => !v.trim());
+    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+
+    let correct = 0;
+    const nr = {};
+    QUESTIONS.forEach(({ id, word, match }) => {
+      const wKey = `${id}-w`, mKey = `${id}-m`;
+      const wOk = normalize(answers[wKey]) === normalize(word);
+      const mOk = normalize(answers[mKey]) === normalize(match);
+      if (wOk) correct++;
+      if (mOk) correct++;
+      nr[wKey] = wOk;
+      nr[mKey] = mOk;
+    });
+    setResult(nr);
+    const total = QUESTIONS.length * 2;
+    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
+  };
+
+  const showAnswers = () => {
+    const a = {}; const r = {};
+    QUESTIONS.forEach(({ id, word, match }) => {
+      a[`${id}-w`] = word; a[`${id}-m`] = match;
+      r[`${id}-w`] = true; r[`${id}-m`] = true;
+    });
+    setAnswers(a); setResult(r); setLocked(true);
+  };
+
+  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-<div style={{display : "flex" , flexDirection :"row"}}>
+
         {/* Title */}
-        <h5 className="header-title-page8 mb-4" >
-          <span className="ex-A" style={{display : "flex" , flexDirection :"column" ,  marginRight: "10px" }}>C</span>
-        <div>Below is a listof adjectives and nouns. Use some of each of </div>   <div>them to make  sentences with{" "}
-         so . . . that and such . . . that.
-    </div> 
+        <h5 className="header-title-page8 mb-8">
+          <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
+          Unscramble the words in section A. Then match with the same words in section B.
         </h5>
-</div>
-        {/* Word Table */}
-        <table style={{
-          width: "100%", borderCollapse: "collapse",
-          border: "2px solid #84ad40", marginBottom: "2%", fontSize: "16px" , marginTop: "2%",
-        }}>
-          <thead>
-            <tr>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Adjectives
-              </th>
-              <th style={{ border: "2px solid #84ad40", padding: "10px 16px", textAlign: "center" }}>
-                Nouns
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "2px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {adjectives.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-              <td style={{ border: "1.5px solid #84ad40", padding: "12px 16px", verticalAlign: "top" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-                  {nouns.map((w, i) => (
-                    <span key={i}>{w}</span>
-                  ))}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
 
-        {/* Sentences */}
-        <div className="flex flex-col gap-8 mb-10" style={{ fontSize: "18px" }}>
+        {/* Two columns layout */}
+        <div style={{ display: "flex", gap: "32px", marginBottom: "24px", alignItems: "flex-start" }}>
 
-
-          {/* Q2, Q3, Q4 */}
-          {[1 ,2, 3, 4].map((num, i) => (
-            <div key={num} className="flex items-start gap-3">
-              <span className="font-bold" style={{ minWidth: "20px" }}>{num}</span>
-              <input
-                type="text"
-                value={answers[i]}
-                onChange={(e) => handleChange(i, e.target.value)}
-                style={{
-                  flex: 1,
-                  border: "none",
-                  borderBottom: "1.5px solid #999",
-                  outline: "none",
-                  background: "transparent",
-                  fontSize: "18px",
-                  color: "#333",
-                  paddingBottom: "4px",
-                }}
-              />
+          {/* Section A */}
+          <div style={{ flex: 1 }}>
+            <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "16px", marginBottom: "12px" }}>A</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              {QUESTIONS.map(({ id, scrambled }) => {
+                const wKey = `${id}-w`;
+                const mKey = `${id}-m`;
+                const wCorrect = result[wKey] === true;
+                const wWrong   = result[wKey] === false;
+                const mCorrect = result[mKey] === true;
+                const mWrong   = result[mKey] === false;
+                return (
+                  <div key={id} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontSize: "16px",
+                  }}>
+                    <span style={{ fontWeight: "bold", minWidth: "24px" }}>{id}</span>
+                    <span style={{ minWidth: "110px", color: "#333" }}>{scrambled}</span>
+                    {/* Word input */}
+                    <WordInput
+                      fKey={wKey}
+                      value={answers[wKey]}
+                      onChange={handleChange}
+                      isCorrect={wCorrect}
+                      isWrong={wWrong}
+                      disabled={locked || wCorrect}
+                      width="130px"
+                    />
+                    {/* Match input */}
+                    <WordInput
+                      fKey={mKey}
+                      value={answers[mKey]}
+                      onChange={handleChange}
+                      isCorrect={mCorrect}
+                      isWrong={mWrong}
+                      disabled={locked || mCorrect}
+                      width="36px"
+                    />
+                  </div>
+                );
+              })}
             </div>
-          ))}
+          </div>
+
+          {/* Section B */}
+          <div style={{ minWidth: "160px" }}>
+            <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "16px", marginBottom: "12px" }}>B</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              {SECTION_B.map(({ label, word }) => (
+                <div key={label} style={{ display: "flex", gap: "8px", fontSize: "16px", alignItems: "center" }}>
+                  <span style={{ fontWeight: "bold", minWidth: "16px" }}>{label}</span>
+                  <span>{word}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Girls Image */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "3em" }}>
+          <img
+            src={girlsImg}
+            alt="students"
+            style={{
+              width: "60%",
+              maxWidth: "400px",
+              height: "auto",
+              objectFit: "contain",
+              borderRadius: "8px",
+            }}
+          />
         </div>
 
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
+        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
+        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
 };
 
-export default WB_Unit2_Page11_C;
+export default WB_Unit9_UnscrambleMatch_C;

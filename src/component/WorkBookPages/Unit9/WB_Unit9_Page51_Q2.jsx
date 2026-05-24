@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const QUESTIONS = [
-  { id: 1, choices: ["assiengd", "assigned", "assinged"], answer: "assigned",   prefilled: true  },
+  { id: 1, choices: ["assiengd", "assigned", "assinged"], answer: "assigned",   prefilled: false  },
   { id: 2, choices: ["mani",     "naim",     "main"],      answer: "main",       prefilled: false },
   { id: 3, choices: ["chatper",  "chapter",  "chapert"],   answer: "chapter",    prefilled: false },
   { id: 4, choices: ["characters","charatcers","charastcer"], answer: "characters", prefilled: false },
@@ -31,7 +31,7 @@ const AnswerInput = ({ qId, value, onChange, isCorrect, isWrong, disabled, prefi
       style={{
         width: "100%",
         border: "none",
-        borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
+        borderBottom: `1px solid ${isWrong ? "#D1232A" : "#555"}`,
         outline: "none",
         background: "transparent",
         fontSize: "20px",
@@ -109,7 +109,7 @@ const WB_Unit9_ChooseVocab_B = () => {
         </h5>
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px", marginBottom: "3em" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "65px", marginBottom: "3em" }}>
           {QUESTIONS.map(({ id, choices, prefilled }) => {
             const isCorrect = result[id] === true;
             const isWrong   = result[id] === false;
