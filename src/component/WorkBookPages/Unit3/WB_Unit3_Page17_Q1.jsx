@@ -14,7 +14,7 @@ const ROWS = [
     id: 0,
     lastTerm: "The exam scores were low.",
     thisTerm: "The scores should be higher.",
-    prefilled: true,
+    prefilled: false,
   },
   {
     id: 1,

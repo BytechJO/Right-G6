@@ -6,7 +6,7 @@ const ITEMS = [
     id: 1,
     direct: `Neil said, "I'm going to go home for lunch today."`,
     answer: "Neil said that he was going to go home for lunch today.",
-    prefilled: true,
+    prefilled: false,
   },
   {
     id: 2,

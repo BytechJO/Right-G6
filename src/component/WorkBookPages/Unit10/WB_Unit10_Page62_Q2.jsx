@@ -34,7 +34,7 @@ const PicInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
       style={{
         width: "100%",
         border: "none",
-        borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
+        borderBottom: `1px solid ${isWrong ? "#D1232A" : "#555"}`,
         outline: "none",
         background: "transparent",
         fontSize: "16px",
