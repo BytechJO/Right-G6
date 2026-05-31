@@ -1,196 +1,228 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+
 const Review3_Page2_Q1 = () => {
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
-  const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState([]);
-  const correctAnswers = [
-    "popular",
-    "wonderful",
-    "strange enough",
-    "Nowadays",
-    "tin cans",
+  const questions = [
+    {
+      id: 0,
+      prefilled: false,
+      inputAnswer: "If she knew we were home",
+      suffix: ", she would come over to our house.",
+    },
+    {
+      id: 1,
+      prefilled: false,
+      inputAnswer: "If she came over to our house",
+      suffix: ", she would have some tea and biscuits with us.",
+    },
+    {
+      id: 2,
+      prefilled: false,
+      inputAnswer: "If she had some tea and biscuits with us",
+      suffix: ", she would stay and talk for a while.",
+    },
+    {
+      id: 3,
+      prefilled: false,
+      inputAnswer: "If she stayed and talked for a while",
+      suffix: ", we would have lots of fun.",
+    },
+    {
+      id: 4,
+      prefilled: false,
+      inputAnswer: "If we had lots of fun",
+      suffix: ", we'd all be very happy!",
+    },
   ];
-  const normalize = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
-  const handleChange = (i, val) => {
+
+  const initAnswers = () =>
+    questions.map((q) => (q.prefilled ? q.inputAnswer : ""));
+  const initErrors = () => questions.map(() => false);
+  const initLocked = () => questions.map((q) => q.prefilled);
+
+  const [answers, setAnswers] = useState(initAnswers);
+  const [errors, setErrors] = useState(initErrors);
+  const [correctLocked, setCorrectLocked] = useState(initLocked);
+  const [locked, setLocked] = useState(false);
+
+  const normalize = (t) =>
+    t
+      .toLowerCase()
+      .replace(/[.,!?]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const handleChange = (i, value) => {
+    if (locked || correctLocked[i]) return;
     const updated = [...answers];
-    updated[i] = val;
+    updated[i] = value;
     setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
+    const updatedErrors = [...errors];
+    updatedErrors[i] = false;
+    setErrors(updatedErrors);
   };
-  const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
-    setResult([]);
-    setLocked(false);
-  };
-  const input = (i, width = "w-[180px]") => (
-    <span className="relative inline-block mx-1">
-      <input
-        disabled={locked || result[i] === true}
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`border-b outline-none  font-semibold text-[#6D2980] ${width}
-      ${result[i] === false ? "border-red-500" : "border-black"}
-    `}
-      />
 
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-  const checkAnswers = () => {
+  const handleCheck = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a?.trim())) {
-      ValidationAlert.info();
+    const hasEmpty = answers.some(
+      (a, i) => !correctLocked[i] && normalize(a) === "",
+    );
+    if (hasEmpty) {
+      ValidationAlert.info("Complete all fields.");
       return;
     }
 
-    let correctCount = 0;
-
-    const res = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(correctAnswers[i]);
-
-      if (ok) correctCount++;
-
-      return ok;
+    let score = 0;
+    const newErrors = answers.map((a, i) => {
+      if (correctLocked[i]) {
+        score++;
+        return false;
+      }
+      const ok = normalize(a) === normalize(questions[i].inputAnswer);
+      if (ok) score++;
+      return !ok;
+    });
+    const newLocked = answers.map((a, i) => {
+      if (correctLocked[i]) return true;
+      return normalize(a) === normalize(questions[i].inputAnswer);
     });
 
-    setResult(res);
+    setErrors(newErrors);
+    setCorrectLocked(newLocked);
 
-    const total = correctAnswers.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
+    const total = questions.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
     const msg = `
-    <div style="font-size:20px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${correctCount} / ${total}
-      </span>
-    </div>
-  `;
-
-    if (correctCount === total) {
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span>
+      </div>`;
+    if (score === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
-  const showAnswers = () => {
-    setAnswers(correctAnswers);
+
+  const handleShow = () => {
+    setAnswers(questions.map((q) => q.inputAnswer));
+    setErrors(questions.map(() => false));
+    setCorrectLocked(questions.map(() => true));
     setLocked(true);
   };
+
+  const handleReset = () => {
+    setAnswers(initAnswers());
+    setErrors(initErrors());
+    setCorrectLocked(initLocked());
+    setLocked(false);
+  };
+
+  const inputStyle = (i) => ({
+    border: "none",
+    borderBottom: errors[i]
+      ? "1.5px solid red"
+      : correctLocked[i]
+        ? "1.5px solid black"
+        : "1.5px solid black",
+    outline: "none",
+    fontSize: "18px",
+    //color: errors[i] ? "#dc2626" : correctLocked[i] ? "#16a34a" : "#6D2980",
+    fontWeight: 600,
+    background: "transparent",
+    paddingBottom: "2px",
+    width: "360px",
+    textDecoration: questions[i].prefilled ? "underline" : "none",
+  });
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-      }}
-    >
-      <div className="div-forall mb-15">
+    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
+      <div className="div-forall" style={{ gap: "40px" }}>
+        {/* HEADER */}
+        <h5 className="header-title-page8 mb-10">
+          <span style={{ marginRight: "10px" }}>D</span>
+          Continue the story by adding more information using{" "}
+          <span style={{ color: "#f79631", fontStyle: "italic" }}>if</span>.
+        </h5>
+
+        {/* OPENING LINE */}
+        <p style={{ fontSize: "18px" }}>
+          If Rose called, she would know we are home.
+        </p>
+
+        {/* QUESTIONS */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "30px",
+            gap: "40px",
+            marginBottom: "60px",
           }}
         >
-          <h5 className="header-title-page8">
-            <span className="mr-2">D</span>
-            Read and complete the sentences.
-          </h5>
+          {questions.map((q, i) => (
+            <div
+              key={q.id}
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: "8px",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* INPUT */}
+              <span style={{ position: "relative", display: "inline-block" }}>
+                <input
+                  type="text"
+                  value={answers[i]}
+                  disabled={locked || correctLocked[i]}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  style={inputStyle(i)}
+                />
+                {errors[i] && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-10px",
+                      transform: "translateY(-50%)",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </span>
 
-          {/* Reading Box */}
-          <div
-            className="text-[18px] leading-[2.2] p-8 rounded-[20px] mb-5"
-            style={{
-              border: "2px solid #7A2D91",
-            }}
-          >
-            Have you ever eaten something really strange? Haggis, a traditional
-            dish of Scotland, is made from the liver, heart, and lungs of a
-            sheep. The organs of the sheep are minced and then mixed with onion,
-            oatmeal, spices, and salt. If that doesn’t sound strange enough, the
-            mixture is then stuffed into the stomach of the sheep and boiled for
-            a couple of hours. Nowadays, haggis can be purchased at supermarkets
-            in tin cans. A popular encyclopedia on food gives haggis wonderful
-            reviews, claiming it to have an excellent nutty taste, as well as
-            delicious and tasty. Perhaps, you’ll be brave enough to try it
-            someday!
-          </div>
-
-          {/* Questions */}
-          <div className="text-[18px] flex flex-col gap-y-15">
-            <div className="flex items-start">
-              <span className="font-bold mr-4 shrink-0">1</span>
-
-              <div>
-                If that doesn’t sound {input(2, "w-[300px]")}, the mixture is
-                then stuffed into the stomach of the sheep and boiled for a
-                couple of hours.
-              </div>
+              {/* SUFFIX */}
+              <span style={{ fontSize: "18px" }}>
+                {q.suffix}
+              </span>
             </div>
-
-            <div>
-              <span className="font-bold mr-4">2</span>
-              {input(3, "w-[180px]")}, haggis can be purchased at supermarkets
-              in {input(4, "w-[180px]")}.
-            </div>
-            <div>
-              <span className="font-bold mr-4">3</span>A {input(0, "w-[180px]")}{" "}
-              encyclopedia on food gives haggis {input(1, "w-[180px]")} reviews.
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
 
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
-
-        <button onClick={showAnswers} className="show-answer-btn">
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        {/* BUTTONS */}
+        <div className="action-buttons-container">
+          <button className="try-again-button" onClick={handleReset}>
+            Start Again ↻
+          </button>
+          <button className="show-answer-btn" onClick={handleShow}>
+            Show Answer
+          </button>
+          <button className="check-button2" onClick={handleCheck}>
+            Check Answer ✓
+          </button>
+        </div>
       </div>
     </div>
   );

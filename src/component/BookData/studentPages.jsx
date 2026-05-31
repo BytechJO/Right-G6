@@ -46,15 +46,15 @@ import Unit4_Page6 from "../StudentPages/unit4/Unit4_Page6";
 
 // //=================== Review3,4
 import Review3_Page1 from "../StudentPages/review3&4/Review3_Page1";
-// import Review3_Page2 from "../StudentPages/review3&4/Review3_Page2";
-// import Review4_Page1 from "../StudentPages/review3&4/Review4_Page1";
-// import Review4_Page2 from "../StudentPages/review3&4/Review4_Page2";
-// import Reading_Unit4_Page1 from "../StudentPages/unit4/Reading_Unit4_Page1";
-// import Reading_Unit4_Page2 from "../StudentPages/unit4/Reading_Unit4_Page2";
+import Review3_Page2 from "../StudentPages/review3&4/Review3_Page2";
+import Review4_Page1 from "../StudentPages/review3&4/Review4_Page1";
+import Review4_Page2 from "../StudentPages/review3&4/Review4_Page2";
+import Reading_Unit4_Page1 from "../StudentPages/unit4/Reading_Unit4_Page1";
+import Reading_Unit4_Page2 from "../StudentPages/unit4/Reading_Unit4_Page2";
 
 // //==================== unit 5 pages
 
-// import Unit5_Page1 from "../StudentPages/unit5/Unit5_Page1";
+import Unit5_Page1 from "../StudentPages/unit5/Unit5_Page1";
 // import Unit5_Page2 from "../StudentPages/unit5/Unit5_Page2";
 // import Unit5_Page3 from "../StudentPages/unit5/Unit5_Page3";
 // import Unit5_Page4 from "../StudentPages/unit5/Unit5_Page4";
@@ -195,24 +195,24 @@ export const studentPages = (openPopup, goToUnit) => {
     <Unit4_Page6 openPopup={openPopup} />,
     // //===================== unit Review3,4 pages
 
-    // <Review3_Page1 openPopup={openPopup} />,
-    // <Review3_Page2 openPopup={openPopup} />,
-    // <Review4_Page1 openPopup={openPopup} />,
-    // <Review4_Page2 openPopup={openPopup} />,
-    // <Reading_Unit4_Page1
-    //   openPopup={openPopup}
-    //   audioRef={sharedAudioRef}
-    //   activeAudio={activeAudio}
-    //   setActiveAudio={setActiveAudio}
-    // />,
-    // <Reading_Unit4_Page2
-    //   audioRef={sharedAudioRef}
-    //   activeAudio={activeAudio}
-    //   setActiveAudio={setActiveAudio}
-    // />,
+    <Review3_Page1 openPopup={openPopup} />,
+    <Review3_Page2 openPopup={openPopup} />,
+    <Review4_Page1 openPopup={openPopup} />,
+    <Review4_Page2 openPopup={openPopup} />,
+    <Reading_Unit4_Page1
+      openPopup={openPopup}
+      audioRef={sharedAudioRef}
+      activeAudio={activeAudio}
+      setActiveAudio={setActiveAudio}
+    />,
+    <Reading_Unit4_Page2
+      audioRef={sharedAudioRef}
+      activeAudio={activeAudio}
+      setActiveAudio={setActiveAudio}
+    />,
     // //===================== unit 5 pages
 
-    // <Unit5_Page1 openPopup={openPopup} />,
+    <Unit5_Page1 openPopup={openPopup} />,
     // <Unit5_Page2 openPopup={openPopup} />,
     // <Unit5_Page3 openPopup={openPopup} />,
     // <Unit5_Page4 openPopup={openPopup} />,

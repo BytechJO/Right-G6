@@ -1,4 +1,4 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/Page 40.png";
 import "./Unit5_Page1.css";
 import longAudio from "../../../assets/audio/ClassBook/U5/PG 40/cd21pg40-conversation.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
@@ -6,32 +6,14 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U5/PG 40/cd22pg40-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U5/PG 40/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U5/PG 40/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U5/PG 40/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U5/PG 40/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U5/PG 40/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U5/PG 40/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U5/PG 40/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U5/PG 40/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U5/PG 40/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U5/PG 40/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U5/PG 40/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U5/PG 40/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U5/PG 40/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U5/PG 40/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U5/PG 40/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U5/PG 40/sound16.mp3";
-import sound17 from "../../../assets/audio/ClassBook/U5/PG 40/sound17.mp3";
-import sound18 from "../../../assets/audio/ClassBook/U5/PG 40/sound18.mp3";
-import sound19 from "../../../assets/audio/ClassBook/U5/PG 40/sound19.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/23.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/24.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/25.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/Asset 8.svg";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 11.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 12.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 13.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 14.svg";
 import wordJson from "../../../assets/json/cd21pg40-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 5 page 40.mp4";
+import video from "../../../assets/videos/grade 6 unit 1 page 4.mp4";
 
 const Unit5_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
@@ -241,27 +223,7 @@ const Unit5_Page1 = ({ openPopup }) => {
     ],
   ];
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-    sound17,
-    sound18,
-    sound19,
-  ];
+
   const captionVoc = [
     {
       start: 0.379,
@@ -405,7 +367,7 @@ const Unit5_Page1 = ({ openPopup }) => {
                   sound={VocabularAudio}
                   captions={captionVoc}
                   stopAtSecond={8.7}
-                  sounds={sounds}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
                     "sharks",

@@ -1,264 +1,316 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
+import johnImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 43.svg";
+import wandaImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 44.svg";
+import jessicaImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 45.svg";
+import markImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 46.svg";
+import vaseImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 42.svg";
+
 const Unit4_Page6_Q2 = () => {
-  const [correctWordsLocked, setCorrectWordsLocked] = useState([]);
-  const paragraph = [
-    "Max likes to do different activities on the weekends.",
-    "Max usually skateboards at the skate park near his house.",
-    "His friend Nick sometimes skateboards with him.",
-    "Max’s neighbor occasionally plays a chess game with him.",
-    "They rarely sit outside when they play chess.",
-    "Instead, they often play chess in each other’s houses.",
-    "Every once in a while, Max likes to watch a movie at the theater.",
-    "However, he often rents movies to watch at home.",
-    "During the summer, Max always reads a lot of books.",
-    "Sometimes, it is just too hot to do anything outside.",
-    "Max is never bored on his weekends because he regularly finds things to do.",
+  const clues = [
+    "The vase is broken by the person who picks the flowers.",
+    "The person who is taught by John finds the broken vase.",
+    "The person who breaks the vase is seen by the person who has a cat.",
   ];
 
-  const correctWords = [
-    "usually",
-    "sometimes",
-    "occasionally",
-    "rarely",
-    "often",
-    "often",
-    "always",
-    "Sometimes",
-    "never",
-    "regularly",
+  const people = [
+    { name: "John", img: johnImg },
+    { name: "Wanda", img: wandaImg },
+    { name: "Jessica", img: jessicaImg },
+    { name: "Mark", img: markImg },
   ];
 
-  const [selectedWords, setSelectedWords] = useState([]);
-  const [wrongWords, setWrongWords] = useState([]);
+  const questions = [
+    { id: 0, text: "Who saw the one who broke the vase?", answer: "Wanda" },
+    { id: 1, text: "Who is John's student?", answer: "Mark" },
+    { id: 2, text: "Who breaks the vase?", answer: "Jessica" },
+    {
+      id: 3,
+      text: "Who finds the vase after it has been broken?",
+      answer: "John",
+    },
+  ];
+
+  const initAnswers = () => questions.map(() => "");
+  const initErrors = () => questions.map(() => false);
+  const initLocked = () => questions.map(() => false);
+
+  const [answers, setAnswers] = useState(initAnswers);
+  const [errors, setErrors] = useState(initErrors);
+  const [correctLocked, setCorrectLocked] = useState(initLocked);
   const [locked, setLocked] = useState(false);
 
-  // toggle
-  const toggleWord = (id) => {
-    if (locked) return;
+  const normalize = (t) =>
+    t
+      .toLowerCase()
+      .replace(/[.,!?]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
-    // ✅ لا تعدل الصح المثبت
-    if (correctWordsLocked.includes(id)) return;
-
-    if (selectedWords.includes(id)) {
-      setSelectedWords(selectedWords.filter((w) => w !== id));
-    } else {
-      setSelectedWords([...selectedWords, id]);
-    }
-
-    setWrongWords(wrongWords.filter((w) => w !== id));
+  const handleChange = (i, value) => {
+    if (locked || correctLocked[i]) return;
+    const updated = [...answers];
+    updated[i] = value;
+    setAnswers(updated);
+    const updatedErrors = [...errors];
+    updatedErrors[i] = false;
+    setErrors(updatedErrors);
   };
 
-  // check
   const handleCheck = () => {
     if (locked) return;
-
-    if (selectedWords.length === 0) {
-      ValidationAlert.info("Select the adverbs.");
+    const hasEmpty = answers.some(
+      (a, i) => !correctLocked[i] && normalize(a) === "",
+    );
+    if (hasEmpty) {
+      ValidationAlert.info("Complete all fields.");
       return;
     }
 
     let score = 0;
-
-    const wrong = [];
-    const correctLockedNow = [];
-
-    selectedWords.forEach((id) => {
-      const [lineIndex, wordIndex] = id.split("-");
-
-      const word = paragraph[lineIndex]
-        .split(" ")
-        // eslint-disable-next-line no-unexpected-multiline
-        [wordIndex].replace(/[.,]/g, "");
-
-      const correct = correctWords.some(
-        (w) => w.toLowerCase() === word.toLowerCase(),
-      );
-
-      if (correct) {
+    const newErrors = answers.map((a, i) => {
+      if (correctLocked[i]) {
         score++;
-        correctLockedNow.push(id);
-      } else {
-        wrong.push(id);
+        return false;
       }
+      const ok = normalize(a) === normalize(questions[i].answer);
+      if (ok) score++;
+      return !ok;
+    });
+    const newLocked = answers.map((a, i) => {
+      if (correctLocked[i]) return true;
+      return normalize(a) === normalize(questions[i].answer);
     });
 
-    setWrongWords(wrong);
+    setErrors(newErrors);
+    setCorrectLocked(newLocked);
 
-    // ✅ ثبت الصح فقط
-    setCorrectWordsLocked((prev) => [
-      ...new Set([...prev, ...correctLockedNow]),
-    ]);
+    const total = questions.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span>
+      </div>`;
 
-    const total = correctWords.length;
-
-    const allCorrect = correctLockedNow.length === total;
-
-    const msg = `Score: ${score} / ${total}`;
-
-    if (allCorrect) {
+    if (score === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (score === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // show
   const handleShow = () => {
-    const allCorrectIds = [];
-
-    paragraph.forEach((line, lineIndex) => {
-      line.split(" ").forEach((word, wordIndex) => {
-        const cleanWord = word.replace(/[.,]/g, "");
-
-        const correct = correctWords.some(
-          (w) => w.toLowerCase() === cleanWord.toLowerCase(),
-        );
-
-        if (correct) {
-          allCorrectIds.push(`${lineIndex}-${wordIndex}`);
-        }
-      });
-    });
-
-    setSelectedWords(allCorrectIds);
-    setWrongWords([]);
-    setCorrectWordsLocked(allCorrectIds);
+    setAnswers(questions.map((q) => q.answer));
+    setErrors(questions.map(() => false));
+    setCorrectLocked(questions.map(() => true));
     setLocked(true);
   };
 
-  // reset
   const handleReset = () => {
-    setSelectedWords([]);
-    setWrongWords([]);
+    setAnswers(initAnswers());
+    setErrors(initErrors());
+    setCorrectLocked(initLocked());
     setLocked(false);
-    setCorrectWordsLocked([]);
   };
 
-  // render word
-  const renderWord = (word, id) => {
-    const selected = selectedWords.includes(id);
-
-    const wrong = wrongWords.includes(id);
-
-    return (
-      <span
-        key={id}
-        onClick={() => toggleWord(id)}
-        style={{
-          position: "relative",
-          display: "inline-block",
-          margin: "0 2px",
-        }}
-      >
-        <span
-          style={{
-            cursor: locked ? "default" : "pointer",
-
-            border: selected
-              ? wrong
-                ? "2px solid red"
-                : "2px solid #6D2980"
-              : "2px solid transparent",
-
-            borderRadius: "999px",
-
-            padding: "2px 6px",
-
-            transition: "0.2s",
-
-            userSelect: "none",
-
-            display: "inline-block",
-          }}
-        >
-          {word}
-        </span>
-
-        {/* ❌ */}
-        {wrong && (
-          <span
-            style={{
-              position: "absolute",
-              top: "-10px",
-              right: "-10px",
-              width: "18px",
-              height: "18px",
-              background: "#ef4444",
-              color: "white",
-              borderRadius: "50%",
-              fontSize: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              border: "2px solid white",
-              boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-            }}
-          >
-            ✕
-          </span>
-        )}
-      </span>
-    );
-  };
+  const inputStyle = (i) => ({
+    flex: 1,
+    border: "none",
+    borderBottom: errors[i]
+      ? "1.5px solid #dc2626"
+      : correctLocked[i]
+        ? "1.5px solid black"
+        : "1.5px solid black",
+    outline: "none",
+    fontSize: "18px",
+    fontWeight: 600,
+    background: "transparent",
+    paddingBottom: "2px",
+  });
 
   return (
-    <div
-      style={{
-        padding: "30px",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
+    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall">
         {/* HEADER */}
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2">E</span>
-          Read and circle the adverbs of frequency.
+        <h5 className="header-title-page8 mb-6">
+          <span className="ex-A" style={{ marginRight: "10px" }}>
+            D
+          </span>
+          Who was it? Read the clues and look at the pictures to decide whom it
+          was who did each action. One name may be used more than once.
         </h5>
 
-        {/* PARAGRAPH */}
+        {/* CLUES + VASE IMAGE */}
         <div
           style={{
-            marginTop: "35px",
-            padding: "0 20px",
+            display: "flex",
+            gap: "24px",
+            alignItems: "flex-start",
+            marginBottom: "24px",
           }}
         >
-          <p
+          {/* CLUES */}
+          <ul
             style={{
-              fontSize: "20px",
-              lineHeight: "2.15",
-              color: "#111",
-              textAlign: "left",
-              maxWidth: "980px",
-              margin: "0 auto",
-              wordSpacing: "1px",
+              flex: 1,
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              justifyContent: "space-between",
+              gap: "10px",
             }}
           >
-            {paragraph.map((line, i) => (
-              <React.Fragment key={i}>
-                {line
-                  .split(" ")
-                  .map((word, index) => renderWord(word, `${i}-${index}`))}{" "}
-              </React.Fragment>
+            {clues.map((clue, i) => (
+              <li
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "10px",
+                  fontSize: "17px",
+                }}
+              >
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                    background: "#f79631",
+                    flexShrink: 0,
+                    marginTop: "6px",
+                  }}
+                />
+                {clue}
+              </li>
             ))}
-          </p>
+          </ul>
+
+          {/* VASE IMAGE */}
+          <img
+            src={vaseImg}
+            alt="vase"
+            style={{
+              width: "200px",
+              height: "130px",
+              objectFit: "contain",
+              borderRadius: "10px",
+              flexShrink: 0,
+            }}
+          />
         </div>
+
+        {/* PEOPLE IMAGES */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "12px",
+            marginBottom: "32px",
+          }}
+        >
+          {people.map((p) => (
+            <div
+              key={p.name}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <img
+                src={p.img}
+                alt={p.name}
+                style={{
+                  height: "150px",
+                  aspectRatio: "1",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* QUESTIONS */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            marginBottom: "60px",
+          }}
+        >
+          {questions.map((q, i) => (
+            <div
+              key={q.id}
+              style={{ display: "flex", alignItems: "baseline", gap: "10px" }}
+            >
+              {/* NUMBER */}
+              <span
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  minWidth: "20px",
+                }}
+              >
+                {i + 1}
+              </span>
+
+              {/* QUESTION TEXT */}
+              <span style={{ fontSize: "18px", whiteSpace: "nowrap" }}>
+                {q.text}
+              </span>
+
+              {/* INPUT */}
+              <div style={{ position: "relative", flex: 1 }}>
+                <input
+                  type="text"
+                  value={answers[i]}
+                  disabled={locked || correctLocked[i]}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  style={inputStyle(i)}
+                />
+                {errors[i] && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-10px",
+                      right: "-20px",
+                      transform: "translateY(-50%)",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* BUTTONS */}
         <div className="action-buttons-container">
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-
           <button className="show-answer-btn" onClick={handleShow}>
             Show Answer
           </button>
-
           <button className="check-button2" onClick={handleCheck}>
             Check Answer ✓
           </button>

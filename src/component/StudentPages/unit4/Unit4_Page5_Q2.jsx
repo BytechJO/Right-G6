@@ -1,312 +1,344 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 32/SVG/Asset 12.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 32/SVG/Asset 13.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 32/SVG/Asset 14.svg";
-import img4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 32/SVG/Asset 15.svg";
-import img5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 32/SVG/Asset 16.svg";
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import audio from "../../../assets/audio/ClassBook/U4/PG 32/cd20pg32.mp3";
 
 const Unit4_Page5_Q2 = () => {
-  const [selectedImg, setSelectedImg] = useState(null);
-  const [matches, setMatches] = useState({});
-  const [showResult, setShowResult] = useState(false);
+  const captions = [
+    {
+      start: 0.0,
+      end: 20.0,
+      text: "Listen to the sentence, then change it to present simple passive.",
+    },
+  ];
+
+  // كل سؤال فيه أجزاء: type "text" = نص ثابت, type "input" = فراغ
+  const questions = [
+    {
+      id: 0,
+      parts: [
+        { type: "text", value: "The car is " },
+        { type: "input", id: "0_0", answer: "fixed" },
+        { type: "text", value: " by the mechanic." },
+      ],
+    },
+    {
+      id: 1,
+      parts: [
+        { type: "text", value: "Is the key " },
+        { type: "input", id: "1_0", answer: "made" },
+        { type: "text", value: " by the " },
+        { type: "input", id: "1_1", answer: "locksmith" },
+        { type: "text", value: "?" },
+      ],
+    },
+    {
+      id: 2,
+      parts: [
+        { type: "input", id: "2_0", answer: "Is" },
+        { type: "text", value: " the letter brought to our mailbox by" },
+        { type: "input", id: "2_1", answer: "the mail carrier" },
+        { type: "text", value: "?" },
+      ],
+    },
+    {
+      id: 3,
+      parts: [
+        { type: "text", value: "Clark's friend is " },
+        { type: "input", id: "3_0", answer: "sent" },
+        { type: "text", value: " the e-mail by Clark" },
+      ],
+    },
+    {
+      id: 4,
+      parts: [
+        { type: "input", id: "4_0", answer: "The horse is ridden" },
+        { type: "text", value: " to school by " },
+        { type: "input", id: "4_1", answer: "Jenny" },
+        { type: "text", value: "." },
+      ],
+    },
+    {
+      id: 5,
+      parts: [
+        {
+          type: "input",
+          id: "5_0",
+          answer: "The beautiful landscape is painted by Vince",
+        },
+      ],
+    },
+  ];
+
+  // جمع كل الـ inputs في كائن واحد
+  const allInputs = {};
+  questions.forEach((q) => {
+    q.parts.forEach((p) => {
+      if (p.type === "input") {
+        allInputs[p.id] = q.prefilled ? p.answer : "";
+      }
+    });
+  });
+
+  const [answers, setAnswers] = useState(allInputs);
+  const [errors, setErrors] = useState(
+    Object.keys(allInputs).reduce((acc, k) => {
+      acc[k] = false;
+      return acc;
+    }, {}),
+  );
+  const [correctLocked, setCorrectLocked] = useState(
+    Object.keys(allInputs).reduce((acc, k) => {
+      // السؤال الأول مثال جاهز
+      acc[k] = k.startsWith("0_");
+      return acc;
+    }, {}),
+  );
   const [locked, setLocked] = useState(false);
-  const [validatedMatches, setValidatedMatches] = useState({});
 
-  const imageRefs = useRef([]);
-  const sentenceRefs = useRef([]);
-  const containerRef = useRef(null);
+  const normalize = (str) =>
+    str
+      .trim()
+      .toLowerCase()
+      .replace(/[.,!?''""''’;:]/g, "")
+      .replace(/\s+/g, " ");
 
-  const images = [
-    { id: 0, img: img1 },
-    { id: 1, img: img2 },
-    { id: 2, img: img3 },
-    { id: 3, img: img4 },
-    { id: 4, img: img5 },
-  ];
-
-  const sentences = [
-    { id: 0, text: "boots" },
-    { id: 1, text: "grocery store" },
-    { id: 2, text: "arcade" },
-    { id: 3, text: "jeans" },
-    { id: 4, text: "food court" },
-  ];
-
-  const correct = {
-    0: 3,
-    1: 0,
-    2: 4,
-    3: 1,
-    4: 2,
+  const updateField = (id, value) => {
+    if (locked || correctLocked[id]) return;
+    setAnswers((prev) => ({ ...prev, [id]: value }));
+    setErrors((prev) => ({ ...prev, [id]: false }));
   };
 
-  const selectImage = (id) => {
-    if (showResult && validatedMatches[id] === correct[id]) return;
-
-    setSelectedImg(id);
-
-    // أول ما يبدأ يعدل شيل التقييم القديم
-    setValidatedMatches((prev) => {
-      const updated = { ...prev };
-      delete updated[id];
-      return updated;
-    });
-  };
-
-  const selectSentence = (id) => {
-    if (selectedImg === null) return;
-
-    // إذا الصورة مثبتة صح لا تعدلها
-    if (showResult && validatedMatches[selectedImg] === correct[selectedImg]) {
-      setSelectedImg(null);
-      return;
-    }
-
-    // إذا الجملة مثبتة صح لا تستخدمها
-    const alreadyCorrectlyUsed =
-      showResult &&
-      Object.entries(validatedMatches).some(
-        ([imgId, sentId]) =>
-          Number(sentId) === id &&
-          correct[imgId] === Number(sentId) &&
-          Number(imgId) !== selectedImg,
-      );
-
-    if (alreadyCorrectlyUsed) {
-      return;
-    }
-
-    setMatches((prev) => {
-      const updated = { ...prev };
-
-      // احذف الربط القديم لنفس الكلمة
-      Object.keys(updated).forEach((imgKey) => {
-        // إذا الكلمة مستخدمة بصورة ثانية
-        if (updated[imgKey] === id) {
-          // إذا الصورة مثبتة صح لا تحذفها
-          if (showResult && validatedMatches[imgKey] === correct[imgKey]) {
-            return;
-          }
-
-          // غير هيك احذف الربط القديم
-          delete updated[imgKey];
-        }
-      });
-
-      updated[selectedImg] = id;
-
-      return updated;
-    });
-
-    setSelectedImg(null);
-  };
-  const checkAnswers = () => {
+  const handleCheck = () => {
     if (locked) return;
 
-    if (Object.keys(matches).length !== images.length) {
-      ValidationAlert.info("Please match all.");
+    // تحقق من الفراغات الفارغة (غير المقفلة)
+    const hasEmpty = Object.keys(answers).some(
+      (k) => !correctLocked[k] && !answers[k].trim(),
+    );
+    if (hasEmpty) {
+      ValidationAlert.info("Complete all fields.");
       return;
     }
 
-    let correctCount = 0;
+    let score = 0;
+    const newErrors = { ...errors };
+    const newLocked = { ...correctLocked };
 
-    Object.entries(matches).forEach(([imgId, sentId]) => {
-      if (correct[imgId] === sentId) correctCount++;
+    // احسب الأسئلة الصح كاملة
+    questions.forEach((q) => {
+      if (q.prefilled) {
+        score++;
+        return;
+      }
+
+      const inputParts = q.parts.filter((p) => p.type === "input");
+      const allCorrect = inputParts.every(
+        (p) => normalize(answers[p.id]) === normalize(p.answer),
+      );
+
+      inputParts.forEach((p) => {
+        const correct = normalize(answers[p.id]) === normalize(p.answer);
+        newErrors[p.id] = !correct;
+        if (correct) newLocked[p.id] = true;
+      });
+
+      if (allCorrect) score++;
     });
 
-    const total = images.length;
+    setErrors(newErrors);
+    setCorrectLocked(newLocked);
 
-    const message = `
-        Score: ${correctCount} / ${total}
-  `;
+    const total = questions.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span>
+      </div>`;
 
-    if (correctCount === total) {
+    if (score === total) {
       setLocked(true);
-      ValidationAlert.success(message);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(message);
+      ValidationAlert.success(msg);
+    } else if (score === 0) {
+      ValidationAlert.error(msg);
     } else {
-      ValidationAlert.warning(message);
+      ValidationAlert.warning(msg);
     }
-    setValidatedMatches(matches);
-    setShowResult(true);
   };
 
-  const showAnswers = () => {
-    setMatches(correct);
+  const handleShow = () => {
+    const all = {};
+    const allLocked = {};
+    const noErrors = {};
+    questions.forEach((q) => {
+      q.parts.forEach((p) => {
+        if (p.type === "input") {
+          all[p.id] = p.answer;
+          allLocked[p.id] = true;
+          noErrors[p.id] = false;
+        }
+      });
+    });
+    setAnswers(all);
+    setCorrectLocked(allLocked);
+    setErrors(noErrors);
     setLocked(true);
-    setShowResult(true);
   };
 
-  const reset = () => {
-    setSelectedImg(null);
-    setValidatedMatches({});
-    setMatches({});
-    setShowResult(false);
+  const handleReset = () => {
+    const reset = {};
+    const resetErrors = {};
+    const resetLocked = {};
+    questions.forEach((q) => {
+      q.parts.forEach((p) => {
+        if (p.type === "input") {
+          reset[p.id] = q.prefilled ? p.answer : "";
+          resetErrors[p.id] = false;
+          resetLocked[p.id] = !!q.prefilled;
+        }
+      });
+    });
+    setAnswers(reset);
+    setErrors(resetErrors);
+    setCorrectLocked(resetLocked);
     setLocked(false);
   };
 
+  const getInputStyle = (id, isUnderlineOnly = false) => ({
+    border: "none",
+    borderBottom: errors[id]
+      ? "1.5px solid #dc2626"
+      : correctLocked[id]
+        ? "1.5px solid black"
+        : "1.5px solid black",
+    outline: "none",
+    fontSize: "18px",
+    textAlign: "center",
+    fontWeight: 600,
+    width: id === "5_0" ? "450px" : "160px",
+    background: "transparent",
+
+    textDecoration: isUnderlineOnly ? "line-through" : "none",
+  });
+
   return (
-    <div
-      ref={containerRef}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-        position: "relative",
-      }}
-    >
+    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall">
-        <h5 className="header-title-page8  mb-6">
-          <span className="ex-A mr-3">B</span>
-          Read, look, and match.
+        {/* TITLE */}
+        <h5 className="header-title-page8 mb-10">
+          <span className="ex-A" style={{ marginRight: "10px" }}>
+            B
+          </span>
+          Listen to the sentence, then change it to present simple passive.
         </h5>
 
-        <div className="w-full flex flex-col items-center gap-50">
-          {/* 🔥 الصور فوق */}
-          <div className="grid grid-cols-5 w-full">
-            {images.map((img, i) => (
-              <div
-                key={i}
-                onClick={() => selectImage(i)}
-                className="relative flex flex-col items-center cursor-pointer transition"
+        {/* AUDIO */}
+        <QuestionAudioPlayer src={audio} captions={captions} />
+
+        {/* QUESTIONS */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "40px",
+            marginTop:"15px",
+            marginBottom: "60px",
+          }}
+        >
+          {questions.map((q, qi) => (
+            <div
+              key={q.id}
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: "8px",
+                fontSize: "18px",
+              }}
+            >
+              {/* NUMBER */}
+              <span
+                style={{ fontWeight: "bold", minWidth: "24px", color: "#333" }}
               >
-                <img
-                  src={img.img}
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                    objectFit: "contain",
-                    border:
-                      selectedImg === i
-                        ? "3px solid #6d2980"
-                        : "3px solid transparent",
-                    borderRadius: "12px",
-                    padding: "4px",
-                    backgroundColor:
-                      selectedImg === i ? "#6d2980" : "transparent",
-                  }}
-                />
-                {showResult &&
-                  validatedMatches[i] !== undefined &&
-                  correct[i] !== validatedMatches[i] && (
+                {qi + 1}
+              </span>
+
+              {/* PARTS */}
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "baseline",
+                  gap: "4px",
+                }}
+              >
+                {q.parts.map((part, pi) => {
+                  if (part.type === "text") {
+                    return (
+                      <span key={pi} style={{ color: "#333" }}>
+                        {part.value}
+                      </span>
+                    );
+                  }
+
+                  // input
+                  return (
                     <span
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        right: "10px",
-                        width: "20px",
-                        height: "20px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                        zIndex: 5,
-                      }}
+                      key={pi}
+                      style={{ position: "relative", display: "inline-block" }}
                     >
-                      ✕
+                      <input
+                        type="text"
+                        value={answers[part.id] || ""}
+                        disabled={locked || correctLocked[part.id]}
+                        onChange={(e) => updateField(part.id, e.target.value)}
+                        style={getInputStyle(part.id, part.underline)}
+                      />
+                      {/* error dot */}
+                      {errors[part.id] && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-8px",
+                            right: "-10px",
+                            width: "22px",
+                            height: "22px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            fontSize: "12px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            zIndex: 5,
+                            pointerEvents: "none",
+                          }}
+                        >
+                          ✕
+                        </span>
+                      )}
                     </span>
-                  )}
-                <div
-                  ref={(el) => (imageRefs.current[i] = el)}
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition z-10"
-                  style={{
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: "#00AEEF",
-                    transform:
-                      selectedImg === i
-                        ? "translate(-50%, -50%) scale(1.4)"
-                        : "translate(-50%, -50%)",
-                  }}
-                ></div>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-
-          {/* 🔥 الجمل تحت */}
-          <div className="grid grid-cols-5 w-full mb-15">
-            {sentences.map((sent, i) => (
-              <div
-                key={i}
-                onClick={() => selectSentence(i)}
-                className="relative flex flex-col items-center cursor-pointer "
-              >
-                {/* 🔥 الدوت */}
-                <div
-                  ref={(el) => (sentenceRefs.current[i] = el)} // 🔥 هون كمان
-                  className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full z-10 transition"
-                  style={{
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: "#00AEEF",
-                  }}
-                ></div>
-
-                {/* 🔥 البوكس */}
-                <div className="relative px-4 py-2 rounded-2xl text-sm text-center transition text-[20px]">
-                  <span className="font-bold mr-3">{i + 1}</span>
-                  {sent.text}
-                </div>
-              </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </div>
 
-      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {Object.entries(matches).map(([imgId, sentId], i) => {
-          const imgDot = imageRefs.current[imgId];
-          const sentDot = sentenceRefs.current[sentId];
-
-          if (!imgDot || !sentDot || !containerRef.current) return null;
-
-          const imgRect = imgDot.getBoundingClientRect();
-          const sentRect = sentDot.getBoundingClientRect();
-          const containerRect = containerRef.current.getBoundingClientRect();
-
-          const x1 = sentRect.left + sentRect.width / 2 - containerRect.left;
-          const y1 = sentRect.top + sentRect.height / 2 - containerRect.top;
-
-          const x2 = imgRect.left + imgRect.width / 2 - containerRect.left;
-          const y2 = imgRect.top + imgRect.height / 2 - containerRect.top;
-          return (
-            <g key={i}>
-              <line
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke="#6d2980"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-            </g>
-          );
-        })}
-      </svg>
-
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={reset}>
-          Start Again ↻
-        </button>
-
-        <button onClick={showAnswers} className="show-answer-btn">
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        {/* BUTTONS */}
+        <div className="action-buttons-container">
+          <button className="try-again-button" onClick={handleReset}>
+            Start Again ↻
+          </button>
+          <button className="show-answer-btn" onClick={handleShow}>
+            Show Answer
+          </button>
+          <button className="check-button2" onClick={handleCheck}>
+            Check Answer ✓
+          </button>
+        </div>
       </div>
     </div>
   );

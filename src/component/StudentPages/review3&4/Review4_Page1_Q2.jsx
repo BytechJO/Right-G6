@@ -2,87 +2,84 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review4_Page1_Q2 = () => {
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-  const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState([]);
+  const rows = [
+    {
+      left:  { text: "Janet mails the letter.", editable: false },
+      right: { text: "The letter is mailed by Janet.", editable: false },
+    },
+    {
+      left:  { text: "Jeremy makes linen by using flaxseed.", editable: false },
+      right: { text: "By using flaxseed.", editable: false, answer: "By using flaxseed." },
+    },
+    {
+      left:  { text: "The bakers make delicious rolls each day.", editable: false },
+      right: { text: "", editable: true, answer: "Delicious rolls are made by the bakers each day" },
+    },
+    {
+      left:  { text: "", editable: true, answer: "The machines milk the cows on the farm." },
+      right: { text: "On their farm, the cows are milked by machines.", editable: false },
+    },
+    {
+      left:  { text: "", editable: true, answer: "My sister cleans the house every Friday." },
+      right: { text: "Every Friday, the house is cleaned by my sister.", editable: false },
+    },
+  ];
 
-  const correctAnswers = ["straight", "me", "over", "split"];
+  const totalInputs = rows.filter(
+    (r) => r.left.editable || r.right.editable
+  ).length;
 
-  const normalize = (str) => str.toLowerCase().replace(/\s+/g, "").trim();
+  const initAnswers = () => {
+    const obj = {};
+    rows.forEach((row, i) => {
+      if (row.left.editable)  obj[`${i}-left`]  = "";
+      if (row.right.editable) obj[`${i}-right`] = "";
+    });
+    return obj;
+  };
 
-  const handleChange = (i, val) => {
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
+  const [answers, setAnswers] = useState(initAnswers);
+  const [result,  setResult]  = useState({});
+  const [locked,  setLocked]  = useState(false);
 
+  const normalize = (s) =>
+    s.toLowerCase().replace(/\s+/g, " ").trim().replace(/\.$/, "");
+
+  const handleChange = (key, val) => {
+    setAnswers((prev) => ({ ...prev, [key]: val }));
     setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
+      const copy = { ...prev };
+      delete copy[key];
       return copy;
     });
   };
 
-  const input = (i, width = "w-[180px]") => (
-    <span className="relative inline-block mx-1">
-      <input
-        disabled={locked || result[i] === true}
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`border-b outline-none text-[#6D2980] font-semibold ${width}
-        ${result[i] === false ? "border-red-500" : "border-black"}
-      `}
-      />
-
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-10px",
-            right: "-10px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
+    const allFilled = Object.values(answers).every((v) => v.trim());
+    if (!allFilled) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
 
     let correctCount = 0;
+    const res = {};
 
-    const res = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(correctAnswers[i]);
-
-      if (ok) correctCount++;
-
-      return ok;
+    rows.forEach((row, i) => {
+      ["left", "right"].forEach((side) => {
+        if (row[side].editable) {
+          const key = `${i}-${side}`;
+          const ok = normalize(answers[key]) === normalize(row[side].answer);
+          res[key] = ok;
+          if (ok) correctCount++;
+        }
+      });
     });
 
     setResult(res);
 
-    const total = correctAnswers.length;
-
+    const total = totalInputs;
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
@@ -105,15 +102,90 @@ const Review4_Page1_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(correctAnswers);
-    setResult([true, true, true, true]);
+    const filled = {};
+    const res = {};
+    rows.forEach((row, i) => {
+      ["left", "right"].forEach((side) => {
+        if (row[side].editable) {
+          const key = `${i}-${side}`;
+          filled[key] = row[side].answer;
+          res[key] = true;
+        }
+      });
+    });
+    setAnswers(filled);
+    setResult(res);
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-    setResult([]);
+    setAnswers(initAnswers());
+    setResult({});
     setLocked(false);
+  };
+
+  const renderCell = (row, rowIndex, side) => {
+    const cell = row[side];
+    const key  = `${rowIndex}-${side}`;
+
+    if (!cell.editable) {
+      return (
+        <span style={{ color: "var(--color-text-primary, #111)" }}>
+          {cell.text}
+        </span>
+      );
+    }
+
+    const isWrong   = result[key] === false;
+    const isCorrect = result[key] === true;
+
+    return (
+      <span style={{ position: "relative", display: "inline-block", width: "100%" }}>
+        <input
+          disabled={locked || isCorrect}
+          value={answers[key] ?? ""}
+          onChange={(e) => handleChange(key, e.target.value)}
+          placeholder="Write here..."
+          style={{
+            width: "100%",
+            border: "none",
+            borderBottom: `1.5px solid ${
+              isWrong ? "#ef4444" : isCorrect ? "black" : "black"
+            }`,
+            outline: "none",
+            background: "transparent",
+            fontSize: "15px",
+       
+            fontWeight: "600",
+            paddingBottom: "2px",
+          }}
+        />
+        {isWrong && (
+          <span
+            style={{
+              position: "absolute",
+              top: "-10px",
+              right: "-10px",
+                   width: "22px",
+              height: "22px",
+              background: "red",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              zIndex: 3,
+            }}
+          >
+            ✕
+          </span>
+        )}
+      </span>
+    );
   };
 
   return (
@@ -126,100 +198,91 @@ const Review4_Page1_Q2 = () => {
       }}
     >
       <div className="div-forall">
-        <h5 className="header-title-page8 mb-40">
+        <h5 className="header-title-page8 mb-10">
           <span className="mr-2">B</span>
-          Read and write the expression.
+      Either change the sentence from the simple present to the present simple passive, or change it from the present simple passive to the simple present.
         </h5>
 
-        <div
+        {/* TABLE */}
+        <table
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            rowGap: "90px",
-            columnGap: "100px",
-            fontSize: "20px",
+            width: "100%",
+            borderCollapse: "collapse",
+            fontSize: "16px",
           }}
         >
-          {/* 1 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "16px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                minWidth: "20px",
-              }}
-            >
-              1
-            </span>
+          <thead>
+            <tr>
+              <th
+                style={{
+                  background: "#e1e9d1",
+                  color: "#80ac3e",
+                  fontWeight: "500",
+                  padding: "10px 16px",
+                  border: "1px solid #80ac3e",
+                  textAlign: "center",
+                  width: "50%",
+                }}
+              >
+                Simple present
+              </th>
+              <th
+                style={{
+                  background: "#e1e9d1",
+                  color: "#80ac3e",
+                  fontWeight: "500",
+                  padding: "10px 16px",
+                  border: "1px solid #80ac3e",
+                  textAlign: "center",
+                  width: "50%",
+                }}
+              >
+                Present participle
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr
+                key={i}
+               
+              >
+                {/* LEFT CELL */}
+                <td
+                  style={{
+                    border: "1px solid #80ac3e",
+                    padding: "18px 16px",
+                    verticalAlign: "middle",
+                    minHeight: "60px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      marginRight: "8px",
+                      color: "#555",
+                    }}
+                  >
+                    {i + 1}
+                  </span>
+                  {renderCell(row, i, "left")}
+                </td>
 
-            <div style={{ lineHeight: "1.8" }}>{input(0)} ahead</div>
-          </div>
-
-          {/* 2 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "16px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                minWidth: "20px",
-              }}
-            >
-              2
-            </span>
-
-            <div style={{ lineHeight: "1.8" }}>Not {input(1)}!</div>
-          </div>
-
-          {/* 3 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "16px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                minWidth: "20px",
-              }}
-            >
-              3
-            </span>
-
-            <div style={{ lineHeight: "1.8" }}>head {input(2)}</div>
-          </div>
-
-          {/* 4 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: "16px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                minWidth: "20px",
-              }}
-            >
-              4
-            </span>
-
-            <div style={{ lineHeight: "1.8" }}>{input(3)} up</div>
-          </div>
-        </div>
+                {/* RIGHT CELL */}
+                <td
+                  style={{
+                    border: "1px solid #80ac3e",
+                    padding: "18px 16px",
+                    verticalAlign: "middle",
+                    minHeight: "60px",
+                  }}
+                >
+                  {renderCell(row, i, "right")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* BUTTONS */}
@@ -227,11 +290,9 @@ const Review4_Page1_Q2 = () => {
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>

@@ -1,574 +1,372 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import ladderImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 34/SVG/Asset 17.svg";
+import skyImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 59.svg";
 
 const Review3_Page1_Q3 = () => {
-  const initialData = [
+  const questions = [
     {
-      number: "1",
-
-      leftWord: "",
-      rightWord: "way",
-
-      answer: "",
-      correctAnswer: "No way!",
-
-      missingLeft: true,
-      missingRight: false,
-      correctLeft: "No",
-
-      // POSITIONS
-      numberPos: {
-        top: "11%",
-        left: "-2%",
+      id: 0,
+      dialog: true,
+      speaker1: {
+        name: "Kristina",
+        text: "Do you think it will be sunny today?",
       },
-
-      leftPos: {
-        top: "10%",
-        left: "5%",
-      },
-
-      rightPos: {
-        top: "10%",
-        left: "23%",
-      },
-
-      answerPos: {
-        top: "9%",
-        right: "10%",
-      },
+      speaker2: { name: "Larry", inputId: "0_0", answer: "I don’t think so." },
     },
-
     {
-      number: "2",
-
-      leftWord: "tastes",
-      rightWord: "",
-
-      answer: "",
-      correctAnswer: "tastes good",
-
-      missingLeft: false,
-      missingRight: true,
-      correctRight: "good",
-
-      numberPos: {
-        top: "24%",
-        left: "-2%",
-      },
-
-      leftPos: {
-        top: "23%",
-        left: "6%",
-      },
-
-      rightPos: {
-        top: "22.5%",
-        left: "20%",
-      },
-
-      answerPos: {
-        top: "22%",
-        right: "10%",
-      },
+      id: 1,
+      parts: [
+        { type: "input", id: "1_0", answer: "If I were you", width: "220px" },
+        { type: "text", value: ", I would at least try out for the team." },
+      ],
     },
-
     {
-      number: "3",
-
-      leftWord: "",
-      rightWord: "off",
-
-      answer: "",
-      correctAnswer: "top off",
-
-      missingLeft: true,
-      missingRight: false,
-      correctLeft: "top",
-
-      numberPos: {
-        top: "38%",
-        left: "-2%",
-      },
-
-      leftPos: {
-        top: "35.5%",
-        left: "5%",
-      },
-
-      rightPos: {
-        top: "36%",
-        left: "23%",
-      },
-
-      answerPos: {
-        top: "35%",
-        right: "10%",
-      },
+      id: 2,
+      parts: [
+        { type: "input", id: "2_0", answer: "take a look", width: "200px" },
+        { type: "text", value: " at the pictures?" },
+      ],
     },
-
     {
-      number: "4",
-
-      leftWord: "try",
-      rightWord: "",
-
-      answer: "",
-      correctAnswer: "try some",
-
-      missingLeft: false,
-      missingRight: true,
-      correctRight: "some",
-
-      numberPos: {
-        top: "52%",
-        left: "-2%",
-      },
-
-      leftPos: {
-        top: "49%",
-        left: "7%",
-      },
-
-      rightPos: {
-        top: "48.5%",
-        left: "20%",
-      },
-
-      answerPos: {
-        top: "48%",
-        right: "10%",
-      },
+      id: 3,
+      parts: [
+        { type: "text", value: "I think " },
+        {
+          type: "input",
+          id: "3_0",
+          answer: "it's too late",
+          width: "220px",
+        },
+        { type: "text", value: " to go shopping." },
+      ],
+      extra: "Most of the stores closed at 9:00.",
     },
-
     {
-      number: "5",
-
-      leftWord: "",
-      rightWord: "yourself",
-
-      answer: "",
-      correctAnswer: "help yourself",
-
-      missingLeft: true,
-      missingRight: false,
-      correctLeft: "help",
-
-      numberPos: {
-        top: "66%",
-        left: "-2%",
-      },
-
-      leftPos: {
-        top: "62%",
-        left: "5%",
-      },
-
-      rightPos: {
-        top: "62.5%",
-        left: "20%",
-      },
-
-      answerPos: {
-        top: "61%",
-        right: "10%",
-      },
+      id: 4,
+      parts: [
+        { type: "text", value: "No, " },
+        { type: "input", id: "4_0", answer: "I wouldn't mind", width: "220px" },
+        {
+          type: "text",
+          value: " if you came over. It would be great to see you!",
+        },
+      ],
     },
   ];
 
-  const [rows, setRows] = useState(initialData);
+  // collect all input ids
+  const allIds = {};
+  questions.forEach((q) => {
+    if (q.dialog) {
+      allIds[q.speaker2.inputId] = "";
+    } else {
+      q.parts.forEach((p) => {
+        if (p.type === "input") allIds[p.id] = "";
+      });
+    }
+  });
 
-  const [leftErrors, setLeftErrors] = useState(
-    Array(initialData.length).fill(false),
+  const [answers, setAnswers] = useState({ ...allIds });
+  const [errors, setErrors] = useState(
+    Object.keys(allIds).reduce((a, k) => ({ ...a, [k]: false }), {}),
   );
-
-  const [rightErrors, setRightErrors] = useState(
-    Array(initialData.length).fill(false),
+  const [correctLocked, setCorrectLocked] = useState(
+    Object.keys(allIds).reduce((a, k) => ({ ...a, [k]: false }), {}),
   );
-
-  const [answerErrors, setAnswerErrors] = useState(
-    Array(initialData.length).fill(false),
-  );
-
-  const [leftLocked, setLeftLocked] = useState(
-    Array(initialData.length).fill(false),
-  );
-
-  const [rightLocked, setRightLocked] = useState(
-    Array(initialData.length).fill(false),
-  );
-
-  const [answerLocked, setAnswerLocked] = useState(
-    Array(initialData.length).fill(false),
-  );
-
   const [locked, setLocked] = useState(false);
 
-  // normalize
-  const normalize = (text) => {
-    return text
+  const normalize = (t) =>
+    t
       .toLowerCase()
-      .replace(/[.,!?]/g, "")
+      .replace(/don’t/g, "do not")
+      .replace(/don't/g, "do not")
+      .replace(/it’s/g, "it is")
+      .replace(/it's/g, "it is")
+      .replace(/wouldn’t/g, "would not")
+      .replace(/wouldn't/g, "would not")
+      .replace(/[.’,!?]/g, "")
+      .replace(/\s+/g, " ")
       .trim();
+
+  const updateField = (id, value) => {
+    if (locked || correctLocked[id]) return;
+    setAnswers((prev) => ({ ...prev, [id]: value }));
+    setErrors((prev) => ({ ...prev, [id]: false }));
   };
 
-  // typing
-  const handleChange = (index, side, value) => {
-    const updated = [...rows];
-
-    if (side === "left") {
-      if (leftLocked[index]) return;
-
-      updated[index].leftWord = value;
-
-      const updatedErrors = [...leftErrors];
-      updatedErrors[index] = false;
-
-      setLeftErrors(updatedErrors);
-    } else if (side === "right") {
-      if (rightLocked[index]) return;
-
-      updated[index].rightWord = value;
-
-      const updatedErrors = [...rightErrors];
-      updatedErrors[index] = false;
-
-      setRightErrors(updatedErrors);
-    } else {
-      if (answerLocked[index]) return;
-
-      updated[index].answer = value;
-
-      const updatedErrors = [...answerErrors];
-      updatedErrors[index] = false;
-
-      setAnswerErrors(updatedErrors);
-    }
-
-    setRows(updated);
+  // gather all input parts for scoring
+  const getAllInputParts = () => {
+    const parts = [];
+    questions.forEach((q) => {
+      if (q.dialog) {
+        parts.push({ id: q.speaker2.inputId, answer: q.speaker2.answer });
+      } else {
+        q.parts.forEach((p) => {
+          if (p.type === "input") parts.push(p);
+        });
+      }
+    });
+    return parts;
   };
 
-  // check
   const handleCheck = () => {
     if (locked) return;
-    const hasEmpty = rows.some((item) => {
-      const leftEmpty = item.missingLeft && normalize(item.leftWord) === "";
-
-      const rightEmpty = item.missingRight && normalize(item.rightWord) === "";
-
-      const answerEmpty = normalize(item.answer) === "";
-
-      return leftEmpty || rightEmpty || answerEmpty;
-    });
-
+    const hasEmpty = Object.keys(answers).some(
+      (k) => !correctLocked[k] && normalize(answers[k]) === "",
+    );
     if (hasEmpty) {
-      ValidationAlert.info();
-
+      ValidationAlert.info("Complete all fields.");
       return;
     }
+
     let score = 0;
+    const newErrors = { ...errors };
+    const newLocked = { ...correctLocked };
 
-    const newLeftErrors = [...leftErrors];
-    const newRightErrors = [...rightErrors];
-    const newAnswerErrors = [...answerErrors];
+    // score per question (all inputs in question must be correct)
+    questions.forEach((q) => {
+      const inputParts = q.dialog
+        ? [{ id: q.speaker2.inputId, answer: q.speaker2.answer }]
+        : q.parts.filter((p) => p.type === "input");
 
-    const newLeftLocked = [...leftLocked];
-    const newRightLocked = [...rightLocked];
-    const newAnswerLocked = [...answerLocked];
-
-    rows.forEach((item, index) => {
-      // LEFT
-      if (item.missingLeft) {
-        const correct =
-          normalize(item.leftWord) === normalize(item.correctLeft);
-
-        newLeftErrors[index] = !correct;
-        newLeftLocked[index] = correct;
-
-        if (correct) score++;
-      }
-
-      // RIGHT
-      if (item.missingRight) {
-        const correct =
-          normalize(item.rightWord) === normalize(item.correctRight);
-
-        newRightErrors[index] = !correct;
-        newRightLocked[index] = correct;
-
-        if (correct) score++;
-      }
-
-      // ANSWER
-      const answerCorrect =
-        normalize(item.answer) === normalize(item.correctAnswer);
-
-      newAnswerErrors[index] = !answerCorrect;
-      newAnswerLocked[index] = answerCorrect;
-
-      if (answerCorrect) score++;
+      const allOk = inputParts.every(
+        (p) => normalize(answers[p.id]) === normalize(p.answer),
+      );
+      inputParts.forEach((p) => {
+        const ok = normalize(answers[p.id]) === normalize(p.answer);
+        newErrors[p.id] = !ok;
+        if (ok) newLocked[p.id] = true;
+      });
+      if (allOk) score++;
     });
 
-    setLeftErrors(newLeftErrors);
-    setRightErrors(newRightErrors);
-    setAnswerErrors(newAnswerErrors);
+    setErrors(newErrors);
+    setCorrectLocked(newLocked);
 
-    setLeftLocked(newLeftLocked);
-    setRightLocked(newRightLocked);
-    setAnswerLocked(newAnswerLocked);
-
-    const total =
-      rows.length +
-      rows.filter((r) => r.missingLeft).length +
-      rows.filter((r) => r.missingRight).length;
-
-    const msg = `Score: ${score} / ${total}`;
-
+    const total = questions.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span>
+      </div>`;
     if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (score === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
-  // show
   const handleShow = () => {
-    const updated = rows.map((item) => ({
-      ...item,
-
-      leftWord: item.correctLeft || item.leftWord,
-
-      rightWord: item.correctRight || item.rightWord,
-
-      answer: item.correctAnswer,
-    }));
-
-    setRows(updated);
-
-    setLeftErrors(Array(initialData.length).fill(false));
-
-    setRightErrors(Array(initialData.length).fill(false));
-
-    setAnswerErrors(Array(initialData.length).fill(false));
-
-    setLeftLocked(Array(initialData.length).fill(true));
-
-    setRightLocked(Array(initialData.length).fill(true));
-
-    setAnswerLocked(Array(initialData.length).fill(true));
-
+    const all = {};
+    const allLocked = {};
+    const noErrors = {};
+    getAllInputParts().forEach((p) => {
+      all[p.id] = p.answer;
+      allLocked[p.id] = true;
+      noErrors[p.id] = false;
+    });
+    setAnswers(all);
+    setCorrectLocked(allLocked);
+    setErrors(noErrors);
     setLocked(true);
   };
 
-  // reset
   const handleReset = () => {
-    setRows(initialData);
-
-    setLeftErrors(Array(initialData.length).fill(false));
-
-    setRightErrors(Array(initialData.length).fill(false));
-
-    setAnswerErrors(Array(initialData.length).fill(false));
-
-    setLeftLocked(Array(initialData.length).fill(false));
-
-    setRightLocked(Array(initialData.length).fill(false));
-
-    setAnswerLocked(Array(initialData.length).fill(false));
-
+    setAnswers({ ...allIds });
+    setErrors(Object.keys(allIds).reduce((a, k) => ({ ...a, [k]: false }), {}));
+    setCorrectLocked(
+      Object.keys(allIds).reduce((a, k) => ({ ...a, [k]: false }), {}),
+    );
     setLocked(false);
   };
 
-  const renderX = () => (
+  const inputStyle = (id, width) => ({
+    border: "none",
+    borderBottom: errors[id]
+      ? "1.5px solid #dc2626"
+      : correctLocked[id]
+        ? "1.5px solid black"
+        : "1.5px solid black",
+    outline: "none",
+    fontSize: "18px",
+    textAlign:"center",
+    // color: errors[id] ? "#dc2626" : correctLocked[id] ? "#16a34a" : "#6D2980",
+    fontWeight: 600,
+    background: "transparent",
+    paddingBottom: "2px",
+    width: width || "200px",
+  });
+
+  const ErrorBadge = () => (
     <span
       style={{
         position: "absolute",
-        top: "-10px",
-        right: "0px",
-        width: "20px",
+        top: "-8px",
+        right: "-10px",
         transform: "translateY(-50%)",
-        height: "20px",
-        background: "#ef4444",
+        width: "22px",
+        height: "22px",
+        background: "red",
         color: "white",
         borderRadius: "50%",
         fontSize: "12px",
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         fontWeight: "bold",
         border: "2px solid white",
-        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
       }}
     >
       ✕
     </span>
   );
 
+  const renderInput = (id, width) => (
+    <span style={{ position: "relative", display: "inline-block" }}>
+      <input
+        type="text"
+        value={answers[id] || ""}
+        disabled={locked || correctLocked[id]}
+        onChange={(e) => updateField(id, e.target.value)}
+        style={inputStyle(id, width)}
+      />
+      {errors[id] && <ErrorBadge />}
+    </span>
+  );
+
+  const renderParts = (parts) =>
+    parts.map((part, pi) =>
+      part.type === "text" ? (
+        <span key={pi} style={{ fontSize: "18px" }}>
+          {part.value}
+        </span>
+      ) : (
+        <span key={pi}>{renderInput(part.id, part.width)}</span>
+      ),
+    );
+
   return (
-    <div
-      style={{
-        padding: "30px",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
+    <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall">
         {/* HEADER */}
-        <h5 className="header-title-page8 mb-6">
-          <span className=" mr-2">C</span>
-          The painters can’t climb the ladder. Help them by finishing each step
-          with the missing words.
+        <h5 className="header-title-page8 mb-20">
+          <span style={{ marginRight: "10px" }}>C</span>
+          Now write in the expressions from Exercise B in the blanks.
         </h5>
 
-        {/* MAIN */}
-        <div className="relative w-full">
-          {/* IMAGE */}
-          <img
-            src={ladderImg}
-            alt=""
+        {/* CONTENT — questions left, image right */}
+        <div style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
+          {/* QUESTIONS */}
+          <div
             style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "32px",
+              marginBottom: "60px",
             }}
-          />
-
-          {/* ITEMS */}
-          {rows.map((item, index) => (
-            <React.Fragment key={index}>
-              {/* NUMBER */}
-              <div
-                className="absolute text-[20px] font-bold"
-                style={{
-                  top: item.numberPos.top,
-                  left: item.numberPos.left,
-                }}
-              >
-                {item.number}
-              </div>
-
-              {/* LEFT WORD */}
-              <div
-                className="absolute"
-                style={{
-                  top: item.leftPos.top,
-                  left: item.leftPos.left,
-                }}
-              >
-                {item.missingLeft ? (
-                  <span
-                    style={{
-                      position: "relative",
-                    }}
-                  >
-                    <input
-                      type="text"
-                      disabled={locked || leftLocked[index]}
-                      value={item.leftWord}
-                      placeholder="write here"
-                      onChange={(e) =>
-                        handleChange(index, "left", e.target.value)
-                      }
-                      className={`w-[5vw] border-b bg-transparent text-center text-[18px] font-semibold outline-none placeholder:text-[1vw]
-
-                      ${
-                        leftErrors[index]
-                          ? "border-red-500 text-[#6D2980]"
-                          : "border-black text-[#6D2980]"
-                      }
-                    `}
-                    />
-
-                    {leftErrors[index] && renderX()}
-                  </span>
-                ) : (
-                  <span className="text-[20px] font-semibold">
-                    {item.leftWord}
-                  </span>
-                )}
-              </div>
-
-              {/* RIGHT WORD */}
-              <div
-                className="absolute"
-                style={{
-                  top: item.rightPos.top,
-                  left: item.rightPos.left,
-                }}
-              >
-                {item.missingRight ? (
-                  <span
-                    style={{
-                      position: "relative",
-                    }}
-                  >
-                    <input
-                      type="text"
-                      disabled={locked || rightLocked[index]}
-                      value={item.rightWord}
-                      placeholder="write here"
-                      onChange={(e) =>
-                        handleChange(index, "right", e.target.value)
-                      }
-                      className={`w-[5vw] border-b bg-transparent text-center text-[18px] font-semibold outline-none placeholder:text-[1vw]
-
-                      ${
-                        rightErrors[index]
-                          ? "border-red-500 text-[#6D2980]"
-                          : "border-black text-[#6D2980]"
-                      }
-                    `}
-                    />
-
-                    {rightErrors[index] && renderX()}
-                  </span>
-                ) : (
-                  <span className="text-[20px] font-semibold">
-                    {item.rightWord}
-                  </span>
-                )}
-              </div>
-
-              {/* ANSWER */}
-              <div
-                className="absolute"
-                style={{
-                  top: item.answerPos.top,
-                  right: item.answerPos.right,
-                }}
-              >
-                <span
+          >
+            {questions.map((q, i) => (
+              <div key={q.id}>
+                <div
                   style={{
-                    position: "relative",
+                    display: "flex",
+                    alignItems: "baseline",
+                    gap: "10px",
+                    // flexWrap: "wrap",
                   }}
                 >
-                  <input
-                    type="text"
-                    disabled={locked || answerLocked[index]}
-                    value={item.answer}
-                    placeholder="write here"
-                    onChange={(e) =>
-                      handleChange(index, "answer", e.target.value)
-                    }
-                    className={`w-[10vw] border-b bg-transparent text-center text-[20px] font-semibold outline-none placeholder:text-[1vw]
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                      minWidth: "20px",
+                    }}
+                  >
+                    {i + 1}
+                  </span>
 
-                    ${
-                      answerErrors[index]
-                        ? "border-red-500 text-[#6D2980]"
-                        : "border-black text-[#6D2980]"
-                    }
-                  `}
-                  />
+                  {q.dialog ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                      }}
+                    >
+                      {/* Speaker 1 */}
+                      <div style={{ fontSize: "18px" }}>
+                        <span style={{ color: "#f79631", fontWeight: 700 }}>
+                          {q.speaker1.name}:
+                        </span>{" "}
+                        {q.speaker1.text}
+                      </div>
+                      {/* Speaker 2 */}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: "8px",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "#f79631",
+                            fontWeight: 700,
+                            fontSize: "18px",
+                          }}
+                        >
+                          {q.speaker2.name}:
+                        </span>
+                        {renderInput(q.speaker2.inputId, "280px")}
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        textAlign: "center",
+                        alignItems: "baseline",
+                        flexWrap: "wrap",
+                        gap: "4px",
+                      }}
+                    >
+                      {renderParts(q.parts)}
+                    </div>
+                  )}
+                </div>
 
-                  {answerErrors[index] && renderX()}
-                </span>
+                {/* extra line */}
+                {q.extra && (
+                  <div
+                    style={{
+                      marginLeft: "30px",
+                      marginTop: "8px",
+                      fontSize: "18px",
+                      // color: "#333",
+                    }}
+                  >
+                    {q.extra}
+                  </div>
+                )}
               </div>
-            </React.Fragment>
-          ))}
+            ))}
+          </div>
+
+          {/* SKY IMAGE */}
+          <img
+            src={skyImg}
+            alt="sky"
+            style={{
+              height: "350px",
+              borderRadius: "12px",
+              objectFit: "contain",
+              flexShrink: 0,
+              marginTop: "4px",
+            }}
+          />
         </div>
 
         {/* BUTTONS */}
@@ -576,11 +374,9 @@ const Review3_Page1_Q3 = () => {
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-
           <button className="show-answer-btn" onClick={handleShow}>
             Show Answer
           </button>
-
           <button className="check-button2" onClick={handleCheck}>
             Check Answer ✓
           </button>
