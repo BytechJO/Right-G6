@@ -2,36 +2,19 @@ import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-import trueImg from "../../../assets/imgs/true.svg";
-import flaseImg from "../../../assets/imgs/false.svg";
-
 const Review10_Page1_Q2 = () => {
   const questions = [
-    {
-      phrase: "It’s your twist.",
-      mark: "false",
-      correction: "It’s your turn.",
-    },
-    {
-      phrase: "a long wait to go",
-      mark: "false",
-      correction: "a long way to go",
-    },
-    {
-      phrase: "huh?",
-      mark: "true",
-      correction: "",
-    },
-    {
-      phrase: "That’s a bad point!",
-      mark: "false",
-      correction: "That’s a good point!",
-    },
+    "necessary",
+    "dozens",
+    "occupied",
+    "rent",
+    "necessary",
+    "dozens",
+    "rent",
+    "occupied",
   ];
 
-  const [marks, setMarks] = useState(["", "", "", ""]);
-
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -44,28 +27,8 @@ const Review10_Page1_Q2 = () => {
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleMark = (i, value) => {
-    if (locked || result[i]?.row === true) return;
-
-    const updatedMarks = [...marks];
-    updatedMarks[i] = value;
-    setMarks(updatedMarks);
-
-    if (value === "true") {
-      const updatedAnswers = [...answers];
-      updatedAnswers[i] = "";
-      setAnswers(updatedAnswers);
-    }
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
-  };
-
   const handleChange = (i, value) => {
-    if (locked || result[i]?.row === true || marks[i] === "true") return;
+    if (locked || result[i] === true) return;
 
     const updated = [...answers];
 
@@ -85,13 +48,9 @@ const Review10_Page1_Q2 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmptyMark = marks.some((m) => !m);
+    const hasEmpty = answers.some((a) => !a.trim());
 
-    const hasEmptyCorrection = marks.some(
-      (m, i) => m === "false" && !answers[i].trim(),
-    );
-
-    if (hasEmptyMark || hasEmptyCorrection) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
 
       return;
@@ -99,25 +58,12 @@ const Review10_Page1_Q2 = () => {
 
     let correctCount = 0;
 
-    const newResults = questions.map((q, i) => {
-      const markOk = marks[i] === q.mark;
+    const newResults = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i]);
 
-      const correctionOk =
-        q.mark === "true"
-          ? true
-          : marks[i] === "true"
-            ? false
-            : normalize(answers[i]) === normalize(q.correction);
+      if (ok) correctCount++;
 
-      const rowOk = markOk && correctionOk;
-
-      if (rowOk) correctCount++;
-
-      return {
-        mark: markOk,
-        correction: correctionOk,
-        row: rowOk,
-      };
+      return ok;
     });
 
     setResult(newResults);
@@ -147,157 +93,177 @@ const Review10_Page1_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setMarks(["false", "false", "true", "false"]);
-
     setAnswers([
-      "It’s your turn.",
-      "a long way to go",
-      "",
-      "That’s a good point!",
+      "necessary",
+      "dozens",
+      "occupied",
+      "rent",
+      "necessary",
+      "dozens",
+      "rent",
+      "occupied",
     ]);
 
-    setResult([
-      { mark: true, correction: true, row: true },
-      { mark: true, correction: true, row: true },
-      { mark: true, correction: true, row: true },
-      { mark: true, correction: true, row: true },
-    ]);
+    setResult([true, true, true, true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setMarks(["", "", "", ""]);
-
-    setAnswers(["", "", "", ""]);
+    setAnswers(["", "", "", "", "", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const errorBadge = () => (
-    <span
-      style={{
-        position: "absolute",
-        top: "-8px",
-        right: "-8px",
-        width: "20px",
-        height: "20px",
-        background: "#ef4444",
-        color: "white",
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "11px",
-        fontWeight: "bold",
-        border: "2px solid white",
-        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-      }}
-    >
-      ✕
-    </span>
-  );
-
-  const markBox = (i, value, img) => (
-    <button
-      type="button"
-      disabled={locked || result[i]?.row === true}
-      onClick={() => handleMark(i, value)}
-      className="flex items-center justify-center"
-      style={{
-        width: "34px",
-        height: "34px",
-        border: "2px solid #6D2980",
-        borderRadius: "6px",
-        background: "transparent",
-        cursor: locked || result[i]?.row === true ? "default" : "pointer",
-      }}
-    >
-      {marks[i] === value && (
-        <img
-          src={img}
-          alt={value}
-          style={{
-            width: "24px",
-            height: "24px",
-          }}
-        />
-      )}
-    </button>
-  );
-
-  const inputField = (i, width) => (
+  const inputField = (i) => (
     <span className="relative inline-block">
       <input
         type="text"
         value={answers[i]}
-        disabled={locked || result[i]?.row === true || marks[i] === "true"}
+        disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          ${width}
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-          px-1
-
-         ${
-           marks[i] === "false" && result[i]?.correction === false
-             ? "border-[#D1232A]"
-             : "border-black"
-         }
-        `}
+  flex-1
+  min-w-[120px]
+  border-0
+  border-b
+  outline-none
+  bg-transparent
+  text-[18px]
+  text-black
+  font-semibold
+  px-1
+  text-center
+  ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+`}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
-      {marks[i] === "false" &&
-        result[i]?.correction === false &&
-        errorBadge()}{" "}
+
+      {result[i] === false && (
+        <span
+          style={{
+            position: "absolute",
+            top: "-8px",
+            right: "-8px",
+            width: "20px",
+            height: "20px",
+            background: "#ef4444",
+            color: "white",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "11px",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+          }}
+        >
+          ✕
+        </span>
+      )}
     </span>
   );
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall ">
+      <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-25">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            B
-          </span>
-          Write a <span className="text-[#D1232A] font-bold">✓</span> or{" "}
-          <span className="text-[#D1232A] font-bold">✗</span> to show if the
-          phrase is correct or not. Correct the{" "}
-          <span className="text-[#D1232A] font-bold">✗</span> phrases.
-        </h5>
+        <div className="header-title-page8 mb-[10vh]">
+          <span className="mr-4">B</span>
+          Write the vocabulary words that are synonyms for each word, and then
+          put each one in a sentence below.
+        </div>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-15 text-[18px]">
-          {questions.map((q, i) => (
-            <div
-              key={i}
-              className="grid grid-cols-[120px_30px_210px_360px] items-center gap-x-6"
-            >
-              <div className="relative flex items-center justify-center gap-3 border-b border-black pb-2">
-                {markBox(i, "true", trueImg)}
-                {markBox(i, "false", flaseImg)}
+        {/* TOP QUESTIONS */}
+        <div className="grid grid-cols-2 gap-y-8 gap-x-20 mb-[8vh] whitespace-nowrap">
+          {/* 1 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">1</span>
 
-                {result[i]?.mark === false && errorBadge()}
-              </div>
+            <span>needed</span>
 
-              <span className="font-bold">{i + 1}</span>
+            <div className="flex-1 ml-2">{inputField(0)}</div>
+          </div>
 
-              <span>{q.phrase}</span>
+          {/* 2 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">2</span>
 
-              {inputField(i, "w-[360px]")}
-            </div>
-          ))}
+            <span>at least twelve</span>
+
+            <div className="flex-1 ml-2">{inputField(1)}</div>
+          </div>
+
+          {/* 3 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">3</span>
+
+            <span>busy</span>
+
+            <div className="flex-1 ml-2">{inputField(2)}</div>
+          </div>
+
+          {/* 4 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">4</span>
+
+            <span>lease, borrow, hire</span>
+
+            <div className="flex-1 ml-2">{inputField(3)}</div>
+          </div>
+        </div>
+        {/* SENTENCES */}
+        <div className="flex flex-col gap-8">
+          {/* A */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">a</span>
+
+            <span>Is it</span>
+
+            {inputField(4, "w-[220px]")}
+
+            <span>to add the eggs first, or can I add them later?</span>
+          </div>
+
+          {/* B */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">b</span>
+
+            <span>It was such a beautiful day that there were</span>
+
+            {inputField(5, "w-[220px]")}
+
+            <span>of people at the beach.</span>
+          </div>
+
+          {/* C */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">c</span>
+
+            <span>Can I</span>
+
+            {inputField(6, "w-[220px]")}
+
+            <span>
+              a surfboard while I am just trying the sport to see if I like it?
+            </span>
+          </div>
+
+          {/* D */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">d</span>
+
+            <span>I like to keep</span>
+
+            {inputField(7, "w-[220px]")}
+
+            <span>and have several things to do each day.</span>
+          </div>
         </div>
       </div>
 

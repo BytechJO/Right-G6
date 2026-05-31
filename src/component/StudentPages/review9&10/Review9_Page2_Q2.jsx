@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 89/SVG/Asset 13.svg";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 21.svg";
+
 const Review9_Page2_Q2 = () => {
   const questions = [
-    "If we finish our homework",
-    "If he pushes himself hard enough",
-    "when I complete this report",
-    "with us when she buys a swimming suit",
+    "has been taking notes and working on a project",
+    "has been giving a presentation and taking a test",
+    "has been taking notes, working on a project, and correcting homework",
+    "has been taking notes and giving a presentation",
+    "has been working on a project, taking a test and correcting homework.",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -90,45 +92,49 @@ const Review9_Page2_Q2 = () => {
 
   const showAnswers = () => {
     setAnswers([
-      "If we finish our homework",
-      "If he pushes himself hard enough",
-      "when I complete this report",
-      "with us when she buys a swimming suit",
+      "has been taking notes and working on a project",
+      "has been giving a presentation and taking a test",
+      "has been taking notes, working on a project, and correcting homework",
+      "has been taking notes and giving a presentation",
+      "has been working on a project, taking a test and correcting homework.",
     ]);
 
-    setResult([true, true, true, true]);
+    setResult([true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setAnswers(["", "", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className="relative inline-block">
+  const inputField = (i) => (
+    <span className="relative inline-block w-full">
       <input
         type="text"
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          ${width}
+          w-full
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
           px-1
 
           ${result[i] === false ? "border-[#D1232A]" : "border-black"}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
       {result[i] === false && (
@@ -159,80 +165,41 @@ const Review9_Page2_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall "
-        style={{
-          minHeight: "63vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 ">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            E
-          </span>
-          Write an <span className="text-[#1ea7ff]">if</span> or{" "}
-          <span className="text-[#1ea7ff]">when</span> clause for the sentences
-          below.
-        </h5>
+        <div className="header-title-page8 mb-12">
+          <span className="ex-A mr-2">E</span>
+          Everyone is done with morning classes, and it’s time for lunch. What
+          have the students been doing this morning? Use the present perfect
+          progressive.
+        </div>
 
-        {/* QUESTIONS + IMAGE */}
-        <div className="flex flex-row gap-3 text-[18px] ">
-          {/* LEFT SIDE */}
-          <div className="flex flex-col gap-15">
-            {/* 1 */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <span className="font-bold">1</span>
-
-              {inputField(0, "w-[330px]")}
-
-              <span>, we can play soccer at the field.</span>
-            </div>
-
-            {/* 2 */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <span className="font-bold">2</span>
-
-              {inputField(1, "w-[340px]")}
-
-              <span>, Victor will be in first place.</span>
-            </div>
-
-            {/* 3 */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <span className="font-bold">3</span>
-
-              <span>I’ll go with you tomorrow</span>
-
-              {inputField(2, "w-[260px]")}
-            </div>
-
-            {/* 4 */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <span className="font-bold">4</span>
-
-              <span>Susan can go swimming</span>
-
-              {inputField(3, "w-[360px]")}
-            </div>
-          </div>
-
-          {/* IMAGE */}
+        {/* TABLE IMAGE */}
+        <div className="flex justify-center mb-12">
           <img
-            src={img}
-            alt="soccer"
+            src={img1}
+            alt="activity table"
             style={{
-              width: "250px",
+              width: "200px",
               height: "auto",
               objectFit: "contain",
             }}
           />
+        </div>
+
+        {/* QUESTIONS */}
+        <div className="flex flex-col gap-10 mb-10">
+          {["Warren", "Stacey", "Linda", "Steven", "Paula"].map(
+            (name, index) => (
+              <div key={index} className="flex items-center gap-4">
+                <span className="font-bold w-5">{index + 1}</span>
+
+                <span className="min-w-20">{name}</span>
+
+                <div className="flex-1">{inputField(index)}</div>
+              </div>
+            ),
+          )}
         </div>
       </div>
 

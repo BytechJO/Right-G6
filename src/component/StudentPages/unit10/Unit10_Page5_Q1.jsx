@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
-
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 17.svg";
+import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 16.svg";
+import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 16.svg";
+import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 19.svg";
+import img5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 18.svg";
 const Unit10_Page5_Q1 = () => {
   const questions = [
-    "symphony",
-    "harvesting",
-    "acres",
-    "composers",
-    "moods",
-    "instrument",
+    "seashells",
+    "sunburn",
+    "surfing",
+    "sandcastles",
+    "surfboard",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -91,22 +94,15 @@ const Unit10_Page5_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "symphony",
-      "harvesting",
-      "acres",
-      "composers",
-      "moods",
-      "instrument",
-    ]);
+    setAnswers(["seashells", "sunburn", "surfing", "sandcastles", "surfboard"]);
 
-    setResult([true, true, true, true, true, true]);
+    setResult([true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", ""]);
+    setAnswers(["", "", "", "", ""]);
 
     setResult([]);
 
@@ -127,7 +123,7 @@ const Unit10_Page5_Q1 = () => {
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
           px-1
 
@@ -174,71 +170,122 @@ const Unit10_Page5_Q1 = () => {
           >
             A
           </span>
-          Read the riddles and write the correct vocabulary word.
+          Look and match.
         </h5>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-6 mb-10">
-          {[
-            {
-              line1: "This music you will love to hear,",
-              line2: "The many instruments make it sound so dear.",
-            },
-            {
-              line1: "Picking pumpkins, squash, and potatoes,",
-              line2: "But my favorite to pick is the tomatoes.",
-            },
-            {
-              line1: "This much land takes lots of space,",
-              line2: "A house and a garden fit here in any case.",
-            },
-            {
-              line1: "These people write music with such perfect",
-              line2: "sound, To hear it, thousands will gather around.",
-            },
-            {
-              line1: "Happy, sad, lively, or mad,",
-              line2: "These can be good or sometimes bad.",
-            },
-            {
-              line1: "A piano is one, and so is a violin,",
-              line2: "Almost any will make me grin.",
-            },
-          ].map((item, i) => (
-            <div key={i} className="flex items-start gap-4">
-              {/* NUMBER */}
-              <span className="font-bold text-[18px] w-5">{i + 1}</span>
+        {/* WORD BANK */}
+        <div
+          className="flex justify-between items-center px-6 py-3 rounded-xl mb-10"
+          style={{
+            background: "#DDE3C8",
+            fontSize: "18px",
+          }}
+        >
+          <span className="flex items-center gap-2">
+            <b>a</b>
+            surfboard
+          </span>
 
-              {/* TEXT + INPUT */}
-              <div
-                style={{
-                  width: "100%",
-                  maxWidth: "760px",
-                }}
-              >
-                <div className="text-[18px]">{item.line1}</div>
+          <span className="flex items-center gap-2">
+            <b>b</b>
+            seashells
+          </span>
 
-                <div
-                  className="flex items-center justify-between mt-1"
-                  style={{
-                    minHeight: "40px",
-                  }}
-                >
-                  <span className="text-[18px]">{item.line2}</span>
+          <span className="flex items-center gap-2">
+            <b>c</b>
+            sandcastles
+          </span>
 
-                  <div
-                    style={{
-                      width: "260px",
-                      display: "flex",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    {inputField(i, "w-[240px]")}
-                  </div>
-                </div>
-              </div>
+          <span className="flex items-center gap-2">
+            <b>d</b>
+            sunburn
+          </span>
+
+          <span className="flex items-center gap-2">
+            <b>e</b>
+            surfing
+          </span>
+        </div>
+
+        {/* IMAGES */}
+        <div className="grid grid-cols-3 gap-y-12 gap-x-15">
+          {/* 1 */}
+          <div className="flex items-start gap-3">
+            <img
+              src={img1}
+              alt="seashells"
+              style={{ width: "180px", height: "auto", objectFit: "contain" }}
+            />
+
+            <div className="flex items-center mt-[75px]">
+              <span className="font-bold text-[18px] mr-2">1</span>
+
+              {inputField(0, "w-[120px]")}
             </div>
-          ))}
+          </div>
+
+          {/* 2 */}
+          <div className="flex items-start gap-3">
+            <img
+              src={img2}
+              alt="sunburn"
+              style={{ width: "140px", height: "auto", objectFit: "contain" }}
+            />
+
+            <div className="flex items-center mt-[75px]">
+              <span className="font-bold text-[18px] mr-2">2</span>
+
+              {inputField(1, "w-[120px]")}
+            </div>
+          </div>
+
+          {/* 3 */}
+          <div className="flex items-start gap-3">
+            <img
+              src={img3}
+              alt="surfing"
+              style={{ width: "170px", height: "auto", objectFit: "contain" }}
+            />
+
+            <div className="flex items-center mt-[75px]">
+              <span className="font-bold text-[18px] mr-2">3</span>
+
+              {inputField(2, "w-[120px]")}
+            </div>
+          </div>
+
+          {/* 4 */}
+          <div className="flex items-start gap-3">
+            <img
+              src={img4}
+              alt="sandcastles"
+              style={{ width: "200px", height: "auto", objectFit: "contain" }}
+            />
+
+            <div className="flex items-center mt-[90px]">
+              <span className="font-bold text-[18px] mr-2">4</span>
+
+              {inputField(3, "w-[130px]")}
+            </div>
+          </div>
+
+          {/* EMPTY */}
+          <div></div>
+
+          {/* 5 */}
+          <div className="flex items-start gap-2">
+            <img
+              src={img5}
+              alt="surfboard"
+              style={{ width: "80px", height: "auto", objectFit: "contain" }}
+            />
+
+            <div className="flex items-center mt-[90px]">
+              <span className="font-bold text-[18px] mr-2">5</span>
+
+              {inputField(4, "w-[130px]")}
+            </div>
+          </div>
         </div>
       </div>
 

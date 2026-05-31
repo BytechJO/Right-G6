@@ -1,4 +1,4 @@
-import page_5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 86.png";
+import page_5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/Page 86.png";
 import "./Unit10_Page5.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 const Unit10_Page5 = ({ openPopup }) => {
@@ -17,7 +17,7 @@ const Unit10_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 93 })}
+          onClick={() => openPopup("exercise", { startIndex: 27 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -39,7 +39,7 @@ const Unit10_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 94 })}
+          onClick={() => openPopup("exercise", { startIndex: 28 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -61,7 +61,7 @@ const Unit10_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 95 })}
+          onClick={() => openPopup("exercise", { startIndex: 29 })}
           style={{ overflow: "visible" }}
         >
           <image

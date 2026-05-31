@@ -1,5 +1,5 @@
 import React from "react";
-import page_3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 84.png";
+import page_3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/Page 84.png";
 import "./Unit10_Page3.css";
 import GrammarSection_U10 from "./Unit10_Page3_GrammarSection_U10";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";

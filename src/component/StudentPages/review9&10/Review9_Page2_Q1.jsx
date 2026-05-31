@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 21.svg";
 
 const Review9_Page2_Q1 = () => {
   const questions = [
-    "3",
-    "1",
-    "2",
-    "4",
-    "If we go to the stadium tomorrow, maybe we can sit in the front row to watch the game.",
-    "If Alex calls before dinnertime, I’ll ask him to come over for dinner.",
-    "If it rains tomorrow, we won’t have to water the plants.",
-    "When school finishes early on Thursday, we could go bike riding in the afternoon.",
+    "has been snowing",
+    "have been travelling",
+    "has been rock climbing",
+    "have",
+    "been doing",
+    "Have",
+    "been skiing",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -94,23 +94,22 @@ const Review9_Page2_Q1 = () => {
 
   const showAnswers = () => {
     setAnswers([
-      "3",
-      "1",
-      "2",
-      "4",
-      "If we go to the stadium tomorrow, maybe we can sit in the front row to watch the game.",
-      "If Alex calls before dinnertime, I’ll ask him to come over for dinner.",
-      "If it rains tomorrow, we won’t have to water the plants.",
-      "When school finishes early on Thursday, we could go bike riding in the afternoon.",
+      "has been snowing",
+      "have been travelling",
+      "has been rock climbing",
+      "have",
+      "been doing",
+      "Have",
+      "been skiing",
     ]);
 
-    setResult([true, true, true, true, true, true, true, true]);
+    setResult([true, true, true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", "", "", ""]);
+    setAnswers(["", "", "", "", "", "", ""]);
 
     setResult([]);
 
@@ -122,27 +121,25 @@ const Review9_Page2_Q1 = () => {
       <input
         type="text"
         value={answers[i]}
-        maxLength={i < 4 ? 1 : undefined}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-  ${width}
+          ${width}
+          border-0
+          border-b
+          border-black
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          font-semibold
+          px-1
 
-   ${
-     i < 4
-       ? "border border-[#3A3A3A] rounded-md h-[34px] text-center"
-       : "border-0 border-b border-black"
-   }
-
-  outline-none
-  bg-transparent
-  text-[18px]
-  text-[#6D2980]
-  font-semibold
-  px-1
-
-  ${result[i] === false ? "border-[#D1232A]" : ""}
-`}
+          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+        `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
       {result[i] === false && (
@@ -173,79 +170,100 @@ const Review9_Page2_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
+      <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            D
-          </span>
-          Match the two sentence parts, and then write the whole sentence below.
-        </h5>
+        <div className="header-title-page8 mb-[12vh]">
+          <span className=" mr-4">D</span>
+          Write the present perfect progressive verb form in the blank.
+        </div>
 
-        {/* QUESTIONS */}
-        <div className="text-[18px]">
-          <div className="grid grid-cols-[360px_40px_360px] gap-x-10 gap-y-6 items-center mb-10">
-            <div className="flex gap-4">
-              <span className="font-bold">1</span>
-              <span>If we go to the stadium tomorrow,</span>
+        {/* CONTENT */}
+        <div className="flex justify-between items-start gap-10 w-[110%]">
+          {/* QUESTIONS */}
+          <div className="flex flex-col gap-15 flex-1">
+            {/* 1 */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-bold w-5">1</span>
+
+              <span>It</span>
+
+              {inputField(0, "w-[180px]")}
+
+              (<span style={{ color: "#E97E1D" }}>snow</span>)
+
+              <span>for three days.</span>
             </div>
 
-            {inputField(0, "w-[40px] text-center")}
+            {/* 2 */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-bold w-5">2</span>
 
-            <span>we won’t have to water the plants.</span>
+              <span>Our cousins</span>
 
-            <div className="flex gap-4">
-              <span className="font-bold">2</span>
-              <span>If Alex calls before dinnertime,</span>
+              {inputField(1, "w-[190px]")}
+
+              (<span style={{ color: "#E97E1D" }}>travel</span>)
+
+              <span>for two weeks.</span>
             </div>
 
-            {inputField(1, "w-[40px] text-center")}
+            {/* 3 */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-bold w-5">3</span>
 
-            <span>maybe we can sit in the front row to watch the game.</span>
+              <span>My brother</span>
 
-            <div className="flex gap-4">
-              <span className="font-bold">3</span>
-              <span>If it rains tomorrow,</span>
+              {inputField(2, "w-[240px]")}
+
+              (<span style={{ color: "#E97E1D" }}>rock climb</span>)
+
+              <span>many times before.</span>
             </div>
 
-            {inputField(2, "w-[40px] text-center")}
+            {/* 4 */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-bold w-5">4</span>
 
-            <span>I’ll ask him to come over for dinner.</span>
+              <span>What</span>
 
-            <div className="flex gap-4">
-              <span className="font-bold">4</span>
-              <span>When school finishes early on Thursday,</span>
+              {inputField(3, "w-[90px]")}
+
+              <span>you</span>
+
+              {inputField(4, "w-[170px]")}
+
+              (<span style={{ color: "#E97E1D" }}>do</span>)
+
+              <span>lately?</span>
             </div>
 
-            {inputField(3, "w-[40px] text-center")}
+            {/* 5 */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="font-bold w-5">5</span>
 
-            <span>we could go bike riding in the afternoon.</span>
+              {inputField(5, "w-[90px]")}
+
+              <span>you</span>
+
+              {inputField(6, "w-[170px]")}
+
+              (<span style={{ color: "#E97E1D" }}>ski</span>)
+
+              <span>in the Alps?</span>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-8">
-            <div className="flex items-center gap-5">
-              <span className="font-bold">1</span>
-              {inputField(4, "w-[890px]")}
-            </div>
-
-            <div className="flex items-center gap-5">
-              <span className="font-bold">2</span>
-              {inputField(5, "w-[890px]")}
-            </div>
-
-            <div className="flex items-center gap-5">
-              <span className="font-bold">3</span>
-              {inputField(6, "w-[890px]")}
-            </div>
-
-            <div className="flex items-center gap-5">
-              <span className="font-bold">4</span>
-              {inputField(7, "w-[890px]")}
-            </div>
+          {/* IMAGE */}
+          <div>
+            <img
+              src={img1}
+              alt="rock climbing"
+              style={{
+                width: "250px",
+                height: "350px",
+                objectFit: "cover",
+              }}
+            />
           </div>
         </div>
       </div>

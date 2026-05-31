@@ -1,15 +1,17 @@
 import React from "react";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 6/SVG/Asset 1.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
+
 const GrammarA = () => {
   return (
     <div>
       {/* العنوان */}
       <div className="flex items-center gap-2 mb-5 mt-5">
-        <h5 className="header-title-page8-read ">
+        <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read" style={{ marginRight: "10px" }}>
             A
           </span>
-          Read and say. Replace the highlighted words with the new words.
+          Read, change, and say. Replace the highlighted words with the new
+          words.
         </h5>
       </div>
 
@@ -21,23 +23,23 @@ const GrammarA = () => {
             alt=""
             style={{ width: "40px", height: "40px", marginTop: -6 }}
           />
-
           <div>
-            <p className=" text-[18px]">
-              If Jeremy <span className="text-[#12C8F9]">shoots a basket </span>
-              , he <span className="text-[#12C8F9]"> will make it </span>.
+            <p className="text-[18px]">
+              Our family has been{" "}
+              <span className="text-[#f79631] font-medium">
+                saving for a vacation
+              </span>
+              .
             </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
+            <div className="grid grid-cols-2 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
               <span>
-                <b className="mr-2">1</b>cooks some eggs, will give us some
+                <b>1</b> working in the garden this week
               </span>
               <span>
-                <b className="mr-2">2</b>goes swimming, will practice diving
+                <b>2</b> hiking in the mountains
               </span>
               <span>
-                <b className="mr-2">3</b>gets an A on his test, would be so
-                happy
+                <b>3</b> cleaning the house today
               </span>
             </div>
           </div>
@@ -52,24 +54,23 @@ const GrammarA = () => {
             alt=""
             style={{ width: "40px", height: "40px", marginTop: -6 }}
           />
-
           <div>
-            <p className=" text-[18px]">
-              Nancy{" "}
-              <span className="text-[#12C8F9]"> will arrive shortly </span>
-              if <span className="text-[#12C8F9]"> her plane is on time </span>.
+            <p className="text-[18px]">
+              Have you been{" "}
+              <span className="text-[#f79631] font-medium">
+                waiting very long
+              </span>{" "}
+              ?
             </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
+            <div className="grid grid-cols-2 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
               <span>
-                <b className="mr-2">1</b>would call us she’s going to be late
+                <b>1</b> shopping for groceries yet
               </span>
               <span>
-                <b className="mr-2">2</b>will jog, it’s not too hot
+                <b>2</b> studying for your math test today
               </span>
               <span>
-                <b className="mr-2">3</b>will know three languages, she learns
-                English well
+                <b>3</b> talking with Grandmother
               </span>
             </div>
           </div>

@@ -1,60 +1,51 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Unit10_Page5_Q2 = () => {
-  const questions = ["enormous", "lively", "variety", "flexible", "appealing"];
+  const questions = [
+    "to tell you the truth",
+    "stay close",
+    "have fun",
+    "close by",
+    "keep an eye on",
+  ];
 
-  const [answers, setAnswers] = useState(
-    questions.map((q) => Array(q.length).fill("")),
-  );
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
 
-  const inputRefs = useRef([]);
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
-  const handleChange = (questionIndex, charIndex, value) => {
-    if (locked) return;
-
-    const char = value.slice(-1);
+  const handleChange = (i, value) => {
+    if (locked || result[i] === true) return;
 
     const updated = [...answers];
 
-    updated[questionIndex][charIndex] = char;
+    updated[i] = value;
 
     setAnswers(updated);
 
-    setResult([]);
+    setResult((prev) => {
+      const copy = [...prev];
 
-    if (char) {
-      const nextRef = inputRefs.current[`${questionIndex}-${charIndex + 1}`];
+      copy[i] = undefined;
 
-      if (nextRef) {
-        nextRef.focus();
-
-        nextRef.select();
-      }
-    }
+      return copy;
+    });
   };
-
-  const handleBackspace = (e, questionIndex, charIndex) => {
-    if (e.key === "Backspace" && !answers[questionIndex][charIndex]) {
-      if (inputRefs.current[`${questionIndex}-${charIndex - 1}`]) {
-        inputRefs.current[`${questionIndex}-${charIndex - 1}`].focus();
-      }
-    }
-  };
-
-  const normalize = (arr) => arr.join("").toLowerCase().trim();
 
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmpty = answers.some((word) =>
-      word.some((letter) => !letter.trim()),
-    );
+    const hasEmpty = answers.some((a) => !a.trim());
 
     if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
@@ -64,8 +55,8 @@ const Unit10_Page5_Q2 = () => {
 
     let correctCount = 0;
 
-    const newResults = questions.map((q, i) => {
-      const ok = normalize(answers[i]) === q.toLowerCase();
+    const newResults = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i]);
 
       if (ok) correctCount++;
 
@@ -99,7 +90,13 @@ const Unit10_Page5_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(questions.map((q) => q.split("")));
+    setAnswers([
+      "to tell you the truth",
+      "stay close",
+      "have fun",
+      "close by",
+      "keep an eye on",
+    ]);
 
     setResult([true, true, true, true, true]);
 
@@ -107,26 +104,67 @@ const Unit10_Page5_Q2 = () => {
   };
 
   const handleReset = () => {
-    setAnswers(questions.map((q) => Array(q.length).fill("")));
+    setAnswers(["", "", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
+  const inputField = (i, width) => (
+    <span className="relative inline-block">
+      <input
+        type="text"
+        value={answers[i]}
+        disabled={locked || result[i] === true}
+        onChange={(e) => handleChange(i, e.target.value)}
+        className={`
+          ${width}
+          border-0
+          border-b
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          font-semibold
+          px-1
+          text-center
+
+          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+        `}
+      />
+
+      {result[i] === false && (
+        <span
+          style={{
+            position: "absolute",
+            top: "-8px",
+            right: "-8px",
+            width: "20px",
+            height: "20px",
+            background: "#ef4444",
+            color: "white",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "11px",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+          }}
+        >
+          ✕
+        </span>
+      )}
+    </span>
+  );
+
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall"
-        style={{
-          minHeight: "62vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall">
         {/* TITLE */}
-        <h5 className="header-title-page8 ">
+        <h5 className="header-title-page8 mb-[8vh]">
           <span
             className="ex-A"
             style={{
@@ -135,77 +173,31 @@ const Unit10_Page5_Q2 = () => {
           >
             B
           </span>
-          Which vocabulary words have you not written yet? Write them here in
-          the order <br /> they are on the list.
+          Write the expression that tells about each of the people or
+          situations.
         </h5>
 
         {/* QUESTIONS */}
-        <div className="grid grid-cols-2 gap-y-18 gap-x-20">
-          {questions.map((word, qIndex) => (
-            <div key={qIndex} className="flex items-center gap-6">
-              {/* NUMBER */}
-              <span className="font-bold text-[22px] w-5">{qIndex + 1}</span>
+        <div className="flex flex-col gap-15">
+          {[
+            "When you want to say something that is true, you begin by saying this.",
+            "When you want someone to be near where you are, you tell them this.",
+            "When you want someone to have a good time, you say this.",
+            "When you want to say that something is near you, you say this.",
+            "When you watch someone carefully, you say this.",
+          ].map((question, i) => (
+            <div key={i} className="flex items-center justify-between gap-6">
+              {/* LEFT SIDE */}
+              <div className="flex items-start gap-3 max-w-[600px]">
+                <span className="font-bold text-[18px] mt-0.5">{i + 1}</span>
 
-              {/* LETTER INPUTS */}
-              <div className="flex gap-1">
-                {word.split("").map((_, charIndex) => (
-                  <div key={charIndex} className="relative">
-                    <input
-                      ref={(el) =>
-                        (inputRefs.current[`${qIndex}-${charIndex}`] = el)
-                      }
-                      type="text"
-                      maxLength={1}
-                      value={answers[qIndex][charIndex]}
-                      disabled={locked || result[qIndex] === true}
-                      onFocus={(e) => e.target.select()}
-                      onChange={(e) =>
-                        handleChange(qIndex, charIndex, e.target.value)
-                      }
-                      onKeyDown={(e) => handleBackspace(e, qIndex, charIndex)}
-                      className={`
-                          w-[26px]
-                          border-0
-                          border-b
-                          outline-none
-                          bg-transparent
-                          text-center
-                          text-[20px]
-                          text-[#6D2980]
-                          font-semibold
-
-                          ${
-                            result[qIndex] === false
-                              ? "border-[#D1232A]"
-                              : "border-black"
-                          }
-                        `}
-                    />
-                  </div>
-                ))}
+                <p className="text-[18px] leading-[1.3]">{question}</p>
               </div>
 
-              {/* X */}
-              {result[qIndex] === false && (
-                <span
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "11px",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  ✕
-                </span>
-              )}
+              {/* INPUT */}
+              <div className="min-w-[320px] flex justify-start">
+                {inputField(i, "w-[300px]")}
+              </div>
             </div>
           ))}
         </div>

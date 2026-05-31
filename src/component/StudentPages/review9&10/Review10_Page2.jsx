@@ -1,5 +1,5 @@
 import React from "react";
-import page_2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 91.png";
+import page_2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/Page 91.png";
 import "./Review10_Page2.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 // import Unit4_Page6_Q2 from "./Unit4_Page6_Q2";
@@ -19,7 +19,7 @@ const Review10_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 108 })}
+          onClick={() => openPopup("exercise", { startIndex: 40 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -40,7 +40,7 @@ const Review10_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 109 })}
+          onClick={() => openPopup("exercise", { startIndex: 41 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -61,7 +61,7 @@ const Review10_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 110 })}
+          onClick={() => openPopup("exercise", { startIndex: 42 })}
           style={{ overflow: "visible" }}
         >
           <image

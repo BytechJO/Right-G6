@@ -3,9 +3,31 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review10_Page1_Q3 = () => {
-  const questions = ["lively", "enormous", "flexible", "appealing"];
+  const questions = [
+    "to",
+    "truth",
+    "it's",
+    "with",
+    "have",
+    "stay",
+    "To tell you the truth",
+    "Stay close",
+    "It's fine with me",
+    "Have fun",
+  ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
 
   const [result, setResult] = useState([]);
 
@@ -84,41 +106,56 @@ const Review10_Page1_Q3 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(["lively", "enormous", "flexible", "appealing"]);
+    setAnswers([
+      "to",
+      "truth",
+      "It's",
+      "with",
+      "Have",
+      "stay",
+      "To tell you the truth",
+      "Stay close",
+      "It's fine with me",
+      "Have fun",
+    ]);
 
-    setResult([true, true, true, true]);
+    setResult([true, true, true, true, true, true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setAnswers(["", "", "", "", "", "", "", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className={`relative inline-block ${width}`}>
+  const inputField = (i, width = "150px") => (
+    <span className="relative inline-block">
       <input
         type="text"
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          w-full
-  border-0
+          ${width}
+          border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
           px-1
+          text-center
 
           ${result[i] === false ? "border-[#D1232A]" : "border-black"}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
       {result[i] === false && (
@@ -149,96 +186,101 @@ const Review10_Page1_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall text-[18px]"
-        style={{
-          minHeight: "60vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-27">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            C
-          </span>
-          Write the correct adjective to match the description.
-        </h5>
+        <div className="header-title-page8 mb-[10vh]">
+          <span className="ex-A mr-2">C</span>
+          Write the missing words for each expression, and then fill in the
+          blank lines from a to d.
+        </div>
 
-        <div className="flex justify-between items-start">
-          {/* QUESTIONS */}
-          <div className="flex flex-col gap-15 w-[70%]">
-            {/* 1 */}
-            <div className="flex items-center">
-              <span className="font-bold mr-4">1</span>
+        {/* TOP EXPRESSIONS */}
+        <div className="grid grid-cols-2 gap-y-8 gap-x-20 mb-12">
+          {/* 1 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">1</span>
 
-              <span>music that is fast and happy-sounding is </span>
+            {inputField(0, "w-[110px]")}
 
-              {inputField(0, "flex-1 min-w-[180px] mx-2")}
+            <span>tell you the</span>
 
-              <span>.</span>
-            </div>
-
-            {/* 2 */}
-            <div className="flex items-center">
-              <span className="font-bold mr-4">2</span>
-
-              <span>something that is huge </span>
-
-              {inputField(1, "flex-1 min-w-[180px] mx-2")}
-
-              <span>.</span>
-            </div>
-
-            {/* 3 */}
-            <div className="flex items-center">
-              <span className="font-bold mr-4">3</span>
-
-              <span>bendable, able to change or move easily </span>
-
-              {inputField(2, "flex-1 min-w-[180px] mx-2")}
-
-              <span>.</span>
-            </div>
-
-            {/* 4 */}
-            <div className="flex items-center">
-              <span className="font-bold mr-4">4</span>
-
-              <span>attractive to others, something many like </span>
-
-              {inputField(3, "flex-1 min-w-[180px] mx-2")}
-
-              <span>.</span>
-            </div>
+            {inputField(1, "w-[110px]")}
           </div>
 
-          {/* WORD BOX */}
-          <div
-            style={{
-              background: "#E8E1EC",
-              borderRadius: "16px",
-              width: "140px",
-              padding: "30px 20px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "40px",
-              alignItems: "center",
-              marginLeft: "30px",
-            }}
-          >
-            <span>flexible</span>
+          {/* 2 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">2</span>
 
-            <span>enormous</span>
+            {inputField(2, "w-[110px]")}
 
-            <span>appealing</span>
+            <span>fine</span>
 
-            <span>lively</span>
+            {inputField(3, "w-[110px]")}
+
+            <span>me.</span>
+          </div>
+
+          {/* 3 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">3</span>
+
+            {inputField(4, "w-[110px]")}
+
+            <span>fun</span>
+          </div>
+
+          {/* 4 */}
+          <div className="flex items-center gap-2">
+            <span className="font-bold w-5">4</span>
+
+            {inputField(5, "w-[110px]")}
+
+            <span>close</span>
+          </div>
+        </div>
+
+        {/* SENTENCES */}
+        <div className="flex flex-col gap-8">
+          {/* A */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">a</span>
+
+            {inputField(6, "w-[280px]")}
+
+            <span>, I don’t really like swimming.</span>
+          </div>
+
+          {/* B */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">b</span>
+
+            {inputField(7, "w-[220px]")}
+
+            <span>
+              while we’re going through the crowd so we don’t get separated.
+            </span>
+          </div>
+
+          {/* C */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">c</span>
+
+            {inputField(8, "w-[250px]")}
+
+            <span>I love to walk.</span>
+          </div>
+
+          {/* D */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="font-bold text-[20px]">d</span>
+
+            <span>As we left to go to the carnival, my mom said,</span>
+
+            <span>"</span>
+
+            {inputField(9, "w-[220px]")}
+
+            <span>!"</span>
           </div>
         </div>
       </div>

@@ -2,15 +2,15 @@
   position: absolute;
   padding: 5px;
   top: 3%;
-  left: 84%;
+  left: 72%;
   cursor: pointer;
 }
 
 .click-icon-review9-page2-3 {
   position: absolute;
   padding: 5px;
-  bottom: 47.5%;
-  left: 62%;
+  bottom: 59.5%;
+  left: 83.5%;
   cursor: pointer;
 }
 .click-icon-review9-page2-1 {
@@ -20,8 +20,8 @@
   right: 24.2%;
   cursor: pointer;
 }
-.click-icon-review9-page2-4{
-   position: absolute;
+.click-icon-review9-page2-4 {
+  position: absolute;
   padding: 5px;
   bottom: 20.5%;
   right: 30%;
@@ -32,13 +32,13 @@
     top: 2.8%;
     left: 57.5%;
   }
-      .click-icon-review9-page2-3 {
-        top: 27.9% !important;
-        right: 4.5% !important;
-    }
-        .click-icon-review9-page2-1 {
-        bottom: 45% !important;
-    }
+  .click-icon-review9-page2-3 {
+    top: 27.9% !important;
+    right: 4.5% !important;
+  }
+  .click-icon-review9-page2-1 {
+    bottom: 45% !important;
+  }
 }
 @media (max-width: 1024px) {
   .click-icon-review9-page2-3 {
