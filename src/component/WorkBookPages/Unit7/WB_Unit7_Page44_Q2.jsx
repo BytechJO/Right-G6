@@ -17,7 +17,7 @@ const initAnswers = () => ({ 1: "", 2: "", 3: "", 4: "", 5: "", 6: "" });
 
 // ── InlineInput — OUTSIDE parent ──
 const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width }) => (
-  <span style={{ position: "relative", verticalAlign: "bottom", display: "inline-block" }}> {/* ✅ أضفنا display: inline-block */}
+  <span style={{ position: "relative", verticalAlign: "bottom" }}> {/* ✅ أضفنا display: inline-block */}
     <input
       type="text"
       value={value}
@@ -43,7 +43,9 @@ const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width
         borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: "10px", fontWeight: "bold", border: "2px solid white",
         boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      }}>
+        <span style={{position :"relative", left: "-17px"}}>✕</span>
+        </span>
     )}
   </span>
 );
