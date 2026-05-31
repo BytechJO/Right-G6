@@ -3,16 +3,45 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review10_Page2_Q1 = () => {
-  const questions = [
-    "Larry was playing the piano.",
-    "Elaine was beating the drums.",
-    "Diane was listening to the music.",
-    "Ben and Jake were taking tickets.",
+  const correctGroups = {
+    present: [
+      "Derek is taking a test right now.",
+      "Are you walking to school?",
+      "We are working at the restaurant today.",
+      "Is the class taking a field trip?",
+      "I am shopping at the mall right now.",
+    ],
+
+    gerund: [
+      "Riding horses is my favorite thing to do.",
+      "Mariam doesn’t like watching TV.",
+      "My sister loves engineering.",
+      "Does Elena like nursing?",
+      "Who wants to go surfing?",
+    ],
+  };
+
+  const sentencePool = [
+    "Derek is taking a test right now.",
+    "Riding horses is my favorite thing to do.",
+    "Are you walking to school?",
+    "Does Elena like nursing?",
+    "Who wants to go surfing?",
+    "Mariam doesn’t like watching TV.",
+    "My sister loves engineering.",
+    "We are working at the restaurant today.",
+    "Is the class taking a field trip?",
+    "I am shopping at the mall right now.",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [presentAnswers, setPresentAnswers] = useState(["", "", "", "", ""]);
 
-  const [result, setResult] = useState([]);
+  const [gerundAnswers, setGerundAnswers] = useState(["", "", "", "", ""]);
+
+  const [result, setResult] = useState({
+    present: [],
+    gerund: [],
+  });
 
   const [locked, setLocked] = useState(false);
 
@@ -23,28 +52,42 @@ const Review10_Page2_Q1 = () => {
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (group, index, value) => {
+    if (locked) return;
 
-    const updated = [...answers];
+    if (group === "present") {
+      const updated = [...presentAnswers];
 
-    updated[i] = value;
+      updated[index] = value;
 
-    setAnswers(updated);
+      setPresentAnswers(updated);
 
-    setResult((prev) => {
-      const copy = [...prev];
+      setResult((prev) => ({
+        ...prev,
+        present: prev.present.map((item, i) =>
+          i === index ? undefined : item,
+        ),
+      }));
+    } else {
+      const updated = [...gerundAnswers];
 
-      copy[i] = undefined;
+      updated[index] = value;
 
-      return copy;
-    });
+      setGerundAnswers(updated);
+
+      setResult((prev) => ({
+        ...prev,
+        gerund: prev.gerund.map((item, i) => (i === index ? undefined : item)),
+      }));
+    }
   };
 
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmpty = answers.some((a) => !a.trim());
+    const allAnswers = [...presentAnswers, ...gerundAnswers];
+
+    const hasEmpty = allAnswers.some((a) => !a.trim());
 
     if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
@@ -54,17 +97,52 @@ const Review10_Page2_Q1 = () => {
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const usedPresent = [];
 
-      if (ok) correctCount++;
+    const newPresentResults = presentAnswers.map((a) => {
+      const normalizedAnswer = normalize(a);
+
+      const matchIndex = correctGroups.present.findIndex(
+        (item, idx) =>
+          normalize(item) === normalizedAnswer && !usedPresent.includes(idx),
+      );
+
+      const ok = matchIndex !== -1;
+
+      if (ok) {
+        usedPresent.push(matchIndex);
+        correctCount++;
+      }
 
       return ok;
     });
 
-    setResult(newResults);
+    const usedGerund = [];
 
-    const total = questions.length;
+    const newGerundResults = gerundAnswers.map((a) => {
+      const normalizedAnswer = normalize(a);
+
+      const matchIndex = correctGroups.gerund.findIndex(
+        (item, idx) =>
+          normalize(item) === normalizedAnswer && !usedGerund.includes(idx),
+      );
+
+      const ok = matchIndex !== -1;
+
+      if (ok) {
+        usedGerund.push(matchIndex);
+        correctCount++;
+      }
+
+      return ok;
+    });
+
+    setResult({
+      present: newPresentResults,
+      gerund: newGerundResults,
+    });
+
+    const total = 10;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
@@ -89,49 +167,65 @@ const Review10_Page2_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "Larry was playing the piano.",
-      "Elaine was beating the drums.",
-      "Diane was listening to the music.",
-      "Ben and Jake were taking tickets.",
+    setPresentAnswers([
+      "Derek is taking a test right now.",
+      "Are you walking to school?",
+      "We are working at the restaurant today.",
+      "Is the class taking a field trip?",
+      "I am shopping at the mall right now.",
     ]);
 
-    setResult([true, true, true, true]);
+    setGerundAnswers([
+      "Riding horses is my favorite thing to do.",
+      "Mariam doesn’t like watching TV.",
+      "My sister loves engineering.",
+      "Does Elena like nursing?",
+      "Who wants to go surfing?",
+    ]);
+
+    setResult({
+      present: [true, true, true, true, true],
+      gerund: [true, true, true, true, true],
+    });
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setPresentAnswers(["", "", "", "", ""]);
 
-    setResult([]);
+    setGerundAnswers(["", "", "", "", ""]);
+
+    setResult({
+      present: [],
+      gerund: [],
+    });
 
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className={`relative inline-block ${width}`}>
+  const inputField = (group, index, value, isCorrect) => (
+    <div className="relative w-full">
       <input
         type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={value}
+        disabled={locked || isCorrect === true}
+        onChange={(e) => handleChange(group, index, e.target.value)}
         className={`
-        w-full
-        border-0
-        border-b
-        outline-none
-        bg-transparent
-        text-[18px]
-        text-[#6D2980]
-        font-semibold
-        px-1
+          w-full
+          h-full
+          border-0
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          px-2
 
-        ${result[i] === false ? "border-[#D1232A]" : "border-black"}
-      `}
+          ${isCorrect === false ? "border border-[#D1232A]" : ""}
+        `}
       />
 
-      {result[i] === false && (
+      {isCorrect === false && (
         <span
           style={{
             position: "absolute",
@@ -154,70 +248,131 @@ const Review10_Page2_Q1 = () => {
           ✕
         </span>
       )}
-    </span>
+    </div>
   );
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall "
-        style={{
-          minHeight: "65vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-20">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            D
-          </span>
-          What was happening during the concert? Write the sentences using the
-          words <br /> given to find out. Use the past progressive tense.
-        </h5>
+        <div className="header-title-page8 mb-10">
+          <span className=" mr-4">D</span>
+          Put the sentences below into the correct group on the chart.
+        </div>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-15 text-[18px]">
-          {/* 1 */}
-          <div className="flex items-center w-[700px] gap-2">
-            <span className="font-bold mr-2">1</span>
+        {/* TABLES */}
+        <div className="flex gap-8 mb-10">
+          {/* PRESENT */}
+          <div className="flex-1">
+            <div
+              className="
+                h-[55px]
+                rounded-[14px]
+                border
+                border-[#9CCB5B]
+                flex
+                items-center
+                justify-center
+                font-semibold
+                mb-2
+                bg-[#E2E9D1]
+              "
+            >
+              Present Progressive
+            </div>
 
-            <span>Larry/play/piano</span>
+            <div
+              className="
+                border
+                border-[#9CCB5B]
+                rounded-[14px]
+                overflow-hidden
+              "
+            >
+              <div className="h-[46px] border-b border-[#9CCB5B] px-2 flex items-center ">
+                I am rock climbing.
+              </div>
 
-            <div className="flex-1">{inputField(0, "w-full")}</div>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="
+                    h-[46px]
+                    border-b
+                    last:border-b-0
+                    border-[#9CCB5B]
+                    px-2
+                    flex
+                    items-center
+                  "
+                >
+                  {inputField(
+                    "present",
+                    i,
+                    presentAnswers[i],
+                    result.present[i],
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* 2 */}
-          <div className="flex items-center w-[700px] gap-2">
-            <span className="font-bold mr-2">2</span>
+          {/* GERUND */}
+          <div className="flex-1">
+            <div
+              className="
+                h-[55px]
+                rounded-[14px]
+                border
+                border-[#9CCB5B]
+                flex
+                items-center
+                justify-center
+                font-semibold
+                mb-2
+                 bg-[#E2E9D1]
+              "
+            >
+              Gerund
+            </div>
 
-            <span>Elaine/beat/drums</span>
+            <div
+              className="
+                border
+                border-[#9CCB5B]
+                rounded-[14px]
+                overflow-hidden
+              "
+            >
+              <div className="h-[46px] border-b border-[#9CCB5B] px-2 flex items-center">
+                I like rock climbing.
+              </div>
 
-            <div className="flex-1">{inputField(1, "w-full")}</div>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="
+                    h-[46px]
+                    border-b
+                    last:border-b-0
+                    border-[#9CCB5B]
+                    px-2
+                    flex
+                    items-center
+                  "
+                >
+                  {inputField("gerund", i, gerundAnswers[i], result.gerund[i])}
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* 3 */}
-          <div className="flex items-center w-[700px] gap-2">
-            <span className="font-bold mr-2">3</span>
-
-            <span>Diane/listen/to the music</span>
-
-            <div className="flex-1">{inputField(2, "w-full")}</div>
-          </div>
-
-          {/* 4 */}
-          <div className="flex items-center w-[700px] gap-2">
-            <span className="font-bold mr-2">4</span>
-
-            <span>Ben and Jake /take/tickets</span>
-
-            <div className="flex-1">{inputField(3, "w-full")}</div>
-          </div>
+        {/* SENTENCE BANK */}
+        <div className="grid grid-cols-2 gap-y-5 gap-x-20 mb-10">
+          {sentencePool.map((sentence, index) => (
+            <div key={index}>{sentence}</div>
+          ))}
         </div>
       </div>
 

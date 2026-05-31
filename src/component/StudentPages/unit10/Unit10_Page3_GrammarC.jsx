@@ -1,196 +1,79 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
+
+const QUESTIONS = [
+  {
+    prompt: "Shannon is rock climbing.",
+    correct: ["Shannon enjoys climbing rocks"],
+  },
+  {
+    prompt: "Scott and Drew are milking the cows.",
+    correct: ["Scott and Drew enjoy milking the cows"],
+  },
+  {
+    prompt: "Jimmy is planting a garden.",
+    correct: ["Jimmy prefers planting a garden"],
+  },
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""';:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const Unit10_Page3_GrammarC = () => {
-  const correctAnswers = [
-    "riding bikes a lot",
-    {
-      first: "Were",
-      second: "books a lot during the summer?",
-    },
-    "Were you playing the piano a lot during the summer?",
-    "Was I playing soccer a lot during the summer?",
-    "Were Ann and Alice shopping a lot during the summer?",
-  ];
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
 
-  const [answers, setAnswers] = useState([
-    "",
-    {
-      first: "",
-      second: "",
-    },
-    "",
-    "",
-    "",
-  ]);
-
-  const [errors, setErrors] = useState([
-    false,
-    {
-      first: false,
-      second: false,
-    },
-    false,
-    false,
-    false,
-  ]);
-
-  const [correctLocked, setCorrectLocked] = useState([
-    false,
-    {
-      first: false,
-      second: false,
-    },
-    false,
-    false,
-    false,
-  ]);
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
 
   const [locked, setLocked] = useState(false);
 
-  const normalize = (text) => {
-    return text
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " ")
-      .replace(/[?.!,]/g, "")
-      .replace(/[’']/g, "");
-  };
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
 
-  const updateAnswer = (index, value) => {
-    const updated = [...answers];
-    updated[index] = value;
-    setAnswers(updated);
+    if (errors[i] === true) {
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    }
 
-    const updatedErrors = [...errors];
-    updatedErrors[index] = false;
-    setErrors(updatedErrors);
-  };
-
-  const updateSplitAnswer = (field, value) => {
-    const updated = [...answers];
-
-    updated[1] = {
-      ...updated[1],
-      [field]: value,
-    };
-
-    setAnswers(updated);
-
-    const updatedErrors = [...errors];
-
-    updatedErrors[1] = {
-      ...updatedErrors[1],
-      [field]: false,
-    };
-
-    setErrors(updatedErrors);
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
   const handleCheck = () => {
     if (locked) return;
 
-    const isEmpty =
-      normalize(answers[0]) === "" ||
-      normalize(answers[1].first) === "" ||
-      normalize(answers[1].second) === "" ||
-      normalize(answers[2]) === "" ||
-      normalize(answers[3]) === "" ||
-      normalize(answers[4]) === "";
-
-    if (isEmpty) {
+    if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
 
-    let score = 0;
+    let correct = 0;
 
-    const newErrors = [
-      false,
-      {
-        first: false,
-        second: false,
-      },
-      false,
-      false,
-      false,
-    ];
+    const newErrors = answers.map((a, i) => {
+      const ok = QUESTIONS[i].correct.some(
+        (c) => normalize(a) === normalize(c),
+      );
 
-    const updatedLocked = [...correctLocked];
+      if (ok) correct++;
 
-    // 2
-    if (normalize(answers[0]) === normalize(correctAnswers[0])) {
-      score++;
-      updatedLocked[0] = true;
-    } else {
-      newErrors[0] = true;
-    }
-
-    // 3
-    const firstCorrect =
-      normalize(answers[1].first) === normalize(correctAnswers[1].first);
-
-    const secondCorrect =
-      normalize(answers[1].second) === normalize(correctAnswers[1].second);
-
-    if (firstCorrect && secondCorrect) {
-      score++;
-
-      updatedLocked[1] = {
-        first: true,
-        second: true,
-      };
-    } else {
-      newErrors[1] = {
-        first: !firstCorrect,
-        second: !secondCorrect,
-      };
-    }
-
-    // 4
-    if (normalize(answers[2]) === normalize(correctAnswers[2])) {
-      score++;
-      updatedLocked[2] = true;
-    } else {
-      newErrors[2] = true;
-    }
-
-    // 5
-    if (normalize(answers[3]) === normalize(correctAnswers[3])) {
-      score++;
-      updatedLocked[3] = true;
-    } else {
-      newErrors[3] = true;
-    }
-
-    // 6
-    if (normalize(answers[4]) === normalize(correctAnswers[4])) {
-      score++;
-      updatedLocked[4] = true;
-    } else {
-      newErrors[4] = true;
-    }
+      return ok ? false : true;
+    });
 
     setErrors(newErrors);
-    setCorrectLocked(updatedLocked);
 
-    const total = 5;
+    const total = QUESTIONS.length;
 
-    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
 
-    const msg = `
-    <div style="font-size:20px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${score} / ${total}
-      </span>
-    </div>
-  `;
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    if (score === total) {
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (score === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
@@ -198,240 +81,96 @@ const Unit10_Page3_GrammarC = () => {
   };
 
   const handleShow = () => {
-    setAnswers([
-      correctAnswers[0],
-      {
-        first: correctAnswers[1].first,
-        second: correctAnswers[1].second,
-      },
-      correctAnswers[2],
-      correctAnswers[3],
-      correctAnswers[4],
-    ]);
-
-    setCorrectLocked([
-      true,
-      {
-        first: true,
-        second: true,
-      },
-      true,
-      true,
-      true,
-    ]);
-
+    setAnswers(QUESTIONS.map((q) => q.correct[0]));
+    setErrors(Array(QUESTIONS.length).fill(false));
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers([
-      "",
-      {
-        first: "",
-        second: "",
-      },
-      "",
-      "",
-      "",
-    ]);
-
-    setErrors([
-      false,
-      {
-        first: false,
-        second: false,
-      },
-      false,
-      false,
-      false,
-    ]);
-
-    setCorrectLocked([
-      false,
-      {
-        first: false,
-        second: false,
-      },
-      false,
-      false,
-      false,
-    ]);
-
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
   };
 
-  const renderInput = (
-    value,
-    error,
-    isCorrect,
-    onChange,
-    extraClass = "flex-1",
-  ) => (
-    <div className={`${extraClass} relative`}>
-      <input
-        type="text"
-        value={value}
-        disabled={locked || isCorrect}
-        onChange={onChange}
-        className={`border-b outline-none w-full text-[#7A2D91] text-[18px] font-semibold px-2 bg-transparent
-        ${error ? "border-red-500" : "border-black"}
-        `}
-      />
-
-      {error ? (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}
-        >
-          ✕
-        </span>
-      ) : null}
-    </div>
-  );
-
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-10">
+      {/* العنوان */}
+      <h5 className="header-title-page8-read mb-7">
         <span className="ex-A-read mr-2">C</span>
-        Change each of the sentences in Exercise B into a question.
+        Change the present progressive verb into a gerund by adding a stative
+        verb.
       </h5>
 
-      <div className="space-y-10 text-[18px]">
-        {/* 1 */}
-        <div className="flex gap-4 items-start">
-          <span className="font-bold">1</span>
+      <div className="flex flex-col gap-8 text-[18px] mt-10">
+        {QUESTIONS.map((q, i) => {
+          const hasError = errors[i] === true;
+          const isOk = errors[i] === false;
 
-          <div>Was she waterskiing a lot during the summer?</div>
-        </div>
+          return (
+            <div key={i}>
+              {/* prompt */}
+              <div className="flex items-center gap-3 mb-3">
+                <span className="font-bold">{i + 1}</span>
 
-        {/* 2 */}
-        <div className="flex gap-4 items-center">
-          <span className="font-bold">2</span>
+                <span>{q.prompt}</span>
+              </div>
 
-          <span>Were they</span>
+              {/* answer line */}
+              <div className="relative">
+                <input
+                  value={answers[i]}
+                  disabled={locked || isOk}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  style={{
+                    width: "100%",
+                    borderBottom: `${
+                      hasError ? "1px solid  #ef4444" : "1px solid  #555"
+                    }`,
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    padding: "2px 0",
+                  }}
+                />
 
-          {renderInput(answers[0], errors[0], correctLocked[0], (e) =>
-            updateAnswer(0, e.target.value),
-          )}
-
-          <span>during the summer?</span>
-        </div>
-
-        {/* 3 */}
-        <div className="flex gap-4 items-center">
-          <span className="font-bold">3</span>
-
-          {renderInput(
-            answers[1].first,
-            errors[1].first,
-            correctLocked[1].first,
-            (e) => updateSplitAnswer("first", e.target.value),
-            "w-[140px]",
-          )}
-
-          <span>we reading</span>
-
-          {renderInput(
-            answers[1].second,
-            errors[1].second,
-            correctLocked[1].second,
-            (e) => updateSplitAnswer("second", e.target.value),
-          )}
-        </div>
-
-        {/* 4 */}
-        <div className="flex gap-4 items-start">
-          <span className="font-bold">4</span>
-
-          {renderInput(answers[2], errors[2], correctLocked[2], (e) =>
-            updateAnswer(2, e.target.value),
-          )}
-        </div>
-
-        {/* 5 */}
-        <div className="flex gap-4 items-start">
-          <span className="font-bold">5</span>
-
-          {renderInput(answers[3], errors[3], correctLocked[3], (e) =>
-            updateAnswer(3, e.target.value),
-          )}
-        </div>
-
-        {/* 6 */}
-        <div className="flex gap-4 items-start">
-          <span className="font-bold">6</span>
-
-          {renderInput(answers[4], errors[4], correctLocked[4], (e) =>
-            updateAnswer(4, e.target.value),
-          )}
-        </div>
+                {hasError && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      zIndex: 5,
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      {/* Buttons */}
+      <div className="flex justify-center gap-6 mt-8">
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

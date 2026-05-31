@@ -1,367 +1,197 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
+
+const QUESTIONS = [
+  {
+    text: "representing ideas with drawings and pictures",
+    correct: ["creating art and music"],
+  },
+  {
+    text: "wanting to learn about different cultures",
+    correct: ["Social sciences and languages"],
+  },
+  {
+    text: "being others-centered, not self-centered",
+    correct: ["Servicing & Caring for Others"],
+  },
+];
+
+const normalize = (text) => {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[?.!,]/g, "")
+    .replace(/[’']/g, "");
+};
 
 const Unit10_Page2_ComprehensionA = () => {
-  const [result, setResult] = useState({});
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
+
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
+
   const [locked, setLocked] = useState(false);
-  const inputsRef = React.useRef({});
-  const [direction, setDirection] = useState("across");
-  const [grid, setGrid] = useState(
-    Array(10)
-      .fill("")
-      .map(() => Array(12).fill("")),
-  );
 
-  const words = [
-    { key: "d1", word: "barn", row: 0, col: 3, dir: "down" },
-    { key: "a2", word: "braid", row: 0, col: 3, dir: "across" },
-    { key: "a3", word: "curtains", row: 2, col: 1, dir: "across" },
-    { key: "d4", word: "cheery", row: 2, col: 1, dir: "down" },
-    { key: "a5", word: "neighed", row: 5, col: 0, dir: "across" },
-  ];
-  const normalize = (str) => str.toLowerCase().trim();
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
 
-  // ✅ change
-  const handleChange = (row, col, value) => {
-    if (locked) return;
-
-    const newGrid = grid.map((r) => [...r]);
-    newGrid[row][col] = value;
-    setGrid(newGrid);
-
-    if (value) {
-      let next = null;
-
-      if (direction === "across") {
-        next = inputsRef.current[`${row}-${col + 1}`];
-      }
-
-      if (direction === "down") {
-        next = inputsRef.current[`${row + 1}-${col}`];
-      }
-
-      if (next) next.focus();
-    }
-  };
-
-  // ✅ check active cell
-  const isCellActive = (row, col) => {
-    return words.some((w) => {
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-        if (r === row && c === col) return true;
-      }
-      return false;
-    });
-  };
-
-  // ✅ check answers
-  const checkAnswers = () => {
-    if (locked) return;
-
-    // تحقق تعبئة
-    for (let w of words) {
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-
-        if (!grid[r][c]) {
-          ValidationAlert.info("Please complete all fields.");
-          return;
-        }
-      }
+    if (errors[i] === true) {
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
     }
 
-    let correctCount = 0;
-    let newResult = {};
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
+  };
 
-    words.forEach((w) => {
-      let user = "";
+  const handleCheck = () => {
+    if (locked) return;
 
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-        user += grid[r][c];
-      }
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info("Please complete all fields.");
+      return;
+    }
 
-      const ok = normalize(user) === normalize(w.word);
+    let correct = 0;
 
-      if (ok) correctCount++;
+    const newErrors = answers.map((a, i) => {
+      const ok = QUESTIONS[i].correct.some(
+        (c) => normalize(a) === normalize(c),
+      );
 
-      newResult[w.key] = ok;
+      if (ok) correct++;
+
+      return ok ? false : true;
     });
 
-    setResult(newResult);
+    setErrors(newErrors);
 
-    const total = words.length;
+    const total = QUESTIONS.length;
+
     const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
 
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    if (correctCount === total) {
+    if (correct === total) {
       setLocked(true);
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  // ✅ show answers
-  const showAnswers = () => {
-    const newGrid = grid.map((r) => [...r]);
-
-    words.forEach((w) => {
-      for (let i = 0; i < w.word.length; i++) {
-        const r = w.dir === "down" ? w.row + i : w.row;
-        const c = w.dir === "across" ? w.col + i : w.col;
-
-        newGrid[r][c] = w.word[i];
-      }
-    });
-
-    setResult({});
-    setGrid(newGrid);
+  const handleShow = () => {
+    setAnswers(QUESTIONS.map((q) => q.correct[0]));
+    setErrors(Array(QUESTIONS.length).fill(false));
     setLocked(true);
   };
 
-  const reset = () => {
-    setGrid(
-      Array(10)
-        .fill("")
-        .map(() => Array(12).fill("")),
-    );
-    setResult({});
+  const handleReset = () => {
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
-  };
-
-  // ✅ numbers
-  const getNumber = (row, col) => {
-    if (row === 0 && col === 3) return 1;
-    if (row === 2 && col === 1) return 2;
-    if (row === 5 && col === 0) return 3;
-
-    return null;
   };
 
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-10">
+      {/* العنوان */}
+      <h5 className="header-title-page8-read mb-7">
         <span className="ex-A-read mr-2">A</span>
-        Use the clues to complete the puzzle. The words are from the story
-        above.
+        For each characteristic, write the career heading it goes with. If more
+        than one heading is possible, choose just one to write down.
       </h5>
-      <div className="flex gap-16">
-        {/* GRID */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(12, 40px)",
-            gridTemplateRows: "repeat(10, 40px)",
-            gap: "1px",
-          }}
-        >
-          {grid.map((rowArr, row) =>
-            rowArr.map((_, col) => {
-              const active = isCellActive(row, col);
-              const number = getNumber(row, col);
+
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse text-[18px]">
+          <thead>
+            <tr>
+              <th className="border border-[#93B94F] bg-[#E2E9D1] p-3 text-center font-normal text-[#87AC40]">
+                Characteristic
+              </th>
+
+              <th className="border border-[#93B94F] bg-[#E2E9D1] p-3 text-center font-normal text-[#87AC40]">
+                Career Area
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {QUESTIONS.map((q, i) => {
+              const hasError = errors[i] === true;
+              const isOk = errors[i] === false;
 
               return (
-                <div
-                  key={`${row}-${col}`}
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    border: active ? "2px solid #713083" : "none",
-                    position: "relative",
-                  }}
-                >
-                  {number && (
-                    <>
-                      {(() => {
-                        const wordObj = words.find(
-                          (w) => w.row === row && w.col === col,
-                        );
+                <tr key={i}>
+                  <td className="border border-[#93B94F] p-3">{q.text}</td>
 
-                        if (!wordObj || result[wordObj.key] !== false)
-                          return null;
-
-                        const isAcross = wordObj.dir === "across";
-                        const isDown = wordObj.dir === "down";
-
-                        return (
-                          <span
-                            style={{
-                              position: "absolute",
-
-                              // 📍 المكان حسب الاتجاه
-                              top: isDown ? "-25px" : "50%",
-                              left: isAcross ? "-25px" : "50%",
-
-                              transform: isAcross
-                                ? "translateY(-50%)"
-                                : "translateX(-50%)",
-
-                              width: "18px",
-                              height: "18px",
-                              background: "#ef4444",
-                              color: "white",
-                              borderRadius: "50%",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "12px",
-                              fontWeight: "bold",
-                              border: "2px solid white",
-                              boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                              zIndex: 5,
-                            }}
-                          >
-                            ✕
-                          </span>
-                        );
-                      })()}
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: "0px",
-                          left: "2px",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {number}
-                      </span>
-                    </>
-                  )}
-
-                  {active && (
-                    <input
-                      ref={(el) => (inputsRef.current[`${row}-${col}`] = el)}
-                      onClick={() => {
-                        if (inputsRef.current[`${row}-${col + 1}`]) {
-                          setDirection("across");
-                        } else {
-                          setDirection("down");
-                        }
+                  <td className="border border-[#93B94F] p-3">
+                    <div
+                      className="relative mx-auto"
+                      style={{
+                        minWidth: "180px",
+                        maxWidth: "320px",
                       }}
-                      onFocus={(e) => e.target.select()} // 🔥 المهم
-                      value={grid[row][col]}
-                      maxLength={1}
-                      disabled={
-                        locked ||
-                        words.some((w) => {
-                          if (result[w.key] !== true) return false;
+                    >
+                      <input
+                        value={answers[i]}
+                        disabled={locked || isOk}
+                        onChange={(e) => handleChange(i, e.target.value)}
+                        style={{
+                          width: "100%",
+                          borderBottom: `${
+                            hasError ? "1px solid  #ef4444" : "1px solid  #555"
+                          }`,
+                          outline: "none",
+                          textAlign: "center",
+                          background: "transparent",
+                          fontSize: "18px",
+                          fontWeight: "500",
+                          padding: "2px 0",
+                        }}
+                      />
 
-                          for (let i = 0; i < w.word.length; i++) {
-                            const r = w.dir === "down" ? w.row + i : w.row;
-                            const c = w.dir === "across" ? w.col + i : w.col;
-
-                            if (r === row && c === col) return true;
-                          }
-
-                          return false;
-                        })
-                      }
-                      onChange={(e) =>
-                        handleChange(row, col, e.target.value.toLowerCase())
-                      }
-                      className="w-full h-full text-center font-bold text-[#6D2980]"
-                    />
-                  )}
-                </div>
+                      {hasError && (
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "-8px",
+                            right: "-8px",
+                            width: "22px",
+                            height: "22px",
+                            background: "red",
+                            color: "white",
+                            borderRadius: "50%",
+                            fontSize: "12px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                            zIndex: 5,
+                          }}
+                        >
+                          ✕
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
               );
-            }),
-          )}
-        </div>
-
-        {/* CLUES */}
-        <div style={{ width: "300px" }}>
-          <div className="p-4 bg-[#D4C7DC] rounded-xl mb-10">
-            <h4 className="font-bold mb-2 text-[#713083]">Across</h4>
-            <p>
-              <b>1</b> used for people’s hair
-            </p>
-            <p>
-              <b>2</b> window coverings
-            </p>{" "}
-            <p>
-              <b>3</b> a noise the horse made
-            </p>
-          </div>
-
-          <div className="p-4 bg-[#D4C7DC] rounded-xl">
-            <h4 className="font-bold mb-2 text-[#713083]">Down</h4>
-            <p>
-              <b>2</b> a place to keep animals
-            </p>
-            <p>
-              <b>3</b> happy, glad
-            </p>
-          </div>
-        </div>
+            })}
+          </tbody>
+        </table>
       </div>
 
-      {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={reset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={showAnswers}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={checkAnswers}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      {/* Buttons */}
+      <div className="flex justify-center gap-6 mt-8">
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

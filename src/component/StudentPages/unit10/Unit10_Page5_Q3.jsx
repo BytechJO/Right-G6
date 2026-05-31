@@ -1,15 +1,47 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
-
+import grammer_u1 from "../../../assets/audio/ClassBook/U10/PG 86/CD50.Pg86_Instruction_Adult Lady.mp3";
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 const Unit10_Page5_Q3 = () => {
-  const questions = ["It’s your turn.", "a long way to go", "huh?"];
+  const questions = ["false", "false", "true", "false", "true"];
 
-  const [answers, setAnswers] = useState(["", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+  const captions = [
+    {
+      start: 0.199,
+      end: 4.099,
+      text: "Page 86. Grammar. Using gerunds.",
+    },
+
+    {
+      start: 5.099,
+      end: 6.92,
+      text: "Stella likes climbing on rocks.",
+    },
+
+    {
+      start: 7.859,
+      end: 9.86,
+      text: "Does Stella like climbing on rocks?",
+    },
+
+    {
+      start: 10.659,
+      end: 13.879,
+      text: "Your brothers prefer riding dirt bikes.",
+    },
+
+    {
+      start: 13.92,
+      end: 16.5,
+      text: "Do your brothers prefer riding dirt bikes?",
+    },
+  ];
 
   const normalize = (str) =>
     str
@@ -84,15 +116,15 @@ const Unit10_Page5_Q3 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(["It’s your turn.", "a long way to go", "huh?"]);
+    setAnswers(["False", "False", "True", "False", "True"]);
 
-    setResult([true, true, true]);
+    setResult([true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", ""]);
+    setAnswers(["", "", "", "", ""]);
 
     setResult([]);
 
@@ -108,16 +140,18 @@ const Unit10_Page5_Q3 = () => {
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
           ${width}
-          border-0
-          border-b
+          border
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-center
+          text-[#E97E1D]
           font-semibold
-          px-1
+          px-2
+          py-1
+          rounded-[20px]
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+         border-[#86A83E]
         `}
       />
 
@@ -149,17 +183,9 @@ const Unit10_Page5_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall"
-        style={{
-          minHeight: "67vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall">
         {/* TITLE */}
-        <h5 className="header-title-page8 ">
+        <h5 className="header-title-page8 mb-10 flex items-center">
           <span
             className="ex-A"
             style={{
@@ -168,63 +194,53 @@ const Unit10_Page5_Q3 = () => {
           >
             C
           </span>
-          Write each expression next to its definition.
+          After listening to the passage, write{" "}
+          <span
+            style={{
+              color: "#E97E1D",
+              marginLeft: "5px",
+              marginRight: "5px",
+            }}
+          >
+            true
+          </span>
+          or
+          <span
+            style={{
+              color: "#E97E1D",
+              marginLeft: "5px",
+            }}
+          >
+            false
+          </span>
+          for each statement.
         </h5>
-
-        {/* WORD BOX */}
-        <div
-          style={{
-            background: "#E9E1EC",
-            borderRadius: "16px",
-            padding: "14px 28px",
-            display: "flex",
-            justifyContent: "space-around",
-            alignItems: "center",
-            width: "760px",
-            marginBottom: "10px",
-            fontSize: "18px",
-          }}
-        >
-          <span>It’s your turn.</span>
-
-          <span>huh?</span>
-
-          <span>a long way to go</span>
-        </div>
-
+        <QuestionAudioPlayer
+          src={grammer_u1}
+          captions={captions}
+          stopAtSecond={9.5}
+        />
         {/* QUESTIONS */}
-        <div className="flex flex-col gap-15">
-          {/* 1 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold text-[18px]">1</span>
+        <div className="flex flex-col gap-10">
+          {[
+            "Sarah enjoys cooking.",
+            "Dora doesn’t like building things.",
+            "Tim prefers doing math and building things.",
+            "Paul hates being active.",
+            "Jonathan doesn’t mind painting.",
+          ].map((question, i) => (
+            <div key={i} className="flex items-center justify-between gap-10">
+              {/* LEFT SIDE */}
+              <div className="flex items-center gap-4">
+                <span className="font-bold text-[18px] w-5">{i + 1}</span>
 
-            <span className="text-[18px]">
-              what someone says when it’s time for the next person to go
-            </span>
+                <span className="text-[18px]">{question}</span>
+              </div>
 
-            {inputField(0, "w-[260px]")}
-          </div>
-
-          {/* 2 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold text-[18px]">2</span>
-
-            <span className="text-[18px]">to travel or go a long distance</span>
-
-            {inputField(1, "w-[240px]")}
-          </div>
-
-          {/* 3 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold text-[18px]">3</span>
-
-            <span className="text-[18px]">
-              what someone says when they don’t understand something or didn’t
-              hear
-            </span>
-
-            {inputField(2, "w-[200px]")}
-          </div>
+              {/* INPUT */}
+              <div>{inputField(i, "w-[180px]")}</div>
+            </div>
+          ))}
         </div>
       </div>
 

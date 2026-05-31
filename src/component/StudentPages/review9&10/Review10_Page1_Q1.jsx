@@ -1,23 +1,12 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 22.svg";
 
 const Review10_Page1_Q1 = () => {
-  const categories = {
-    music: ["symphony", "composers", "instrument", "moods"],
-    adjectives: ["appealing", "enormous", "lively", "flexible"],
-    farming: ["harvesting", "acres"],
-    extra: ["variety"],
-  };
+  const questions = ["surfboard", "sunburn", "sandcastle", "seashells"];
 
-  const allAnswers = [
-    ...categories.music,
-    ...categories.adjectives,
-    ...categories.farming,
-    ...categories.extra,
-  ];
-
-  const [answers, setAnswers] = useState(Array(16).fill(""));
+  const [answers, setAnswers] = useState(["", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -48,72 +37,30 @@ const Review10_Page1_Q1 = () => {
     });
   };
 
-  const isCorrectForColumn = (value, column) => {
-    const normalized = normalize(value);
-
-    return categories[column].some((word) => normalize(word) === normalized);
-  };
-
   const checkAnswers = () => {
     if (locked) return;
 
-    const filledAnswers = answers.filter((a) => a.trim());
+    const hasEmpty = answers.some((a) => !a.trim());
 
-    if (filledAnswers.length < 10) {
-      ValidationAlert.info("Please fill in at least 10 blanks.");
+    if (hasEmpty) {
+      ValidationAlert.info("Please complete all answers.");
 
       return;
     }
 
-    const usedWords = new Set();
-
     let correctCount = 0;
 
-    const columns = [
-      "music",
-      "music",
-      "music",
-      "music",
+    const newResults = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i]);
 
-      "adjectives",
-      "adjectives",
-      "adjectives",
-      "adjectives",
+      if (ok) correctCount++;
 
-      "farming",
-      "farming",
-      "farming",
-      "farming",
-
-      "extra",
-      "extra",
-      "extra",
-      "extra",
-    ];
-
-    const newResults = answers.map((answer, i) => {
-      if (!answer.trim()) return undefined;
-
-      const normalized = normalize(answer);
-
-      const correct = isCorrectForColumn(answer, columns[i]);
-
-      if (!correct) return false;
-
-      if (usedWords.has(normalized)) {
-        return undefined;
-      }
-
-      usedWords.add(normalized);
-
-      correctCount++;
-
-      return true;
+      return ok;
     });
 
     setResult(newResults);
 
-    const total = allAnswers.length;
+    const total = questions.length;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
@@ -138,62 +85,22 @@ const Review10_Page1_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "symphony",
-      "composers",
-      "instrument",
-      "moods",
+    setAnswers(["surfboard", "sunburn", "sandcastle", "seashells"]);
 
-      "appealing",
-      "enormous",
-      "lively",
-      "flexible",
-
-      "harvesting",
-      "acres",
-      "",
-      "",
-
-      "variety",
-      "",
-      "",
-      "",
-    ]);
-
-    setResult([
-      true,
-      true,
-      true,
-      true,
-
-      true,
-      true,
-      true,
-      true,
-
-      true,
-      true,
-      undefined,
-      undefined,
-
-      true,
-      undefined,
-      undefined,
-      undefined,
-    ]);
+    setResult([true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(Array(16).fill(""));
+    setAnswers(["", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const inputField = (i) => (
+  const inputField = (i, width = "240px") => (
     <span className="relative inline-block">
       <input
         type="text"
@@ -201,18 +108,21 @@ const Review10_Page1_Q1 = () => {
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          w-[170px]
+          ${width}
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
           px-1
-
+          text-center
           ${result[i] === false ? "border-[#D1232A]" : "border-black"}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
       {result[i] === false && (
@@ -243,107 +153,97 @@ const Review10_Page1_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall "
-        style={{
-          minHeight: "65vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-25">
-          <span
+        <div className="header-title-page8 mb-[10vh]">
+          <span className=" mr-4">A</span>
+          Several of the vocabulary words are compound words. Put the words
+          together to make vocabulary words.
+        </div>
+
+        {/* WORD BANK */}
+        <div className="flex justify-center mb-[12vh]">
+          <div
+            className="rounded-2xl px-10 py-5"
             style={{
-              marginRight: "10px",
+              background: "#DDE3C8",
             }}
           >
-            A
-          </span>
-          Put the vocabulary words into the correct category.
-        </h5>
+            <div className="grid grid-cols-5 gap-x-14 text-center text-[18px]">
+              <div className="flex flex-col gap-2">
+                <span>surf</span>
+                <span>castles</span>
+              </div>
 
-        {/* CATEGORIES */}
-        <div className="grid grid-cols-4 gap-x-10 text-[18px]">
-          {/* MUSIC */}
-          <div className="flex flex-col items-center gap-10">
-            <div
-              style={{
-                background: "#E9E1EC",
-                borderRadius: "12px",
-                width: "170px",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              about music
+              <div className="flex flex-col gap-2">
+                <span>burn</span>
+                <span>screen</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span>sand</span>
+                <span>board</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span>sun</span>
+                <span>shells</span>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span>sea</span>
+                <span>sun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* QUESTIONS + IMAGE */}
+        <div className="flex justify-between items-end">
+          {/* QUESTIONS */}
+          <div className="flex flex-col gap-15">
+            {/* ROW 1 */}
+            <div className="flex gap-16">
+              <div className="flex items-center gap-3">
+                <span className="font-bold w-5">1</span>
+
+                {inputField(0, "w-[250px]")}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="font-bold w-5">2</span>
+
+                {inputField(1, "w-[250px]")}
+              </div>
             </div>
 
-            {inputField(0)}
-            {inputField(1)}
-            {inputField(2)}
-            {inputField(3)}
+            {/* ROW 2 */}
+            <div className="flex gap-16">
+              <div className="flex items-center gap-3">
+                <span className="font-bold w-5">3</span>
+
+                {inputField(2, "w-[250px]")}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="font-bold w-5">4</span>
+
+                {inputField(3, "w-[250px]")}
+              </div>
+            </div>
           </div>
 
-          {/* ADJECTIVES */}
-          <div className="flex flex-col items-center gap-10">
-            <div
+          {/* IMAGE */}
+          <div>
+            <img
+              src={img1}
+              alt="seashell"
               style={{
-                background: "#E9E1EC",
-                borderRadius: "12px",
-                width: "170px",
-                padding: "12px",
-                textAlign: "center",
+                width: "130px",
+                height: "auto",
+                objectFit: "contain",
               }}
-            >
-              adjectives
-            </div>
-
-            {inputField(4)}
-            {inputField(5)}
-            {inputField(6)}
-            {inputField(7)}
-          </div>
-
-          {/* FARMING */}
-          <div className="flex flex-col items-center gap-10">
-            <div
-              style={{
-                background: "#E9E1EC",
-                borderRadius: "12px",
-                width: "170px",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              about farming
-            </div>
-
-            {inputField(8)}
-            {inputField(9)}
-            {inputField(10)}
-            {inputField(11)}
-          </div>
-
-          {/* EXTRA */}
-          <div className="flex flex-col items-center gap-10">
-            <div
-              style={{
-                background: "#E9E1EC",
-                borderRadius: "12px",
-                width: "170px",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              extra
-            </div>
-
-            {inputField(12)}
-            {inputField(13)}
-            {inputField(14)}
-            {inputField(15)}
+            />
           </div>
         </div>
       </div>

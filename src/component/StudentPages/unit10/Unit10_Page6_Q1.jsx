@@ -1,173 +1,58 @@
 import React, { useState } from "react";
 
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 87/SVG/Asset 8.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 87/SVG/Asset 9.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 87/SVG/Asset 10.svg";
-import img4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 87/SVG/Asset 11.svg";
-
-import ValidationAlert from "../../Popup/ValidationAlert";
-
 const Unit10_Page6_Q1 = () => {
-  const questions = [
-    "The mom and son were skating on a sunny day.",
-    "They were hiking together in the woods.",
-    "The man was lifting weights in the gym.",
-    "She was waterskiing in summer.",
-  ];
+  const [answers, setAnswers] = useState({
+    love: ["", "", "", ""],
+    like: ["", "", "", ""],
+    dontMind: ["", "", "", ""],
+    dislike: ["", "", "", ""],
+  });
 
-  const hints = ["skating", "hiking", "lifting weights", "waterskiing"];
-
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-  const [result, setResult] = useState([]);
-
-  const [locked, setLocked] = useState(false);
-
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,’']/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-
-  const handleChange = (qIndex, value) => {
-    if (locked || result[qIndex] === true) return;
-
-    const updated = [...answers];
-
-    updated[qIndex] = value;
-
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[qIndex] = undefined;
-
-      return copy;
-    });
-  };
-
-  const checkAnswers = () => {
-    if (locked) return;
-
-    const hasEmpty = answers.some((answer) => !answer.trim());
-
-    if (hasEmpty) {
-      ValidationAlert.info("Please complete all answers.");
-
-      return;
-    }
-
-    let correctCount = 0;
-
-    const newResults = answers.map((group, i) => {
-      const ok = normalize(group) === normalize(questions[i]);
-
-      if (ok) correctCount++;
-
-      return ok;
-    });
-
-    setResult(newResults);
-
-    const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
-      setLocked(true);
-
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
-  };
-
-  const showAnswers = () => {
-    setAnswers([
-      "The mom and son were skating on a sunny day.",
-      "They were hiking together in the woods.",
-      "The man was lifting weights in the gym.",
-      "She was waterskiing in summer.",
-    ]);
-
-    setResult([true, true, true, true]);
-
-    setLocked(true);
+  const handleChange = (section, index, value) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [section]: prev[section].map((item, i) => (i === index ? value : item)),
+    }));
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-
-    setResult([]);
-
-    setLocked(false);
+    setAnswers({
+      love: ["", "", "", ""],
+      like: ["", "", "", ""],
+      dontMind: ["", "", "", ""],
+      dislike: ["", "", "", ""],
+    });
   };
 
-  const lineInput = (qIndex, width) => (
-    <span className="relative inline-block">
-      <input
-        type="text"
-        value={answers[qIndex]}
-        disabled={locked || result[qIndex] === true}
-        onChange={(e) => handleChange(qIndex, e.target.value)}
-        className={`
-        ${width}
-        border-0
-        border-b
+  const inputField = (section, index) => (
+    <input
+      type="text"
+      value={answers[section][index]}
+      placeholder="Write here..."
+      onChange={(e) => handleChange(section, index, e.target.value)}
+      className="
+        w-full
+        h-full
         outline-none
         bg-transparent
         text-[18px]
-        text-[#6D2980]
+        text-black
         font-semibold
-        px-1
+        px-2
+        text-center
+         placeholder:text-gray-300
+         placeholder:text-[15px]
+      placeholder:font-normal
 
-        ${result[qIndex] === false ? "border-[#D1232A]" : "border-black"}
-      `}
-      />
-
-      {result[qIndex] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
+      "
+    />
   );
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
+        <h5 className="header-title-page8 mb-8">
           <span
             className="ex-A"
             style={{
@@ -176,174 +61,105 @@ const Unit10_Page6_Q1 = () => {
           >
             D
           </span>
-          Look at the picture, and then write the correct past progressive verb
-          phrase.
+          What about you? What do you like to do? Complete the chart to find out
+          about yourself and what your likes and dislikes are. A list of
+          possible words for the chart is listed underneath to help you.
         </h5>
 
-        {/* MAIN BOX */}
-        <div>
-          {/* ROW 1 */}
-          <div
-            className="flex items-center"
-            style={{
-              padding: "10px",
-            }}
-          >
-            <img
-              src={img1}
-              alt=""
-              style={{
-                width: "150px",
-                height: "auto",
-                objectFit: "contain",
-              }}
-            />
-
-            <div className="ml-10 flex-1">
-              <div className="flex gap-4 items-start">
-                <span className="font-bold text-[18px]">1</span>
-
-                <div className="flex flex-col gap-5">
-                  {lineInput(0, "w-[520px]")}
+        {/* TABLE */}
+        <div className="mb-10">
+          {/* HEADERS */}
+          <div className="grid grid-cols-4 border border-[#9CCB5B]">
+            {["I love", "I like", "I don’t mind", "I dislike"].map(
+              (title, i) => (
+                <div
+                  key={i}
+                  className="
+                  border-r
+                  last:border-r-0
+                  border-[#9CCB5B]
+                  h-[55px]
+                  flex
+                  items-center
+                  justify-center
+                  font-bold
+                  text-[18px]
+                  text-[#7DA63C]
+                "
+                >
+                  {title}
                 </div>
-              </div>
-
-              <div
-                className="text-[#1DA1F2] text-[18px] mt-4"
-                style={{
-                  marginLeft: "34px",
-                }}
-              >
-                ({hints[0]})
-              </div>
-            </div>
+              ),
+            )}
           </div>
 
-          {/* ROW 2 */}
-          <div
-            className="flex items-center"
-            style={{
-              padding: "10px",
-            }}
-          >
-            <img
-              src={img2}
-              alt=""
-              style={{
-                width: "150px",
-                height: "auto",
-                objectFit: "contain",
-              }}
-            />
-
-            <div className="ml-10 flex-1">
-              <div className="flex gap-4 items-start">
-                <span className="font-bold text-[18px]">2</span>
-
-                <div className="flex flex-col gap-5">
-                  {lineInput(1, "w-[520px]")}
-                </div>
+          {/* ROWS */}
+          {[0, 1, 2, 3].map((row) => (
+            <div
+              key={row}
+              className="grid grid-cols-4 border-x border-b border-[#9CCB5B]"
+            >
+              <div className="h-[50px] border-r border-[#9CCB5B]">
+                {inputField("love", row)}
               </div>
 
-              <div
-                className="text-[#1DA1F2] text-[18px] mt-4"
-                style={{
-                  marginLeft: "34px",
-                }}
-              >
-                ({hints[1]})
+              <div className="h-[50px] border-r border-[#9CCB5B]">
+                {inputField("like", row)}
               </div>
+
+              <div className="h-[50px] border-r border-[#9CCB5B]">
+                {inputField("dontMind", row)}
+              </div>
+
+              <div className="h-[50px]">{inputField("dislike", row)}</div>
             </div>
-          </div>
+          ))}
+        </div>
 
-          {/* ROW 3 */}
-          <div
-            className="flex items-center"
-            style={{
-              padding: "10px",
-            }}
-          >
-            <img
-              src={img3}
-              alt=""
-              style={{
-                width: "150px",
-                height: "auto",
-                objectFit: "contain",
-              }}
-            />
+        {/* WORD BANK */}
+        <div
+          className="
+  rounded-[17px]
+  px-15
+  py-6
+  grid
+  grid-cols-6
+  gap-y-6
+  text-[17px]
+  whitespace-nowrap
+  mb-6
+"
+          style={{
+            background: "#E2E9D1",
+          }}
+        >
+          <span>cooking</span>
+          <span>cleaning</span>
+          <span>teaching</span>
+          <span>writing</span>
+          <span>playing sports</span>
+          <span>helping others</span>
 
-            <div className="ml-10 flex-1">
-              <div className="flex gap-4 items-start">
-                <span className="font-bold text-[18px]">3</span>
+          <span>drawing</span>
+          <span>sewing</span>
+          <span>talking</span>
+          <span>listening</span>
+          <span>doing math</span>
+          <span>fixing computers</span>
 
-                <div className="flex flex-col gap-5">
-                  {lineInput(2, "w-[520px]")}
-                </div>
-              </div>
-
-              <div
-                className="text-[#1DA1F2] text-[18px] mt-4"
-                style={{
-                  marginLeft: "34px",
-                }}
-              >
-                ({hints[2]})
-              </div>
-            </div>
-          </div>
-
-          {/* ROW 4 */}
-          <div
-            className="flex items-center"
-            style={{
-              padding: "10px",
-            }}
-          >
-            <img
-              src={img4}
-              alt=""
-              style={{
-                width: "150px",
-                height: "auto",
-                objectFit: "contain",
-              }}
-            />
-
-            <div className="ml-10 flex-1">
-              <div className="flex gap-4 items-start">
-                <span className="font-bold text-[18px]">4</span>
-
-                <div className="flex flex-col gap-5">
-                  {lineInput(3, "w-[520px]")}
-                </div>
-              </div>
-
-              <div
-                className="text-[#1DA1F2] text-[18px] mt-4"
-                style={{
-                  marginLeft: "34px",
-                }}
-              >
-                ({hints[3]})
-              </div>
-            </div>
-          </div>
+          <span>building</span>
+          <span>selling</span>
+          <span>running</span>
+          <span>traveling</span>
+          <span>doing science</span>
+          <span>taking care of others</span>
         </div>
       </div>
 
-      {/* BUTTONS */}
+      {/* BUTTON */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
-        </button>
-
-        <button className="show-answer-btn" onClick={showAnswers}>
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
         </button>
       </div>
     </div>

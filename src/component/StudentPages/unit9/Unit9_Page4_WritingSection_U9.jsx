@@ -1,32 +1,29 @@
 import WritingA from "./Unit9_Page4_WritingA";
-import Unit6_Page4_WritingB from "./Unit9_Page4_WritingB";
 import WritingB from "./Unit9_Page4_WritingB";
-import ReadingBG from "../../../assets/imgs/conversation.svg";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 9 What If Folder/Page 79/SVG/Asset 12.svg";
 import WritingC from "./Unit9_Page4_WritingC";
+import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 9 How Long Have You Been Folder/SVG/Asset 7.svg";
 
 const WritingSection_U9 = () => {
   return (
     <div>
       {/* العنوان */}
-      <div className="w-[60%] mx-auto mb-4 flex items-center">
-        <div
-          className="px-4 py-1 font-bold text-black w-fit"
+      <div className="w-[60%] mx-auto mb-2 flex items-center">
+        <img
+          src={ReadingBG}
           style={{
-            backgroundImage: `url(${ReadingBG})`,
-            backgroundSize: "cover",
+            height: "60px",
+            width: "auto",
           }}
-        >
-          Writing
-        </div>
+        />
       </div>
 
       {/* المحتوى */}
-      <div className="flex flex-col w-[60%] mx-auto space-y-10">
+      <div className="flex flex-col w-[60%] mx-auto space-y-12">
         <img
           src={img}
           alt=""
-          style={{ width: "auto", height: "100%", objectFit: "contain" }}
+          style={{ width: "auto", height: "500px", objectFit: "contain" }}
         />
         <WritingA />
         <WritingB />
