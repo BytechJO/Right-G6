@@ -60,7 +60,7 @@ const WB_Unit2_Page13_I = () => {
   const [locked,  setLocked]  = useState(false);
 
   const normalize = (s) =>
-    s.toLowerCase().replace(/[.?!,'''"]/g, "").replace(/\s+/g, " ").trim();
+    s.toLowerCase().replace(/[.?!,’'''"]/g, "").replace(/\s+/g, " ").trim();
 
   let blankCounter = -1;
 

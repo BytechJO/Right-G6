@@ -9,8 +9,10 @@ const QUESTIONS = [
   { id: 5, choices: ["distarct", "distract", "discratt"],  answer: "distract",   prefilled: false },
 ];
 
+
 const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
+
 
 const initAnswers = () => {
   const a = {};

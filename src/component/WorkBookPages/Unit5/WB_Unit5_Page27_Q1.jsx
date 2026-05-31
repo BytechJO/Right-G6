@@ -73,7 +73,7 @@ const WORDS = [
 ];
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 // build initial letter answers
 const initLetters = () => {

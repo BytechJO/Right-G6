@@ -6,7 +6,7 @@ const ITEMS = [
     id: 1,
     prompt: "we/catch/early train//we/be/on time",
     answer: "If we had caught the earlier train, we would have been there on time.",
-    prefilled: true,
+    prefilled: false,
   },
   {
     id: 2,
@@ -43,7 +43,7 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 // ── Sub-components OUTSIDE parent ──
 

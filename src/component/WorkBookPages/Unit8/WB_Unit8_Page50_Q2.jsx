@@ -14,8 +14,9 @@ const QUESTIONS = [
   { id: 5, prompt: "We're too far!", answer: "Here you are!",  width: "190px" },
 ];
 
+
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
 
 const initAnswers = () => {
   const a = {};

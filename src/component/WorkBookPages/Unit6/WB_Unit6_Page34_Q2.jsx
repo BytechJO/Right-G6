@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ValidationAlert from "../../Popup/ValidationAlert";
 
 import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/4.svg";
 import img2 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/5.svg";
@@ -23,9 +24,7 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,'''’]/g, "").replace(/\s+/g, " ").trim();
-
-// ── Sub-components OUTSIDE parent ──
+  str.toLowerCase().replace(/[.?!,'''']/g, "").replace(/\s+/g, " ").trim();
 
 const RowInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
   <div style={{ position: "relative", flex: 1 }}>
@@ -59,8 +58,6 @@ const RowInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
   </div>
 );
 
-// ── Main Component ──
-
 const WB_Unit_StellaUsedTo_E = () => {
   const [answers, setAnswers] = useState(initAnswers);
   const [result,  setResult]  = useState({});
@@ -75,7 +72,7 @@ const WB_Unit_StellaUsedTo_E = () => {
   const checkAnswers = () => {
     if (locked) return;
     const hasEmpty = ROWS.some(({ id }) => !answers[id].trim());
-    if (hasEmpty) { alert("Please complete all answers."); return; }
+    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
 
     let correct = 0;
     const nr = {};
@@ -86,7 +83,11 @@ const WB_Unit_StellaUsedTo_E = () => {
     });
     setResult(nr);
     const total = ROWS.length;
-    if (correct === total) { setLocked(true); }
+    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+    else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
@@ -103,7 +104,6 @@ const WB_Unit_StellaUsedTo_E = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
         <h5 className="header-title-page8 mb-6">
           <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
           Look at the picture and write a sentence that tells what Stella{" "}
@@ -111,7 +111,6 @@ const WB_Unit_StellaUsedTo_E = () => {
           <span style={{ color: "orange", fontWeight: "bold" }}>didn't use to</span> do.
         </h5>
 
-        {/* Table */}
         <div style={{
           border: `2px solid ${BORDER}`,
           borderRadius: "10px",
@@ -128,30 +127,15 @@ const WB_Unit_StellaUsedTo_E = () => {
                 minHeight: "120px",
               }}
             >
-              {/* Left: image only — badge is part of the image */}
-              <div style={{
-                borderRight: `1.5px solid ${BORDER}`,
-                overflow: "hidden",
-              }}>
+              <div style={{ borderRight: `1.5px solid ${BORDER}`, overflow: "hidden" }}>
                 <img
                   src={row.img}
                   alt={`scene ${row.id}`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 />
               </div>
 
-              {/* Right: number + input */}
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                padding: "16px 20px",
-              }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "16px 20px" }}>
                 <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "18px" }}>
                   {row.id}
                 </span>
@@ -163,7 +147,6 @@ const WB_Unit_StellaUsedTo_E = () => {
                   isCorrect={result[row.id] === true}
                 />
               </div>
-
             </div>
           ))}
         </div>

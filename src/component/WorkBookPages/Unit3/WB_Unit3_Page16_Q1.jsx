@@ -112,7 +112,7 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
 
 // ✅ SlotInput خارج الـ component الرئيسي عشان ما يتعيد إنشاؤه عند كل render
 const SlotInput = ({ slot, answer, locked, result, onChange }) => {

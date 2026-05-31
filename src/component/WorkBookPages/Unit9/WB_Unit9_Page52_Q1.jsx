@@ -30,8 +30,10 @@ const SECTION_B = [
   { label: "j", word: "characters" },
 ];
 
+
 const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
+
 
 const initAnswers = () => {
   const a = {};

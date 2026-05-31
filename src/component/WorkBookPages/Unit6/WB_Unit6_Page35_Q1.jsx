@@ -62,7 +62,7 @@ const AnswerInput = ({ fKey, value, onChange, isCorrect, isWrong, disabled, pref
         outline: "none",
         background: "transparent",
         fontSize: "16px",
-        color: prefilled ? "#333" : isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        color: "#333",
         fontWeight: isCorrect ? "600" : "400",
         paddingBottom: "2px",
         fontFamily: "inherit",
@@ -93,38 +93,32 @@ const WB_Unit5_Unscramble_I = () => {
     setResult((prev)  => ({ ...prev, [key]: undefined }));
   };
 
-  const checkAnswers = () => {
-    if (locked) return;
-    const inputQs = QUESTIONS.filter((q) => !q.prefilled);
-    const hasEmpty = inputQs.some(({ id }) =>
-      !answers[`${id}-1`].trim() || !answers[`${id}-2`].trim()
-    );
-    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+const checkAnswers = () => {
+  if (locked) return;
+  const inputQs = QUESTIONS.filter((q) => !q.prefilled);
+  const hasEmpty = inputQs.some(({ id }) => !answers[`${id}-1`].trim()); // ✅ شيلنا -2
+  if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
 
-    let correct = 0;
-    const nr = {};
-    QUESTIONS.forEach(({ id, answer1, answer2, prefilled }) => {
-      if (prefilled) {
-        nr[`${id}-1`] = true; nr[`${id}-2`] = true;
-        correct += 2; return;
-      }
-      const ok1 = normalize(answers[`${id}-1`]) === normalize(answer1);
-      const ok2 = normalize(answers[`${id}-2`]) === normalize(answer2);
-      if (ok1) correct++;
-      if (ok2) correct++;
-      nr[`${id}-1`] = ok1;
-      nr[`${id}-2`] = ok2;
-    });
-    setResult(nr);
-    const total = QUESTIONS.filter((q) => !q.prefilled).length * 2;
-    const scored = correct - 2; // -2 للـ prefilled
-    const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
-    if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (scored === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
-  };
+  let correct = 0;
+  const nr = {};
+  QUESTIONS.forEach(({ id, answer1, prefilled }) => {
+    if (prefilled) {
+      nr[`${id}-1`] = true;
+      correct++; return;
+    }
+    const ok1 = normalize(answers[`${id}-1`]) === normalize(answer1);
+    if (ok1) correct++;
+    nr[`${id}-1`] = ok1;
+  });
 
+  setResult(nr);
+  const total = QUESTIONS.filter((q) => !q.prefilled).length; // ✅ بس الأسئلة غير prefilled
+  const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+  const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+  if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+  else if (correct === 0) ValidationAlert.error(msg);
+  else ValidationAlert.warning(msg);
+};
   const showAnswers = () => {
     const a = {}; const r = {};
     QUESTIONS.forEach(({ id, answer1, answer2 }) => {
@@ -142,7 +136,7 @@ const WB_Unit5_Unscramble_I = () => {
 
         {/* Title */}
         <h5 className="header-title-page8 mb-8" style={{ whiteSpace : "nowrap"}}>
-          <span className="ex-A" style={{ marginRight: "10px" }}>I</span>
+          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
 Use the following sentence parts to make a sentence with <span style={ { color : "orange"}}>used to</span>.
         </h5>
 
@@ -169,7 +163,6 @@ Use the following sentence parts to make a sentence with <span style={ { color :
                     isCorrect={result[k1] === true}
                     isWrong={result[k1] === false}
                     disabled={locked || result[k1] === true || prefilled}
-                    prefilled={prefilled}
                   />
                 </div>
 
