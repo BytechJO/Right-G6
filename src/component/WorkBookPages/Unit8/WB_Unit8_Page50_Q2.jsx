@@ -108,26 +108,9 @@ const WB_Unit8_VocabExpression_K = () => {
           Write the vocabulary expression that sounds like the following.
         </h5>
 
-        {/* Word Bank */}
-        <div style={{
-          border: "2x solid #84ad40",
-          borderRadius: "8px",
-          padding: "10px 20px",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "8px 32px",
-          marginBottom: "28px",
-          marginTop: "5%",
-
-          fontSize: "17px",
-          color: "#333",
-          justifyContent: "center",
-        }}>
-          {WORD_BANK.map((w) => <span key={w}>{w}</span>)}
-        </div>
-
+      
         {/* Body: questions + image */}
-        <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", marginBottom: "3em" }}>
+        <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", margin: "13vh 0" }}>
 
           {/* Questions */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -158,7 +141,7 @@ const WB_Unit8_VocabExpression_K = () => {
           </div>
 
           {/* Boy Image */}
-          <div style={{ flexShrink: 0 }}>
+          <div style={{ flexShrink: 0 , width: "40%" }}>
             <img
               src={boyImg}
               alt="boy thinking"

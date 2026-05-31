@@ -5,14 +5,14 @@ const BORDER = "#84ad40";
 
 // ── Word definitions (row, col are 0-indexed absolute) ──
 const WORD_DEFS = [
-  { id:"1D", word:"sandcastles", r:1,  c:14, dir:"D", clueNum:1 },
-  { id:"2D", word:"crowd",       r:2,  c:7,  dir:"D", clueNum:2 },
+  { id:"1D", word:"sandcastles", r:0,  c:13, dir:"D", clueNum:1 },
+  { id:"2D", word:"dozens",       r:3,  c:7,  dir:"D", clueNum:2 },
   { id:"3D", word:"surfboard",   r:3,  c:10, dir:"D", clueNum:3 },
-  { id:"4A", word:"occupied",    r:4,  c:7,  dir:"A", clueNum:4 },
-  { id:"5A", word:"sunscreen",   r:7,  c:1,  dir:"A", clueNum:5 },
-  { id:"5D", word:"seashells",   r:7,  c:1,  dir:"D", clueNum:5 },
-  { id:"6D", word:"sunburn",     r:10, c:6,  dir:"D", clueNum:6 },
-  { id:"7A", word:"necessary",   r:12, c:6,  dir:"A", clueNum:7 },
+  { id:"4A", word:"occupied",    r:4,  c:6,  dir:"A", clueNum:4 },
+  { id:"5A", word:"sunscreen",   r:6,  c:0,  dir:"A", clueNum:5 },
+  { id:"5D", word:"seashells",   r:6,  c:0,  dir:"D", clueNum:5 },
+  { id:"6D", word:"sunburn",     r:8, c:3,  dir:"D", clueNum:6 },
+  { id:"7A", word:"necessary",   r:10, c:3,  dir:"A", clueNum:7 },
 ];
 
 const CLUES = {
@@ -229,9 +229,9 @@ const WB_Unit10_Crossword_A = () => {
               display:"grid",
               gridTemplateColumns:`repeat(${GRID_COLS}, ${CS})`,
               gridTemplateRows:`repeat(${GRID_ROWS}, ${CS})`,
-              border:`2px solid ${BORDER}`,
               borderRadius:"6px",
               overflow:"hidden",
+             padding: "10px",
             }}>
               {Array.from({ length: GRID_ROWS }, (_, ri) =>
                 Array.from({ length: GRID_COLS }, (_, ci) => {
@@ -245,9 +245,8 @@ const WB_Unit10_Crossword_A = () => {
                     return (
                       <div key={`${ri}-${ci}`} style={{
                         width: CS, height: CS,
-                        background: "#ddd",
-                        borderRight: ci < GRID_COLS-1 ? "1px solid #bbb" : "none",
-                        borderBottom: ri < GRID_ROWS-1 ? "1px solid #bbb" : "none",
+                        background: "transparent",
+                
                       }} />
                     );
                   }
@@ -260,8 +259,12 @@ const WB_Unit10_Crossword_A = () => {
                         position: "relative",
                         width: CS, height: CS,
                         background: isCorrect ? "#c8e6c9" : isActive ? "#e8f5d0" : "#fff",
-                        borderRight: ci < GRID_COLS-1 ? `1px solid ${BORDER}` : "none",
-                        borderBottom: ri < GRID_ROWS-1 ? `1px solid ${BORDER}` : "none",
+                        borderRight: `1px solid ${BORDER}`,
+                        borderBottom: `1px solid ${BORDER}`,
+                        borderTop: `1px solid ${BORDER}`,
+                        borderLeft:  `1px solid ${BORDER}`,
+
+
                         cursor: "text",
                         boxSizing: "border-box",
                       }}

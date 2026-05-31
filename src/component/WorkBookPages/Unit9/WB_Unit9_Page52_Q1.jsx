@@ -35,7 +35,7 @@ const normalize = (str) =>
 
 const initAnswers = () => {
   const a = {};
-  QUESTIONS.forEach(({ id }) => { a[`${id}-w`] = ""; a[`${id}-m`] = ""; });
+  QUESTIONS.forEach(({ id }) => {  a[`${id}-m`] = ""; });
   return a;
 };
 
@@ -53,12 +53,13 @@ const WordInput = ({ fKey, value, onChange, isCorrect, isWrong, disabled, width 
         borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
         outline: "none",
         background: "transparent",
-        fontSize: "16px",
-        color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        fontSize: "18px",
+        color:  "#333",
         fontWeight: isCorrect ? "600" : "400",
         paddingBottom: "2px",
         fontFamily: "inherit",
         textAlign: "center",
+        marginLeft: "35vh",
       }}
     />
     {isWrong && (
@@ -94,15 +95,12 @@ const WB_Unit9_UnscrambleMatch_C = () => {
     const nr = {};
     QUESTIONS.forEach(({ id, word, match }) => {
       const wKey = `${id}-w`, mKey = `${id}-m`;
-      const wOk = normalize(answers[wKey]) === normalize(word);
       const mOk = normalize(answers[mKey]) === normalize(match);
-      if (wOk) correct++;
       if (mOk) correct++;
-      nr[wKey] = wOk;
       nr[mKey] = mOk;
     });
     setResult(nr);
-    const total = QUESTIONS.length * 2;
+    const total = QUESTIONS.length * 1;
     const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
     if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
@@ -126,7 +124,7 @@ const WB_Unit9_UnscrambleMatch_C = () => {
       <div className="div-forall">
 
         {/* Title */}
-        <h5 className="header-title-page8 mb-8">
+        <h5 className="header-title-page8 mb-8 " style={{ whiteSpace : "nowrap" }}>
           <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
           Unscramble the words in section A. Then match with the same words in section B.
         </h5>
@@ -136,7 +134,8 @@ const WB_Unit9_UnscrambleMatch_C = () => {
 
           {/* Section A */}
           <div style={{ flex: 1 }}>
-            <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "16px", marginBottom: "12px" }}>A</div>
+            <div style={{ 
+               fontWeight: "bold", fontSize: "22px", marginBottom: "12px", marginLeft: "8vh" }}>A</div>
             <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               {QUESTIONS.map(({ id, scrambled }) => {
                 const wKey = `${id}-w`;
@@ -150,20 +149,13 @@ const WB_Unit9_UnscrambleMatch_C = () => {
                     display: "flex",
                     alignItems: "center",
                     gap: "10px",
-                    fontSize: "16px",
+                    fontSize: "18px",
                   }}>
                     <span style={{ fontWeight: "bold", minWidth: "24px" }}>{id}</span>
                     <span style={{ minWidth: "110px", color: "#333" }}>{scrambled}</span>
                     {/* Word input */}
-                    <WordInput
-                      fKey={wKey}
-                      value={answers[wKey]}
-                      onChange={handleChange}
-                      isCorrect={wCorrect}
-                      isWrong={wWrong}
-                      disabled={locked || wCorrect}
-                      width="130px"
-                    />
+
+                  
                     {/* Match input */}
                     <WordInput
                       fKey={mKey}
@@ -182,10 +174,10 @@ const WB_Unit9_UnscrambleMatch_C = () => {
 
           {/* Section B */}
           <div style={{ minWidth: "160px" }}>
-            <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "16px", marginBottom: "12px" }}>B</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            <div style={{ textAlign: "start", fontWeight: "bold", fontSize: "22px", marginBottom: "12px", marginLeft: "7vh" }}>B</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
               {SECTION_B.map(({ label, word }) => (
-                <div key={label} style={{ display: "flex", gap: "8px", fontSize: "16px", alignItems: "center" }}>
+                <div key={label} style={{ display: "flex", gap: "8px", fontSize: "18px", alignItems: "center" }}>
                   <span style={{ fontWeight: "bold", minWidth: "16px" }}>{label}</span>
                   <span>{word}</span>
                 </div>
@@ -196,7 +188,7 @@ const WB_Unit9_UnscrambleMatch_C = () => {
         </div>
 
         {/* Girls Image */}
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "3em" }}>
+        <div style={{ display: "flex", justifyContent: "center", margin: "1em 0 5em" }}>
           <img
             src={girlsImg}
             alt="students"
