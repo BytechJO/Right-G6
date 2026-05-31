@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import storyImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/Asset 23 (1)-cropped.svg";
+import storyImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/9.svg";
 
 // ── Sentences that contain "used to" — students must underline them ──
 // We split the story into segments; each segment is either plain text or a "used to" sentence.
@@ -101,11 +101,6 @@ const WB_Unit_MyTown_J = () => {
 
           <div style={{ clear: "both" }} />
         </div>
-
-        {/* Hint */}
-        <p style={{ fontSize: "13px", color: "#888", marginBottom: "1em", textAlign: "center" }}>
-          💡 Click on a sentence to underline it. Click again to remove the underline.
-        </p>
 
       </div>
 
