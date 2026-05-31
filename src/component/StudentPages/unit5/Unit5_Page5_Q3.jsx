@@ -10,25 +10,25 @@ const normalize = (str) =>
 
 // الكلمات والتعريفات
 const WORDS = [
-  { num: 1, word: "offer" },
-  { num: 2, word: "diner" },
-  { num: 3, word: "liver" },
-  { num: 4, word: "unwind" },
-  { num: 5, word: "fast foods" },
+  { num: 1, word: "Mary sews very well," },
+  { num: 2, word: "That dog isn’t friendly," },
+  { num: 3, word: "We can make it to the bus on time," },
+  { num: 4, word: "You asked your parents," },
+  { num: 5, word: "Marsha hasn’t called yet," },
 ];
 
 const DEFINITIONS = [
-  { letter: "a", text: "foods that are prepared and served quickly" },
-  { letter: "b", text: "relax" },
-  { letter: "c", text: "a restaurant that is not expensive" },
-  { letter: "d", text: "deal or agreement" },
-  { letter: "e", text: "an animal part that can be eaten as food" },
+  { letter: "a", text: "can’t we?" },
+  { letter: "b", text: "didn’t you?" },
+  { letter: "c", text: "doesn’t she?" },
+  { letter: "d", text: "has she?" },
+  { letter: "e", text: "is it?" },
 ];
 
 // الإجابات الصحيحة: رقم السؤال → الحرف
-const CORRECT = ["d", "c", "e", "b", "a"];
+const CORRECT = ["c", "e", "a", "b", "d"];
 
-const Unit3_Page5_Q1 = () => {
+const Unit5_Page5_Q3 = () => {
   const [answers, setAnswers] = useState(Array(5).fill(""));
   const [errors, setErrors] = useState(Array(5).fill(null));
   const [locked, setLocked] = useState(false);
@@ -88,7 +88,7 @@ const Unit3_Page5_Q1 = () => {
           onChange={(e) => handleChange(index, e.target.value)}
           style={{
             width: "50px",
-            borderBottom: isWrong ? "2px solid #ef4444" : "1px solid #aaa",
+            borderBottom: isWrong ? "2px solid #ef4444" : "1px solid black",
             outline: "none",
             background: "transparent",
             textAlign: "center",
@@ -129,8 +129,8 @@ const Unit3_Page5_Q1 = () => {
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "50px" }}>
         <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2">A</span>
-          Match each vocabulary word to its definition.
+          <span className="ex-A mr-2">C</span>
+          Match each question tag to its statement.
         </h5>
 
         <div
@@ -178,7 +178,7 @@ const Unit3_Page5_Q1 = () => {
         </div>
       </div>
       {/* Buttons */}
-   
+      
         <ActionButtons
           handleShowAnswer={showAnswers}
           handleStartAgain={reset}
@@ -189,4 +189,4 @@ const Unit3_Page5_Q1 = () => {
   );
 };
 
-export default Unit3_Page5_Q1;
+export default Unit5_Page5_Q3;

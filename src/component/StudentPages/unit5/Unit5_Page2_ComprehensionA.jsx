@@ -3,230 +3,190 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 
 const Unit5_Page2_ComprehensionA = () => {
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [selected, setSelected] = useState(new Set());
   const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState(null); // null | { correct: Set, wrong: Set, missed: Set }
 
-  const rightRefs = React.useRef([]);
-  const textRefs = React.useRef([]); // 🔥 جديد
+  const words = [
+    { text: "hard-working", correct: true },
+    { text: "actor", correct: false },
+    { text: "selfish", correct: false },
+    { text: "sad", correct: false },
+    { text: "married", correct: false },
+    { text: "talented", correct: true },
+    { text: "unpopular", correct: false },
+  ];
 
-  const correct = ["d", "c", "a", "b"];
-  const rightItems = ["a", "b", "c", "d"];
-
-  const handleChange = (i, val) => {
-    const updated = [...answers];
-    updated[i] = val.toLowerCase();
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-      copy[i] = undefined;
-      return copy;
-    });
-  };
-
-  const input = (i) => (
-    <span className="relative mx-2">
-      <input
-        disabled={locked || result[i] === true}
-        value={answers[i]}
-        onChange={(e) => handleChange(i, e.target.value)}
-        maxLength={1}
-        className={`w-10 border-b outline-none text-center font-bold uppercase
-        ${
-          result[i] === false
-            ? "border-red-500 text-[#6D2980]"
-            : "border-black text-[#6D2980]"
-        }`}
-      />
-
-      {result[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            transform: "translateY(-50%)",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
+  const correctSet = new Set(
+    words.map((w, i) => (w.correct ? i : -1)).filter((i) => i !== -1),
   );
 
-  // ====================
-  // SVG LINES
-  // ====================
-  const renderLines = () => {
-    return answers.map((ans, i) => {
-      if (!ans) return null;
-
-      const rightIndex = rightItems.indexOf(ans);
-      if (rightIndex === -1) return null;
-
-      const textEl = textRefs.current[i];
-      const rightEl = rightRefs.current[rightIndex];
-
-      if (!textEl || !rightEl) return null;
-
-      const textRect = textEl.getBoundingClientRect();
-      const rightRect = rightEl.getBoundingClientRect();
-      const parentRect =
-        textEl.parentElement.parentElement.getBoundingClientRect();
-
-      // 🔥 من بداية الكلمة
-      const x1 = textRect.right - parentRect.left;
-      const y1 = textRect.top + textRect.height / 2 - parentRect.top;
-
-      const x2 = rightRect.left - parentRect.left;
-      const y2 = rightRect.top + rightRect.height / 2 - parentRect.top;
-
-      return (
-        <line
-          key={i}
-          x1={x1}
-          y1={y1}
-          x2={x2}
-          y2={y2}
-          stroke="#6d2980"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-      );
+  const toggle = (i) => {
+    if (locked) return;
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      return next;
     });
+    setResult(null);
   };
 
-  // ====================
-  // CHECK
-  // ====================
+  const getWordClass = (i) => {
+    if (!result) {
+      return selected.has(i) ? "word-selected" : "word-default";
+    }
+    if (result.correct.has(i)) return "word-correct";
+    if (result.wrong.has(i)) return "word-wrong";
+    if (result.missed.has(i)) return "word-missed";
+    return "word-default";
+  };
+
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all fields.");
+    if (selected.size === 0) {
+      ValidationAlert.info("Please select at least one word.");
       return;
     }
 
-    let correctCount = 0;
+    const correct = new Set();
+    const wrong = new Set();
+    const missed = new Set();
 
-    const res = answers.map((a, i) => {
-      const ok = a === correct[i];
-      if (ok) correctCount++;
-      return ok;
+    words.forEach((w, i) => {
+      if (selected.has(i) && w.correct) correct.add(i);
+      else if (selected.has(i) && !w.correct) wrong.add(i);
+      else if (!selected.has(i) && w.correct) missed.add(i);
     });
 
-    setResult(res);
-    const msg = `Score: ${correctCount} / ${correct.length}`;
+    setResult({ correct, wrong, missed });
+    const finalScore = Math.max(0, correct.size - wrong.size);
 
-    if (correctCount === correct.length) {
+    const score = `Score: ${finalScore} / ${correctSet.size}`;
+
+    if (
+      correct.size === correctSet.size &&
+      wrong.size === 0 &&
+      selected.size === correctSet.size
+    ) {
       setLocked(true);
-      ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
+      ValidationAlert.success(score);
+    } else if (finalScore === 0) {
+      ValidationAlert.error(score);
     } else {
-      ValidationAlert.warning(msg);
+      ValidationAlert.warning(score);
     }
   };
 
   const showAnswers = () => {
-    setAnswers(correct);
+    setSelected(new Set(correctSet));
     setLocked(true);
+    setResult({
+      correct: new Set(correctSet),
+      wrong: new Set(),
+      missed: new Set(),
+    });
   };
 
   const reset = () => {
-    setAnswers(["", "", "", ""]);
+    setSelected(new Set());
     setLocked(false);
-    setResult([]);
+    setResult(null);
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-10">
       <h5 className="header-title-page8-read mb-5">
         <span className="ex-A-read mr-2">A</span>
-        Look at the underlined words in the reading. See if you can tell what
-        they mean <br /> by how they are used in the sentences. Then match them
-        with the meanings on the right.
+        Circle the words that tell about Gary James.
       </h5>
 
-      <div className="relative grid grid-cols-2 gap-25 text-[18px] mt-10 min-h-[280px]">
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          {renderLines()}
-        </svg>
+      {/* Words Box */}
+      <div
+        style={{
+          border: "2px solid #a8d080",
+          borderRadius: "14px",
+          background: "#f4f9ec",
+          padding: "28px 32px 32px",
+          maxWidth: "560px",
+          margin: "0 auto",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "14px 20px",
+            justifyContent: "center",
+          }}
+        >
+          {words.map((w, i) => {
+            const cls = getWordClass(i);
+            const styleMap = {
+              "word-default": {
+                color: "var(--color-text-primary, #3a3a3a)",
+                border: "1.5px solid transparent",
+                borderRadius: "999px",
+                padding: "5px 16px",
+                background: "transparent",
+                textDecoration: "none",
+                cursor: locked ? "default" : "pointer",
+              },
+              "word-selected": {
+                color: "#2c5a0e",
+                border: "1.5px solid #2c5a0e",
+                borderRadius: "999px",
+                padding: "5px 16px",
+                background: "transparent",
+                textDecoration: "none",
+                cursor: "pointer",
+              },
+              "word-correct": {
+                color: "#1a6e2e",
+                border: "1.5px solid #1a6e2e",
+                borderRadius: "999px",
+                padding: "5px 16px",
+                background: "transparent",
+                textDecoration: "none",
+                cursor: "default",
+              },
+              "word-wrong": {
+                color: "#c0392b",
+                border: "1.5px solid #c0392b",
+                borderRadius: "999px",
+                padding: "5px 16px",
+                background: "transparent",
+                textDecoration: "line-through",
+                cursor: "default",
+              },
+            };
 
-        {/* LEFT */}
-        <div className="space-y-10">
-          <div>
-            {input(0)}
-            <span className="font-bold mr-4">1</span>
-            <span ref={(el) => (textRefs.current[0] = el)}>
-              A table for (number)?
-            </span>
-          </div>
-
-          <div>
-            {input(1)}
-            <span className="font-bold mr-4">2</span>
-            <span ref={(el) => (textRefs.current[1] = el)}>
-              May I take your order now?
-            </span>
-          </div>
-
-          <div>
-            {input(2)}
-            <span className="font-bold mr-4">3</span>
-            <span ref={(el) => (textRefs.current[2] = el)}>
-              I’ll take care of it right away.
-            </span>
-          </div>
-
-          <div>
-            {input(3)}
-            <span className="font-bold mr-4">4</span>
-            <span ref={(el) => (textRefs.current[3] = el)}>
-              As soon as possible
-            </span>
-          </div>
-        </div>
-
-        {/* RIGHT */}
-        <div className="space-y-10">
-          <div ref={(el) => (rightRefs.current[0] = el)}>
-            <span className="font-bold mr-4">a</span>saying that you will solve
-            the problem quickly
-          </div>
-
-          <div ref={(el) => (rightRefs.current[1] = el)}>
-            <span className="font-bold mr-4">b</span>to do it as quickly as one
-            can
-          </div>
-
-          <div ref={(el) => (rightRefs.current[2] = el)}>
-            <span className="font-bold mr-4">c</span>The server is asking if the
-            customer is ready to tell them what they’d like to eat.
-          </div>
-
-          <div ref={(el) => (rightRefs.current[3] = el)}>
-            <span className="font-bold mr-4">d</span>offering to seat customers
-            at a table for a certain number of people
-          </div>
+            return (
+              <button
+                key={i}
+                onClick={() => toggle(i)}
+                disabled={locked}
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "500",
+                  outline: "none",
+                  border: "2.5px solid transparent",
+                  background: "transparent",
+                  transition: "all 0.18s ease",
+                  userSelect: "none",
+                  ...styleMap[cls],
+                }}
+              >
+                {w.text}
+              </button>
+            );
+          })}
         </div>
       </div>
-      <div className="flex justify-center gap-6 mt-2">
+
+      {/* Action Buttons */}
+      <div className="flex justify-center gap-6 mt-6">
         {/* Reset */}
         <div className="relative group">
           <div

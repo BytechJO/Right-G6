@@ -1,23 +1,37 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 44/Asset 16.svg";
-import trueImg from "../../../assets/imgs/true.svg";
-import flaseImg from "../../../assets/imgs/false.svg";
 const Unit5_Page5_Q1 = () => {
+  const wordBank = ["boss", "suppose", "bookworm", "active", "imagination"];
+
+  const questions = [
+    {
+      definition: "the ability to think of new things",
+      correct: "imagination",
+    },
+    { definition: "to believe something to be possible", correct: "suppose" },
+    { definition: "someone who reads a lot", correct: "bookworm" },
+    {
+      definition:
+        "the person who has more power or control; the person whose job is to tell others what to do",
+      correct: "boss",
+    },
+    {
+      definition: "full of action or life; marked by regular use",
+      correct: "active",
+    },
+  ];
+
   const [answers, setAnswers] = useState(["", "", "", "", ""]);
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState([]);
 
-  const correctAnswers = ["check", "check", "x", "check", "x"];
-
-  const handleSelect = (i, val) => {
+  const handleChange = (i, val) => {
     if (locked || result[i] === true) return;
-
     const updated = [...answers];
     updated[i] = val;
     setAnswers(updated);
-
     setResult((prev) => {
       const copy = [...prev];
       copy[i] = undefined;
@@ -25,114 +39,21 @@ const Unit5_Page5_Q1 = () => {
     });
   };
 
-  const choiceBox = (i, val) => {
-    const isWrongBox = result[i] === false && answers[i] === val;
-    return (
-      <button
-        type="button"
-        disabled={locked || result[i] === true}
-        onClick={() => handleSelect(i, val)}
-        style={{
-          width: "45px",
-          position: "relative",
-          height: "45px",
-          border: "2px solid #6D2980",
-          borderRadius: "8px",
-          color: "#6D2980",
-          fontSize: "24px",
-          fontWeight: "bold",
-          cursor: locked || result[i] === true ? "default" : "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {answers[i] === val && (
-          <img
-            src={val === "check" ? trueImg : flaseImg}
-            alt=""
-            style={{
-              width: "24px",
-              height: "24px",
-              objectFit: "contain",
-            }}
-          />
-        )}
-        {isWrongBox && (
-          <span
-            style={{
-              position: "absolute",
-              top: "-10px",
-              right: "-10px",
-              width: "20px",
-              height: "20px",
-              background: "#ef4444",
-              color: "white",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "12px",
-              fontWeight: "bold",
-              border: "2px solid white",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-              pointerEvents: "none",
-              zIndex: 3,
-            }}
-          >
-            ✕
-          </span>
-        )}
-      </button>
-    );
-  };
-
-  const answerBoxes = (i) => (
-    <span
-      style={{
-        position: "relative",
-        display: "inline-flex",
-        gap: "8px",
-        marginRight: "8px",
-      }}
-    >
-      {choiceBox(i, "check", "✓")}
-      {choiceBox(i, "x", "✕")}
-    </span>
-  );
-
   const checkAnswers = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a)) {
+    if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
       return;
     }
-
     let correctCount = 0;
-
     const res = answers.map((a, i) => {
-      const ok = a === correctAnswers[i];
+      const ok = a.trim().toLowerCase() === questions[i].correct.toLowerCase();
       if (ok) correctCount++;
       return ok;
     });
-
     setResult(res);
-
-    const total = correctAnswers.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    const msg = `Score: ${correctCount} / ${questions.length}`;
+    if (correctCount === questions.length) {
       setLocked(true);
       ValidationAlert.success(msg);
     } else if (correctCount === 0) {
@@ -143,12 +64,12 @@ const Unit5_Page5_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(correctAnswers);
-    setResult([true, true, true, true, true]);
+    setAnswers(questions.map((q) => q.correct));
+    setResult(questions.map(() => true));
     setLocked(true);
   };
 
-  const handleReset = () => {
+  const reset = () => {
     setAnswers(["", "", "", "", ""]);
     setResult([]);
     setLocked(false);
@@ -163,99 +84,140 @@ const Unit5_Page5_Q1 = () => {
         padding: "30px",
       }}
     >
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-22">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
-            A
-          </span>
-          Read and write <span className="text-[#D1232A]">✓</span> or{" "}
-          <span className="text-[#D1232A]">✗</span>. Is the underlined word used
-          correctly or incorrectly?
+      <div className="div-forall" style={{gap:"40px"}}>
+        {/* HEADER */}
+        <h5 className="header-title-page8">
+          <span className="ex-A mr-2">A</span>
+          Write the correct word that matches the definition.
         </h5>
 
+        {/* WORD BANK */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 300px",
-            gap: "30px",
-            alignItems: "start",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0",
+            background: "#eaf4d8",
+            // border: "1.5px solid #b8dfa0",
+            borderRadius: "8px",
+            padding: "10px 20px",
+            marginBottom: "28px",
+            justifyContent: "space-around",
           }}
         >
-          <div
-            style={{
-              fontSize: "18px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "35px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {answerBoxes(0)}
-              <span style={{ fontWeight: "bold" }}>1</span>
-              <span>
-                Dad prepared a{" "}
-                <span style={{ textDecoration: "underline" }}>barbecue</span>{" "}
-                with a lot of meat.
-              </span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {answerBoxes(1)}
-              <span style={{ fontWeight: "bold" }}>2</span>
-              <span>
-                <span style={{ textDecoration: "underline" }}>Sharks</span> live
-                in water and eat fish.
-              </span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {answerBoxes(2)}
-              <span style={{ fontWeight: "bold" }}>3</span>
-              <span>
-                The <span style={{ textDecoration: "underline" }}>entire</span>{" "}
-                the teacher gave us was very challenging.
-              </span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {answerBoxes(3)}
-              <span style={{ fontWeight: "bold" }}>4</span>
-              <span>
-                Tom had to give a{" "}
-                <span style={{ textDecoration: "underline" }}>
-                  presentation
-                </span>{" "}
-                in front of the class.
-              </span>
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {answerBoxes(4)}
-              <span style={{ fontWeight: "bold" }}>5</span>
-              <span>
-                Henry wants the{" "}
-                <span style={{ textDecoration: "underline" }}>shish kebab</span>{" "}
-                for German chocolate cake.
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <img
-              src={img1}
-              alt=""
+          {wordBank.map((w, i) => (
+            <span
+              key={i}
               style={{
-                width: "300px",
-                height: "auto",
-                objectFit: "contain",
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#2c5a0e",
+                padding: "2px 10px",
               }}
-            />
-          </div>
+            >
+              {w}
+            </span>
+          ))}
+        </div>
+
+        {/* QUESTIONS */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+          {questions.map((q, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "20px",
+                fontSize: "18px",
+              }}
+            >
+              {/* Number */}
+              <span
+                style={{
+                  fontWeight: "bold",
+                  minWidth: "18px",
+                  marginTop: "4px",
+                }}
+              >
+                {i + 1}
+              </span>
+
+              {/* Input */}
+              <div style={{ position: "relative", minWidth: "200px" }}>
+                <input
+                  value={answers[i]}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  disabled={locked || result[i] === true}
+                  style={{
+                    borderBottom: `1px solid ${
+                      result[i] === false
+                        ? "#ef4444"
+                        : result[i] === true
+                          ? "black"
+                          : "black"
+                    }`,
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: "16px",
+                    fontWeight: "600",
+
+                    width: "200px",
+                    padding: "2px 4px",
+                    textAlign: "center",
+                  }}
+                />
+                {/* ✕ badge */}
+                {result[i] === false && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-10px",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      zIndex: 3,
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </div>
+
+              {/* Equals + Definition */}
+              <span
+                style={{ marginTop: "2px", color: "#333", lineHeight: "1.5" }}
+              >
+                <span
+                  style={{
+                    fontWeight: "700",
+                    fontSize: "18px",
+                    marginRight: "8px",
+                  }}
+                >
+                  =
+                </span>
+                {q.definition}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
-
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
+        <button className="try-again-button" onClick={reset}>
           Start Again ↻
         </button>
 

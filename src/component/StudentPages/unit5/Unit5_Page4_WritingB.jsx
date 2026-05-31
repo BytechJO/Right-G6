@@ -14,9 +14,11 @@ const Unit4_Page4_WritingB = () => {
       {/* العنوان */}
       <h5 className="header-title-page8-read pb-2.5">
         <span className="ex-A-read mr-2">B</span>
-        Choose a situation where you might have to say something difficult to a
-        server <br /> or a clerk in a polite way. In your notebook, write a
-        conversation that you might have.
+        Choose a person that you would like to interview. Research the person
+        and find out as much as you can about them. Take notes about what they
+        do, where they live, their family, and so on. Then use the notes you
+        made to make at least eight interview questions. Have at least three
+        question tags. Write the questions in your notebook.
       </h5>
 
       {/* textarea */}
