@@ -1,32 +1,41 @@
 import React, { useState } from "react";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 69/SVG/Asset 35.svg";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Unit8_Page6_Q2 = () => {
-  const questions = ["T", "F", "F", "T", "T", "T"];
+  const questions = [
+    "John said that he would be at the library tonight.",
+    "Did Carly say that she wanted to come with us?",
+    "The officer said that he would help us get home safely.",
+    "Andrea told me that there was a carnival at school today.",
+  ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) => str.toLowerCase().replace(/\s+/g, " ").trim();
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
-  const handleSelect = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[index] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      copy[index] = undefined;
 
       return copy;
     });
@@ -35,7 +44,9 @@ const Unit8_Page6_Q2 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
+    const hasEmpty = answers.some((item) => !item.trim());
+
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
 
       return;
@@ -43,12 +54,12 @@ const Unit8_Page6_Q2 = () => {
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(questions[index]);
 
-      if (ok) correctCount++;
+      if (correct) correctCount++;
 
-      return ok;
+      return correct;
     });
 
     setResult(newResults);
@@ -60,7 +71,7 @@ const Unit8_Page6_Q2 = () => {
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -78,50 +89,51 @@ const Unit8_Page6_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(["T", "F", "F", "T", "T", "T"]);
+    setAnswers([
+      "John said that he would be at the library tonight.",
+      "Did Carly say that she wanted to come with us?",
+      "The officer said that he would help us get home safely.",
+      "Andrea told me that there was a carnival at school today.",
+    ]);
 
-    setResult([true, true, true, true, true, true]);
+    setResult([true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", ""]);
+    setAnswers(["", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const tfInput = (i) => (
-    <span className="relative inline-block">
+  const inputField = (index) => (
+    <span className="relative block w-full">
       <input
         type="text"
-        maxLength={1}
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleSelect(i, e.target.value.toUpperCase())}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
         className={`
-          w-[38px]
-          h-[38px]
-          text-center
-          rounded-xl
-          outline-none
-          bg-transparent
-          text-[18px]
-          font-semibold
-          uppercase
-          border-2
+  w-full
+  border-0
+  border-b
+  outline-none
+  bg-transparent
+  text-[18px]
+  text-black
+  font-semibold
+  px-1
 
-          ${
-            result[i] === false
-              ? "border-[#D1232A] text-[#1DA1F2]"
-              : "border-[#6D2980] text-[#1DA1F2]"
-          }
-        `}
+  ${result[index] === false ? "border-[#D1232A]" : "border-gray-700"}
+`}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
-
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -149,95 +161,62 @@ const Unit8_Page6_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-5">
+      <div className="div-forall text-[18px] w-full">
+        <h5 className="header-title-page8 mb-[8vh]">
           <span
             className="ex-A"
             style={{
               marginRight: "10px",
             }}
           >
-            D
+            E
           </span>
-          Use the pictures to answer the questions below.
+          Unscramble and write the sentences.
         </h5>
 
-        {/* PARAGRAPH */}
-        <div className="text-[18px] leading-normal mb-6 w-[900px]">
-          Mindy had a party and invited some of her friends and family. She gave
-          everyone who came some food and gifts. Look at each person’s place at
-          the table, and then answer the statements
-          <span className="text-[#1DA1F2]"> T </span>(
-          <span className="text-[#1DA1F2]">true</span>) or
-          <span className="text-[#1DA1F2]"> F </span>(
-          <span className="text-[#1DA1F2]">false</span>).
-        </div>
+        <div className="flex flex-col gap-[6vh]">
+          {/* 1 */}
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">1</span>
+              said would John library that tonight he the at be .
+            </div>
 
-        {/* IMAGE */}
-        <img
-          src={img}
-          alt=""
-          style={{
-            width: "850px",
-            height: "auto",
-            marginBottom: "35px",
-          }}
-        />
-
-        {/* QUESTIONS */}
-        <div className="grid grid-cols-2 gap-y-8 gap-x-24 text-[18px] mb-15">
-          <div className="flex items-center gap-4">
-            <span className="font-bold">1</span>
-
-            {tfInput(0)}
-
-            <span>Everyone had a colorful ball.</span>
+            {inputField(0)}
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-bold">2</span>
+          {/* 2 */}
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">2</span>
+              Carly ? to did with say us wanted come she that
+            </div>
 
-            {tfInput(1)}
-
-            <span>Nobody had a yo-yo.</span>
+            {inputField(1)}
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-bold">3</span>
+          {/* 3 */}
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">3</span>
+              help the officer that us said home would safely he get .
+            </div>
 
-            {tfInput(2)}
-
-            <span>No one had cake.</span>
+            {inputField(2)}
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-bold">4</span>
+          {/* 4 */}
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">4</span>
+              that carnival Andrea today school me at told was a there .
+            </div>
 
-            {tfInput(3)}
-
-            <span>Someone had cake.</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="font-bold">5</span>
-
-            {tfInput(4)}
-
-            <span>Somebody had a pencil.</span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <span className="font-bold">6</span>
-
-            {tfInput(5)}
-
-            <span>Everybody had ice cream.</span>
+            {inputField(3)}
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

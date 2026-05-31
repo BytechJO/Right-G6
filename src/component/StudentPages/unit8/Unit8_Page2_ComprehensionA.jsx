@@ -1,255 +1,330 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
+
+const QUESTIONS = [
+  {
+    before: "Kahlil was born in",
+    after: ".",
+    correct: ["Lebanon"],
+  },
+  {
+    before: "He grew up partly in",
+    middle: "and partly in the",
+    after: ".",
+    correct: ["Lebanon", "United States"],
+  },
+  {
+    before: "He first wrote in",
+    after: "and later in English.",
+    correct: ["Arabic"],
+  },
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""';:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const Unit8_Page2_ComprehensionA = () => {
-  const correctAnswers = [
-    "Lori couldn’t find Cinderella.",
-    "No one knows what happened to Cinderella.",
-    "They needed to call the police to let them know about the disappearance.",
-    "Jack found tire tracks in the dirt.",
-  ];
-
-  const questions = [
-    "Why did Lori cry out?",
-    "Does anyone in the family know what happened to the horse?",
-    "Why did the family need to go home?",
-    "Did Jack find any clues?",
-  ];
-
   const [answers, setAnswers] = useState(["", "", "", ""]);
-
-  const [errors, setErrors] = useState([false, false, false, false]);
-
-  const [correctLocked, setCorrectLocked] = useState([
-    false,
-    false,
-    false,
-    false,
-  ]);
-
+  const [errors, setErrors] = useState([null, null, null, null]);
   const [locked, setLocked] = useState(false);
 
-  // normalize
-  const normalize = (text) => {
-    return text
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " ")
-      .replace(/[?.]/g, "")
-      .replace(/[’']/g, "");
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
+
+    if (errors[i] === true) {
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    }
+
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // update
-  const updateAnswer = (index, value) => {
-    const updated = [...answers];
-
-    updated[index] = value;
-
-    setAnswers(updated);
-
-    const updatedErrors = [...errors];
-
-    updatedErrors[index] = false;
-
-    setErrors(updatedErrors);
-  };
-
-  // check
   const handleCheck = () => {
     if (locked) return;
 
-    const isEmpty = answers.some((a) => normalize(a) === "");
-
-    if (isEmpty) {
+    if (answers.includes("")) {
       ValidationAlert.info("Please complete all fields.");
-
       return;
     }
 
-    let score = 0;
+    let correct = 0;
 
-    const newErrors = answers.map((ans, i) => {
-      const isCorrect = normalize(ans) === normalize(correctAnswers[i]);
+    const expected = ["Lebanon", "Lebanon", "United States", "Arabic"];
 
-      if (isCorrect) score++;
+    const newErrors = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(expected[i]);
 
-      return !isCorrect;
-    });
+      if (ok) correct++;
 
-    const newLocked = answers.map((ans, i) => {
-      return normalize(ans) === normalize(correctAnswers[i]);
+      return ok ? false : true;
     });
 
     setErrors(newErrors);
 
-    setCorrectLocked(newLocked);
+    const total = expected.length;
 
-    const total = 4;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
 
-    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${score} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (score === total) {
+    if (correct === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (score === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  // show
   const handleShow = () => {
-    setAnswers(correctAnswers);
+    setAnswers(["Lebanon", "Lebanon", "United States", "Arabic"]);
 
     setErrors([false, false, false, false]);
-
-    setCorrectLocked([true, true, true, true]);
-
     setLocked(true);
   };
 
-  // reset
   const handleReset = () => {
     setAnswers(["", "", "", ""]);
-
-    setErrors([false, false, false, false]);
-
-    setCorrectLocked([false, false, false, false]);
-
+    setErrors([null, null, null, null]);
     setLocked(false);
   };
 
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-10">
+      <h5 className="header-title-page8-read mb-7">
         <span className="ex-A-read mr-2">A</span>
-        Read the story, and then answer the questions.
+        Finish the statements about Kahlil Gibran.
       </h5>
 
-      {/* QUESTIONS */}
-      <div className="space-y-8 text-[18px] mt-10">
-        {questions.map((question, i) => (
+      <div className="flex flex-col gap-8 text-[18px] mt-5">
+        {/* 1 */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-bold">1</span>
+
+          <span>Kahlil was born in</span>
+
           <div
-            key={i}
-            className={`${
-              i === 1 || i === 2
-                ? "flex flex-col gap-2"
-                : "flex gap-4 items-center"
-            }`}
+            className="relative"
+            style={{
+              minWidth: "180px",
+              flex: 1,
+              maxWidth: "280px",
+            }}
           >
-            {/* question */}
-            <div className="flex gap-4 items-center">
-              <span className="font-bold">{i + 1}</span>
-              <span>{question}</span>
-            </div>
+            <input
+              value={answers[0]}
+              disabled={locked || errors[0] === false}
+              onChange={(e) => handleChange(0, e.target.value)}
+              style={{
+                width: "100%",
+                borderBottom: `${
+                  errors[0] === true ? "1px solid #ef4444" : "1px solid #555"
+                }`,
+                outline: "none",
+                background: "transparent",
+                fontSize: "18px",
+                fontWeight: "500",
+                padding: "2px 0",
+              }}
+            />
 
-            {/* input */}
-            <div
-              className={`relative ${
-                i === 1 || i === 2 ? " w-full" : "flex-1"
-              }`}
-            >
-              <input
-                type="text"
-                value={answers[i]}
-                disabled={locked || correctLocked[i]}
-                onChange={(e) => updateAnswer(i, e.target.value)}
-                className={`border-b outline-none w-full text-[#7A2D91] font-semibold px-2 bg-transparent
-            ${errors[i] ? "border-red-500" : "border-black"}
-          `}
-              />
-
-              {/* ❌ */}
-              {errors[i] && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-30px",
-                    transform: "translateY(-50%)",
-                    width: "22px",
-                    height: "22px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  ✕
-                </div>
-              )}
-            </div>
+            {errors[0] === true && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  width: "22px",
+                  height: "22px",
+                  background: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  fontSize: "12px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                  border: "2px solid white",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                  zIndex: 5,
+                }}
+              >
+                ✕
+              </span>
+            )}
           </div>
-        ))}
+
+          <span>.</span>
+        </div>
+
+        {/* 2 */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-bold">2</span>
+
+          <span>He grew up partly in</span>
+
+          <div className="relative" style={{ width: "180px" }}>
+            <input
+              value={answers[1]}
+              disabled={locked || errors[1] === false}
+              onChange={(e) => handleChange(1, e.target.value)}
+              style={{
+                width: "100%",
+                borderBottom: `${
+                  errors[1] === true ? "1px solid #ef4444" : "1px solid #555"
+                }`,
+                outline: "none",
+                background: "transparent",
+                fontSize: "18px",
+                fontWeight: "500",
+              }}
+            />
+            {errors[1] === true && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  width: "22px",
+                  height: "22px",
+                  background: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  fontSize: "12px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                  border: "2px solid white",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                  zIndex: 5,
+                }}
+              >
+                ✕
+              </span>
+            )}
+          </div>
+
+          <span>and partly in the</span>
+
+          <div className="relative" style={{ width: "220px" }}>
+            <input
+              value={answers[2]}
+              disabled={locked || errors[2] === false}
+              onChange={(e) => handleChange(2, e.target.value)}
+              style={{
+                width: "100%",
+                borderBottom: `${
+                  errors[2] === true ? "1px solid #ef4444" : "1px solid #555"
+                }`,
+                outline: "none",
+                background: "transparent",
+                fontSize: "18px",
+                fontWeight: "500",
+              }}
+            />
+            {errors[2] === true && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  width: "22px",
+                  height: "22px",
+                  background: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  fontSize: "12px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                  border: "2px solid white",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                  zIndex: 5,
+                }}
+              >
+                ✕
+              </span>
+            )}
+          </div>
+
+          <span>.</span>
+        </div>
+
+        {/* 3 */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-bold">3</span>
+
+          <span>He first wrote in</span>
+
+          <div
+            className="relative"
+            style={{
+              minWidth: "180px",
+              flex: 1,
+              maxWidth: "280px",
+            }}
+          >
+            <input
+              value={answers[3]}
+              disabled={locked || errors[3] === false}
+              onChange={(e) => handleChange(3, e.target.value)}
+              style={{
+                width: "100%",
+                borderBottom: `${
+                  errors[3] === true ? "1px solid #ef4444" : "1px solid #555"
+                }`,
+                outline: "none",
+                background: "transparent",
+                fontSize: "18px",
+                fontWeight: "500",
+                padding: "2px 0",
+              }}
+            />
+
+            {errors[3] === true && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-8px",
+                  right: "-8px",
+                  width: "22px",
+                  height: "22px",
+                  background: "red",
+                  color: "white",
+                  borderRadius: "50%",
+                  fontSize: "12px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold",
+                  border: "2px solid white",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                  zIndex: 5,
+                }}
+              >
+                ✕
+              </span>
+            )}
+          </div>
+
+          <span>and later in English.</span>
+        </div>
       </div>
 
-      {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      <div className="flex justify-center gap-6 mt-8">
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

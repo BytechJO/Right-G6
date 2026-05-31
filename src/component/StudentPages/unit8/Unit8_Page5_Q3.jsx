@@ -1,11 +1,44 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import sound from "../../../assets/audio/ClassBook/U8/PG 68/CD40.Pg68_Instructions_Adult Lady.mp3";
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+const Unit8_Page5_Q3 = () => {
+  const captions = [
+    {
+      start: 0.159,
+      end: 1.759,
+      text: "Page 66, grammar.",
+    },
+    {
+      start: 2.099,
+      end: 4.539,
+      text: "Reported speech versus direct speech.",
+    },
+    {
+      start: 5.159,
+      end: 8.26,
+      text: "Chris told me that he had gone to the mountains for vacation.",
+    },
+    {
+      start: 8.699,
+      end: 10.939,
+      text: "Julie said that she likes to ride bikes a lot.",
+    },
+    {
+      start: 11.239,
+      end: 14.139,
+      text: "You told us that you didn't want to go to the movies today.",
+    },
+    {
+      start: 14.759,
+      end: 16.94,
+      text: "I said that I had gone to the concert yesterday.",
+    },
+  ];
+  const correctAnswers = ["a", "b", "a", "a"];
 
-const Unit8_Page6_Q1 = () => {
-  const correctAnswers = ["a", "b", "a"];
-
-  const [answers, setAnswers] = useState(["", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -32,7 +65,7 @@ const Unit8_Page6_Q1 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmpty = answers.some((answer) => !answer);
+    const hasEmpty = answers.some((item) => !item);
 
     if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
@@ -77,15 +110,15 @@ const Unit8_Page6_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(["a", "b", "a"]);
+    setAnswers(["a", "b", "a", "a"]);
 
-    setResult([true, true, true]);
+    setResult([true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", ""]);
+    setAnswers(["", "", "", ""]);
 
     setResult([]);
 
@@ -102,7 +135,7 @@ const Unit8_Page6_Q1 = () => {
         onClick={() => handleSelect(questionIndex, option)}
         className="relative cursor-pointer"
         style={{
-          padding: "4px 10px",
+          padding: "6px 12px",
           borderRadius: "999px",
           border: selected
             ? wrong
@@ -153,85 +186,85 @@ const Unit8_Page6_Q1 = () => {
               marginRight: "10px",
             }}
           >
-            D
+            C
           </span>
-          What do you think they really said? Each of the people below has
-          misquoted what someone said. Circle the words that are probably what
-          the person really said.
+          Tell it like it is. Listen to the passage and circle the reported
+          speech or direct quote that correctly tells what was said.
         </div>
-
+        <QuestionAudioPlayer
+          src={sound}
+          captions={captions}
+          stopAtSecond={4.5}
+        />
         <div className="flex flex-col gap-6">
-          {/* Question 1 */}
-          <div>
-            <div className="mb-2">
-              <span className="font-bold mr-3">1</span>
-              Joey tells his mom, "Hey, Dad said that I could put off doing my
-              homework tonight!"
+          {/* 1 */}
+          <div className="grid grid-cols-2 gap-10">
+            <div className="flex gap-4 ">
+              <span className="font-bold mt-2">1</span>
+
+              {optionBox(0, "a", "There was no electricity at the school.")}
             </div>
 
-            <div className="ml-8 mb-2">
-              {optionBox(
-                0,
-                "a",
-                `"You can put off doing your homework tonight until after dinner, and then you need to get right to work, Joey," said Dad.`,
-              )}
-            </div>
-
-            <div className="ml-8">
+            <div>
               {optionBox(
                 0,
                 "b",
-                `"It's okay, you don't have to do your homework tonight," said Dad.`,
+                "There is no electricity at the school today.",
               )}
             </div>
           </div>
 
-          {/* Question 2 */}
-          <div>
-            <div className="mb-2">
-              <span className="font-bold mr-3">2</span>
-              "Guess what!" Jane tells her older sister. "Mom said we could have
-              all the ice cream we want tonight!"
-            </div>
+          {/* 2 */}
+          <div className="grid grid-cols-2 gap-10">
+            <div className="flex gap-4">
+              <span className="font-bold mt-2">2</span>
 
-            <div className="ml-8 mb-2">
               {optionBox(
                 1,
                 "a",
-                `Mom said, "You can go to the store and buy and eat as much ice cream as you want."`,
+                "All the computer classes will go to the gym and do P.E.",
               )}
             </div>
 
-            <div className="ml-8">
+            <div>
               {optionBox(
                 1,
                 "b",
-                `Mom said, "You can have all the ice cream that is left in the container if you want it."`,
+                "All the computer classes went to the gym to do P.E.",
               )}
             </div>
           </div>
 
-          {/* Question 3 */}
-          <div>
-            <div className="mb-2">
-              <span className="font-bold mr-3">3</span>
-              "My mom said I don't have to be nice to you," bragged the
-              troublesome boy to the babysitter.
+          {/* 3 */}
+          <div className="grid grid-cols-2 gap-10">
+            <div className="flex gap-4">
+              <span className="font-bold mt-2">3</span>
+
+              {optionBox(2, "a", "The lights came on just as school ended.")}
             </div>
 
-            <div className="ml-8 mb-2">
+            <div>
+              {optionBox(2, "b", "The lights can come on just as school ends.")}
+            </div>
+          </div>
+
+          {/* 4 */}
+          <div className="grid grid-cols-2 gap-10">
+            <div className="flex gap-4">
+              <span className="font-bold mt-2">4</span>
+
               {optionBox(
-                2,
+                3,
                 "a",
-                `"You don't have to be nice to the babysitter," said Mom, "but you do have to accept the punishment when we come home if you're not nice to her. You know we expect you to behave the same way you do as when we're home."`,
+                "The speaker is somewhat sad the school had trouble with the electricity but glad his friends got to have some fun.",
               )}
             </div>
 
-            <div className="ml-8 mb-10">
+            <div>
               {optionBox(
-                2,
+                3,
                 "b",
-                `Mom said, "You don't have to be nice to the babysitter."`,
+                "The speaker is glad the school had trouble with the electricity but sad his friends got to have some fun.",
               )}
             </div>
           </div>
@@ -255,4 +288,4 @@ const Unit8_Page6_Q1 = () => {
   );
 };
 
-export default Unit8_Page6_Q1;
+export default Unit8_Page5_Q3;

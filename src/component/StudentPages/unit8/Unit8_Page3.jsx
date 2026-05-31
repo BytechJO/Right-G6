@@ -1,5 +1,5 @@
 import React from "react";
-import page_3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 66.png";
+import page_3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 66.png";
 import "./Unit8_Page3.css";
 import GrammarSection_U8 from "./Unit8_Page3_GrammarSection_U8";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
