@@ -1,5 +1,5 @@
 import React from "react";
-import page_6 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 51.png";
+import page_6 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/Page 51.png";
 // import song from "../../../assets/img_unit6/sounds-unit6/Pg15.Sing_Adult Lady.mp3";
 import "./Unit6_Page6.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";

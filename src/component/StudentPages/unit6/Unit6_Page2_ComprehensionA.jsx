@@ -1,130 +1,59 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 15.svg";
+// ==========================
+// بيانات السؤال: صور + إجابات صحيحة
+// عدّل الـ src والإجابات حسب الكتاب
+// ==========================
+const questions = [
+  {
+    id: 1,
+    // imageSrc: "/assets/images/unit6/place1.jpg",
+    correctAnswer: "Rainbow Mountain",
+  },
+  {
+    id: 2,
+    // imageSrc: "/assets/images/unit6/place2.jpg",
+    correctAnswer: "Machu Picchu",
+  },
+  {
+    id: 3,
+    // imageSrc: "/assets/images/unit6/place3.jpg",
+    correctAnswer: "Intihuatana Stone",
+  },
+];
+
+const normalize = (text) =>
+  text.trim().toLowerCase().replace(/\s+/g, " ").replace(/[?.]/g, "");
 
 const Unit6_Page2_ComprehensionA = () => {
-  // =========================
-  // CORRECT ANSWERS
-  // =========================
-  const correctAnswers = [
-    ["can go", "can", "can’t go"],
-    ["would love", "would", "wouldn’t love"],
-    ["shall go", "shall", "shan’t go"],
-    ["could believe", "could", "couldn’t believe"],
-    ["might be", "might", "mightn’t be"],
-  ];
+  const [answers, setAnswers] = useState(questions.map(() => ""));
+  const [errors, setErrors] = useState(questions.map(() => false));
+  const [locked, setLocked] = useState(questions.map(() => false));
+  const [allDone, setAllDone] = useState(false);
 
   // =========================
-  // INITIAL TABLE DATA
-  // fixed = ثابت
-  // input = انبوت
+  // UPDATE
   // =========================
-  const initialData = [
-    [
-      { type: "fixed", value: "can go" },
-      { type: "fixed", value: "can" },
-      { type: "fixed", value: "can’t go" },
-    ],
-
-    [
-      { type: "fixed", value: "would love" },
-      { type: "input", value: "" },
-      { type: "input", value: "" },
-    ],
-
-    [
-      { type: "fixed", value: "shall go" },
-      { type: "input", value: "" },
-      { type: "input", value: "" },
-    ],
-
-    [
-      { type: "input", value: "" },
-      { type: "input", value: "" },
-      { type: "fixed", value: "couldn’t believe" },
-    ],
-
-    [
-      { type: "fixed", value: "might be" },
-      { type: "input", value: "" },
-      { type: "input", value: "" },
-    ],
-  ];
-
-  // =========================
-  // STATES
-  // =========================
-  const [answers, setAnswers] = useState(initialData);
-
-  const [errors, setErrors] = useState([
-    [false, false, false],
-    [false, false, false],
-    [false, false, false],
-    [false, false, false],
-    [false, false, false],
-  ]);
-
-  const [lockedInputs, setLockedInputs] = useState([
-    [true, true, true],
-    [false, false, false],
-    [false, false, false],
-    [false, false, true],
-    [false, false, false],
-  ]);
-
-  const [locked, setLocked] = useState(false);
-
-  // =========================
-  // NORMALIZE
-  // =========================
-  const normalize = (text) => {
-    return (
-      text
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, " ")
-        .replace(/[?.]/g, "")
-
-        // contractions
-        .replace(/can’t/g, "cannot")
-        .replace(/can't/g, "cannot")
-
-        .replace(/won’t/g, "will not")
-        .replace(/won't/g, "will not")
-
-        .replace(/shan’t/g, "shall not")
-        .replace(/shan't/g, "shall not")
-
-        .replace(/n’t/g, " not")
-    );
-  };
-
-  // =========================
-  // UPDATE INPUT
-  // =========================
-  const updateAnswer = (rowIndex, cellIndex, value) => {
+  const updateAnswer = (index, value) => {
     const updated = [...answers];
-
-    updated[rowIndex][cellIndex].value = value;
-
+    updated[index] = value;
     setAnswers(updated);
 
-    // remove error instantly
     const updatedErrors = [...errors];
-
-    updatedErrors[rowIndex][cellIndex] = false;
-
+    updatedErrors[index] = false;
     setErrors(updatedErrors);
   };
 
   // =========================
-  // CHECK ANSWERS
+  // CHECK
   // =========================
   const handleCheck = () => {
-    if (locked) return;
+    if (allDone) return;
 
-    const isEmpty = answers.some((row) =>
-      row.some((cell) => cell.type === "input" && normalize(cell.value) === ""),
+    const isEmpty = answers.some(
+      (val, i) => !locked[i] && normalize(val) === "",
     );
 
     if (isEmpty) {
@@ -133,109 +62,63 @@ const Unit6_Page2_ComprehensionA = () => {
     }
 
     let score = 0;
-    let total = 0;
+    const newErrors = [...errors];
+    const newLocked = [...locked];
 
-    const newErrors = answers.map((row, rowIndex) =>
-      row.map((cell, cellIndex) => {
-        if (cell.type === "fixed") return false;
-
-        total++;
-
-        const isCorrect =
-          normalize(cell.value) ===
-          normalize(correctAnswers[rowIndex][cellIndex]);
-
-        if (isCorrect) score++;
-
-        return !isCorrect;
-      }),
-    );
-
-    const updatedLocked = lockedInputs.map((row, rowIndex) =>
-      row.map((lockedCell, cellIndex) => {
-        if (answers[rowIndex][cellIndex].type === "fixed") return true;
-
-        const isCorrect =
-          normalize(answers[rowIndex][cellIndex].value) ===
-          normalize(correctAnswers[rowIndex][cellIndex]);
-
-        return lockedCell || isCorrect;
-      }),
-    );
+    answers.forEach((val, i) => {
+      if (locked[i]) {
+        score++;
+        return;
+      }
+      const isCorrect =
+        normalize(val) === normalize(questions[i].correctAnswer);
+      newErrors[i] = !isCorrect;
+      if (isCorrect) {
+        score++;
+        newLocked[i] = true;
+      }
+    });
 
     setErrors(newErrors);
-    setLockedInputs(updatedLocked);
+    setLocked(newLocked);
 
-    if (score === total) {
-      setLocked(true);
-    }
+    const total = questions.length;
+
+    if (score === total) setAllDone(true);
 
     const color = score === total ? "green" : score === 0 ? "red" : "orange";
 
     const msg = `
-    <div style="font-size:20px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${score} / ${total}
-      </span>
-    </div>
-  `;
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color}; font-weight:bold;">
+          Score: ${score} / ${total}
+        </span>
+      </div>
+    `;
 
-    if (score === total) {
-      ValidationAlert.success(msg);
-    } else if (score === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    if (score === total) ValidationAlert.success(msg);
+    else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   // =========================
-  // SHOW ANSWERS
+  // SHOW
   // =========================
   const handleShow = () => {
-    const filledAnswers = answers.map((row, rowIndex) =>
-      row.map((cell, cellIndex) => ({
-        ...cell,
-        value: correctAnswers[rowIndex][cellIndex],
-      })),
-    );
-
-    setAnswers(filledAnswers);
-
-    setErrors([
-      [false, false, false],
-      [false, false, false],
-      [false, false, false],
-      [false, false, false],
-      [false, false, false],
-    ]);
-
-    setLocked(true);
+    setAnswers(questions.map((q) => q.correctAnswer));
+    setErrors(questions.map(() => false));
+    setLocked(questions.map(() => true));
+    setAllDone(true);
   };
 
   // =========================
   // RESET
   // =========================
   const handleReset = () => {
-    setAnswers(initialData);
-
-    setErrors([
-      [false, false, false],
-      [false, false, false],
-      [false, false, false],
-      [false, false, false],
-      [false, false, false],
-    ]);
-
-    setLockedInputs([
-      [true, true, true],
-      [false, false, false],
-      [false, false, false],
-      [false, false, true],
-      [false, false, false],
-    ]);
-
-    setLocked(false);
+    setAnswers(questions.map(() => ""));
+    setErrors(questions.map(() => false));
+    setLocked(questions.map(() => false));
+    setAllDone(false);
   };
 
   return (
@@ -243,103 +126,83 @@ const Unit6_Page2_ComprehensionA = () => {
       {/* HEADER */}
       <h5 className="header-title-page8-read mb-8 leading-normal">
         <span className="ex-A-read mr-2">A</span>
-        Some verb phrases with modal verbs are underlined in the story above.
-        <br />
-        Write the verb phrase, then the modal verb, and then the negative form
-        with a contraction.
+        Read the descriptions above, and then write the correct names under each
+        of the pictures.
       </h5>
 
-      {/* TABLE */}
-      <div className="border border-[#8b5fa8] mt-10">
-        {/* HEADERS */}
-        <div className="grid grid-cols-3 bg-[#f3eef7] border-b border-[#8b5fa8]">
-          {["Verb Phrase", "Modal Verb", "Negative Phrase"].map((title, i) => (
-            <div
-              key={i}
-              className={`p-3 font-bold text-[#5b3b74]
-                ${i !== 2 ? "border-r border-[#8b5fa8]" : ""}
-                `}
-            >
-              {title}
-            </div>
-          ))}
-        </div>
+      {/* PICTURES ROW */}
+      <div className="flex flex-wrap justify-center gap-15 mt-6">
+        {/* IMAGE */}
 
-        {/* ROWS */}
-        {answers.map((row, rowIndex) => (
-          <div
-            key={rowIndex}
-            className="grid grid-cols-3 border-b border-[#8b5fa8]"
-          >
-            {row.map((cell, cellIndex) => (
-              <div
-                key={cellIndex}
-                className={`relative p-2 flex items-center
-  ${cellIndex !== 2 ? "border-r border-[#8b5fa8]" : ""}
-  `}
-              >
-                {/* FIXED TEXT */}
-                {cell.type === "fixed" ? (
-                  <div className="font-semibold text-black px-1 py-2">
-                    {cell.value}
+        <img
+          src={img1}
+          className="w-full object-contain"
+          style={{ height: "140px" }}
+        />
+
+        {questions.map((q, index) => (
+          <div key={q.id} className="flex flex-col items-center gap-3">
+            {/* NUMBER + INPUT LINE */}
+            <div className="flex items-center gap-2 w-full">
+              {/* number */}
+              <span className="font-bold text-[#5b3b74] text-sm min-w-[18px]">
+                {index + 1}
+              </span>
+
+              {/* input wrapper */}
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={answers[index]}
+                  placeholder="Write here.."
+                  disabled={allDone || locked[index]}
+                  onChange={(e) => updateAnswer(index, e.target.value)}
+                  className={`w-full outline-none bg-transparent font-semibold px-1 pb-1
+                    border-b-1
+                     text-[18px]
+                    ${
+                      errors[index]
+                        ? "border-red-400 text-red-500"
+                        : locked[index]
+                          ? "border-black text-black"
+                          : "border-black"
+                    }
+                  `}
+                />
+
+                {/* error icon */}
+                {errors[index] && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "4px",
+                      transform: "translateY(-60%)",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
                   </div>
-                ) : (
-                  <>
-                    {/* INPUT */}
-                    <input
-                      type="text"
-                      value={cell.value}
-                      placeholder="Write here.."
-                      disabled={locked || lockedInputs[rowIndex][cellIndex]}
-                      onChange={(e) =>
-                        updateAnswer(rowIndex, cellIndex, e.target.value)
-                      }
-                      className={`w-full outline-none bg-transparent font-semibold px-1 placeholder:text-[#8b5fa8]
-                      ${
-                        lockedInputs[rowIndex][cellIndex]
-                          ? "text-black"
-                          : "text-[#5b3b74]"
-                      }
-                      `}
-                    />
-
-                    {/* ERROR */}
-                    {errors[rowIndex][cellIndex] && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "50%",
-                          right: "10px",
-                          transform: "translateY(-50%)",
-                          width: "20px",
-                          height: "20px",
-                          background: "#ef4444",
-                          color: "white",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          border: "2px solid white",
-                          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                          pointerEvents: "none",
-                          zIndex: 3,
-                        }}
-                      >
-                        ✕
-                      </div>
-                    )}
-                  </>
                 )}
               </div>
-            ))}
+            </div>
           </div>
         ))}
       </div>
 
       {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
+      <div className="flex justify-center gap-6 mt-15">
         {/* RESET */}
         <div className="relative group">
           <div
@@ -350,7 +213,6 @@ const Unit6_Page2_ComprehensionA = () => {
               <FaRedo size={14} />
             </div>
           </div>
-
           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
             Reset
           </span>
@@ -366,8 +228,7 @@ const Unit6_Page2_ComprehensionA = () => {
               <FaEye size={14} />
             </div>
           </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition">
             Show Answer
           </span>
         </div>
@@ -382,8 +243,7 @@ const Unit6_Page2_ComprehensionA = () => {
               <FaCheck size={14} />
             </div>
           </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition">
             Check Answer
           </span>
         </div>

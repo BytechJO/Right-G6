@@ -1,5 +1,5 @@
 import React from "react";
-import page_4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 49.png";
+import page_4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/Page 49.png";
 import "./Unit6_Page4.css";
 import WritingSection_U2 from "./Unit6_Page4_WritingSection_U6";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";

@@ -1,76 +1,78 @@
 import React from "react";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 6/SVG/Asset 1.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
+
 const GrammarA = () => {
+  const questions = [
+    {
+      sentence: (
+        <>
+          The settlers used to{" "}
+          <span className="text-[#f79631]">milk their cows every morning</span>.
+        </>
+      ),
+      options: [
+        "ride horses",
+        "grow their own food",
+        "build log cabins",
+        "make their own clothes",
+      ],
+    },
+    {
+      sentence: (
+        <>
+          Evan is used to{" "}
+          <span className="text-[#f79631]">
+            taking care of his younger brothers
+          </span>{" "}
+          .
+        </>
+      ),
+      options: [
+        "walking to school",
+        "studying hard",
+        "practicing for soccer",
+        "being the oldest",
+      ],
+    },
+  ];
+
   return (
     <div>
-      {/* العنوان */}
+      {/* HEADER */}
       <div className="flex items-center gap-2 mb-5 mt-5">
-        <h5 className="header-title-page8-read ">
+        <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read" style={{ marginRight: "10px" }}>
             A
           </span>
-          Read and say. Replace the highlighted words with the new words.
+          Read, change, and say. Replace the highlighted words with the new
+          words.
         </h5>
       </div>
 
-      {/* السؤال 1 */}
-      <div className="mb-12">
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
+      {/* QUESTIONS */}
+      <div className="space-y-10">
+        {questions.map((q, i) => (
+          <div key={i} className="flex items-start gap-5 mt-7">
+            <img
+              src={img}
+              alt=""
+              style={{ width: "40px", height: "40px", marginTop: -6 }}
+            />
+            <div>
+              {/* SENTENCE */}
+              <p className="text-[18px] font-semibold">{q.sentence}</p>
 
-          <div>
-            <p className=" text-[18px]">
-              Shall we <span className="text-[#12C8F9]">go to the concert</span>
-              ?
-            </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
-              <span>
-                <b className="mr-2">1</b>sing together
-              </span>
-              <span>
-                <b className="mr-2">2</b>go to the beach on Thursday
-              </span>
-              <span>
-                <b className="mr-2">3</b>go to the museum
-              </span>
+              {/* OPTIONS */}
+              <div className="flex flex-wrap gap-x-10 gap-y-2 mt-4 text-[17px]">
+                {q.options.map((opt, j) => (
+                  <span key={j}>
+                    <b>{j + 1}</b> {opt}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* السؤال 2 */}
-      <div>
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
-
-          <div>
-            <p className=" text-[18px]">
-              Shall we go to the
-              <span className="text-[#12C8F9]"> art gallery</span>?
-            </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
-              <span>
-                <b className="mr-2">1</b>symphony
-              </span>
-              <span>
-                <b className="mr-2">2</b>carnival
-              </span>
-              <span>
-                <b className="mr-2">3</b>ice rink
-              </span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

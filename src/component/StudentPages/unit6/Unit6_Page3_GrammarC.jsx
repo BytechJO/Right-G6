@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 48/SVG/Asset 7.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 48/SVG/Asset 8.svg";
+// import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 48/SVG/Asset 7.svg";
+// import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 48/SVG/Asset 8.svg";
 
 const Unit6_Page3_GrammarC = () => {
   const correctAnswers = [
@@ -128,7 +128,7 @@ const Unit6_Page3_GrammarC = () => {
           <span className="font-bold -mt-25">1</span>
 
           {/* IMAGE */}
-          <img
+          {/* <img
             src={img1}
             alt="museum"
             style={{
@@ -136,7 +136,7 @@ const Unit6_Page3_GrammarC = () => {
               height: "150px",
               objectFit: "contain",
             }}
-          />
+          /> */}
 
           {/* INPUT */}
           <div className="flex-1 mt-10 relative">
@@ -183,7 +183,7 @@ const Unit6_Page3_GrammarC = () => {
           <span className="font-bold -mt-25">2</span>
 
           {/* IMAGE */}
-          <img
+          {/* <img
             src={img2}
             alt="mountains"
             style={{
@@ -191,7 +191,7 @@ const Unit6_Page3_GrammarC = () => {
               height: "150px",
               objectFit: "contain",
             }}
-          />
+          /> */}
 
           {/* INPUTS */}
           <div className="flex-1 flex items-center mt-6">
