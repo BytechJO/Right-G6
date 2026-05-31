@@ -1,10 +1,9 @@
 import React from "react";
-import page_5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 9 What If Folder/Page 77.png";
+import page_5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 9 How Long Have You Been Folder/Page 762.png";
 import "./Unit9_Page2.css";
 
-import ReadingSection_U9 from "./Unit9_Page2_ReadingSection_U9";
+import ReadingSection_U9 from "./Unit9_Page2_ReadingSection_U9.jsx";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
-
 const Unit9_Page2 = ({ openPopup }) => {
   return (
     <>

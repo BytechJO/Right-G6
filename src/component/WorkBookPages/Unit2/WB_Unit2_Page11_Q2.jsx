@@ -25,7 +25,7 @@ const questions = [
 ];
 
 const WB_Unit2_Page11_D = () => {
-  const init = () => ({ 2: "", 3: "" });
+  const init = () => ({ 1: "", 2: "", 3: "" });
   const [answers, setAnswers] = useState(init);
   const [result, setResult]   = useState({});
   const [locked, setLocked]   = useState(false);
@@ -40,7 +40,7 @@ const WB_Unit2_Page11_D = () => {
 
   const checkAnswers = () => {
     if (locked) return;
-    if (!answers[2].trim() || !answers[3].trim()) {
+    if (!answers[1].trim() ||!answers[2].trim() || !answers[3].trim()) {
       ValidationAlert.info("Please complete all answers.");
       return;
     }
@@ -53,7 +53,7 @@ const WB_Unit2_Page11_D = () => {
       nr[id] = ok;
     });
     setResult(nr);
-    const total = 2;
+    const total = questions.length;
     const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
     if (correct === total) { setLocked(true); ValidationAlert.success(msg); }

@@ -1,108 +1,104 @@
-import ReadingSection from "./ReadingSection";
+import ReadingSection from "../../ReadingSection";
 import ComprehensionA from "./Unit9_Page2_ComprehensionA";
 import ComprehensionB from "./Unit9_Page2_ComprehensionB";
 
-import imgReading from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 47/SVG/Asset 19.svg";
-import readingAudio from "../../../assets/audio/ClassBook/U9/PG 77/cd43pg77-reading.mp3";
+import question from "../../../assets/imgs/pages/classbook/Right 6 Unit 9 How Long Have You Been Folder/SVG/Asset 1.svg";
+import imgReading from "../../../assets/imgs/pages/classbook/Right 6 Unit 9 How Long Have You Been Folder/SVG/Asset 13.svg";
 
-const ReadingSection_U9 = () => {
-  const paragraphs = [
-    <>
-      (<span className="text-[#1E88E5]">continued from Unit 8</span>)
-    </>,
+import readingAudio from "../../../assets/audio/ClassBook/U9/PG 77/reading9.mp3";
 
-    <>
-      When we arrived home, my dad called the police. They arrived quickly and
-      asked us many questions about Cinderella and how the horse disappeared.
-    </>,
+import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
+import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
 
-    <>
-      “If someone tried to sell your horse, how much money would they get?”
-      asked one of the policemen. I explained that Cinderella was worth a lot of
-      money because the horse was well-trained.
-    </>,
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 
-    <>
-         The police asked us many other questions. The police decided that the
-      townspeople would be a big help if Cinderella was stolen. I thought, “If
-      we tell the townspeople about Cinderella, the thieves would worry. Also,
-      if we tell the townspeople, they will not be able to sell the horse
-      because everyone will be looking for her.”
-    </>,
-
-    <>
-      Lori and my family made posters with Cinderella’s photo on them. Then, we
-      drove to town and put them up everywhere. We told people to call the
-      police if they saw the horse.
-    </>,
-
-    <>
-      Lori felt bad about Cinderella going missing. We were supposed to have a
-      special day together. When it was time for her to go home, she wanted to
-      stay and help us.
-    </>,
-
-    <>
-      Before I went to sleep that night, I felt sad about losing Cinderella, but
-      I felt happy to have a good friend like Lori.
-    </>,
-
-    <>
-      (<span className="text-[#1E88E5]">to be continued ...</span>)
-    </>,
-  ];
+const Unit9_Page2_ReadingSection_U9 = () => {
   const captions = [
     {
       start: 0.159,
-      end: 8.6,
-      text: "Page 77 reading. Do you have helpful neighbors? Who would you ask if you need help to find something or someone?",
+      end: 10.779,
+      text: "Page 77, reading. Are you very close to your friends? How well do you know them? Are there things that you don't know about them? How well do you know your friends?",
     },
 
     {
-      start: 8.9,
-      end: 19.639,
-      text: "A Lot of What-Ifs. Continued from Unit Eight. When we arrived home, my dad called the police. They arrived quickly and asked us many questions about Cinderella and how the horse disappeared.",
+      start: 11.779,
+      end: 18.399,
+      text: "My friends and I were talking one day at break time, and we discovered that there were a lot of things we didn't know about each other.",
     },
 
     {
-      start: 20.899,
-      end: 38.299,
-      text: "“If someone tried to sell your horse, how much money would they get?” asked one of the policemen. I explained that Cinderella was worth a lot of money because the horse was well-trained. The police asked us many other questions. The police decided that the townspeople would be a big help if Cinderella was stolen.",
+      start: 19.34,
+      end: 27.619,
+      text: "So when my math teacher assigned us a survey and a chart, I decided to survey my friends to find out which activities they have been doing.",
     },
 
     {
-      start: 39.399,
-      end: 43.779,
-      text: "I thought, “If we tell the townspeople about Cinderella, the thieves would worry.”",
-    },
-
-    {
-      start: 45.239,
-      end: 77.899,
-      text: "“Also, if we tell the townspeople, they will not be able to sell the horse because everyone will be looking for her.” Lori and my family made posters with Cinderella’s photo on them. Then we drove to town and put them up everywhere. We told people to call the police if they saw the horse. Lori felt bad about Cinderella going missing. We were supposed to have a special day together. When it was time for her to go home, she wanted to stay and help us. Before I went to sleep that night, I felt sad about losing Cinderella, but I felt happy to have a good friend like Lori.",
+      start: 28.42,
+      end: 32.319,
+      text: "I was very interested to read the results and learn more about my friends.",
     },
   ];
-
   return (
-    <div className=" flex flex-col items-center">
-      <ReadingSection
-        mainTitle={
-          <>
-            Do you have helpful neighbors? Who would you ask if
-            <br />
-            you need help to find something or someone?
-          </>
-        }
-        title="A Lot of “What Ifs?”"
-        image={imgReading}
-        paragraphs={paragraphs}
-        question="What do you think happened to Cinderella?"
-        sound={readingAudio}
-        captions={captions}
-        stopAtSecond={8.6}
-      />
+    <div className="flex flex-col items-center">
+      {/* Reading Section */}
+      <div className="p-6 flex flex-col items-center gap-5 w-full">
+        <div className="flex justify-start gap-1 w-[60%]">
+          <img
+            src={ReadingBG}
+            style={{
+              height: "60px",
+              width: "auto",
+            }}
+          />
+          <h2 className="font-bold text-[18px] text-black">
+            Are you very close to your friends? How well do you know them? Are
+            there things that you don’t know about them?
+          </h2>
+        </div>
 
-      <div className="w-[60%] mt-4 space-y-6 ">
+        <div className="w-[60%] mx-auto">
+          <QuestionAudioPlayer
+            src={readingAudio}
+            captions={captions}
+            stopAtSecond={8.5}
+          />
+        </div>
+
+        {/* First Image */}
+        <div className="w-full flex justify-center mt-5">
+          <img
+            src={imgReading}
+            className="w-[60%] h-auto object-contain rounded-md"
+          />
+        </div>
+
+        {/* Second Image */}
+        <div className="w-[60%] flex justify-center">
+          <img
+            src={question}
+            style={{
+              height: "auto",
+              width: "60%",
+              objectFit: "contain",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Comprehension */}
+      <div className="w-[60%] mt-3 space-y-6">
+        <div className="flex items-center gap-4">
+          <img
+            src={comprehesion}
+            style={{
+              height: "60px",
+              width: "auto",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="w-[60%] mt-4 space-y-6 mb-7">
         <ComprehensionA />
         <ComprehensionB />
       </div>
@@ -110,4 +106,4 @@ const ReadingSection_U9 = () => {
   );
 };
 
-export default ReadingSection_U9;
+export default Unit9_Page2_ReadingSection_U9;

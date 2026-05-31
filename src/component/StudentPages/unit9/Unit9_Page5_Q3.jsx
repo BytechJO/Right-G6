@@ -1,80 +1,99 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import sound from "../../../assets/audio/ClassBook/U9/PG 80/CD45Pg80_Instruction_Adult Lady.mp3";
 
+import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 const Unit9_Page5_Q3 = () => {
   const questions = [
-    "rush",
-    "braces",
-    "ring",
-    "appointment",
-    "stadium",
-    "club",
+    "has been practicing archery",
+    "five years",
+    "Clara",
+    "two months",
+    "has been volunteering at the children's hospital",
+    "fourth grade",
+    "has been learning sign language",
+    "since last year",
+    "my brother",
+    "for several years",
   ];
+  const captions = [
+    {
+      start: 0.199,
+      end: 4.099,
+      text: "Page 84. Grammar. Using gerunds.",
+    },
 
-  const definitions = [
-    "to move or do something very quickly",
-    "metal that supports your teeth",
-    "to call on the telephone",
-    "agreement to meet with someone at a certain time",
-    "a place where sports are played",
-    "a group with the same interests",
+    {
+      start: 5.099,
+      end: 6.92,
+      text: "Stella likes climbing on rocks.",
+    },
+
+    {
+      start: 7.859,
+      end: 9.86,
+      text: "Does Stella like climbing on rocks?",
+    },
+
+    {
+      start: 10.659,
+      end: 13.879,
+      text: "Your brothers prefer riding dirt bikes.",
+    },
+
+    {
+      start: 13.92,
+      end: 16.5,
+      text: "Do your brothers prefer riding dirt bikes?",
+    },
   ];
-
-  const [answers, setAnswers] = useState(
-    questions.map((q) => Array(q.length).fill("")),
-  );
+  const [answers, setAnswers] = useState([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
 
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
 
-  const inputRefs = useRef([]);
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
-  const handleChange = (questionIndex, charIndex, value) => {
-    if (locked) return;
-
-    const char = value.slice(-1);
+  const handleChange = (i, value) => {
+    if (locked || result[i] === true) return;
 
     const updated = [...answers];
 
-    // حط الحرف الجديد مباشرة
-    updated[questionIndex][charIndex] = char;
+    updated[i] = value;
 
     setAnswers(updated);
 
-    setResult([]);
+    setResult((prev) => {
+      const copy = [...prev];
 
-    // انتقل مباشرة للخانة اللي بعدها
-    if (char) {
-      const nextRef = inputRefs.current[`${questionIndex}-${charIndex + 1}`];
+      copy[i] = undefined;
 
-      if (nextRef) {
-        nextRef.focus();
-
-        // امسح اللي فيها عشان الكتابة الجديدة تستبدله
-        nextRef.select();
-      }
-    }
+      return copy;
+    });
   };
-
-  const handleBackspace = (e, questionIndex, charIndex) => {
-    if (e.key === "Backspace" && !answers[questionIndex][charIndex]) {
-      if (inputRefs.current[`${questionIndex}-${charIndex - 1}`]) {
-        inputRefs.current[`${questionIndex}-${charIndex - 1}`].focus();
-      }
-    }
-  };
-
-  const normalize = (arr) => arr.join("").toLowerCase().trim();
 
   const checkAnswers = () => {
     if (locked) return;
 
-    // VALIDATION
-    const hasEmpty = answers.some((word) =>
-      word.some((letter) => !letter.trim()),
-    );
+    const hasEmpty = answers.some((a) => !a.trim());
 
     if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
@@ -84,8 +103,8 @@ const Unit9_Page5_Q3 = () => {
 
     let correctCount = 0;
 
-    const newResults = questions.map((q, i) => {
-      const ok = normalize(answers[i]) === q.toLowerCase();
+    const newResults = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i]);
 
       if (ok) correctCount++;
 
@@ -100,12 +119,12 @@ const Unit9_Page5_Q3 = () => {
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
-    <div style="font-size:18px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${correctCount} / ${total}
-      </span>
-    </div>
-  `;
+      <div style="font-size:18px;text-align:center;">
+        <span style="color:${color}; font-weight:bold;">
+          Score: ${correctCount} / ${total}
+        </span>
+      </div>
+    `;
 
     if (correctCount === total) {
       setLocked(true);
@@ -119,26 +138,86 @@ const Unit9_Page5_Q3 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(questions.map((q) => q.split("")));
+    setAnswers([
+      "has been practicing archery",
+      "five years",
+      "Clara",
+      "two months",
+      "has been volunteering at the children's hospital",
+      "fourth grade",
+      "has been learning sign language",
+      "since last year",
+      "my brother",
+      "for several years",
+    ]);
 
-    setResult([true, true, true, true, true, true]);
+    setResult([true, true, true, true, true, true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(questions.map((q) => Array(q.length).fill("")));
+    setAnswers(["", "", "", "", "", "", "", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
+  const inputField = (i) => (
+    <span className="relative inline-block w-full">
+      <input
+        type="text"
+        value={answers[i]}
+        placeholder="type here..."
+        disabled={locked || result[i] === true}
+        onChange={(e) => handleChange(i, e.target.value)}
+        className={`
+          w-full
+          h-full
+          border-0
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          text-center
+          font-semibold
+          px-2
+
+          ${result[i] === false ? "border border-[#D1232A]" : ""}
+        `}
+      />
+
+      {result[i] === false && (
+        <span
+          style={{
+            position: "absolute",
+            top: "-8px",
+            right: "-8px",
+            width: "20px",
+            height: "20px",
+            background: "#ef4444",
+            color: "white",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "11px",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+          }}
+        >
+          ✕
+        </span>
+      )}
+    </span>
+  );
+
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-14">
+        <h5 className="header-title-page8 mb-8">
           <span
             className="ex-A"
             style={{
@@ -147,87 +226,125 @@ const Unit9_Page5_Q3 = () => {
           >
             C
           </span>
-          Fill in the blanks to make a word that matches each definition.
+          Listen to the passage and finish the chart.
         </h5>
+        <QuestionAudioPlayer
+          src={sound}
+          captions={captions}
+          stopAtSecond={2.5}
+        />
+        <table
+          className="w-full border-collapse text-[18px]"
+          style={{
+            border: "2px solid #9CCB5B",
+          }}
+        >
+          <thead>
+            <tr
+              style={{
+                background: "#DDE3C8",
+              }}
+            >
+              <th
+                className="border border-[#9CCB5B] p-3 text-[#83AC40]"
+                style={{ width: "22%" }}
+              >
+                Who
+              </th>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-12">
-          {questions.map((word, qIndex) => (
-            <div key={qIndex} className="flex items-center gap-8">
-              {/* NUMBER */}
-              <span className="font-bold text-[18px] w-5">
-                {qIndex + 1}
-              </span>
+              <th
+                className="border border-[#9CCB5B] p-3 text-[#83AC40]"
+                style={{ width: "50%" }}
+              >
+                Activity
+              </th>
 
-              {/* LETTER INPUTS */}
-              <div className="flex gap-[3px]">
-                {word.split("").map((_, charIndex) => (
-                  <div key={charIndex} className="relative">
-                    <input
-                      ref={(el) =>
-                        (inputRefs.current[`${qIndex}-${charIndex}`] = el)
-                      }
-                      type="text"
-                      maxLength={1}
-                      value={answers[qIndex][charIndex]}
-                      disabled={locked || result[qIndex] === true}
-                      onFocus={(e) => e.target.select()}
-                      onChange={(e) =>
-                        handleChange(qIndex, charIndex, e.target.value)
-                      }
-                      onKeyDown={(e) => handleBackspace(e, qIndex, charIndex)}
-                      className={`
-                          w-[22px]
-                          border-0
-                          border-b
-                          outline-none
-                          bg-transparent
-                          text-center
-                          text-[18px]
-                          text-[#6D2980]
-                          font-semibold
+              <th
+                className="border border-[#9CCB5B] p-3 text-[#83AC40]"
+                style={{ width: "28%" }}
+              >
+                Length of Time
+              </th>
+            </tr>
+          </thead>
 
-                          ${
-                            result[qIndex] === false
-                              ? "border-[#D1232A]"
-                              : "border-black"
-                          }
-                        `}
-                    />
-                  </div>
-                ))}
-              </div>
+          <tbody>
+            <tr>
+              <td className="border border-[#9CCB5B] p-3 text-center">Mark</td>
 
-              {/* DEFINITION */}
-              <span className="text-[18px]">{definitions[qIndex]}</span>
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                has been playing the guitar
+              </td>
 
-              {/* X */}
-              {result[qIndex] === false && (
-                <span
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "11px",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  ✕
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                since last year
+              </td>
+            </tr>
+
+            <tr>
+              <td className="border border-[#9CCB5B] p-3 text-center">Alice</td>
+
+              <td className="border border-[#9CCB5B] p-3">{inputField(0)}</td>
+
+              <td className="border border-[#9CCB5B] p-3">
+                <div className="flex items-center gap-2">
+                  <span>for</span>
+                  <div className="flex-1">{inputField(1)}</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td className="border border-[#9CCB5B] p-3">{inputField(2)}</td>
+
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                has been staying with her grandmother
+              </td>
+
+              <td className="border border-[#9CCB5B] p-3">
+                <div className="flex items-center gap-2">
+                  <span>for</span>
+                  <div className="flex-1">{inputField(3)}</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td className="border border-[#9CCB5B] p-3 text-center">Jim</td>
+
+              <td className="border border-[#9CCB5B] p-3">{inputField(4)}</td>
+
+              <td className="border border-[#9CCB5B] p-3">
+                <div className="flex items-center gap-2">
+                  <span>since</span>
+                  <div className="flex-1">{inputField(5)}</div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                My sisters
+              </td>
+
+              <td className="border border-[#9CCB5B] p-3">{inputField(6)}</td>
+
+              <td className="border border-[#9CCB5B] p-3">{inputField(7)}</td>
+            </tr>
+
+            <tr>
+              <td className="border border-[#9CCB5B] p-3">{inputField(8)}</td>
+
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                has been collecting rocks
+              </td>
+
+              <td className="border border-[#9CCB5B] p-3">{inputField(9)}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

@@ -54,7 +54,6 @@ const AnswerInput = ({ qId, value, onChange, disabled }) => (
       background: "transparent",
       fontSize: "17px",
       color: "#333",
-      paddingBottom: "3px",
       fontFamily: "inherit",
       textDecoration: disabled ? "underline" : "none",
     }}
@@ -83,7 +82,7 @@ const WB_Unit5_QuestionTagD = () => {
         </h5>
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "28px", marginBottom: "3em" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "45px", marginBottom: "3em" }}>
           {QUESTIONS.map(({ id, info, prefilled }) => (
             <div key={id} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
 

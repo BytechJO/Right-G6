@@ -2,30 +2,15 @@ import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-import trueImg from "../../../assets/imgs/true.svg";
-import flaseImg from "../../../assets/imgs/false.svg";
-
-const Review10_Page2_Q2 = () => {
+const Unit10_Page3_Q5 = () => {
   const questions = [
-    {
-      question: "Was Larry playing the piano?",
-      answer: "Yes, he was.",
-    },
-    {
-      question: "Was Elaine listening to the music?",
-      answer: "No, she wasn’t.",
-    },
-    {
-      question: "Was Diane beating the drums?",
-      answer: "No, she wasn’t.",
-    },
-    {
-      question: "Were Ben and Jake taking tickets?",
-      answer: "Yes, they were.",
-    },
+    "Rachel dislikes taking pictures.",
+    "Dad appreciates hiking in the mountains.",
+    "Snowboarding is a popular sport.",
+    "Typing and writing are important skills.",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -70,12 +55,7 @@ const Review10_Page2_Q2 = () => {
     let correctCount = 0;
 
     const newResults = answers.map((a, i) => {
-      const qIndex = Math.floor(i / 2);
-
-      const expected =
-        i % 2 === 0 ? questions[qIndex].question : questions[qIndex].answer;
-
-      const ok = normalize(a) === normalize(expected);
+      const ok = normalize(a) === normalize(questions[i]);
 
       if (ok) correctCount++;
 
@@ -84,7 +64,7 @@ const Review10_Page2_Q2 = () => {
 
     setResult(newResults);
 
-    const total = answers.length;
+    const total = questions.length;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
@@ -110,52 +90,48 @@ const Review10_Page2_Q2 = () => {
 
   const showAnswers = () => {
     setAnswers([
-      "Was Larry playing the piano?",
-      "Yes, he was.",
-
-      "Was Elaine listening to the music?",
-      "No, she wasn’t.",
-
-      "Was Diane beating the drums?",
-      "No, she wasn’t.",
-
-      "Were Ben and Jake taking tickets?",
-      "Yes, they were.",
+      "Rachel dislikes taking pictures.",
+      "Dad appreciates hiking in the mountains.",
+      "Snowboarding is a popular sport.",
+      "Typing and writing are important skills.",
     ]);
 
-    setResult([true, true, true, true, true, true, true, true]);
+    setResult([true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", "", "", ""]);
+    setAnswers(["", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className={`relative inline-block ${width}`}>
+  const inputField = (i) => (
+    <span className="relative flex-1">
       <input
         type="text"
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          w-full
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-          px-1
+        w-full
+        border-0
+        border-b
+        outline-none
+        bg-transparent
+        text-[18px]
+        text-black
+        font-semibold
+        px-1
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
-        `}
+        ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+      `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
       {result[i] === false && (
@@ -184,97 +160,51 @@ const Review10_Page2_Q2 = () => {
     </span>
   );
 
-  const answerIcon = (answer) => (
-    <img
-      src={answer ? trueImg : flaseImg}
-      alt="icon"
-      style={{
-        width: "26px",
-        height: "26px",
-      }}
-    />
-  );
-
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div
-        className="div-forall"
-        style={{
-          minHeight: "59vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="div-forall w-full text-[20px]">
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-30">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            E
-          </span>
-          Use the sentences from Exercise D to ask and answer a question. (Use
-          short answers.)
-        </h5>
+        <div className="header-title-page8 mb-[11vh]">
+          <span className="mr-4">E</span>
+          Use each set of words given to write a sentence with a gerund.
+        </div>
 
         {/* QUESTIONS */}
-        <div className="flex flex-col gap-15 text-[18px]">
+        <div className="flex flex-col gap-20">
           {/* 1 */}
-          <div className="grid grid-cols-[30px_1fr_40px_250px] items-center gap-x-5 w-[850px]">
-            <span className="font-bold">1</span>
+          <div className="flex items-center gap-3">
+            <span className="font-bold w-5">1</span>
 
-            <div className="flex-1">{inputField(0, "w-full")}</div>
+            <span>Rachel/dislike/take/pictures.</span>
 
-            {answerIcon(true)}
-
-            <div className="w-[210px]">{inputField(1, "w-full")}</div>
+            {inputField(0)}
           </div>
 
           {/* 2 */}
-          <div className="grid grid-cols-[30px_1fr_40px_250px] items-center gap-x-5 w-[850px]">
-            <span className="font-bold">2</span>
+          <div className="flex items-center gap-3">
+            <span className="font-bold w-5">2</span>
 
-            <div className="flex items-center gap-2">
-              <span>Was Elaine</span>
+            <span>Dad/appreciates/hike/in the mountains.</span>
 
-              <div className="flex-1">{inputField(2, "w-full")}</div>
-
-              <span>?</span>
-            </div>
-
-            {answerIcon(false)}
-
-            <div className="w-[210px]">{inputField(3, "w-full")}</div>
+            {inputField(1)}
           </div>
 
           {/* 3 */}
-          <div className="grid grid-cols-[30px_1fr_40px_250px] items-center gap-x-5 w-[850px]">
-            <span className="font-bold">3</span>
+          <div className="flex items-center gap-3">
+            <span className="font-bold w-5">3</span>
 
-            <div className="flex-1">{inputField(4, "w-full")}</div>
+            <span>Snowboard/is/a/popular/sport.</span>
 
-            {answerIcon(false)}
-
-            <div className="w-[210px]">{inputField(5, "w-full")}</div>
+            {inputField(2)}
           </div>
 
           {/* 4 */}
-          <div className="grid grid-cols-[30px_1fr_40px_250px] items-center gap-x-5 w-[850px]">
-            <span className="font-bold">4</span>
+          <div className="flex items-center gap-3">
+            <span className="font-bold w-5">4</span>
 
-            <div className="flex items-center gap-2">
-              <span>Were</span>
+            <span>Type/and/write/are/important/skills.</span>
 
-              <div className="flex-1">{inputField(6, "w-full")}</div>
-
-              <span>?</span>
-            </div>
-
-            {answerIcon(true)}
-
-            <div className="w-[210px]">{inputField(7, "w-full")}</div>
+            {inputField(3)}
           </div>
         </div>
       </div>
@@ -297,4 +227,4 @@ const Review10_Page2_Q2 = () => {
   );
 };
 
-export default Review10_Page2_Q2;
+export default Unit10_Page3_Q5;

@@ -1,33 +1,19 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 82.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/Page 82.png";
 import "./Unit10_Page1.css";
-import longAudio from "../../../assets/audio/ClassBook/U10/PG 82/cd46pg82-conversation.mp3";
+import longAudio from "../../../assets/audio/ClassBook/U10/PG 82/conversation10.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
-import VocabularAudio from "../../../assets/audio/ClassBook/U10/PG 82/cd47pg82-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U10/PG 82/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U10/PG 82/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U10/PG 82/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U10/PG 82/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U10/PG 82/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U10/PG 82/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U10/PG 82/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U10/PG 82/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U10/PG 82/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U10/PG 82/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U10/PG 82/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U10/PG 82/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U10/PG 82/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U10/PG 82/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U10/PG 82/sound15.mp3";
+import VocabularAudio from "../../../assets/audio/ClassBook/U10/PG 82/vocab10.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 82/SVG/3.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 82/SVG/1.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 82/SVG/2.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 82/SVG/4.svg";
-import wordJson from "../../../assets/json/cd46pg82-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 10 page 82.mp4";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 2.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 3.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 6.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 7.svg";
+import wordJson from "../../../assets/json/conversation10_eng.json";
+import video from "../../../assets/videos/grade 6 unit 10 page 82.mp4";
 
 const Unit10_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
@@ -37,152 +23,209 @@ const Unit10_Page1 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Eric",
-          text: "What were you doing last night, Jen and Jeremy? There was a great symphony.",
+          speaker: "Stella",
+          text: "Helen, would you like to go mountain climbing with me?",
         },
         {
-          speaker: "Jen",
-          text: "Our family was visiting my uncle’s house. We were harvesting lettuce there. It was the best day!",
+          speaker: "Helen",
+          text: "To tell you the truth, I prefer going to the beach and collecting seashells.",
         },
         {
-          speaker: "Eric",
-          text: "Nice! Your uncle must have several acres, huh?",
+          speaker: "Stella",
+          text: "That’s fine with me. When would you like to go?",
         },
         {
-          speaker: "Jen",
-          text: "Yes, he has a large ranch of 40 acres. He raises cattle there, and he has an enormous garden near his house.",
+          speaker: "Helen",
+          text: "I would like to go right now while the beach is less occupied.",
         },
       ],
     },
-
     {
       number: 2,
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Jeremy",
-          text: "It’s your turn, Eric. Were you playing in the symphony or listening to it last night?",
+          speaker: "Stella",
+          text: "Okay. Mom and Sarah are coming with us. Sarah loves playing in the sand.",
         },
         {
-          speaker: "Eric",
-          text: "I was listening to it. I play the violin, but I’ve got a long way to go before I’m ready for the symphony!",
+          speaker: "Helen",
+          text: "Make sure you put on lots of sunscreen. We don’t want anyone to get a sunburn.",
+        },
+        {
+          speaker: "Stella",
+          text: "Look at the beach. You were right, Helen. There aren’t many people here at this time.",
+        },
+        {
+          speaker: "Helen",
+          text: "Look at the seashells! I’m going to collect dozens of them.",
+        },
+        {
+          speaker: "Sarah",
+          text: "I want seashells, too! I’ll help you pick them up.",
+        },
+        {
+          speaker: "Stella",
+          text: "Sarah, stay close to us.",
         },
       ],
     },
-
     {
       number: 3,
       image: imgConversation3,
       dialogues: [
         {
-          speaker: "Jeremy",
-          text: "Were they playing anything lively? I don’t like lots of slow symphony music. It makes me sad.",
+          speaker: "Helen",
+          text: "I love surfing in the ocean. Do you want to go surfing with me?",
         },
         {
-          speaker: "Eric",
-          text: "Actually, symphony music can be very lively. During Mozart’s and Beethoven’s time, composers were writing very beautiful music. Often it depended on the composer and the times.",
+          speaker: "Stella",
+          text: "Sure! Sarah, stay with Mom so she can keep an eye on you.",
+        },
+        {
+          speaker: "Sarah",
+          text: "Okay, Stella. I don’t mind waiting for you. I love building sandcastles.",
+        },
+        {
+          speaker: "Helen",
+          text: "I’m so glad that the beach is close by.",
+        },
+        {
+          speaker: "Stella",
+          text: "Me, too. I like walking to the beach. A car is not even necessary to get here.",
         },
       ],
     },
-
     {
       number: 4,
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Jen",
-          text: "Which type of music do you play on your violin?",
+          speaker: "Helen",
+          text: "So, did you find a surfboard yet?",
         },
         {
-          speaker: "Eric",
-          text: "I like to play music with a variety of moods.",
+          speaker: "Stella",
+          text: "There are lots of them over there. Let’s go and rent two of them.",
         },
         {
-          speaker: "Jeremy",
-          text: "There are even some rock and roll songs that use the violin. It’s a very flexible instrument.",
+          speaker: "Sarah",
+          text: "Have fun!",
         },
         {
-          speaker: "Eric",
-          text: "That’s a good point! That’s one reason that makes the violin so appealing to me.",
+          speaker: "Stella",
+          text: "We will! Come on, Helen. Let’s surf!",
         },
       ],
     },
   ];
   const captionsExample = [
     {
-      start: 0.179,
-      end: 6.139,
-      text: "Page 82, conversation. Listen and read, then say.",
+      start: 0.119,
+      end: 5.319,
+      text: "Page 82, conversation. Listen and read, then say",
     },
 
-    // Conversation 1
     {
-      start: 5.519,
-      end: 9.88,
-      text: "What were you doing last night, Jen and Jeremy? There was a great symphony.",
+      start: 5.319,
+      end: 8.979,
+      text: "Helen, would you like to go mountain climbing with me?",
     },
     {
-      start: 10.899,
-      end: 17.92,
-      text: "Our family was visiting my uncle’s house. We were harvesting lettuce there. It was the best day!",
+      start: 8.979,
+      end: 13.919,
+      text: "To tell you the truth, I prefer going to the beach and collecting seashells.",
     },
     {
-      start: 18.979,
-      end: 22.159,
-      text: "Nice! Your uncle must have several acres, huh?",
+      start: 13.92,
+      end: 16.42,
+      text: "That's fine with me. When would you like to go?",
     },
     {
-      start: 23.239,
-      end: 34.699,
-      text: "Yes, he has a large ranch of 40 acres. He raises cattle there, and he has an enormous garden near his house.",
-    },
-
-    // Conversation 2
-    {
-      start: 34.7,
-      end: 39.899,
-      text: "It’s your turn, Eric. Were you playing in the symphony or listening to it last night?",
-    },
-    {
-      start: 39.899,
-      end: 46.939,
-      text: "I was listening to it. I play the violin, but I’ve got a long way to go before I’m ready for the symphony!",
+      start: 17.52,
+      end: 21.559,
+      text: "I would like to go right now while the beach is less occupied.",
     },
 
-    // Conversation 3
     {
-      start: 46.939,
-      end: 53.419,
-      text: "Were they playing anything lively? I don’t like lots of slow symphony music. It makes me sad.",
+      start: 21.559,
+      end: 26.799,
+      text: "Okay. Mom and Sarah are coming with us. Sarah loves playing in the sand.",
     },
     {
-      start: 53.419,
-      end: 65.779,
-      text: "Actually, symphony music can be very lively. During Mozart and Beethoven’s time, composers were writing very beautiful music. Often it depended on the composer and the times.",
+      start: 27.879,
+      end: 32.559,
+      text: "Make sure you put on lots of sunscreen. We don't want anyone to get a sunburn.",
+    },
+    {
+      start: 32.559,
+      end: 37.959,
+      text: "Look at the beach. You were right, Helen, there aren't many people here at this time.",
+    },
+    {
+      start: 39.079,
+      end: 43.019,
+      text: "Look at the seashells. I'm going to collect dozens of them.",
+    },
+    {
+      start: 43.02,
+      end: 47.159,
+      text: "I want seashells, too. I'll help you pick them up.",
+    },
+    {
+      start: 47.159,
+      end: 49.219,
+      text: "Sarah, stay close to us.",
     },
 
-    // Conversation 4
     {
-      start: 65.779,
-      end: 69.76,
-      text: "Which type of music do you play on your violin?",
+      start: 50.239,
+      end: 54.359,
+      text: "I love surfing in the ocean. Do you wanna go surfing with me?",
     },
     {
-      start: 69.76,
-      end: 72.819,
-      text: "I like to play music with a variety of moods.",
+      start: 54.36,
+      end: 58.899,
+      text: "Sure. Sarah, stay with Mom so she can keep an eye on you.",
     },
     {
-      start: 73.879,
-      end: 80.4,
-      text: "There are even some rock and roll songs that use the violin. It’s a very flexible instrument.",
+      start: 58.899,
+      end: 64.739,
+      text: "Okay, Stella. I don't mind waiting for you. I love building sandcastles.",
     },
     {
-      start: 80.4,
-      end: 84.479,
-      text: "That’s a good point! That’s one reason that makes the violin so appealing to me.",
+      start: 64.739,
+      end: 67.959,
+      text: "I'm so glad that the beach is close by.",
+    },
+    {
+      start: 67.959,
+      end: 74.299,
+      text: "Me too. I like walking to the beach. A car is not even necessary to get here.",
+    },
+
+    {
+      start: 74.299,
+      end: 76.519,
+      text: "So did you find a surfboard yet?",
+    },
+    {
+      start: 76.519,
+      end: 80.86,
+      text: "There are lots of them over there. Let's go and rent two of them.",
+    },
+    {
+      start: 80.86,
+      end: 81.959,
+      text: "Have fun.",
+    },
+    {
+      start: 81.959,
+      end: 84.519,
+      text: "We will. Come on, Helen, let's surf",
     },
   ];
+
   const captionTimings = [
     [
       captionsExample[1],
@@ -191,17 +234,31 @@ const Unit10_Page1 = ({ openPopup }) => {
       captionsExample[4],
     ],
 
-    [captionsExample[5], captionsExample[6]],
-
-    [captionsExample[7], captionsExample[8]],
-
     [
+      captionsExample[5],
+      captionsExample[6],
+      captionsExample[7],
+      captionsExample[8],
       captionsExample[9],
       captionsExample[10],
+    ],
+
+    [
       captionsExample[11],
       captionsExample[12],
+      captionsExample[13],
+      captionsExample[14],
+      captionsExample[15],
+    ],
+
+    [
+      captionsExample[16],
+      captionsExample[17],
+      captionsExample[18],
+      captionsExample[19],
     ],
   ];
+
   const filteredSegments = wordJson.segments.slice(1);
 
   const Voc = [
@@ -212,152 +269,140 @@ const Unit10_Page1 = ({ openPopup }) => {
       filteredSegments[3]?.words || [],
     ],
 
-    [filteredSegments[4]?.words || [], filteredSegments[5]?.words || []],
-
-    [filteredSegments[6]?.words || [], filteredSegments[7]?.words || []],
-
     [
+      filteredSegments[4]?.words || [],
+      filteredSegments[5]?.words || [],
+      filteredSegments[6]?.words || [],
+      filteredSegments[7]?.words || [],
       filteredSegments[8]?.words || [],
       filteredSegments[9]?.words || [],
+    ],
+
+    [
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
+      filteredSegments[12]?.words || [],
+      filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
+    ],
+
+    [
+      filteredSegments[15]?.words || [],
+      filteredSegments[16]?.words || [],
+      filteredSegments[17]?.words || [],
+      filteredSegments[18]?.words || [],
     ],
   ];
+
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-  ];
+
   const captionVoc = [
     {
-      start: 0.239,
-      end: 2.879,
-      text: "Page 82, unit ten, vocabulary.",
+      start: 0.319,
+      end: 8.46,
+      text: "Page 82, Unit 10, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
+    },
+
+    { start: 9.519, end: 11.279, text: "1. seashells." },
+    { start: 11.679, end: 13.399, text: "2. occupied." },
+    { start: 14.059, end: 15.88, text: "3. sunscreen." },
+    { start: 16.559, end: 18.42, text: "4. sunburn." },
+
+    { start: 19.159, end: 20.84, text: "5. dozens." },
+    { start: 21.379, end: 23.319, text: "6. surfing." },
+    { start: 24.0, end: 26.039, text: "7. sandcastles." },
+    { start: 26.42, end: 28.559, text: "8. necessary." },
+
+    { start: 29.079, end: 31.279, text: "9. surfboard." },
+    { start: 31.699, end: 33.459, text: "10. rent." },
+    {
+      start: 34.24,
+      end: 37.239,
+      text: "11. To tell you the truth ...",
     },
 
     {
-      start: 3.659,
-      end: 5.38,
-      text: "1. symphony.",
+      start: 37.66,
+      end: 40.439,
+      text: "12. that's fine with me.",
     },
 
     {
-      start: 6.259,
-      end: 8.159,
-      text: "2. harvesting.",
+      start: 41.179,
+      end: 43.399,
+      text: "13. stay close.",
     },
 
     {
-      start: 9.039,
-      end: 10.88,
-      text: "3. acres.",
+      start: 44.0,
+      end: 46.919,
+      text: "14.  ... keep an eye on (you) ...",
     },
 
     {
-      start: 11.819,
-      end: 13.979,
-      text: "4. enormous.",
+      start: 47.6,
+      end: 50.079,
+      text: "15.  ... close by",
     },
 
     {
-      start: 14.939,
-      end: 16.899,
-      text: "5. lively.",
-    },
-
-    {
-      start: 17.959,
-      end: 20.139,
-      text: "6. composers.",
-    },
-
-    {
-      start: 21.159,
-      end: 23.159,
-      text: "7. variety.",
-    },
-
-    {
-      start: 24.1,
-      end: 25.979,
-      text: "8. moods.",
-    },
-
-    {
-      start: 26.92,
-      end: 28.879,
-      text: "9. flexible.",
-    },
-
-    {
-      start: 29.879,
-      end: 31.859,
-      text: "10. instrument.",
-    },
-
-    {
-      start: 32.84,
-      end: 34.899,
-      text: "11. appealing.",
-    },
-
-    {
-      start: 35.759,
-      end: 37.399,
-      text: "12. ... huh?",
-    },
-
-    {
-      start: 38.459,
-      end: 40.599,
-      text: "13. it’s your turn.",
-    },
-
-    {
-      start: 41.379,
-      end: 43.959,
-      text: "14. a long way to go.",
-    },
-
-    {
-      start: 44.819,
-      end: 47.24,
-      text: "15. that’s a good point!",
+      start: 50.539,
+      end: 52.799,
+      text: "16. have fun!",
     },
   ];
 
   const wordTimingsVoc = [
-    { start: 3.659, end: 5.38 },
-    { start: 6.259, end: 8.159 },
-    { start: 9.039, end: 10.88 },
-    { start: 11.819, end: 13.979 },
-    { start: 14.939, end: 16.899 },
+    { start: 9.4, end: 11.279, text: "1. seashells." },
+    { start: 11.679, end: 13.399, text: "2. occupied." },
+    { start: 14.059, end: 15.88, text: "3. sunscreen." },
+    { start: 16.559, end: 18.42, text: "4. sunburn." },
 
-    { start: 17.959, end: 20.139 },
-    { start: 21.159, end: 23.159 },
-    { start: 24.1, end: 25.979 },
-    { start: 26.92, end: 28.879 },
-    { start: 29.879, end: 31.859 },
+    { start: 19.0, end: 20.84, text: "5. dozens." },
+    { start: 21.1, end: 23.319, text: "6. surfing." },
+    { start: 23.8, end: 26.039, text: "7. sandcastles." },
+    { start: 26.22, end: 28.559, text: "8. necessary." },
 
-    { start: 32.84, end: 34.899 },
-    { start: 35.759, end: 37.399 },
-    { start: 38.459, end: 40.599 },
-    { start: 41.379, end: 43.959 },
-    { start: 44.819, end: 47.24 },
+    { start: 29.079, end: 31.279, text: "9. surfboard." },
+    { start: 31.699, end: 33.459, text: "10. rent." },
+
+    {
+      start: 34.2,
+      end: 37.239,
+      text: "11. To tell you the truth ...",
+    },
+
+    {
+      start: 37.66,
+      end: 40.439,
+      text: "12. that's fine with me.",
+    },
+
+    {
+      start: 41.179,
+      end: 43.399,
+      text: "13. stay close.",
+    },
+
+    {
+      start: 44.0,
+      end: 46.919,
+      text: "14.  ... keep an eye on (you) ...",
+    },
+
+    {
+      start: 47.6,
+      end: 50.079,
+      text: "15.  ... close by",
+    },
+
+    {
+      start: 50.539,
+      end: 52.799,
+      text: "16. have fun!",
+    },
   ];
+
   return (
     <div
       className="page1-img-wrapper"
@@ -382,16 +427,15 @@ const Unit10_Page1 = ({ openPopup }) => {
                 }}
               >
                 <Conversation
-                  title="Conversation"
+                  title="Listen and read. Then say."
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={5.2}
+                  stopAtSecond={5}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
                   video={video}
-                  imageWidth="300px"
                 />
               </div>,
             )
@@ -432,25 +476,26 @@ const Unit10_Page1 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={3}
-                  sounds={sounds}
+                  stopAtSecond={9}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "symphony",
-                    "harvesting",
-                    "acres",
-                    "enormous",
-                    "lively",
-                    "composers",
-                    "variety",
-                    "moods",
-                    "flexible",
-                    "instrument",
-                    "appealing",
-                    "... huh?",
-                    "it’s your turn",
-                    "a long way to go",
-                    "that’s a good point!",
+                    "seashells",
+                    "occupied",
+                    "sunscreen",
+                    "sunburn",
+                    "dozens",
+                    "surfing",
+                    "sandcastles",
+                    "necessary",
+                    "surfboard",
+                    "rent",
+                    "To tell you the truth ...",
+                    "That's fine with me.",
+                    "Stay close.",
+                    " ... keep an eye on (you) ...",
+                    " ... close by",
+                    "Have fun!",
                   ]}
                 />
               </div>,
@@ -480,7 +525,7 @@ const Unit10_Page1 = ({ openPopup }) => {
           onClick={() =>
             openPopup(
               "html",
-              <CriticalThinking title={"Why does Eric like his violin?"} />,
+              <CriticalThinking title={"What does Sarah like building?"} />,
             )
           }
           style={{ overflow: "visible" }}

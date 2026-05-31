@@ -1,30 +1,28 @@
 import WritingA from "./Unit10_Page4_WritingA";
 import WritingB from "./Unit10_Page4_WritingB";
-import ReadingBG from "../../../assets/imgs/conversation.svg";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 10 It Was the Best Day! Folder/Page 85/SVG/Asset 15.svg";
+import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/7.svg";
 
 const WritingSection_U10 = () => {
   return (
     <div>
       {/* العنوان */}
       <div className="w-[60%] mx-auto mb-4 flex items-center">
-        <div
-          className="px-4 py-1 font-bold text-black w-fit"
+        <img
+          src={ReadingBG}
           style={{
-            backgroundImage: `url(${ReadingBG})`,
-            backgroundSize: "cover",
+            height: "60px",
+            width: "auto",
           }}
-        >
-          Writing
-        </div>
+        />
       </div>
 
       {/* المحتوى */}
-      <div className="flex flex-col w-[60%] mx-auto space-y-10">
+      <div className="flex flex-col w-[60%] mx-auto space-y-12">
         <img
           src={img}
           alt=""
-          style={{ width: "auto", height: "100%", objectFit: "contain" }}
+          style={{ width: "auto", height: "500px", objectFit: "contain" }}
         />
         <WritingA />
         <WritingB />

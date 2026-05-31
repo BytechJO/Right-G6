@@ -1,24 +1,26 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 9 How Long Have You Been Folder/SVG/Asset 8.svg";
 
 const Unit9_Page6_Q1 = () => {
-  const matchingAnswers = ["b", "d", "c", "a"];
+  const questions = [
+    "How long has he been riding a bike?",
+    "He has been riding his bike for three years.",
 
-  const sentenceAnswers = [
-    "If someone invents a tire that won’t go flat, everyone will probably buy it.",
-    "If William knows how to build a tree house, he can build one this summer.",
-    "When Bryan gets his pilot’s license, he will fly us to Toledo.",
-    "If that team plays just a little harder, they might win the game.",
+    "How long have they been building?",
+    "They have been building since last year.",
+
+    "How long have they been watching TV?",
+    "They have been watching TV for one hour.",
+
+    "How long has he been saving?",
+    "He has been saving since January.",
   ];
 
-  const [matchingInputs, setMatchingInputs] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", "", "", "", ""]);
 
-  const [sentenceInputs, setSentenceInputs] = useState(["", "", "", ""]);
-
-  const [matchingResult, setMatchingResult] = useState([]);
-
-  const [sentenceResult, setSentenceResult] = useState([]);
+  const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
 
@@ -29,34 +31,16 @@ const Unit9_Page6_Q1 = () => {
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleMatchingChange = (i, value) => {
-    if (locked || matchingResult[i] === true) return;
+  const handleChange = (i, value) => {
+    if (locked || result[i] === true) return;
 
-    const updated = [...matchingInputs];
-
-    updated[i] = value;
-
-    setMatchingInputs(updated);
-
-    setMatchingResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
-  };
-
-  const handleSentenceChange = (i, value) => {
-    if (locked || sentenceResult[i] === true) return;
-
-    const updated = [...sentenceInputs];
+    const updated = [...answers];
 
     updated[i] = value;
 
-    setSentenceInputs(updated);
+    setAnswers(updated);
 
-    setSentenceResult((prev) => {
+    setResult((prev) => {
       const copy = [...prev];
 
       copy[i] = undefined;
@@ -68,11 +52,9 @@ const Unit9_Page6_Q1 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmptyMatching = matchingInputs.some((a) => !a.trim());
+    const hasEmpty = answers.some((a) => !a.trim());
 
-    const hasEmptySentences = sentenceInputs.some((a) => !a.trim());
-
-    if (hasEmptyMatching || hasEmptySentences) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
 
       return;
@@ -80,34 +62,24 @@ const Unit9_Page6_Q1 = () => {
 
     let correctCount = 0;
 
-    const newMatchingResults = matchingInputs.map((a, i) => {
-      const ok = normalize(a) === normalize(matchingAnswers[i]);
+    const newResults = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(questions[i]);
 
       if (ok) correctCount++;
 
       return ok;
     });
 
-    const newSentenceResults = sentenceInputs.map((a, i) => {
-      const ok = normalize(a) === normalize(sentenceAnswers[i]);
+    setResult(newResults);
 
-      if (ok) correctCount++;
-
-      return ok;
-    });
-
-    setMatchingResult(newMatchingResults);
-
-    setSentenceResult(newSentenceResults);
-
-    const total = matchingAnswers.length + sentenceAnswers.length;
+    const total = questions.length;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -125,106 +97,59 @@ const Unit9_Page6_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setMatchingInputs(["b", "d", "c", "a"]);
+    setAnswers([
+      "How long has he been riding a bike?",
+      "He has been riding his bike for three years.",
 
-    setSentenceInputs([
-      "If someone invents a tire that won’t go flat, everyone will probably buy it.",
-      "If William knows how to build a tree house, he can build one this summer.",
-      "When Bryan gets his pilot’s license, he will fly us to Toledo.",
-      "If that team plays just a little harder, they will win the game.",
+      "How long have they been building?",
+      "They have been building since last year.",
+
+      "How long have they been watching TV?",
+      "They have been watching TV for one hour.",
+
+      "How long has he been saving?",
+      "He has been saving since January.",
     ]);
 
-    setMatchingResult([true, true, true, true]);
-
-    setSentenceResult([true, true, true, true]);
+    setResult([true, true, true, true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setMatchingInputs(["", "", "", ""]);
+    setAnswers(["", "", "", "", "", "", "", ""]);
 
-    setSentenceInputs(["", "", "", ""]);
-
-    setMatchingResult([]);
-
-    setSentenceResult([]);
+    setResult([]);
 
     setLocked(false);
   };
 
-  const matchingInput = (i) => (
-    <span className="relative inline-block">
+  const inputField = (i) => (
+    <span className="relative inline-block w-full">
       <input
         type="text"
-        maxLength={1}
-        value={matchingInputs[i]}
-        disabled={locked || matchingResult[i] === true}
-        onChange={(e) => handleMatchingChange(i, e.target.value)}
+        value={answers[i]}
+        disabled={locked || result[i] === true}
+        onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          w-[55px]
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-center
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-
-          ${matchingResult[i] === false ? "border-[#D1232A]" : "border-black"}
-        `}
-      />
-
-      {matchingResult[i] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
-  const sentenceInput = (i, width) => (
-    <span className="relative inline-block">
-      <input
-        type="text"
-        value={sentenceInputs[i]}
-        disabled={locked || sentenceResult[i] === true}
-        onChange={(e) => handleSentenceChange(i, e.target.value)}
-        className={`
-          ${width}
+          w-full
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
           px-1
 
-          ${sentenceResult[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {sentenceResult[i] === false && (
+      {result[i] === false && (
         <span
           style={{
             position: "absolute",
@@ -252,9 +177,8 @@ const Unit9_Page6_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
+      <div className="div-forall w-full text-[18px]">
+        <div className="header-title-page8 mb-8">
           <span
             className="ex-A"
             style={{
@@ -263,105 +187,68 @@ const Unit9_Page6_Q1 = () => {
           >
             D
           </span>
-          Match the two sentence parts, and then write the whole sentence below.
-        </h5>
-
-        {/* MATCHING */}
-        <div className="flex justify-between mb-10">
-          {/* LEFT */}
-          <div className="flex flex-col gap-8">
-            <div className="flex items-start gap-4">
-              {matchingInput(0)}
-
-              <div className="flex gap-4">
-                <span className="font-bold text-[18px]">1</span>
-
-                <span className="text-[18px] leading-normal ">
-                  If someone invents a tire that won’t go flat,
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              {matchingInput(1)}
-
-              <div className="flex gap-4">
-                <span className="font-bold text-[18px]">2</span>
-
-                <span className="text-[18px] leading-normal">
-                  If William knows how to build a tree house,
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              {matchingInput(2)}
-
-              <div className="flex gap-4">
-                <span className="font-bold text-[18px]">3</span>
-
-                <span className="text-[18px] leading-normal">
-                  When Bryan gets his pilot’s license,
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              {matchingInput(3)}
-
-              <div className="flex gap-4">
-                <span className="font-bold text-[18px]">4</span>
-
-                <span className="text-[18px] leading-normal">
-                  If that team plays just a little harder,
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="flex flex-col gap-8 mr-[60px]">
-            <div className="flex gap-4">
-              <span className="font-bold text-[18px]">a</span>
-
-              <span className="text-[18px]">they might win the game.</span>
-            </div>
-
-            <div className="flex gap-4">
-              <span className="font-bold text-[18px]">b</span>
-
-              <span className="text-[18px]">
-                everyone will probably buy it.
-              </span>
-            </div>
-
-            <div className="flex gap-4">
-              <span className="font-bold text-[18px]">c</span>
-
-              <span className="text-[18px]">he will fly us to Toledo.</span>
-            </div>
-
-            <div className="flex gap-4">
-              <span className="font-bold text-[18px]">d</span>
-
-              <span className="text-[18px]">he can build one this summer.</span>
-            </div>
-          </div>
+          Read the chart, and then make questions and answers about each
+          picture.
         </div>
 
-        {/* SENTENCES */}
-        <div className="flex flex-col gap-8">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="flex items-center gap-4">
-              <span className="font-bold text-[18px]">{i + 1}</span>
+        {/* ONE BIG IMAGE */}
+        <div className="flex justify-center mb-12">
+          <img
+            src={img}
+            alt="chart"
+            style={{
+              width: "700px",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
+        </div>
 
-              {sentenceInput(i, "w-[780px]")}
-            </div>
-          ))}
+        {/* 1 */}
+        <div className="mb-10">
+          <div className="flex gap-3 items-center">
+            <span className="font-bold w-5">1</span>
+
+            <div className="flex-1">{inputField(0)}</div>
+          </div>
+
+          <div className="mt-4 ml-8">{inputField(1)}</div>
+        </div>
+
+        {/* 2 */}
+        <div className="mb-10">
+          <div className="flex gap-3 items-center">
+            <span className="font-bold w-5">2</span>
+
+            <div className="flex-1">{inputField(2)}</div>
+          </div>
+
+          <div className="mt-4 ml-8">{inputField(3)}</div>
+        </div>
+
+        {/* 3 */}
+        <div className="mb-10">
+          <div className="flex gap-3 items-center">
+            <span className="font-bold w-5">3</span>
+
+            <div className="flex-1">{inputField(4)}</div>
+          </div>
+
+          <div className="mt-4 ml-8">{inputField(5)}</div>
+        </div>
+
+        {/* 4 */}
+        <div className="mb-10">
+          <div className="flex gap-3 items-center">
+            <span className="font-bold w-5">4</span>
+
+            <div className="flex-1">{inputField(6)}</div>
+          </div>
+
+          <div className="mt-4 ml-8">{inputField(7)}</div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

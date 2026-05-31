@@ -108,34 +108,34 @@ import Unit5_Page1 from "../StudentPages/unit5/Unit5_Page1";
 
 // //==================== unit 9 pages
 
-// import Unit9_Page1 from "../StudentPages/unit9/Unit9_Page1";
-// import Unit9_Page2 from "../StudentPages/unit9/Unit9_Page2";
-// import Unit9_Page3 from "../StudentPages/unit9/Unit9_Page3";
-// import Unit9_Page4 from "../StudentPages/unit9/Unit9_Page4";
-// import Unit9_Page5 from "../StudentPages/unit9/Unit9_Page5";
-// import Unit9_Page6 from "../StudentPages/unit9/Unit9_Page6";
+import Unit9_Page1 from "../StudentPages/unit9/Unit9_Page1";
+import Unit9_Page2 from "../StudentPages/unit9/Unit9_Page2";
+import Unit9_Page3 from "../StudentPages/unit9/Unit9_Page3";
+import Unit9_Page4 from "../StudentPages/unit9/Unit9_Page4";
+import Unit9_Page5 from "../StudentPages/unit9/Unit9_Page5";
+import Unit9_Page6 from "../StudentPages/unit9/Unit9_Page6";
 
-// //================= Unit10
-// import Unit10_Page1 from "../StudentPages/unit10/Unit10_Page1";
-// import Unit10_Page2 from "../StudentPages/unit10/Unit10_Page2";
-// import Unit10_Page3 from "../StudentPages/unit10/Unit10_Page3";
-// import Unit10_Page4 from "../StudentPages/unit10/Unit10_Page4";
-// import Unit10_Page5 from "../StudentPages/unit10/Unit10_Page5";
-// import Unit10_Page6 from "../StudentPages/unit10/Unit10_Page6";
+//================= Unit10
+import Unit10_Page1 from "../StudentPages/unit10/Unit10_Page1";
+import Unit10_Page2 from "../StudentPages/unit10/Unit10_Page2";
+import Unit10_Page3 from "../StudentPages/unit10/Unit10_Page3";
+import Unit10_Page4 from "../StudentPages/unit10/Unit10_Page4";
+import Unit10_Page5 from "../StudentPages/unit10/Unit10_Page5";
+import Unit10_Page6 from "../StudentPages/unit10/Unit10_Page6";
 
-// //================= review 9,10
-// import Review9_Page1 from "../StudentPages/review9&10/Review9_Page1";
-// import Review9_Page2 from "../StudentPages/review9&10/Review9_Page2";
-// import Review10_Page1 from "../StudentPages/review9&10/Review10_Page1";
-// import Review10_Page2 from "../StudentPages/review9&10/Review10_Page2";
-// import Reading_Unit10_Page1 from "../StudentPages/unit10/Reading_Unit10_Page1";
-// import Reading_Unit10_Page2 from "../StudentPages/unit10/Reading_Unit10_Page2";
+//================= review 9,10
+import Review9_Page1 from "../StudentPages/review9&10/Review9_Page1";
+import Review9_Page2 from "../StudentPages/review9&10/Review9_Page2";
+import Review10_Page1 from "../StudentPages/review9&10/Review10_Page1";
+import Review10_Page2 from "../StudentPages/review9&10/Review10_Page2";
+import Reading_Unit10_Page1 from "../StudentPages/unit10/Reading_Unit10_Page1";
+import Reading_Unit10_Page2 from "../StudentPages/unit10/Reading_Unit10_Page2";
 
 // //================= Song
 
-// import Song_Page1 from "../StudentPages/song/Song_Page1";
-// import Song_Page2 from "../StudentPages/song/Song_Page2";
-// import Song_Page3 from "../StudentPages/song/Song_Page3";
+import Song_Page1 from "../StudentPages/song/Song_Page1";
+import Song_Page2 from "../StudentPages/song/Song_Page2";
+import Song_Page3 from "../StudentPages/song/Song_Page3";
 
 export const studentPages = (openPopup, goToUnit) => {
   const sharedAudioRef = useRef(null);
@@ -279,43 +279,43 @@ export const studentPages = (openPopup, goToUnit) => {
     // />,
     // //===================== unit 9 pages
 
-    // <Unit9_Page1 openPopup={openPopup} />,
-    // <Unit9_Page2 openPopup={openPopup} />,
-    // <Unit9_Page3 openPopup={openPopup} />,
-    // <Unit9_Page4 openPopup={openPopup} />,
-    // <Unit9_Page5 openPopup={openPopup} />,
-    // <Unit9_Page6 openPopup={openPopup} />,
+    <Unit9_Page1 openPopup={openPopup} />,
+    <Unit9_Page2 openPopup={openPopup} />,
+    <Unit9_Page3 openPopup={openPopup} />,
+    <Unit9_Page4 openPopup={openPopup} />,
+    <Unit9_Page5 openPopup={openPopup} />,
+    <Unit9_Page6 openPopup={openPopup} />,
     // //===================== unit 10 pages
 
-    // <Unit10_Page1 openPopup={openPopup} />,
-    // <Unit10_Page2 openPopup={openPopup} />,
-    // <Unit10_Page3 openPopup={openPopup} />,
-    // <Unit10_Page4 openPopup={openPopup} />,
-    // <Unit10_Page5 openPopup={openPopup} />,
-    // <Unit10_Page6 openPopup={openPopup} />,
-    // //===================== unit Review9,10 pages
+    <Unit10_Page1 openPopup={openPopup} />,
+    <Unit10_Page2 openPopup={openPopup} />,
+    <Unit10_Page3 openPopup={openPopup} />,
+    <Unit10_Page4 openPopup={openPopup} />,
+    <Unit10_Page5 openPopup={openPopup} />,
+    <Unit10_Page6 openPopup={openPopup} />,
+    //===================== unit Review9,10 pages
 
-    // <Review9_Page1 openPopup={openPopup} />,
-    // <Review9_Page2 openPopup={openPopup} />,
-    // <Review10_Page1 openPopup={openPopup} />,
-    // <Review10_Page2 openPopup={openPopup} />,
-    // <Reading_Unit10_Page1
-    //   openPopup={openPopup}
-    //   audioRef={sharedAudioRef}
-    //   activeAudio={activeAudio}
-    //   setActiveAudio={setActiveAudio}
-    // />,
-    // <Reading_Unit10_Page2
-    //   audioRef={sharedAudioRef}
-    //   activeAudio={activeAudio}
-    //   setActiveAudio={setActiveAudio}
-    // />,
+    <Review9_Page1 openPopup={openPopup} />,
+    <Review9_Page2 openPopup={openPopup} />,
+    <Review10_Page1 openPopup={openPopup} />,
+    <Review10_Page2 openPopup={openPopup} />,
+    <Reading_Unit10_Page1
+      openPopup={openPopup}
+      audioRef={sharedAudioRef}
+      activeAudio={activeAudio}
+      setActiveAudio={setActiveAudio}
+    />,
+    <Reading_Unit10_Page2
+      audioRef={sharedAudioRef}
+      activeAudio={activeAudio}
+      setActiveAudio={setActiveAudio}
+    />,
     // //===================== song pages
 
-    // <Song_Page1 />,
-    // <Song_Page2 />,
-    // <Song_Page3 />,
+    <Song_Page1 />,
+    <Song_Page2 />,
+    <Song_Page3 />,
 
-    // <Page1 />,
+    <Page1 />,
   ];
 };
