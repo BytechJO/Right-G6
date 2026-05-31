@@ -1,4 +1,4 @@
-import page24 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 38.png";
+import page24 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/Page 38.png";
 import React, { useEffect, useState } from "react";
 import "./Reading_Unit4_Page1.css";
 import sound1 from "../../../assets/audio/ClassBook/U4/PG 38/cd2pg38-story-adult-lady_NILS0ysY.mp3";
@@ -9,7 +9,7 @@ import sound5 from "../../../assets/audio/ClassBook/U4/PG 38/Pg38_1.4_Adult Lady
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video3 from "../../../assets/videos/grade 5 unit 4 reading page 38-39.mp4";
+import video3 from "../../../assets/videos/grade 6 unit 4 page 28.mp4";
 
 const Reading_Unit4_Page1 = ({
   openPopup,
@@ -22,18 +22,28 @@ const Reading_Unit4_Page1 = ({
   useEffect(() => {
     setActiveAudio(null);
   }, [setActiveAudio]);
-  const captionsExample = [
-    {
-      start: 0.14,
-      end: 97.119,
-      text: "Page thirty-eight. In and around the pond. What kind of animals live in or around the pond? There are many different kinds of animals. You need to look closely to find the animals, but they are there. This is a tiny green tree frog. It lives near the pond and often climbs trees. When this frog is in a green tree, you can't see it very well. Dragonflies are big insects. They frequently fly back and forth across the pond. They like to eat smaller insects. They never eat tree frogs, and tree frogs never eat them because dragonflies are too big. Some animals, such as snails, protect themselves with their shells. Snails are tiny and soft, but they live inside hard shells. Their shells protect them from enemies. If another animal wants to eat the snail, it must first break its shell. That can be a hard thing to do. This turtle is resting on a rock in the pond. Like snails, turtles stay safe from danger inside their tough shells. They hide until the danger is gone. Then they come out and look for insects to eat. This snake can hide in the grass around the pond. It usually eats earthworms that come up through the grass. Some snakes have long, sharp teeth called fangs. These snakes can be very dangerous. This is a beaver. It's like a big rat with a large flat tail. It lives in the pond. It builds a home out of trees and tree branches. It cuts down the trees with its long, sharp teeth. The beaver can stay very safe in its home. There are many different animals living in and around a pond. What other animals do you know that live in a pond?",
-    },
-  ];
+const captionsExample = [
+  {
+    start: 0.66,
+    end: 31.19,
+    text: "Page 38. Tim's Birthday. If my brother Tim only knew what we had planned for him, he would be so excited. It's his birthday, and we are decorating the house. Signs are made and hung by my aunt and uncle. My aunt and uncle are very excited about Tim's birthday. My dad makes a banana cake. We will frost the cake together. My dad said if we had decorations, we could add those to the cake. I'm going to use some jelly beans to make some cowboy boots on the cake.",
+  },
+  {
+    start: 32.47,
+    end: 101.64,
+    text: "The present that was made by me for my brother is lost. We look everywhere, and finally we find it in one of the dresser drawers in my room. Tim would be upset if he knew how close I came to losing his present. I'm very glad I found it, and I wrap it right away. Here comes Tim. He can see the decorations, but he doesn't know all the things we have planned. Tim is carrying a box of party hats. He thinks we're not doing much, so he wants to add to his birthday fun. He has made some special hats that we can wear. If he noticed all the preparations we are doing, he doesn't show it. He's too excited about the hats. All the fun hats, glasses, and masks that Tim made are tried on by us. They are fun to wear and make the birthday seem even more exciting. We get to pick out our favorite things to wear. Tim has his favorite cowboy hat and boots on. He loves to pretend he's a cowboy. Tim goes to his friend's house to help him walk his dogs, and we finish all the last-minute preparations. We finish getting the games ready, blow up balloons, frost the cake, and clean everything up.",
+  },
+  {
+    start: 102.8,
+    end: 116.4,
+    text: "Finally, we're ready, and Tim comes back from his friend's house. Tim's friends arrive, and he is so surprised that he's having a big party. They are dressed in costume to add to the fun. Everyone is ready for a great party",
+  }
+];
   const clickableAreas = [
-    { x1: 15.26, y1: 35.78, x2: 52.6, y2: 50.47, sound: sound2 },
-    { x1: 56.0, y1: 35.98, x2: 92.44, y2: 49.63, sound: sound3 },
-    { x1: 15.32, y1: 81.95, x2: 52.9, y2: 95.5, sound: sound4 },
-    { x1: 55.62, y1: 81.78, x2: 93.7, y2: 94.9, sound: sound5 },
+    { x1: 15.26, y1: 35.78, x2: 53.75, y2: 50.47, sound: sound2 },
+    { x1: 55.60, y1: 36.14, x2: 94.07, y2: 50.13, sound: sound3 },
+    { x1: 15.32, y1: 81.95, x2: 53.75, y2: 96.09, sound: sound4 },
+    { x1: 55.60, y1: 78.90, x2: 94.07, y2: 95.93, sound: sound5 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();
