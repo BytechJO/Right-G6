@@ -5,11 +5,9 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 import boyImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 20.svg";
 
 const BLANKS = {
-  "1":  { answer: "be riding his bike",                              width: "280px" },
+  "1":  { answer: "be riding his bike",                              width: "100%" },
   "2a": { answer: "a lot with his friends and he and his family",    width: "100%" },
-  "2b": { answer: "went to the beach",                               width: "360px" },
   "3a": { answer: "to the starting of school so he can see",         width: "100%" },
-  "3b": { answer: "many of his friends again",                       width: "360px" },
 };
 
 const normalize = (str) =>
@@ -63,7 +61,7 @@ const FullLineInput = ({ bKey, value, onChange, isCorrect, isWrong, disabled }) 
       disabled={disabled}
       onChange={(e) => onChange(bKey, e.target.value)}
       style={{
-        width: "100%",
+        width: "200%",
         border: "none",
         borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
         outline: "none",
@@ -217,26 +215,24 @@ const WB_Unit8_ReportedSpeech_G = () => {
 
               <span style={{ fontWeight: "bold" }}>2</span>
               <span>Mike said he played soccer</span>
-              {B("2a")}
+              {B("2a", "350px")}
+                         <span>and he went to the beach.</span>
             </div>
             </div>
 
-            <div style={{ ...lineStyle, display: "flex", alignItems: "flex-end", gap: "6px", paddingLeft: "20px" }}>
-              {B("2b", "360px")}
-              <span>and he went to the beach.</span>
-            </div>
           </div>
 
           {/* Q3: two lines */}
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
             <div style={{ ...lineStyle, display: "flex", alignItems: "flex-end", gap: "6px", flexWrap: "wrap" }}>
-              <span style={{ fontWeight: "bold" }}>3</span>
-              <span>John said that he is looking forward</span>
-              {B("3a" , "280px")}
-            </div>
-            <div style={{ ...lineStyle, display: "flex", alignItems: "flex-end", gap: "6px", paddingLeft: "20px" }}>
-              {B("3b", "360px")}
-              <span>many of his friends again.</span>
+              <div style={{display: "flex", flexWrap: "nowrap"}}>
+
+              <span style={{ fontWeight: "bold"  }}>3</span>
+              <span style={{  whiteSpace: "nowrap" , marginLeft : "0.5em" ,  marginRight : "0.5em"}}>John said that he is looking forward</span>
+              {B("3a" , "350px")}
+              <span style={{  whiteSpace: "nowrap" }}>
+             many of his friends again.</span>
+              </div>
             </div>
           </div>
 

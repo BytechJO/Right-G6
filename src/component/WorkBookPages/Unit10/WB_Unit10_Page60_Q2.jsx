@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import { height } from "@fortawesome/free-solid-svg-icons/fa0";
+import girlImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U10 Folder/SVG/Asset 6.svg";
 
 const BORDER = "#333";
 
@@ -143,6 +145,7 @@ const WB_Unit7_Match_I = () => {
     lineHeight: "1.55",
     background: "#fff",
     minHeight: "90px",
+    height: "120px",
   };
 
   return (
@@ -201,7 +204,7 @@ const WB_Unit7_Match_I = () => {
             );
           })}
         </div>
-
+<img src={girlImg} alt="img" style={{ width: "20%",  height: "auto", objectFit: "contain", borderRadius: "8px" , alignSelf: "center", margin : "  -3em -27em 4em 6em" }} />
       </div>
 
       {/* Buttons */}

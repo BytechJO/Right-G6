@@ -7,9 +7,10 @@ const BORDER = "#84ad40";
 
 const WORD_BANK = [
   "seashells", "sunscreen", "sandcastles", "dozens", "occupied",
+];
+const WORD_BANKq = [
   "necessary", "surfboard", "surfing", "sunburn", "rent",
 ];
-
 // Paragraph split into segments — blank: true means input field
 const SEGMENTS = [
   { id: null,  text: "Do you like going to the beach? Do you like to stay on the sand and collect ", blank: false },
@@ -139,10 +140,12 @@ const WB_Unit_FillBlank_L = () => {
 
         {/* Word Bank */}
         <div style={{
+          margin: "5vh 0 2vh 0",
           display: "flex",
           flexWrap: "wrap",
           gap: "10px",
           marginBottom: "24px",
+          justifyContent: "space-between",
         }}>
           {WORD_BANK.map((w) => (
             <span key={w} style={{
@@ -151,6 +154,33 @@ const WB_Unit_FillBlank_L = () => {
               padding: "5px 14px",
               fontSize: "15px",
               color: "#333",
+              
+              width : "100px",
+              justifyContent:"center",
+            }}>
+              {w}
+            </span>
+          ))}
+        </div>
+    {/* Word Bank */}
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "10px",
+          marginBottom: "24px",
+          justifyContent: "space-between",
+
+        }}>
+          {WORD_BANKq.map((w) => (
+            <span key={w} style={{
+              display:"flex"  ,
+              border: `1.5px solid ${BORDER}`,
+              borderRadius: "6px",
+              padding: "5px 14px",
+              fontSize: "15px",
+              color: "#333",
+              width : "100px",
+              justifyContent:"center",
             }}>
               {w}
             </span>

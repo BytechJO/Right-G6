@@ -92,51 +92,61 @@ const normalize = (str) =>
     });
     setGroupResult((prev) => ({ ...prev, [`${gKey}-${slotIndex}`]: undefined }));
   };
+const checkAnswers = () => {
+  if (locked) return;
 
-  const checkAnswers = () => {
-    if (locked) return;
+  const verbEmpty = verbRows.some((v) => !verbAnswers[v.verb].trim());
+  const groupEmpty = groups.some((g) =>
+    groupAnswers[g.key].some((a) => !a.trim())
+  );
+  if (verbEmpty || groupEmpty) {
+    ValidationAlert.info("Please complete all answers.");
+    return;
+  }
 
-    const verbEmpty = verbRows.some((v) => !verbAnswers[v.verb].trim());
-    const groupEmpty = groups.some((g) =>
-      groupAnswers[g.key].some((a) => !a.trim())
-    );
+  let correct = 0;
+  let total = 0;
+  const newVerbResult = {};
+  const newGroupResult = {};
 
-    if (verbEmpty || groupEmpty) {
-      ValidationAlert.info("Please complete all answers.");
-      return;
-    }
+  verbRows.forEach((v) => {
+    total++;
+    const ok = normalize(verbAnswers[v.verb]) === normalize(v.answer);
+    if (ok) correct++;
+    newVerbResult[v.verb] = ok;
+  });
 
-    let correct = 0;
-    let total = 0;
-    const newVerbResult = {};
-    const newGroupResult = {};
+  // ✅ التغيير هون: كل group يتحقق بدون ترتيب
+  groups.forEach((g) => {
+    const slots = g.answers.filter((ans) => ans !== g.prefilled);
+    const userAnswers = [...groupAnswers[g.key]];
+    const remainingCorrect = [...slots]; // نسخة نشيل منها الكلمات اللي اتطابقت
 
-    verbRows.forEach((v) => {
+    slots.forEach((_, si) => {
       total++;
-      const ok = normalize(verbAnswers[v.verb]) === normalize(v.answer);
-      if (ok) correct++;
-      newVerbResult[v.verb] = ok;
+      const userVal = normalize(userAnswers[si]);
+      const matchIndex = remainingCorrect.findIndex(
+        (ans) => normalize(ans) === userVal
+      );
+      if (matchIndex !== -1) {
+        correct++;
+        newGroupResult[`${g.key}-${si}`] = true;
+        remainingCorrect.splice(matchIndex, 1); // نشيلها عشان ما تتطابق مرتين
+      } else {
+        newGroupResult[`${g.key}-${si}`] = false;
+      }
     });
+  });
 
-    groups.forEach((g) => {
-      const slots = g.answers.filter((ans) => ans !== g.prefilled);
-      slots.forEach((ans, si) => {
-        total++;
-        const ok = normalize(groupAnswers[g.key][si]) === normalize(ans);
-        if (ok) correct++;
-        newGroupResult[`${g.key}-${si}`] = ok;
-      });
-    });
+  setVerbResult(newVerbResult);
+  setGroupResult(newGroupResult);
 
-    setVerbResult(newVerbResult);
-    setGroupResult(newGroupResult);
-
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
-  };
+  const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+  const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+  if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+  else if (correct === 0) ValidationAlert.error(msg);
+  else ValidationAlert.warning(msg);
+};
 
   const showAnswers = () => {
     const va = {};

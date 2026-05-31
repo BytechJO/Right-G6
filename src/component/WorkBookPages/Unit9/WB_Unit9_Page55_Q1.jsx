@@ -86,7 +86,7 @@ const WB_Unit9_TravelSurvey_H = () => {
 
   // Mark row is prefilled — those cells are disabled
   const isPrefilledCell = (person, cont) =>
-    person === "Mark" && (cont === "Europe" || cont === "North America");
+    person === "" && (cont === "" || cont === "");
 
   const toggleCell = (person, cont) => {
     if (locked || isPrefilledCell(person, cont)) return;
@@ -210,7 +210,6 @@ const WB_Unit9_TravelSurvey_H = () => {
                     {person}
                   </td>
                   {CONTINENTS.map(cont => {
-                    const isPre = isPrefilledCell(person, cont);
                     const isChecked = checks[person][cont];
                     const bg = getCellBg(person, cont);
                     return (
@@ -220,10 +219,11 @@ const WB_Unit9_TravelSurvey_H = () => {
                         style={{
                           ...tdStyle,
                           background: bg,
-                          cursor: isPre || locked ? "default" : "pointer",
+                          cursor:  locked ? "default" : "pointer",
                           textAlign:"center",
                           fontSize:"18px",
-                          color: isChecked ? (isPre ? "#555" : "#84ad40") : "transparent",
+                          color: isChecked ?  "#ff0000ff" : "transparent" 
+                          ,
                           userSelect:"none",
                           transition:"background 0.15s",
                         }}
