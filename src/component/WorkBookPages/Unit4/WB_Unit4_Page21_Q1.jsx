@@ -32,7 +32,7 @@ const RIGHT_IDS = ["sutff","geiwsn","rhrace","redcav","grane","bwonad"];
 //  HELPERS
 // ─────────────────────────────────────────────
 const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
 
 // بناء initial state: { wordId: ["","","", ...] }
 const initAnswers = () => {

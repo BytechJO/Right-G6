@@ -48,8 +48,9 @@ const PICS = [
   { id: 12, img: imgElectric,   answer: "j" },
 ];
 
+
 const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
 
 const initAnswers = () => {
   const a = {};

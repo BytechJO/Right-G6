@@ -29,7 +29,7 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 // ── CellInput — OUTSIDE parent ──
 const CellInput = ({ cellKey, value, onChange, isCorrect, isWrong, disabled }) => (
@@ -45,7 +45,7 @@ const CellInput = ({ cellKey, value, onChange, isCorrect, isWrong, disabled }) =
         outline: "none",
         background: "transparent",
         fontSize: "15px",
-        color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        color: "#333",
         fontWeight: isCorrect ? "600" : "400",
         fontFamily: "inherit",
         textAlign: "center",
@@ -75,45 +75,49 @@ const WB_Unit7_WordGroups_A = () => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
     setResult((prev)  => ({ ...prev, [key]: undefined }));
   };
+const checkAnswers = () => {
+  if (locked) return;
+  const hasEmpty = COLS.some((col) =>
+    CORRECT[col].some((_, ri) => !answers[`${col}-${ri}`].trim())
+  );
+  if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
 
-  const checkAnswers = () => {
-    if (locked) return;
-    const hasEmpty = COLS.some((col) =>
-      CORRECT[col].some((_, ri) => !answers[`${col}-${ri}`].trim())
-    );
-    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+  let correct = 0; let total = 0;
+  const nr = {};
 
-    let correct = 0; let total = 0;
-    const nr = {};
-    COLS.forEach((col) => {
-      CORRECT[col].forEach((ans, ri) => {
-        total++;
-        const key = `${col}-${ri}`;
-        const ok = normalize(answers[key]) === normalize(ans);
-        if (ok) correct++;
-        nr[key] = ok;
-      });
-    });
-    setResult(nr);
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
-  };
+  COLS.forEach((col) => {
+    const remaining = [...CORRECT[col]]; // ✅ نسخة نشيل منها الكلمات المتطابقة
 
-  const showAnswers = () => {
-    const a = {}; const r = {};
-    COLS.forEach((col) => {
-      for (let ri = 0; ri < MAX_ROWS; ri++) {
-        const key = `${col}-${ri}`;
-        a[key] = CORRECT[col][ri] || "";
-        if (CORRECT[col][ri]) r[key] = true;
+    CORRECT[col].forEach((_, ri) => {
+      total++;
+      const key = `${col}-${ri}`;
+      const userVal = normalize(answers[key]);
+      const matchIndex = remaining.findIndex((ans) => normalize(ans) === userVal);
+      if (matchIndex !== -1) {
+        correct++;
+        nr[key] = true;
+        remaining.splice(matchIndex, 1); // ✅ نشيلها عشان ما تتطابق مرتين
+      } else {
+        nr[key] = false;
       }
     });
-    setAnswers(a); setResult(r); setLocked(true);
-  };
+  });
 
+  setResult(nr);
+  const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+  const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+  if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
+  else if (correct === 0) ValidationAlert.error(msg);
+  else ValidationAlert.warning(msg);
+};
+const showAnswers = () => {
+  const a = {}; const r = {};
+  QUESTIONS.forEach(({ id, answer1 }) => {
+    a[`${id}-1`] = answer1;
+    r[`${id}-1`] = true;
+  });
+  setAnswers(a); setResult(r); setLocked(true);
+};
   const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
 
   return (

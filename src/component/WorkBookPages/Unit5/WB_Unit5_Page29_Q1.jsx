@@ -43,13 +43,13 @@ const QUESTIONS = [
     id: 6,
     sentence: "Kevin will ride bikes with me, can't he?",
     answer: "wrong",
-    correction: "wouldn't he?",
+    correction: "wouldn't you?",
     prefilled: false,
   },
 ];
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 const initState = () => {
   const choices = {};

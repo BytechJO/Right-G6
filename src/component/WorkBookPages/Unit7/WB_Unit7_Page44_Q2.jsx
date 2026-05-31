@@ -11,13 +11,13 @@ const BLANKS = {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 const initAnswers = () => ({ 1: "", 2: "", 3: "", 4: "", 5: "", 6: "" });
 
 // ── InlineInput — OUTSIDE parent ──
 const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width }) => (
-  <span style={{ position: "relative", verticalAlign: "bottom" }}>
+  <span style={{ position: "relative", verticalAlign: "bottom", display: "inline-block" }}> {/* ✅ أضفنا display: inline-block */}
     <input
       type="text"
       value={value}
@@ -31,7 +31,6 @@ const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width
         background: "transparent",
         fontSize: "17px",
         color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
-        fontWeight: isCorrect ? "600" : "400",
         paddingBottom: "1px",
         fontFamily: "inherit",
         textAlign: "center",
@@ -48,7 +47,6 @@ const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width
     )}
   </span>
 );
-
 // ── MAIN COMPONENT ──
 const WB_Unit8_Expressions_K = () => {
   const [answers, setAnswers] = useState(initAnswers);

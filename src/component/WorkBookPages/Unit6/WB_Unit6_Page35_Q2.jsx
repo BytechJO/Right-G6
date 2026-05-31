@@ -1,3 +1,5 @@
+/////////////////// Q5 
+
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
@@ -47,7 +49,7 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 // ── Sub-components OUTSIDE parent ──
 

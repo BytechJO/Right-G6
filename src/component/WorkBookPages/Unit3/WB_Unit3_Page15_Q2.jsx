@@ -52,8 +52,7 @@ const ITEMS = [
 //  🔧  NORMALIZE
 // ─────────────────────────────────────────────
 const normalize = (str) =>
-  str.toLowerCase().replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ").trim();
-
+    str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
 const isCorrect = (userVal, correctArr) =>
   correctArr.some((c) => normalize(userVal) === normalize(c));
 

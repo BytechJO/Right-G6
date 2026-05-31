@@ -37,7 +37,8 @@ const RESPONSES = [
 ];
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
+
 
 const initAnswers = () => ({ 1: "", 2: "", 3: "" });
 

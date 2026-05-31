@@ -30,8 +30,10 @@ const WORDS = [
   { id: 6, answer: "nighttime",      codes: [10,11,5,14,6,6,11,16,9] },
 ];
 
+
 const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
+
 
 const initAnswers = () => {
   const a = {};

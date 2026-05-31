@@ -48,7 +48,7 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
 
 // ✅ CellInput خارج الـ component الرئيسي
 const CellInput = ({ rowKey, value, locked, result, onChange }) => {

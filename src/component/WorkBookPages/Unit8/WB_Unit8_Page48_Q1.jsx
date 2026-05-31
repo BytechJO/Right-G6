@@ -11,7 +11,7 @@ const BLANKS = {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
 const initAnswers = () => {
   const a = {};
