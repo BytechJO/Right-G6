@@ -3,17 +3,14 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review8_Page1_Q3 = () => {
-  const questions = [
-    "anybody",
-    "no one",
-    "nothing",
-    "someone",
-    "somebody",
-    "everybody",
-    "everything",
+  const correctAnswers = [
+    "Here you are",
+    "in ages",
+    "come in handy",
+    "show up",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -22,57 +19,56 @@ const Review8_Page1_Q3 = () => {
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
+      .replace(/[.?!,’']/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[index] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      copy[index] = undefined;
 
       return copy;
     });
   };
 
   const checkAnswers = () => {
-    if (locked) return;
+    const hasEmpty = answers.some((item) => !item.trim());
 
-    if (answers.some((a) => !a.trim())) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
-
       return;
     }
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(correctAnswers[index]);
 
-      if (ok) correctCount++;
+      if (correct) correctCount++;
 
-      return ok;
+      return correct;
     });
 
     setResult(newResults);
 
-    const total = questions.length;
+    const total = correctAnswers.length;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -90,51 +86,47 @@ const Review8_Page1_Q3 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "anybody",
-      "no one",
-      "nothing",
-      "someone",
-      "somebody",
-      "everybody",
-      "everything",
-    ]);
+    setAnswers(["Here you are", "in ages", "come in handy", "show up"]);
 
-    setResult([true, true, true, true, true, true, true]);
+    setResult([true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", "", ""]);
+    setAnswers(["", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
+  const inputField = (index, width = "260px") => (
     <span className="relative inline-block">
       <input
         type="text"
-        value={answers[i]}
-        placeholder="type here..."
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
         className={`
-          ${width}
           border-0
+          border-b
           outline-none
           bg-transparent
-          text-center
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
-          px-1
+          text-center
+
+          ${result[index] === false ? "border-[#D1232A]" : ""}
         `}
+        style={{
+          width,
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -162,120 +154,47 @@ const Review8_Page1_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-20">
+      <div className="div-forall text-[18px] w-full">
+        <h5 className="header-title-page8 mb-[15vh]">
           <span
             style={{
-              marginRight: "10px",
+              marginRight: "20px",
             }}
           >
             C
           </span>
-          Finish the chart.
+          Fill in the blanks with the correct expressions.
         </h5>
 
-        {/* TABLE */}
-        <table
-          className="border-collapse text-[18px]"
-          style={{
-            width: "920px",
-          }}
-        >
-          <tbody>
-            {/* HEADER */}
-            <tr>
-              <td className="border-2 border-[#6d2980] h-[70px] w-40 bg-[#E6E0EA]"></td>
+        <div className="flex flex-col gap-[8vh]">
+          {/* 1 */}
+          <div>
+            <span className="font-bold mr-4">1</span>
+            {inputField(0, "420px")} ! I was looking for you everywhere.
+          </div>
 
-              <td className="border-2 border-[#6d2980] text-center  bg-[#E6E0EA]">
-                one
-              </td>
+          {/* 2 */}
+          <div>
+            <span className="font-bold mr-4">2</span>I haven’t seen this toy{" "}
+            {inputField(1, "220px")} ! The last time I saw it was when I was
+            four years old.
+          </div>
 
-              <td className="border-2 border-[#6d2980] text-center  bg-[#E6E0EA]">
-                body
-              </td>
+          {/* 3 */}
+          <div>
+            <span className="font-bold mr-4">3</span>I might not find a use for
+            this old pin now, but it might {inputField(2, "260px")} one day.
+          </div>
 
-              <td className="border-2 border-[#6d2980] text-center  bg-[#E6E0EA]">
-                thing
-              </td>
-            </tr>
-
-            {/* ANY */}
-            <tr>
-              <td className="border-2 border-[#6d2980] text-center h-[70px] bg-[#E6E0EA]">
-                any
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">anyone</td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(0, "w-[120px] h-[38px]")}
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                anything
-              </td>
-            </tr>
-
-            {/* NO */}
-            <tr>
-              <td className="border-2 border-[#6d2980] text-center h-[70px] bg-[#E6E0EA]">
-                no
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(1, "w-[120px] h-[38px]")}
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">nobody</td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(2, "w-[120px] h-[38px]")}
-              </td>
-            </tr>
-
-            {/* SOME */}
-            <tr>
-              <td className="border-2 border-[#6d2980] text-center h-[70px] bg-[#E6E0EA]">
-                some
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(3, "w-[120px] h-[38px]")}
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(4, "w-[120px] h-[38px]")}
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                something
-              </td>
-            </tr>
-
-            {/* EVERY */}
-            <tr>
-              <td className="border-2 border-[#6d2980] text-center h-[70px] bg-[#E6E0EA]">
-                every
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                everyone
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(5, "w-[120px] h-[38px]")}
-              </td>
-
-              <td className="border-2 border-[#6d2980] text-center">
-                {inputField(6, "w-[120px] h-[38px]")}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          {/* 4 */}
+          <div>
+            <span className="font-bold mr-4">4</span>
+            My friends will {inputField(3, "320px")} on my lawn at eight
+            o’clock.
+          </div>
+        </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

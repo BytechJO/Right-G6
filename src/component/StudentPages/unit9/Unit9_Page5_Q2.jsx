@@ -294,6 +294,7 @@ const Unit9_Page5_Q2 = () => {
       <input
         type="text"
         value={answers[i]}
+        placeholder={marks[i] === "false" ? "Write the correct expression" : ""}
         disabled={locked || result[i]?.row === true || marks[i] === "true"}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`

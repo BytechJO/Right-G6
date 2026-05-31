@@ -1,283 +1,200 @@
 import React, { useState } from "react";
-
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 72/SVG/Asset 37.svg";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../Button";
 
-const Review8_Page1_Q1 = () => {
-  const questions = ["5", "1", "2", "4", "3"];
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""'';:\s]/g, "")
+    .trim();
 
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+// الكلمات والتعريفات
+const WORDS = [
+  { num: 1, word: "gadget" },
+  { num: 2, word: "glows" },
+  { num: 3, word: "helicopter" },
+  { num: 4, word: "wireless" },
+  { num: 5, word: "skills" },
+  { num: 6, word: "peculiar" },
+];
 
-  const [result, setResult] = useState([]);
+const DEFINITIONS = [
+  { letter: "a", text: "strange; not normal" },
+  { letter: "b", text: "small, useful device or tool" },
+  {
+    letter: "c",
+    text: "an aircraft that can stay in the air without moving forward",
+  },
+  {
+    letter: "d",
+    text: "abilities to do things through practice and experience",
+  },
+  { letter: "e", text: "shines with low light" },
+  { letter: "f", text: "not using wires" },
+];
 
+// الإجابات الصحيحة: رقم السؤال → الحرف
+const CORRECT = ["b", "e", "c", "f", "d", "a"];
+
+const Unit3_Page5_Q1 = () => {
+  const [answers, setAnswers] = useState(Array(6).fill(""));
+  const [errors, setErrors] = useState(Array(6).fill(null));
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
-
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === true) return;
     const updated = [...answers];
-
-    updated[i] = value;
-
+    updated[i] = val;
     setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+    const updatedErr = [...errors];
+    updatedErr[i] = null;
+    setErrors(updatedErr);
   };
 
   const checkAnswers = () => {
     if (locked) return;
-
     if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all answers.");
-
+      ValidationAlert.info();
       return;
     }
-
-    let correctCount = 0;
-
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
-
-      if (ok) correctCount++;
-
+    let score = 0;
+    const newErr = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(CORRECT[i]);
+      if (ok) score++;
       return ok;
     });
-
-    setResult(newResults);
-
-    const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    setErrors(newErr);
+    const total = CORRECT.length;
+    const msg = `Score: ${score} / ${total}`;
+    if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setAnswers(["5", "1", "2", "4", "3"]);
-
-    setResult([true, true, true, true, true]);
-
+    setAnswers(CORRECT);
+    setErrors(Array(6).fill(true));
     setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
-
-    setResult([]);
-
+  const reset = () => {
+    setAnswers(Array(6).fill(""));
+    setErrors(Array(6).fill(null));
     setLocked(false);
   };
 
-  const inputField = (i) => (
-    <span className="relative inline-block">
-      <input
-        type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
-        className={`
-          w-8
-          border-0
-          outline-none
-          bg-transparent
-          text-center
-          text-[18px]
-          text-[#6D2980]
-          font-semibold
-          leading-none
-          align-middle
-          px-1
-
-        `}
-      />
-
-      {result[i] === false && (
-        <span
+  const InputBox = ({ index }) => {
+    const isOk = errors[index] === true;
+    const isWrong = errors[index] === false;
+    return (
+      <span style={{ position: "relative", display: "inline-block" }}>
+        <input
+          value={answers[index]}
+          disabled={locked || isOk}
+          onChange={(e) => handleChange(index, e.target.value)}
           style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "11px",
+            width: "50px",
+            borderBottom: isWrong ? "1px solid #ef4444" : "1px solid #aaa",
+            outline: "none",
+            background: "transparent",
+            textAlign: "center",
+            fontSize: "17px",
             fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+            // color: isOk ? "#84ad40" : "#6D2980",
           }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
+        />
+        {isWrong && (
+          <span
+            style={{
+              position: "absolute",
+              top: "-8px",
+              right: "-8px",
+              width: "18px",
+              height: "18px",
+              background: "red",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              zIndex: 5,
+            }}
+          >
+            ✕
+          </span>
+        )}
+      </span>
+    );
+  };
 
   return (
-    <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall ">
-        {/* LEFT SIDE */}
-        <div>
-          {/* TITLE */}
-          <h5 className="header-title-page8 mb-20">
-            <span
-              style={{
-                marginRight: "10px",
-              }}
-            >
-              A
-            </span>
-            Label the pictures with the given words.
-          </h5>
-          <div className="flex items-start gap-60">
-            {/* WORDS */}
-            <div className="grid grid-cols-2 gap-y-15 gap-x-30 text-[18px] ">
-              <div className="flex gap-6">
-                <span className="font-bold">1</span>
-                <span>rainbow</span>
-              </div>
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "40px" }}>
+        <h5 className="header-title-page8 ">
+          <span className=" mr-4">A</span>
+          Match each vocabulary word to its definition.
+        </h5>
 
-              <div className="flex gap-6">
-                <span className="font-bold">2</span>
-                <span>pilot</span>
-              </div>
-
-              <div className="flex gap-6">
-                <span className="font-bold">3</span>
-                <span>crowded</span>
-              </div>
-
-              <div className="flex gap-6">
-                <span className="font-bold">4</span>
-                <span>lean</span>
-              </div>
-
-              <div className="flex gap-6 col-span-2">
-                <span className="font-bold">5</span>
-                <span>hot-air balloon</span>
-              </div>
-            </div>
-
-            {/* IMAGE SIDE */}
-            <div className="relative">
-              <img
-                src={img}
-                alt=""
-                style={{
-                  width: "38vw",
-                  maxWidth: "420px",
-                  minWidth: "300px",
-                  height: "auto",
-                }}
-              />
-
-              {/* INPUTS */}
-
+        <div
+          style={{
+            display: "flex",
+            gap: "120px",
+            marginTop: "15px",
+            fontSize: "18px",
+          }}
+        >
+          {/* العمود الأيسر - الكلمات مع الفراغات */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
+          >
+            {WORDS.map((item, i) => (
               <div
-                style={{
-                  position: "absolute",
-                  top: "23%",
-                  left: "15.5%",
-                }}
+                key={i}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                {inputField(0, "w-[130px]")}
+                <InputBox index={i} />
+                <span style={{ fontWeight: "bold", color: "#333" }}>
+                  {item.num}
+                </span>
+                <span style={{ color: "#333" }}>{item.word}</span>
               </div>
+            ))}
+          </div>
 
+          {/* العمود الأيمن - التعريفات */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
+          >
+            {DEFINITIONS.map((def, i) => (
               <div
-                style={{
-                  position: "absolute",
-                  top: "9%",
-                  right: "22%",
-                }}
+                key={i}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                {inputField(1, "w-[110px]")}
+                <span style={{ fontWeight: "bold", color: "#333" }}>
+                  {def.letter}
+                </span>
+                <span style={{ color: "#333" }}>{def.text}</span>
               </div>
-
-              <div
-                style={{
-                  position: "absolute",
-                  top: "31%",
-                  right: "26%",
-                }}
-              >
-                {inputField(2, "w-[90px]")}
-              </div>
-
-              <div
-                style={{
-                  position: "absolute",
-                  top: "46%",
-                  left: "20%",
-                }}
-              >
-                {inputField(3, "w-[90px]")}
-              </div>
-
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "13%",
-                  right: "3.5%",
-                }}
-              >
-                {inputField(4, "w-[120px]")}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-
-      {/* BUTTONS */}
+      {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
-
-        <button className="show-answer-btn" onClick={showAnswers}>
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        <ActionButtons
+          handleShowAnswer={showAnswers}
+          handleStartAgain={reset}
+          checkAnswers={checkAnswers}
+        />
       </div>
     </div>
   );
 };
 
-export default Review8_Page1_Q1;
+export default Unit3_Page5_Q1;

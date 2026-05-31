@@ -1,317 +1,114 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review8_Page2_Q2 = () => {
-  const pronouns = [
-    "No one",
-    "someone",
-    "Everybody",
-    "something",
-    "everybody",
-    "No one",
-    "anything",
-  ];
-  const paragraphWords = [
-    "No one",
-    "knew",
-    "how",
-    "the",
-    "necklace",
-    "had",
-    "disappeared,",
-    "but",
-    "someone",
-    "must",
-    "have",
-    "taken",
-    "it.",
-    "It",
-    "was",
-    "Mom’s",
-    "favorite",
-    "necklace.",
-    "She",
-    "always",
-    "kept",
-    "it",
-    "on",
-    "a",
-    "necklace",
-    "holder",
-    "on",
-    "her",
-    "dresser,",
-    "but",
-    "it",
-    "was",
-    "gone.",
-    "Everybody",
-    "in",
-    "our",
-    "family",
-    "helped",
-    "to",
-    "look",
-    "for",
-    "it,",
-    "including",
-    "our",
-    "new",
-    "cat,",
-    "Mew.",
-    "Suddenly,",
-    "I",
-    "noticed",
-    "she",
-    "had",
-    "stopped",
-    "following",
-    "me",
-    "and",
-    "was",
-    "playing.",
-    "I",
-    "looked",
-    "over",
-    "to",
-    "see",
-    "what",
-    "she",
-    "was",
-    "doing,",
-    "and",
-    "I",
-    "saw",
-    "something",
-    "shiny",
-    "on",
-    "the",
-    "carpet",
-    "near",
-    "Mew.",
-    "“Hey,",
-    "everybody,",
-    "come",
-    "here!”",
-    "I",
-    "yelled.",
-    "Mew",
-    "had",
-    "my",
-    "mom’s",
-    "necklace",
-    "on",
-    "the",
-    "carpet,",
-    "and",
-    "she",
-    "was",
-    "playing",
-    "with",
-    "it!",
-    "No one",
-    "had",
-    "thought",
-    "that",
-    "the",
-    "thief",
-    "might",
-    "be",
-    "an",
-    "“it”",
-    "and",
-    "not",
-    "a",
-    "person.",
-    "I",
-    "remembered",
-    "reading",
-    "that",
-    "cats",
-    "like",
-    "anything",
-    "shiny",
-    "to",
-    "play",
-    "with,",
-    "and",
-    "that",
-    "was",
-    "certainly",
-    "true",
-    "for",
-    "our",
-    "cat!",
+  const correctAnswers = [
+    "Julia asked Tina what she wanted to buy.",
+    "Tina said that she wanted a scoop of vanilla ice cream.",
+    "Julia said she would like a piece of chocolate cake.",
+    "Julia said that the chocolate cake was delicious, and she asked Tina to try some.",
+    "Tina said that Julia was right, that it was very tasty and offered Julia some of her ice cream to try.",
   ];
 
-  const questions = [
-    "a necklace",
-    "Everybody in the family was helping to look for it.",
-    "Mew, the cat, had taken it to play with.",
-  ];
-
-  const [answers, setAnswers] = useState(["", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
 
-  const [selectedWords, setSelectedWords] = useState([]);
-
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
+      .replace(/[.,!?'""]/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[index] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      copy[index] = undefined;
 
       return copy;
     });
   };
 
-  const toggleWord = (word, index) => {
-    if (locked) return;
-
-    const cleanWord = word.replace(/[.,!?”“]/g, "");
-
-    if (!pronouns.includes(cleanWord)) return;
-
-    const key = `${word}-${index}`;
-
-    // إذا الكلمة محددة مسبقًا لا تسمح بإزالتها
-    if (selectedWords.includes(key)) return;
-
-    setSelectedWords((prev) => [...prev, key]);
-  };
   const checkAnswers = () => {
-    if (locked) return;
+    const hasEmpty = answers.some((item) => !item.trim());
 
-    // CHECK EMPTY INPUTS
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info();
-
-      return;
-    }
-    if (selectedWords.length === 0) {
-      ValidationAlert.info();
+    if (hasEmpty) {
+      ValidationAlert.info("Please complete all answers.");
 
       return;
     }
-    // CHECK TEXT ANSWERS
+
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(correctAnswers[index]);
 
-      if (ok) correctCount++;
+      if (correct) correctCount++;
 
-      return ok;
+      return correct;
     });
 
     setResult(newResults);
 
-    // CHECK PRONOUNS
-    const correctSelections = [];
-
-    paragraphWords.forEach((word, index) => {
-      const cleanWord = word.replace(/[.,!?”“]/g, "");
-
-      if (pronouns.includes(cleanWord)) {
-        correctSelections.push(`${word}-${index}`);
-      }
-    });
-
-    const correctChosen = selectedWords.filter((item) =>
-      correctSelections.includes(item),
-    );
-    // SCORE
-    const pronounsScore = correctChosen.length;
-
-    const total = questions.length + correctSelections.length;
-
-    const totalCorrect = correctCount + pronounsScore;
+    const total = correctAnswers.length;
 
     const color =
-      totalCorrect === total ? "green" : totalCorrect === 0 ? "red" : "orange";
+      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
-    <div style="font-size:18px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${totalCorrect} / ${total}
-      </span>
-    </div>
-  `;
+      <div style="font-size:18px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">
+          Score: ${correctCount} / ${total}
+        </span>
+      </div>
+    `;
 
-    // SUCCESS
-    if (totalCorrect === total) {
+    if (correctCount === total) {
       setLocked(true);
 
       ValidationAlert.success(msg);
-    }
-    // FAIL
-    else if (totalCorrect === 0) {
+    } else if (correctCount === 0) {
       ValidationAlert.error(msg);
-    }
-    // PARTIAL
-    else {
+    } else {
       ValidationAlert.warning(msg);
     }
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "a necklace",
-      "Everybody in the family was helping to look for it.",
-      "Mew, the cat, had taken it to play with.",
-    ]);
+    setAnswers(correctAnswers);
 
-    const correctSelections = [];
-
-    paragraphWords.forEach((word, index) => {
-      const cleanWord = word.replace(/[.,!?”“]/g, "");
-
-      if (pronouns.includes(cleanWord)) {
-        correctSelections.push(`${word}-${index}`);
-      }
-    });
-
-    setSelectedWords(correctSelections);
-    setResult([true, true, true]);
+    setResult([true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", ""]);
+    setAnswers(["", "", "", "", ""]);
 
     setResult([]);
-    setSelectedWords([]);
 
     setLocked(false);
   };
 
-  const sentenceInput = (i) => (
-    <span className="relative flex-1">
+  const inputField = (index) => (
+    <span className="relative block w-full">
       <input
         type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
         className={`
           w-full
           border-0
@@ -319,17 +116,17 @@ const Review8_Page2_Q2 = () => {
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
-          leading-none
-          align-middle
           px-1
-
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${result[index] === false ? "border-[#D1232A]" : ""}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -357,99 +154,84 @@ const Review8_Page2_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-8">
+      <div className="div-forall w-full text-[18px]">
+        <h5 className="header-title-page8 mb-6">
           <span
+            className="ex-A"
             style={{
               marginRight: "10px",
             }}
           >
             E
           </span>
-          Read, and then follow the instructions or answer the questions.
+          Read and change each quote to reported speech.
         </h5>
 
-        {/* PARAGRAPH */}
-        <div
-          style={{
-            border: "2px solid #8D3DAF",
-            borderRadius: "18px",
-            padding: "18px",
-            fontSize: "18px",
-            lineHeight: "2.3",
-            width: "900px",
-            marginBottom: "30px",
-          }}
-        >
-          {paragraphWords.map((word, index) => {
-            const key = `${word}-${index}`;
+        <div className="flex flex-col gap-2">
+          <div>
+            <div className="mb-2">
+              <span className="font-bold mr-4">1</span>
+              Julie and Tina went to the café together. “What do you want to
+              buy?” asked Julia.
+            </div>
+          </div>
 
-            const selected = selectedWords.includes(key);
+          <div>
+            <div className="mb-2">
+              <span className="font-bold mr-4">2</span>
+              “I would like a scoop of vanilla ice cream,” said Tina.
+            </div>
+          </div>
 
-            return (
-              <span
-                key={index}
-                onClick={() => toggleWord(word, index)}
-                style={{
-                  display: "inline-block",
-                  marginRight: "0px",
-                  marginBottom: "2px",
-                  padding: "0px 2px",
-                  borderRadius: "999px",
-                  cursor: locked ? "default" : "pointer",
-                  userSelect: "none",
-                  position: "relative",
-                  border: selected
-                    ? "2px solid #6D2980"
-                    : "2px solid transparent",
+          <div>
+            <div className="mb-2">
+              <span className="font-bold mr-4">3</span>
+              Julie said, “I will get a piece of chocolate cake.” The waiter
+              came and placed their order. After five minutes, their order was
+              ready.
+            </div>
+          </div>
 
-                  transition: "0.2s",
-                }}
-              >
-                {word}
-              </span>
-            );
-          })}
+          <div>
+            <div className="mb-2">
+              <span className="font-bold mr-4">4</span>
+              “The chocolate cake tastes delicious! Try some, Tina,” offered
+              Julia.
+            </div>
+          </div>
+
+          <div>
+            <div className="mb-6">
+              <span className="font-bold mr-4">5</span>
+              Tina tried the chocolate cake and said, “You’re right. It’s very
+              tasty. Try some of my ice cream.”
+            </div>
+          </div>
         </div>
-
-        {/* QUESTIONS */}
-        <div className="text-[18px] leading-[4] mb-7">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-2">
+          <div className="mb-4 flex items-end gap-4">
             <span className="font-bold">1</span>
-
-            <span>
-              Circle all the indefinite pronouns in the paragraph above.
-            </span>
+            {inputField(0)}
           </div>
-
-          <div className="flex items-center gap-4">
+          <div className="mb-4 flex items-end gap-4">
             <span className="font-bold">2</span>
-
-            <span>What was missing in the family’s house?</span>
-
-            {sentenceInput(0, "w-[320px]")}
+            {inputField(1)}
           </div>
-
-          <div className="flex items-center gap-4">
+          <div className="mb-4 flex items-end gap-4">
             <span className="font-bold">3</span>
-
-            <span>Who was helping to look for it?</span>
-
-            {sentenceInput(1, "w-[430px]")}
+            {inputField(2)}
           </div>
-
-          <div className="flex items-center gap-4">
+          <div className="mb-4 flex items-end gap-4">
             <span className="font-bold">4</span>
-
-            <span>Why had the necklace disappeared?</span>
-
-            {sentenceInput(2, "w-[420px]")}
+            {inputField(3)}
+          </div>
+          <div className="mb-4 flex items-end gap-4">
+            <span className="font-bold">5</span>
+            {inputField(4)}
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

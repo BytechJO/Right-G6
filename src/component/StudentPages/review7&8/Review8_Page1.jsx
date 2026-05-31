@@ -1,4 +1,4 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 72.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 72.png";
 import "./Review8_Page1.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 

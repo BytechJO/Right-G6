@@ -1,29 +1,18 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 23.svg";
+import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 22.svg";
 
-const Review7_Page1_Q2 = () => {
-  const questions = [
-    "stand out",
-    "catch up",
-    "It's been too long.",
-    "You're a natural.",
-    "Here I go.",
-    "Now is your chance.",
-  ];
+const Review7_Page1_Q3 = () => {
+  const correctAnswers = ["false", "true"];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", ""]);
 
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.!?'"‘’“”]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
   const handleChange = (index, value) => {
     if (locked || result[index] === true) return;
 
@@ -56,7 +45,7 @@ const Review7_Page1_Q2 = () => {
     let correctCount = 0;
 
     const newResults = answers.map((answer, index) => {
-      const correct = normalize(answer) === normalize(questions[index]);
+      const correct = answer.toLowerCase().trim() === correctAnswers[index];
 
       if (correct) correctCount++;
 
@@ -65,7 +54,7 @@ const Review7_Page1_Q2 = () => {
 
     setResult(newResults);
 
-    const total = questions.length;
+    const total = correctAnswers.length;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
@@ -90,22 +79,15 @@ const Review7_Page1_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "stand out",
-      "catch up",
-      "It's been too long.",
-      "You're a natural.",
-      "Here I go.",
-      "Now is your chance.",
-    ]);
+    setAnswers(["false", "true"]);
 
-    setResult([true, true, true, true, true, true]);
+    setResult([true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", ""]);
+    setAnswers(["", ""]);
 
     setResult([]);
 
@@ -113,14 +95,14 @@ const Review7_Page1_Q2 = () => {
   };
 
   const inputField = (index) => (
-    <span className="relative block w-full">
+    <span className="relative inline-block">
       <input
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
-          w-full
+          w-60
           border-0
           border-b
           outline-none
@@ -128,7 +110,7 @@ const Review7_Page1_Q2 = () => {
           text-[18px]
           text-black
           font-semibold
-          px-1
+          text-center
 
           ${result[index] === false ? "border-[#D1232A]" : ""}
         `}
@@ -166,71 +148,62 @@ const Review7_Page1_Q2 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall w-full text-[18px]">
-        <h5 className="header-title-page8 mb-[7vh]">
+        <h5 className="header-title-page8 mb-[25vh]">
           <span
             style={{
               marginRight: "20px",
             }}
           >
-            B
+            C
           </span>
-          Change one word in each expression below to make it correct. Rewrite
-          the expression.
+          Read, look, and write <span className="text-[#F79530]">true</span> or{" "}
+          <span className="text-[#F79530]">false</span>.
         </h5>
 
-        <div className="flex flex-col gap-[6vh]">
-          {/* 1 */}
-          <div className="flex items-center gap-4">
+        <div className="grid grid-cols-2 gap-12">
+          {/* Question 1 */}
+          <div className="flex gap-4 items-start h-[140px]">
+            {" "}
             <span className="font-bold">1</span>
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <div>He is using stencils</div>
+                <div>to paint this wall.</div>
+              </div>
 
-            <span>stand in</span>
-
-            <div className="flex-1">{inputField(0)}</div>
+              <div>{inputField(0)}</div>
+            </div>
+            <img
+              src={img1}
+              alt=""
+              style={{
+                width: "160px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+            />
           </div>
 
-          {/* 2 */}
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4 items-start h-[140px]">
             <span className="font-bold">2</span>
 
-            <span>catch down</span>
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <div>The dog looks silly.</div>
+              </div>
 
-            <div className="flex-1">{inputField(1)}</div>
-          </div>
+              <div>{inputField(1)}</div>
+            </div>
 
-          {/* 3 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold">3</span>
-
-            <span>It’s had too long ...</span>
-
-            <div className="flex-1">{inputField(2)}</div>
-          </div>
-
-          {/* 4 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold">4</span>
-
-            <span>You’re a normal!</span>
-
-            <div className="flex-1">{inputField(3)}</div>
-          </div>
-
-          {/* 5 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold">5</span>
-
-            <span>Here I went.</span>
-
-            <div className="flex-1">{inputField(4)}</div>
-          </div>
-
-          {/* 6 */}
-          <div className="flex items-center gap-4">
-            <span className="font-bold">6</span>
-
-            <span>Later is your chance.</span>
-
-            <div className="flex-1">{inputField(5)}</div>
+            <img
+              src={img2}
+              alt=""
+              style={{
+                width: "160px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+            />
           </div>
         </div>
       </div>
@@ -252,4 +225,4 @@ const Review7_Page1_Q2 = () => {
   );
 };
 
-export default Review7_Page1_Q2;
+export default Review7_Page1_Q3;

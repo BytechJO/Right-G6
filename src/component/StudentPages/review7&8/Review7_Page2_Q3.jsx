@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 71/SVG/Asset 19.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 71/SVG/Asset 20.svg";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review7_Page2_Q3 = () => {
-  const questions = [
-    "Is she jogging in the park?",
-    "Yes, she is jogging in the park.",
-    "Is he playing baseball?",
-    "Yes, he is playing baseball.",
+  const correctAnswers = [
+    ["had", "have"],
+    ["have", "hadn't"],
+    ["had", "have"],
+    ["hadn't", "have"],
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState([
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+  ]);
 
   const [result, setResult] = useState([]);
 
@@ -22,23 +24,25 @@ const Review7_Page2_Q3 = () => {
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,?]/g, "")
+      .replace(/[.!?'"‘’“”]/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (questionIndex, blankIndex, value) => {
+    if (locked || result?.[questionIndex]?.[blankIndex] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[questionIndex][blankIndex] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      if (copy[questionIndex]) {
+        copy[questionIndex][blankIndex] = undefined;
+      }
 
       return copy;
     });
@@ -46,33 +50,36 @@ const Review7_Page2_Q3 = () => {
 
   const checkAnswers = () => {
     if (locked) return;
+    const hasEmpty = answers.some((row) => row.some((cell) => !cell.trim()));
 
-    if (answers.some((a) => !a.trim())) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
-
       return;
     }
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((row, rowIndex) =>
+      row.map((cell, colIndex) => {
+        const correct =
+          normalize(cell) === normalize(correctAnswers[rowIndex][colIndex]);
 
-      if (ok) correctCount++;
+        if (correct) correctCount++;
 
-      return ok;
-    });
+        return correct;
+      }),
+    );
 
     setResult(newResults);
 
-    const total = questions.length;
+    const total = 8;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -90,51 +97,63 @@ const Review7_Page2_Q3 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "Is she jogging in the park?",
-      "Yes, she is jogging in the park.",
-      "Is he playing baseball?",
-      "Yes, he is playing baseball.",
-    ]);
+    setAnswers(correctAnswers);
 
-    setResult([true, true, true, true]);
+    setResult([
+      [true, true],
+      [true, true],
+      [true, true],
+      [true, true],
+    ]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setAnswers([
+      ["", ""],
+      ["", ""],
+      ["", ""],
+      ["", ""],
+    ]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const sentenceInput = (i, width) => (
+  const inputField = (questionIndex, blankIndex, width = "140px") => (
     <span className="relative inline-block">
       <input
         type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={answers[questionIndex][blankIndex]}
+        disabled={locked || result?.[questionIndex]?.[blankIndex] === true}
+        onChange={(e) =>
+          handleChange(questionIndex, blankIndex, e.target.value)
+        }
         className={`
-          ${width}
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
-          leading-none
-          align-middle
-          px-1
+          text-center
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${
+            result?.[questionIndex]?.[blankIndex] === false
+              ? "border-[#D1232A]"
+              : ""
+          }
         `}
+        style={{
+          width,
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result?.[questionIndex]?.[blankIndex] === false && (
         <span
           style={{
             position: "absolute",
@@ -162,64 +181,56 @@ const Review7_Page2_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-20">
+      <div className="div-forall text-[18px] w-full">
+        <h5 className="header-title-page8 mb-[11vh]">
           <span
             style={{
-              marginRight: "10px",
+              marginRight: "20px",
             }}
           >
-            E
+            F
           </span>
-          Look and write a question and answer that matches each picture.
+          Put in <span className="text-[#F79530]">have</span>,{" "}
+          <span className="text-[#F79530]">has</span>,{" "}
+          <span className="text-[#F79530]">had</span>, or{" "}
+          <span className="text-[#F79530]">hadn’t</span>.
         </h5>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-20">
+        <div className="flex flex-col gap-[8vh]">
           {/* 1 */}
-          <div className="flex items-center gap-6">
-            <span className="font-bold text-[18px] self-start">1</span>
+          <div>
+            <span className="font-bold mr-4">1</span>
+            If Jenny {inputField(0, 0)} known there was a quiz in math class,
+            she would
+          </div>
 
-            <img
-              src={img1}
-              alt=""
-              style={{
-                width: "200px",
-                height: "auto",
-              }}
-            />
-
-            <div className="flex flex-col gap-7 mt-2">
-              {sentenceInput(0, "w-[620px]")}
-
-              {sentenceInput(1, "w-[620px]")}
-            </div>
+          <div className="ml-[35px] mt-2">
+            {inputField(0, 1)} studied last night.
           </div>
 
           {/* 2 */}
-          <div className="flex items-center gap-6">
-            <span className="font-bold text-[18px] self-start">2</span>
+          <div>
+            <span className="font-bold mr-4">2</span>
+            He would {inputField(1, 0)} slept last night if the cat{" "}
+            {inputField(1, 1)} been so noisy.
+          </div>
 
-            <img
-              src={img2}
-              alt=""
-              style={{
-                width: "200px",
-                height: "auto",
-              }}
-            />
+          {/* 3 */}
+          <div>
+            <span className="font-bold mr-4">3</span>
+            If we {inputField(2, 0)} come earlier, we wouldn’t{" "}
+            {inputField(2, 1)} missed the train ride.
+          </div>
 
-            <div className="flex flex-col gap-7 mt-2">
-              {sentenceInput(2, "w-[620px]")}
-
-              {sentenceInput(3, "w-[620px]")}
-            </div>
+          {/* 4 */}
+          <div>
+            <span className="font-bold mr-4">4</span>
+            If he {inputField(3, 0)} been so sick, he would {inputField(3, 1)}{" "}
+            come to school today.
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

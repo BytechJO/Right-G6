@@ -286,11 +286,12 @@ const Review9_Page1_Q2 = () => {
   };
 
   // INPUT
-  const inputField = (i, width = "320px") => (
+  const inputField = (i, width = "w-[350px]") => (
     <div className="relative inline-block">
       <input
         type="text"
         value={answers[i]}
+         placeholder={marks[i] === "false" ? "Write the correct expression" : ""}
         disabled={locked || result[i]?.row === true || marks[i] === "true"}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`

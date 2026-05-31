@@ -1,7 +1,7 @@
-import page24 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 74.png";
+import page24 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 74.png";
 import React, { useEffect, useState } from "react";
 import "./Reading_Unit8_Page1.css";
-import sound1 from "../../../assets/audio/ClassBook/U8/PG 74/cd4pg74-story-adult-lady_1CKo40XZ.mp3";
+import sound1 from "../../../assets/audio/ClassBook/U8/PG 74/cd4pg74-story-adult-lady_F0o8kemk.mp3";
 import sound2 from "../../../assets/audio/ClassBook/U8/PG 74/Pg74_1.1_Adult Lady.mp3";
 import sound3 from "../../../assets/audio/ClassBook/U8/PG 74/Pg74_1.2_Adult Lady.mp3";
 import sound4 from "../../../assets/audio/ClassBook/U8/PG 74/Pg74_1.3_Adult Lady.mp3";
@@ -9,7 +9,7 @@ import sound5 from "../../../assets/audio/ClassBook/U8/PG 74/Pg74_1.4_Adult Lady
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video3 from "../../../assets/videos/grade 5 unit 8 reading page 74-75.mp4";
+import video3 from "../../../assets/videos/grade 6 unit 8 page 64.mp4";
 
 const Reading_Unit8_Page1 = ({
   openPopup,
@@ -24,58 +24,31 @@ const Reading_Unit8_Page1 = ({
   }, [setActiveAudio]);
   const captions = [
     {
-      start: 0.22,
-      end: 10.84,
-      text: "Page 74. Trina's trip to Holland. Trina and her mom are traveling from New York to Holland. Trina doesn't know anything about Holland except what her mother has told her.",
+      start: 0.2,
+      end: 12.8,
+      text: "Page 74, Cleaning Lake Otto. Today was a special day for my class. We were going on a trip to the lake. Mrs. Baca, our teacher, said that Mr. Hernandez was going to lead us on the trip.",
     },
-
     {
-      start: 12.09,
-      end: 55.06,
-      text: "She and her mother are looking at an atlas, a book of maps. “Here is where we are going,” her mom says. “It's a little village in Holland. It is where I grew up.” The pilot is talking to the passengers now. He says that they will be landing sometime soon. “We're finally here,” says Mom. “That is Holland below us.” Trina looks out the window. She can see villages and farms. Crops are growing in the fields. The flowers are blooming. There is a river, too. At the airport, Mom rents a car. She is speaking Dutch with the people in Holland. Trina can understand only some of the words. Mom and Trina put their bags in the car. They drive off. Suddenly, Trina sees something strange.",
+      start: 13.83,
+      end: 131.32,
+      text: "Good morning, said Mr. Hernandez. He said that he wanted to tell us about his job and how we could help him. He said that his job was to make sure that the lakes and rivers in our town are clean. He said that was hard work, and he needed our help to be sure everything was done. Lake Otto is where I really need help. If people had taken better care of Lake Otto, it would not have gotten so bad. Because people have thrown trash in and around it, we need to clean it. I'm hoping that today you can help me take samples of the water. We'll take notes and pictures of what we see. Then we'll pick up trash around the lake. Mr. Hernandez said that if people had taken better care of the Earth, we would not have so many serious problems. After Mr. Hernandez's great speech, we were ready to go. We went out to the school bus. Our ride to Lake Otto only took 20 minutes. We got out of the bus and walked to the lake. Mrs. Baca told us that we should be careful at the lake. She wanted us to stay with the group and listen to Mr. Hernandez. The lake looked very dirty. People had not taken care of it, and there was lots of trash. I realized how sad it would be if all the animals and fish disappeared. There wouldn't be a way to get those living things back again. We all got to work. Jimmy, Mitchell, and I took notes on a clipboard. We wrote down everything we saw and took pictures with Mr. Hernandez's camera. I took a picture of a big oil drum. It was making the water black. Some students put lake water in jars. Mr. Hernandez said he would look at these samples in the building where he works. He has special machines that help to tell him how dirty the water is. Next, Mrs. Baca gave each student a pair of gloves and a big plastic bag. Mr. Hernandez told us to pick up trash around the lake. We filled all our bags very quickly. If I hadn't seen the lake when we first started, I wouldn't have believed all the trash we picked up.",
     },
-
     {
-      start: 56.14,
-      end: 64.68,
-      text: "“What is that, Mom?” asks Trina. “That's a windmill,” says Mom. “Long ago, everyone in Holland used windmills to pump water.”",
+      start: 132.63,
+      end: 146.66,
+      text: 'The best part was that when we were done, the lake looked so much nicer. When we got back to school, we talked about what we learned. "I learned that if we don\'t start taking care of Lake Otto, we will lose the animals and fish that are living there," said Miguel.',
     },
-
     {
-      start: 66.18,
-      end: 68.43,
-      text: "Trina and Mom finally arrived at their hotel.",
-    },
-
-    {
-      start: 69.94,
-      end: 90.24,
-      text: "Someone who works in the hotel takes their bags and shows them their room. “The weather is perfect for a bike ride,” says Mom. Trina and Mom go to the lobby in the hotel. There, they rent two bicycles. They ride for miles. They see more windmills. They see fields of tulips, the pretty flowers that grow all over Holland.",
-    },
-
-    {
-      start: 91.77,
-      end: 107.03,
-      text: "The next day, Mom takes Trina to the village where she grew up. There is a festival that is going on. Everyone is celebrating the harvest of the tulips. Trina and Mom go to a restaurant. They sit at a table outside. They decide to have tea and cookies.",
-    },
-
-    {
-      start: 108.61,
-      end: 131.48,
-      text: "“These cookies are delicious,” says Trina. “It's like having dessert before dinner.” Mom talks in Dutch with everyone in the restaurant. She tells them that it is good to be back in Holland. Trina and Mom stay in Holland for two weeks, then they have to go back to New York. “We'll be home just in time for the Fourth of July,” says Mom. “We can see the fireworks,” says Trina.",
-    },
-
-    {
-      start: 132.54,
-      end: 144.12,
-      text: "“Did you like your visit to Holland?” asks Mom. “Yes. It was fun to see the place you were born and raised in. Everyone there was so nice. I liked everything about the trip,” says Trina.",
+      start: 147.71,
+      end: 187.5,
+      text: '"I learned that keeping a lake clean is hard work," said Trisha. After we talked, we worked in groups. We wrote about our day. I worked with Jimmy and Natasha on the computer. We used the notes we took to help us write about our experience. Mr. Hernandez sent us copies of the pictures, and we put some of those in also. A few days later, the pictures came from Mr. Hernandez. He sent us some pictures of a lake in another town that had never been cleaned up. He said if we hadn\'t cleaned up Lake Otto, in another year or so, the lake would have looked like the lake in the picture. We decided to have another cleanup day in three months to check on how Lake Otto was doing.',
     },
   ];
   const clickableAreas = [
-    { x1: 15.11, y1: 33.72, x2: 53.03, y2: 49.97, sound: sound2 },
-    { x1: 55.4, y1: 33.86, x2: 93.32, y2: 49.97, sound: sound3 },
-    { x1: 15.11, y1: 68.92, x2: 53.5, y2: 95.5, sound: sound4 },
-    { x1: 55.62, y1: 84.1, x2: 93.54, y2: 95.32, sound: sound5 },
+    { x1: 13.39, y1: 29.66, x2: 51.31, y2: 50.81, sound: sound2 },
+    { x1: 55.62, y1: 29.66, x2: 93.75, y2: 50.13, sound: sound3 },
+    { x1: 13.39, y1: 70.95, x2: 51.31, y2: 96.33, sound: sound4 },
+    { x1: 55.83, y1: 76.87, x2: 93.54, y2: 95.32, sound: sound5 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();

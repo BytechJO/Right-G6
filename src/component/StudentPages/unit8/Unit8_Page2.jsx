@@ -1,5 +1,5 @@
 import React from "react";
-import page_5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 65.png";
+import page_5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 65.png";
 import "./Unit8_Page2.css";
 
 import ReadingSection_U8 from "./Unit8_Page2_ReadingSection_U8";
@@ -13,7 +13,7 @@ const Unit8_Page2 = ({ openPopup }) => {
         style={{ backgroundImage: `url(${page_5})` }}
       >
         <div
-          className="click-icon-page5 hover:scale-110 transition"
+          className="click-icon-unit2-page2-1 hover:scale-110 transition"
           style={{ overflow: "visible" }}
         >
           <svg

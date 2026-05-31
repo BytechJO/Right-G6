@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import page25 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 75.png";
+import page25 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 75.png";
 import "./Reading_Unit8_Page1.css";
 import { FaHeadphones } from "react-icons/fa";
 import sound1 from "../../../assets/audio/ClassBook/U8/PG 75/Pg75_1.5_Adult Lady.mp3";
@@ -9,9 +9,9 @@ const Reading_Unit8_Page2 = ({ audioRef, activeAudio, setActiveAudio }) => {
   const [hoveredAreaIndex, setHoveredAreaIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const clickableAreas = [
-    { x1: 8.27, y1: 27.63, x2: 45.76, y2: 50.47, sound: sound1 },
-    { x1: 52.87, y1: 37.1, x2: 91.44, y2: 50.13, sound: sound2 },
-    { x1: 53.52, y1: 56, x2: 90.58, y2: 73.5, sound: sound3 },
+    { x1: 10.27, y1: 33.63, x2: 47.49, y2: 50.81, sound: sound1 },
+    { x1: 51.58, y1: 25.26, x2: 89.50, y2: 50.64, sound: sound2 },
+    { x1: 52.52, y1: 56, x2: 90.58, y2: 73.5, sound: sound3 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();

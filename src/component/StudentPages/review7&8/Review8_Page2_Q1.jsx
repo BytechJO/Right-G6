@@ -1,29 +1,16 @@
 import React, { useState } from "react";
 
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 73/SVG/Asset 22.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 73/SVG/Asset 24.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 73/SVG/Asset 25.svg";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review8_Page2_Q1 = () => {
-  const questions = [
-    "Did anyone see a rainbow?",
-    "Yes, someone saw a rainbow.",
-    "Did anyone fly in a hot air balloon?",
-    "Yes, someone flew in the hot air balloon.",
-    "Did anybody wear winter clothing?",
-    "No, nobody wore winter clothing.",
+  const correctAnswers = [
+    "Mom said that I would be late for school.",
+    "My sister said that she wanted to eat a piece of the apple pie.",
+    "Ben said that we could go to the theater and watch a movie together.",
+    "Grandma said that I could do great on the test if I studied hard enough.",
   ];
 
-  const [answers, setAnswers] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -32,32 +19,32 @@ const Review8_Page2_Q1 = () => {
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,?]/g, "")
+      .replace(/[.,!?'""]/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[index] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      copy[index] = undefined;
 
       return copy;
     });
   };
 
   const checkAnswers = () => {
-    if (locked) return;
+    const hasEmpty = answers.some((item) => !item.trim());
 
-    if (answers.some((a) => !a.trim())) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
 
       return;
@@ -65,24 +52,24 @@ const Review8_Page2_Q1 = () => {
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(correctAnswers[index]);
 
-      if (ok) correctCount++;
+      if (correct) correctCount++;
 
-      return ok;
+      return correct;
     });
 
     setResult(newResults);
 
-    const total = questions.length;
+    const total = correctAnswers.length;
 
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -101,52 +88,51 @@ const Review8_Page2_Q1 = () => {
 
   const showAnswers = () => {
     setAnswers([
-      "Did anyone see a rainbow?",
-      "Yes, someone saw a rainbow.",
-      "Did anyone fly in a hot air balloon?",
-      "Yes, someone flew in the hot air balloon.",
-      "Did anybody wear winter clothing?",
-      "No, nobody wore winter clothing.",
+      "Mom said that I would be late for school.",
+      "My sister said that she wanted to eat a piece of the apple pie.",
+      "Ben said that we could go to the theater and watch a movie together.",
+      "Grandma said that I could do great on the test if I studied hard enough.",
     ]);
 
-    setResult([true, true, true, true, true, true]);
+    setResult([true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", ""]);
+    setAnswers(["", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const sentenceInput = (i, width) => (
-    <span className="relative inline-block">
+  const inputField = (index) => (
+    <span className="relative block w-full">
       <input
         type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
         className={`
-          ${width}
+          w-full
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
-          leading-none
-          align-middle
           px-1
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${result[index] === false ? "border-[#D1232A]" : ""}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -163,7 +149,6 @@ const Review8_Page2_Q1 = () => {
             fontSize: "11px",
             fontWeight: "bold",
             border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
           }}
         >
           ✕
@@ -174,90 +159,61 @@ const Review8_Page2_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-15">
+      <div className="div-forall text-[18px] w-full">
+        <h5 className="header-title-page8 mb-[10vh]">
           <span
             style={{
-              marginRight: "10px",
+              marginRight: "20px",
             }}
           >
             D
           </span>
-          Look at the picture, and then write a question and answer for each
-          picture.
+          Change each quote to reported speech.
         </h5>
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-[6vh]">
           {/* 1 */}
-          <div className="flex items-start gap-6">
-            <span className="font-bold text-[18px] ">1</span>
-
-            <div className="relative">
-              <img
-                src={img1}
-                alt=""
-                style={{
-                  width: "170px",
-                  height: "110px",
-                }}
-              />
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">1</span>
+              Mom said, “You will be late for school!”
             </div>
-            <div className="flex flex-col gap-8 mt-3">
-              {sentenceInput(0, "w-[600px]")}
 
-              {sentenceInput(1, "w-[600px]")}
-            </div>
+            {inputField(0)}
           </div>
 
           {/* 2 */}
-          <div className="flex items-start gap-6">
-            <span className="font-bold text-[18px] ">2</span>
-
-            <div className="relative">
-              <img
-                src={img2}
-                alt=""
-                style={{
-                  width: "170px",
-                  height: "110px",
-                }}
-              />
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">2</span>
+              My sister said, “I want to eat a piece of this apple pie.”
             </div>
 
-            <div className="flex flex-col gap-8 mt-3">
-              {sentenceInput(2, "w-[600px]")}
-
-              {sentenceInput(3, "w-[600px]")}
-            </div>
+            {inputField(1)}
           </div>
 
           {/* 3 */}
-          <div className="flex items-start gap-6">
-            <span className="font-bold text-[18px] ">3</span>
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">3</span>
+              Ben said, “Let’s go to the theater and watch a movie together.”
+            </div>
+            {inputField(2)}
+          </div>
 
-            <div className="relative">
-              <img
-                src={img3}
-                alt=""
-                style={{
-                  width: "170px",
-                  height: "110px",
-                }}
-              />
+          {/* 4 */}
+          <div>
+            <div className="mb-4">
+              <span className="font-bold mr-4">4</span>
+              Grandma said, “You can do great in the test if you study hard
+              enough.”
             </div>
 
-            <div className="flex flex-col gap-8 mt-3">
-              {sentenceInput(4, "w-[600px]")}
-
-              {sentenceInput(5, "w-[600px]")}
-            </div>
+            {inputField(3)}
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
