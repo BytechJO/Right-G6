@@ -1,5 +1,5 @@
 import React from "react";
-import page_5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41.png";
+import page_5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/Page 41.png";
 import "./Unit5_Page2.css";
 
 import ReadingSection_U2 from "./Unit5_Page2_ReadingSection_U2";

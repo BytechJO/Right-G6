@@ -1,76 +1,62 @@
 import React from "react";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 6/SVG/Asset 1.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
+
 const GrammarA = () => {
+  const questions = [
+    {
+      sentence: (
+        <>
+          The baseball players <span className="text-[#f79631]">practice</span>every day,<span className="text-[#f79631]">don’t they</span>?
+        </>
+      ),
+      options: ["will practice, won’t they", "don’t practice, do they", "have practiced, haven’t they"],
+    },
+    {
+      sentence: (
+        <>
+         He <span className="text-[#f79631]">wants</span> to go to the beach, <span className="text-[#f79631]">doesn’t he</span>?
+        </>
+      ),
+      options: ["didn’t want, did he", "wanted, didn’t he", "won’t want, will he"],
+    },
+  ];
+
   return (
     <div>
-      {/* العنوان */}
+      {/* HEADER */}
       <div className="flex items-center gap-2 mb-5 mt-5">
-        <h5 className="header-title-page8-read ">
+        <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read" style={{ marginRight: "10px" }}>
             A
           </span>
-          Read and say. Replace the highlighted words with the new words.
+         Read, change, and say. Replace the highlighted words with the new words.
         </h5>
       </div>
 
-      {/* السؤال 1 */}
-      <div className="mb-12">
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
+      {/* QUESTIONS */}
+      <div className="space-y-10">
+        {questions.map((q, i) => (
+          <div key={i} className="flex items-start gap-5 mt-7">
+            <img
+              src={img}
+              alt=""
+              style={{ width: "40px", height: "40px", marginTop: -6 }}
+            />
+            <div>
+              {/* SENTENCE */}
+              <p className="text-[18px] font-semibold">{q.sentence}</p>
 
-          <div>
-            <p className=" text-[18px]">
-              Would you please{" "}
-              <span className="text-[#12C8F9]"> bring more water </span>?
-            </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
-              <span>
-                <b className="mr-2">1</b> close the door
-              </span>
-              <span>
-                <b className="mr-2">2</b>do your homework
-              </span>
-              <span>
-                <b className="mr-2">3</b> listen to the instructions
-              </span>
+              {/* OPTIONS */}
+              <div className="flex flex-wrap gap-x-10 gap-y-2 mt-4 text-[17px]">
+                {q.options.map((opt, j) => (
+                  <span key={j}>
+                    <b>{j + 1}</b> {opt}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* السؤال 2 */}
-      <div>
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
-
-          <div>
-            <p className=" text-[18px]">
-              I would prefer<span className="text-[#12C8F9]"> black tea</span> ,
-              please.
-            </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
-              <span>
-                <b className="mr-2">1</b> wheat bread
-              </span>
-              <span>
-                <b className="mr-2">2</b> vanilla ice cream
-              </span>
-              <span>
-                <b className="mr-2">3</b> fried chicken
-              </span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

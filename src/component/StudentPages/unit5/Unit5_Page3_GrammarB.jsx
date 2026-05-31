@@ -1,162 +1,160 @@
 import React, { useState } from "react";
-import { FaRedo, FaEye } from "react-icons/fa";
-
-import saladImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 163.svg";
-import soupImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 8.svg";
-import appleImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 9.svg";
-import orangeImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 10.svg";
-import milkImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 11.svg";
-import juiceImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 12.svg";
-import soccerImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 13.svg";
-import tennisImg from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 41/SVG/Asset 14.svg";
+import ValidationAlert from "../../Popup/ValidationAlert";
+import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 
 const Unit4_Page5_GrammarB = () => {
-  const correctAnswers = [
-    "I would prefer salad, please",
-    "I would prefer an apple",
-    "I would like some juice, please",
-    "I would prefer to play soccer, please",
+  const questions = [
+    {
+      text: "The famous soccer player makes three goals per game,",
+      correct: ["does not he?", "doesn't he?","doesn’t he?"],
+    },
+    {
+      text: "The famous soccer player has made three goals per game,",
+      correct: ["has not he?", "hasn't he?","hasn’t he?"],
+    },
+    {
+      text: "The famous soccer player doesn't make three goals per game,",
+      correct: ["does he?", "does he?"],
+    },
+    {
+      text: "The famous soccer player didn't make three goals per game,",
+      correct: ["did he?", "did he?"],
+    },
   ];
 
   const [answers, setAnswers] = useState(["", "", "", ""]);
-
-  const [errors, setErrors] = useState([false, false, false, false]);
-
-  const [correctLocked, setCorrectLocked] = useState([
-    false,
-    false,
-    false,
-    false,
-  ]);
-
   const [locked, setLocked] = useState(false);
+  const [result, setResult] = useState([]); // true | false | undefined
 
-  const imagePairs = [
-    [saladImg, soupImg],
-    [appleImg, orangeImg],
-    [milkImg, juiceImg],
-    [soccerImg, tennisImg],
-  ];
-
-  // show
-  const handleShow = () => {
-    setAnswers(correctAnswers);
-
-    setErrors([false, false, false, false]);
-
-    setCorrectLocked([true, true, true, true]);
-
-    setLocked(true);
-  };
-
-  // reset
-  const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-
-    setErrors([false, false, false, false]);
-
-    setCorrectLocked([false, false, false, false]);
-
-    setLocked(false);
-  };
-
-  // update
-  const updateAnswer = (index, value) => {
+  const handleChange = (i, val) => {
+    if (locked || result[i] === true) return;
     const updated = [...answers];
-    updated[index] = value;
-
+    updated[i] = val;
     setAnswers(updated);
+    setResult((prev) => {
+      const copy = [...prev];
+      copy[i] = undefined;
+      return copy;
+    });
+  };
 
-    const updatedErrors = [...errors];
+  const checkAnswers = () => {
+    if (locked) return;
+    if (answers.some((a) => !a.trim())) {
+      ValidationAlert.info("Please complete all fields.");
+      return;
+    }
 
-    updatedErrors[index] = false;
+    let correctCount = 0;
+    const res = answers.map((a, i) => {
+      const ok = questions[i].correct.some(
+        (c) => c.toLowerCase() === a.trim().toLowerCase()
+      );
+      if (ok) correctCount++;
+      return ok;
+    });
 
-    setErrors(updatedErrors);
+    setResult(res);
+    const msg = `Score: ${correctCount} / ${questions.length}`;
+
+    if (correctCount === questions.length) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correctCount === 0) {
+      ValidationAlert.error(msg);
+    } else {
+      ValidationAlert.warning(msg);
+    }
+  };
+
+  const showAnswers = () => {
+    setAnswers(questions.map((q) => q.correct[0]));
+    setLocked(true);
+    setResult(questions.map(() => true));
+  };
+
+  const reset = () => {
+    setAnswers(["", "", "", ""]);
+    setLocked(false);
+    setResult([]);
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-10">
-        <h5 className="header-title-page8-read">
-          <span className="ex-A-read mr-2">B</span>
-          Choose and write a polite statement. Use{" "}
-          <span className="text-[#00AEEF]">like</span> or{" "}
-          <span className="text-[#00AEEF]">prefer</span>.
-        </h5>
-      </div>
+      <h5 className="header-title-page8-read mb-8">
+        <span className="ex-A-read mr-2">B</span>
+        Add the correct question tag and punctuation for each statement.
+      </h5>
 
       {/* QUESTIONS */}
-      <div className="space-y-8 text-[18px]">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center gap-5">
-            {/* NUMBER */}
-            <span className="font-bold">{i + 1}</span>
+      <div className="space-y-7 text-[17px]">
+        {questions.map((q, i) => (
+          <div key={i} className="flex items-end gap-3">
+            {/* Number */}
+            <span className="font-bold text-[17px] min-w-[20px]">{i + 1}</span>
 
-            {/* INPUT + TEXT */}
-            <div className="relative flex-1 flex items-center">
-              <input
-                type="text"
-                value={answers[i]}
-                disabled={locked || correctLocked[i]}
-                onChange={(e) => updateAnswer(i, e.target.value)}
-                className={`border-b outline-none flex-1 text-[#6D2980] font-semibold px-2 bg-transparent`}
-              />
+            {/* Statement + Input */}
+            <div className="flex items-end gap-2 flex-1 flex-wrap">
+              <span>{q.text}</span>
 
-              {/* PLEASE */}
-              {i === 1 && <span className="ml-2">, please.</span>}
-
-              {/* DOT */}
-              {i !== 1 && <span className="ml-1">.</span>}
-
-              {/* ❌ */}
-              {errors[i] && (
-                <div
+              <div className="relative">
+                <input
+                  type="text"
+                  value={answers[i]}
+                  disabled={locked || result[i] === true}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  placeholder=""
                   style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-30px",
-                    transform: "translateY(-50%)",
-                    width: "22px",
-                    height: "22px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                    borderBottom: `1px solid ${
+                      result[i] === false
+                        ? "#ef4444"
+                        : result[i] === true
+                        ? "black"
+                        : "black"
+                    }`,
+                    textAlign:"center",
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    
+                    width: "160px",
+                    padding: "2px 4px",
                   }}
-                >
-                  ✕
-                </div>
-              )}
-            </div>
+                />
 
-            {/* IMAGES */}
-            <div className="flex items-center gap-4">
-              <img
-                src={imagePairs[i][0]}
-                alt=""
-                style={{
-                  width: "65px",
-                  height: "65px",
-                  objectFit: "contain",
-                }}
-              />
+                {/* ✕ badge */}
+                {result[i] === false && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-10px",
+                         width: "22px",
+              height: "22px",
+              background: "red",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)", pointerEvents: "none",
+                      zIndex: 3,
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
 
-              <img
-                src={imagePairs[i][1]}
-                alt=""
-                style={{
-                  width: "65px",
-                  height: "65px",
-                  objectFit: "contain",
-                }}
-              />
+                
+              </div>
             </div>
           </div>
         ))}
@@ -167,14 +165,13 @@ const Unit4_Page5_GrammarB = () => {
         {/* Reset */}
         <div className="relative group">
           <div
-            onClick={handleReset}
+            onClick={reset}
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
           >
             <div className="bg-white p-3 rounded-full shadow">
               <FaRedo size={14} />
             </div>
           </div>
-
           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
             Reset
           </span>
@@ -183,16 +180,30 @@ const Unit4_Page5_GrammarB = () => {
         {/* Show */}
         <div className="relative group">
           <div
-            onClick={handleShow}
+            onClick={showAnswers}
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
           >
             <div className="bg-white p-3 rounded-full shadow">
               <FaEye size={14} />
             </div>
           </div>
-
           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
             Show Answer
+          </span>
+        </div>
+
+        {/* Check */}
+        <div className="relative group">
+          <div
+            onClick={checkAnswers}
+            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
+          >
+            <div className="bg-white p-3 rounded-full shadow">
+              <FaCheck size={14} />
+            </div>
+          </div>
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+            Check Answer
           </span>
         </div>
       </div>
