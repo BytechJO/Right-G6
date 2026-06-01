@@ -3,7 +3,7 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
 
 const VERBS = [
-  { verb: "see", correct: "seen"},
+  { verb: "see", correct: "seen" },
   { verb: "buy", correct: "bought" },
   { verb: "choose", correct: "chosen" },
   { verb: "run", correct: "run" },
@@ -33,10 +33,10 @@ const Page_C_Participles = () => {
     return { ...v, inputIdx: inputIndex };
   });
 
- const handleChange = (idx, val) => {
-  setResult((prev) => prev.map((r, i) => (i === idx ? null : r)));
-  setAnswers((prev) => prev.map((a, i) => (i === idx ? val : a)));
-};
+  const handleChange = (idx, val) => {
+    setResult((prev) => prev.map((r, i) => (i === idx ? null : r)));
+    setAnswers((prev) => prev.map((a, i) => (i === idx ? val : a)));
+  };
   const handleCheck = () => {
     if (locked) return;
     if (answers.some((a) => !a.trim())) {
@@ -147,13 +147,13 @@ const Page_C_Participles = () => {
 
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{gap:"40px"}}>
+      <div className="div-forall" style={{ gap: "40px" }}>
         <h5 className="header-title-page8 mb-7">
           <span className="mr-2">C</span>
           Complete the chart with the participles of irregular verbs.
         </h5>
 
-        <div style={{ display: "flex", gap: "0px" }}>
+        <div style={{ display: "flex",justifyContent:"space-around", width: "100%" }}>
           {/* الجدول الأيسر */}
           <table style={styles.table}>
             <tbody>
@@ -202,7 +202,7 @@ const styles = {
     fontSize: "17px",
     fontWeight: 500,
     width: "150px",
-    height:"70px",
+    height: "70px",
     textAlign: "center",
     color: "#333",
   },

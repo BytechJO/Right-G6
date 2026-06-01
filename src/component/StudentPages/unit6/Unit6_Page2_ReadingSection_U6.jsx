@@ -87,15 +87,15 @@ const ReadingSection_U4 = () => {
           />
 
           <h2 className="font-bold text-[18px] text-black">
-            Have you ever read or listened to an interview with a famous person?
-            Did you learn anything new about this person?
+         Have you ever visited an old city? What were the things
+that you saw there?
           </h2>
         </div>
         <div className="w-[60%] mx-auto">
           <QuestionAudioPlayer
             src={readingAudio}
             captions={captions}
-            stopAtSecond={11.659}
+            stopAtSecond={6.0}
           />
         </div>
         <div className="relative w-[60%] mt-2">

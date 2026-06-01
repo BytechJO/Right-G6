@@ -58,7 +58,7 @@ const captions= [
            <QuestionAudioPlayer
              src={grammer_u1}
              captions={captions}
-             stopAtSecond={5.359}
+             stopAtSecond={5.0}
              justify={"start"}
            />
          </div>
