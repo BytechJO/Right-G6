@@ -52,42 +52,43 @@ const WB_Unit1_Page3_VocabMatch = () => {
     setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
-  const checkAnswers = () => {
-    if (locked) return;
+const checkAnswers = () => {
+  if (locked) return;
 
-    const hasEmpty = questions.some((q) => {
-      if (q.prefilled) return false;
-      const ans = answers[q.id];
-      if (Array.isArray(ans)) return ans.some((a) => !a.trim());
-      return !ans.trim();
-    });
+  const hasEmpty = questions.some((q) => {
+    if (q.prefilled) return false;
+    const ans = answers[q.id];
+    if (Array.isArray(ans)) return ans.some((a) => !a.trim());
+    return !ans.trim();
+  });
 
-    if (hasEmpty) {
-      ValidationAlert.info("Please complete all answers.");
-      return;
-    }
+  if (hasEmpty) {
+    ValidationAlert.info("Please complete all answers.");
+    return;
+  }
 
-    let correctCount = 0;
-    const newResult = {};
-    questions.forEach((q) => {
-      if (q.prefilled) { newResult[q.id] = true; correctCount++; return; }
-      const ans = answers[q.id];
-      const userAnswer = Array.isArray(ans) ? ans.join(" ") : ans;
-      const ok = normalize(userAnswer) === normalize(q.answer);
-      if (ok) correctCount++;
-      newResult[q.id] = ok;
-    });
+  let correctCount = 0;
+  const newResult = {};
+  questions.forEach((q) => {
+    if (q.prefilled) { newResult[q.id] = true; correctCount++; return; }
+    const ans = answers[q.id];
+    const userAnswer = Array.isArray(ans) ? ans.join(" ") : ans;
+    // ✅ multiInput: الاثنين لازم يكونوا صح عشان تنحسب النقطة
+    const ok = normalize(userAnswer) === normalize(q.answer);
+    if (ok) correctCount++;
+    newResult[q.id] = ok;
+  });
 
-    setResult(newResult);
-    const total = questions.filter((q) => !q.prefilled).length;
-    const scored = Object.values(newResult).filter(Boolean).length - 1;
-    const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
-    if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (scored === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
-  };
-
+  setResult(newResult);
+  const total = questions.filter((q) => !q.prefilled).length;
+  // ✅ إزالة الـ -1 الغلط من الحساب
+  const scored = Object.values(newResult).filter(Boolean).length;
+  const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
+  const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
+  if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
+  else if (scored === 0) ValidationAlert.error(msg);
+  else ValidationAlert.warning(msg);
+};
   const showAnswers = () => {
     const ans = {};
     questions.forEach((q) => {
@@ -107,19 +108,22 @@ const WB_Unit1_Page3_VocabMatch = () => {
   };
 
   const inputField = (q, subIndex = null) => {
-    const value = subIndex !== null ? answers[q.id][subIndex] : answers[q.id];
-    const isWrong = result[q.id] === false;
-    const isCorrect = result[q.id] === true;
-    const isDisabled = locked || isCorrect || q.prefilled;
+  const value = subIndex !== null ? answers[q.id][subIndex] : answers[q.id];
+  const isWrong = result[q.id] === false;
+  const isCorrect = result[q.id] === true;
+  const isDisabled = locked || isCorrect || q.prefilled;
 
-    return (
-      <span className="relative inline-block" style={{ marginRight: subIndex !== null ? "6px" : "0" }}>
-        <input
-          type="text"
-          value={value}
-          disabled={isDisabled}
-          onChange={(e) => handleChange(q.id, e.target.value, subIndex)}
-          className={`
+  // للـ multiInput: كل input يأخذ حالته الخاصة
+  const showBadge = isWrong; // يظهر badge على كل input خاطئ
+
+  return (
+    <span className="relative inline-block" style={{ marginRight: subIndex !== null ? "6px" : "0" }}>
+      <input
+        type="text"
+        value={value}
+        disabled={isDisabled}
+        onChange={(e) => handleChange(q.id, e.target.value, subIndex)}
+        className={`
   border-0
   border-b-1
   bg-transparent
@@ -134,23 +138,23 @@ const WB_Unit1_Page3_VocabMatch = () => {
   text-center
   ${isWrong ? "border-[#D1232A]" : "border-black"}
 `}
-          style={{
-            width: subIndex !== null ? "80px" : q.id >= 7 ? "80px" : "160px",
-            color:  "#333",
-          }}
-        />
-        {isWrong && subIndex === null && (
-          <span style={{
-            position: "absolute", top: "-8px", right: "-8px",
-            width: "18px", height: "18px", background: "#ef4444", color: "white",
-            borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}>✕</span>
-        )}
-      </span>
-    );
-  };
+        style={{
+          width: subIndex !== null ? "80px" : q.id >= 7 ? "80px" : "160px",
+          color: "#333",
+        }}
+      />
+      {showBadge && (  // ← badge على كل input مش بس آخر واحد
+        <span style={{
+          position: "absolute", top: "-8px", right: "-8px",
+          width: "18px", height: "18px", background: "#ef4444", color: "white",
+          borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+        }}>✕</span>
+      )}
+    </span>
+  );
+};
 
   return (
     <div className="flex flex-col items-center p-[30px]">

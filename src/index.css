@@ -15,7 +15,15 @@ img {
 .content-wrapper {
   overflow: auto;
 }
-
+.poster-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1484 / 1023;
+  min-height: 75vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: top left;
+}
 button {
   cursor: pointer;
 }
