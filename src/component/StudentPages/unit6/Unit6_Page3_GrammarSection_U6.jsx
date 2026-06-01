@@ -10,7 +10,7 @@ const captions= [
   {
     start: 0.319,
     end: 5.359,
-    text: "Page 48. Grammar: used to, used to.",
+    text: "Page 48. Grammar: used to, use to.",
   },
   {
     start: 5.359,

@@ -76,7 +76,7 @@ const ReadingSection_U4 = () => {
   ];
   return (
     <div className=" flex flex-col items-center">
-      <div className="p-6 flex flex-col items-center gap-10">
+      <div className="p-6 flex flex-col items-center gap-5">
         <div className="flex justify-start gap-1 mb-4 w-[60%]">
           <img
             src={ReadingBG}

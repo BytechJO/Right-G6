@@ -1,258 +1,180 @@
 import React, { useState } from "react";
-
+import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 import ValidationAlert from "../../Popup/ValidationAlert";
-
 const Review5_Page2_Q3 = () => {
-  const answersKey = [
-    "would",
-    "would",
-    "would",
-    "I'd prefer to",
-    "Could",
-    "could",
-    "Could",
-    "could",
+  const questions = [
+    { id: 1, sentence: "Shannon won’t be home for dinner, will she?" },
+    { id: 2, sentence: "The bear can’t smell us from here, can it?" },
+    { id: 3, sentence: "The dress doesn’t fit well, does it?" },
+    { id: 4, sentence: "Tom wouldn’t come this far, would he?" },
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", "", "", "", ""]);
+  const correctAnswers = [
+    ["Shannon will be home for dinner, won't she?"],
+    ["The bear can smell us from here, can't it?"],
+    ["The dress fits well, doesn't it?", "The dress does fit well, doesn't it?"],
+    ["Tom would come this far, wouldn't he?"],
+  ];
 
-  const [result, setResult] = useState([]);
-
+  const [answers, setAnswers] = useState(Array(questions.length).fill(""));
+  const [errors, setErrors] = useState(Array(questions.length).fill(false));
+  const [correctLocked, setCorrectLocked] = useState(
+    Array(questions.length).fill(false),
+  );
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str
+  const normalize = (text) =>
+    text
+      .trim()
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/[’']/g, "'")
-      .replace(/\s+/g, " ")
-      .trim();
+      .replace(/won’t/g, "will not")
+      .replace(/won't/g, "will not")
+      .replace(/can’t/g, "can not")
+      .replace(/can't/g, "can not")
+      .replace(/doesn’t/g, "does not")
+      .replace(/doesn't/g, "does not")
+      .replace(/wouldn’t/g, "would not")
+      .replace(/wouldn't/g, "would not")
+      .replace(/[.,!?'"’;:]/g, "")
+      .replace(/\s+/g, " ");
 
-  const handleChange = (i, val) => {
-    if (locked || result[i] === true) return;
-
+  const updateAnswer = (index, value) => {
     const updated = [...answers];
-
-    updated[i] = val;
-
+    updated[index] = value;
     setAnswers(updated);
 
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+    const updatedErrors = [...errors];
+    updatedErrors[index] = false;
+    setErrors(updatedErrors);
   };
 
-  const checkAnswers = () => {
+  const handleCheck = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all blanks.");
-
+    const isEmpty = answers.some((a) => normalize(a) === "");
+    if (isEmpty) {
+      ValidationAlert.info("Please complete all fields.");
       return;
     }
 
-    let correctCount = 0;
+    let score = 0;
+const newErrors = answers.map((ans, i) => {
+  const isCorrect = correctAnswers[i].some(
+    (correct) => normalize(ans) === normalize(correct)
+  );
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(answersKey[i]);
+  if (isCorrect) score++;
+  return !isCorrect;
+});
 
-      if (ok) correctCount++;
+    setErrors(newErrors);
+    setCorrectLocked(newErrors.map((e) => !e));
 
-      return ok;
-    });
-
-    setResult(newResults);
-
-    const total = answers.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
+    const total = questions.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
     const msg = `
       <div style="font-size:20px;text-align:center;">
         <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
+          Score: ${score} / ${total}
         </span>
       </div>
     `;
 
-    if (correctCount === total) {
+    if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (score === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  const showAnswers = () => {
-    setAnswers(answersKey);
-
-    setResult([true, true, true, true, true, true, true, true]);
-
+  const handleShow = () => {
+    setAnswers([...correctAnswers]);
+    setErrors(Array(questions.length).fill(false));
+    setCorrectLocked(Array(questions.length).fill(true));
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", "", "", "", ""]);
-
-    setResult([]);
-
+    setAnswers(Array(questions.length).fill(""));
+    setErrors(Array(questions.length).fill(false));
+    setCorrectLocked(Array(questions.length).fill(false));
     setLocked(false);
   };
 
-  const renderInput = (index) => (
-    <span className="relative inline-block">
-      <input
-        type="text"
-        value={answers[index]}
-        disabled={locked || result[index] === true}
-        onChange={(e) => handleChange(index, e.target.value)}
-        style={{
-          width: "140px",
-          border: "none",
-          borderBottom:
-            result[index] === false ? "1px solid #D1232A" : "1px solid black",
-          outline: "none",
-          background: "transparent",
-          fontSize: "18px",
-          fontWeight: "600",
-          color: "#6D2980",
-          padding: "0",
-          lineHeight: "1",
-        }}
-      />
-
-      {result[index] === false && (
-        <span
-          style={{
-            position: "absolute",
-            top: "-8px",
-            right: "-8px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
-            color: "white",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "12px",
-            fontWeight: "bold",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-          }}
-        >
-          ✕
-        </span>
-      )}
-    </span>
-  );
-
   return (
-    <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-17">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            F
-          </span>
-          Complete the poem. Use the words from the box. Some words can be used
-          more than once.
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "20px" }}>
+        {/* HEADER */}
+        <h5 className="header-title-page8 mb-4">
+          <span className="mr-4">E</span>
+          Change the question tag from negative to positive or from positive to
+          negative. Make other necessary changes.
         </h5>
 
-        {/* WORD BOX */}
-        <div
-          style={{
-            width: "420px",
-            height: "52px",
-            background: "#E9E1EC",
-            borderRadius: "12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            margin: "0 auto 35px auto",
-            fontSize: "22px",
-            fontWeight: "500",
-          }}
-        >
-          <span>could</span>
+        {/* QUESTIONS */}
+        <div className="space-y-15 text-[18px]">
+          {questions.map((q, index) => (
+            <div key={q.id} className="flex flex-col gap-1">
+              {/* Question row */}
+              <div className="flex items-center gap-3">
+                <span className="font-bold">{q.id}</span>
+                <span>{q.sentence}</span>
+              </div>
 
-          <span>would</span>
+              {/* Answer input row */}
+              <div className="relative flex items-center gap-2 pl-6">
+                <input
+                  type="text"
+                  value={answers[index]}
+                  disabled={locked || correctLocked[index]}
+                  onChange={(e) => updateAnswer(index, e.target.value)}
+                  className={`border-b outline-none w-full font-semibold px-2 bg-transparent
+                  ${errors[index] ? "border-red-500" : "border-black"}
+                `}
+                />
 
-          <span>I’d prefer to</span>
-        </div>
-
-        {/* POEM */}
-        <div
-          className="
-            text-[20px]
-            leading-[2.8]
-          "
-        >
-          <div className="flex flex-wrap items-center gap-2">
-            {renderInput(0)}
-
-            <span>you like to go to the zoo? Yes, I</span>
-
-            {renderInput(1)}
-
-            <span>. Yes, I</span>
-
-            {renderInput(2)}
-
-            <span>.</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {renderInput(3, "180px")}
-
-            <span>go to the concert. Let’s go, you and I.</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {renderInput(4)}
-
-            <span>we sing a song? Yes, we</span>
-
-            {renderInput(5)}
-
-            <span>. Yes, we could.</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {renderInput(6)}
-
-            <span>we bake a cake? Yes, we</span>
-
-            {renderInput(7)}.Yes, we could.
-
-            <span> Come on! Let’s go, you and I!</span>
-          </div>
+                {/* ❌ */}
+                {errors[index] && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "0px",
+                      transform: "translateY(-50%)",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
       {/* BUTTONS */}
-      <div className="action-buttons-container">
+      <div className="action-buttons-container mt-10">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
-
-        <button className="show-answer-btn" onClick={showAnswers}>
+        <button className="show-answer-btn" onClick={handleShow}>
           Show Answer
         </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
+        <button className="check-button2" onClick={handleCheck}>
           Check Answer ✓
         </button>
       </div>

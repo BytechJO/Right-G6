@@ -137,8 +137,9 @@ const Unit6_Page2_ComprehensionB = () => {
       <div
         style={{
           display: "flex",
-          gap: "100px",
+          // gap: "150px",
           marginTop: "20px",
+          justifyContent:"space-around",
           fontSize: "18px",
         }}
       >

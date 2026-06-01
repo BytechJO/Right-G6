@@ -1,105 +1,93 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-// LEFT TABLE IMAGES
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Untitled-12.png";
+const questions = [
+  {
+    id: 1,
+    text: "The boy doesn't like science fiction,",
+    wrongTag: "would he?",
+  },
+  {
+    id: 2,
+    text: "Michael has a good imagination,",
+    wrongTag: "can't he?",
+  },
+  {
+    id: 3,
+    text: "She wants to come with us,",
+    wrongTag: "could she?",
+  },
+  {
+    id: 4,
+    text: "That is your opinion,",
+    wrongTag: "doesn't it?",
+  },
+  {
+    id: 5,
+    text: "Your speech is going to persuade the students to vote for you,",
+    wrongTag: "won't it?",
+  },
+];
 
-// RIGHT TABLE IMAGES
+const correctAnswers = [
+  "does he?",
+  "doesn't he?",
+  "does she?",
+  "isn't it?",
+  "isn't it?",
+];
 
 const Review5_Page2_Q1 = () => {
-  const questions = [
-    {
-      answer:
-        "Milton doesn’t like to go to the museum. He would prefer to go to the zoo.",
-    },
-    {
-      answer:
-        "Kelly doesn’t want to eat inside a restaurant. She would prefer to eat outside in a restaurant.",
-    },
-
-    {
-      answer:
-        "Andrew doesn’t want to go to the playground. He would rather go to the park.",
-    },
-
-    {
-      answer:
-        "Jared doesn’t want to go to the carnival. He would prefer to go to the circus.",
-    },
-  ];
-
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-
-  const [result, setResult] = useState([]);
-
+  const [answers, setAnswers] = useState(Array(questions.length).fill(""));
+  const [errors, setErrors] = useState(Array(questions.length).fill(false));
+  const [correctLocked, setCorrectLocked] = useState(
+    Array(questions.length).fill(false),
+  );
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str
+  const normalize = (text) =>
+    text
+      .trim()
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/[’']/g, "'")
-      .replace(/\s+/g, " ")
-      .trim();
+      .replace(/isn't/g, "is not")
+      .replace(/isn’t/g, "is not")
+      .replace(/doesn’t/g, "does not")
+      .replace(/doesn't/g, "does not")
+      .replace(/[.,!?'"’;:]/g, "")
+      .replace(/\s+/g, " ");
 
-  const handleChange = (i, val) => {
-    if (locked || result[i] === true) return;
-
+  const updateAnswer = (index, value) => {
+    if (locked || correctLocked[index]) return;
     const updated = [...answers];
-
-    updated[i] = val;
-
+    updated[index] = value;
     setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+    const errs = [...errors];
+    errs[index] = false;
+    setErrors(errs);
   };
 
   const checkAnswers = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a.trim())) {
+    const isEmpty = answers.some((a) => normalize(a) === "");
+    if (isEmpty) {
       ValidationAlert.info("Please complete all fields.");
-
       return;
     }
-
-    let correctCount = 0;
-
-    const newResults = answers.map((ans, i) => {
-      const ok = normalize(ans) === normalize(questions[i].answer);
-
-      if (ok) correctCount++;
-
-      return ok;
+    let score = 0;
+    const newErrors = answers.map((ans, i) => {
+      const isCorrect = normalize(ans) === normalize(correctAnswers[i]);
+      if (isCorrect) score++;
+      return !isCorrect;
     });
-
-    setResult(newResults);
-
+    setErrors(newErrors);
+    setCorrectLocked(newErrors.map((e) => !e));
     const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span></div>`;
+    if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (score === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
@@ -107,131 +95,120 @@ const Review5_Page2_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      questions[0].answer,
-      questions[1].answer,
-      questions[2].answer,
-      questions[3].answer,
-    ]);
-
-    setResult([true, true, true, true]);
-
+    setAnswers([...correctAnswers]);
+    setErrors(Array(questions.length).fill(false));
+    setCorrectLocked(Array(questions.length).fill(true));
     setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-
-    setResult([]);
-
+  const reset = () => {
+    setAnswers(Array(questions.length).fill(""));
+    setErrors(Array(questions.length).fill(false));
+    setCorrectLocked(Array(questions.length).fill(false));
     setLocked(false);
   };
 
   return (
-    <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-8">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            D
-          </span>
-          Read the chart and write sentences using{" "}
-          <span className="text-[#1DA1F2]">prefer</span> and{" "}
-          <span className="text-[#1DA1F2]">like</span>.
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "30px" }}>
+        {/* HEADER */}
+        <h5 className="header-title-page8 mb-10">
+          <span className="mr-2">C</span>
+          The question tags are incorrect. Rewrite each question tag correctly.
         </h5>
 
-        <div className="flex justify-center mb-10">
-          {/* RIGHT BIG IMAGE */}
-          <img
-            src={img2}
-            alt=""
-            style={{
-              width: "500px",
-              height: "auto",
-              objectFit: "contain",
-            }}
-          />
-        </div>
-
-        {/* SENTENCES */}
-        <div className="flex flex-col gap-8 mb-12">
-          {questions.map((q, i) => (
+        {/* QUESTIONS */}
+        <div className="space-y-15 text-[18px]">
+          {questions.map((q, index) => (
             <div
-              key={i}
-              className="
-                  flex
-                  gap-4
-                "
+              key={q.id}
+              style={{
+                display: "flex",
+                alignItems: "flex-end",
+                gap: "6px",
+                flexWrap: "wrap",
+              }}
             >
-              <span className="font-bold text-[20px] w-6">{i + 1}</span>
+              {/* Number */}
+              <span
+                style={{ fontWeight: "bold", fontSize: "20px", flexShrink: 0 }}
+              >
+                {q.id}
+              </span>
 
-              <div className="relative flex-1">
+              {/* Sentence text */}
+              <span style={{ fontSize: "18px", flexShrink: 0 }}>{q.text}</span>
+
+              {/* Wrong tag (underlined) */}
+              <span
+                style={{
+                  fontSize: "18px",
+                  textDecoration: "underline",
+                  flexShrink: 0,
+                }}
+              >
+                {q.wrongTag}
+              </span>
+
+              {/* Answer input */}
+              <div style={{ flex: 1, minWidth: "140px", position: "relative" }}>
                 <input
                   type="text"
-                  value={answers[i]}
-                  disabled={locked || result[i] === true}
-                  onChange={(e) => handleChange(i, e.target.value)}
-                  className={`
-                      w-full
-                      border-0
-                      border-b
-                      outline-none
-                      bg-transparent
-                      text-[20px]
-                      font-semibold
-                      pb-1
-
-                      ${
-                        result[i] === false
-                          ? "border-[#D1232A] text-[#6D2980]"
-                          : "border-black text-[#6D2980]"
-                      }
-                    `}
+                  value={answers[index]}
+                  disabled={locked || correctLocked[index]}
+                  onChange={(e) => updateAnswer(index, e.target.value)}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    borderBottom: errors[index]
+                      ? "2px solid red"
+                      : "1px solid black",
+                    outline: "none",
+                    textAlign: "center",
+                    background: "transparent",
+                    fontSize: "18px",
+                    // fontWeight: "600",
+                    // color: "#6D2980",
+                    padding: "2px 28px 2px 4px",
+                  }}
                 />
-
-                {result[i] === false && (
-                  <span
+                {errors[index] && (
+                  <div
                     style={{
                       position: "absolute",
-                      top: "-8px",
-                      right: "-8px",
-                      width: "20px",
-                      height: "20px",
-                      background: "#ef4444",
+                      top: "50%",
+                      right: "0",
+                      transform: "translateY(-50%)",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
                       color: "white",
                       borderRadius: "50%",
-                      display: "flex",
+                      fontSize: "12px",
+                      display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "2px solid white",
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
                     }}
                   >
                     ✕
-                  </span>
+                  </div>
                 )}
               </div>
             </div>
           ))}
         </div>
       </div>
-
       {/* BUTTONS */}
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
+      <div className="action-buttons-container mt-10">
+        <button className="try-again-button" onClick={reset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>

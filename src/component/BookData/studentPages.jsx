@@ -72,10 +72,10 @@ import Unit6_Page6 from "../StudentPages/unit6/Unit6_Page6";
 
 // //==================== unit  Review5,6
 
-// import Review5_Page1 from "../StudentPages/review5&6/Review5_Page1";
-// import Review5_Page2 from "../StudentPages/review5&6/Review5_Page2";
-// import Review6_Page1 from "../StudentPages/review5&6/Review6_Page1";
-// import Review6_Page2 from "../StudentPages/review5&6/Review6_Page2";
+import Review5_Page1 from "../StudentPages/review5&6/Review5_Page1";
+import Review5_Page2 from "../StudentPages/review5&6/Review5_Page2";
+import Review6_Page1 from "../StudentPages/review5&6/Review6_Page1";
+import Review6_Page2 from "../StudentPages/review5&6/Review6_Page2";
 // import Reading_Unit6_Page1 from "../StudentPages/unit6/Reading_Unit6_Page1";
 // import Reading_Unit6_Page2 from "../StudentPages/unit6/Reading_Unit6_Page2";
 
@@ -228,10 +228,10 @@ export const studentPages = (openPopup, goToUnit) => {
     <Unit6_Page6 openPopup={openPopup} />,
     // //===================== unit Review5,6 pages
 
-    // <Review5_Page1 openPopup={openPopup} />,
-    // <Review5_Page2 openPopup={openPopup} />,
-    // <Review6_Page1 openPopup={openPopup} />,
-    // <Review6_Page2 openPopup={openPopup} />,
+    <Review5_Page1 openPopup={openPopup} />,
+    <Review5_Page2 openPopup={openPopup} />,
+    <Review6_Page1 openPopup={openPopup} />,
+    <Review6_Page2 openPopup={openPopup} />,
 
     // <Reading_Unit6_Page1
     //   openPopup={openPopup}

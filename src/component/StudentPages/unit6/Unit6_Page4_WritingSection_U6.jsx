@@ -1,6 +1,6 @@
 import WritingA from "./Unit6_Page4_WritingA";
 import WritingB from "./Unit6_Page4_WritingB";
-// import WritingC from "./Unit5_Page4_WritingC";
+import WritingC from "./Unit6_Page4_WritingC";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
 import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 17.svg";
 const WritingSection_U1 = () => {
@@ -26,7 +26,7 @@ const WritingSection_U1 = () => {
         />
         <WritingA />
         <WritingB />
-        {/* <WritingC /> */}
+        <WritingC />
       </div>
     </div>
   );

@@ -63,7 +63,7 @@ const GrammarA = () => {
               <p className="text-[18px] font-semibold">{q.sentence}</p>
 
               {/* OPTIONS */}
-              <div className="flex flex-wrap gap-x-10 gap-y-2 mt-4 text-[17px]">
+              <div className="grid grid-cols-2 gap-x-10 gap-y-4 mt-4 text-[17px]">
                 {q.options.map((opt, j) => (
                   <span key={j}>
                     <b>{j + 1}</b> {opt}
