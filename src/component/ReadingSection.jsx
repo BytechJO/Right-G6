@@ -35,8 +35,8 @@ const ReadingSection = ({
           stopAtSecond={stopAtSecond}
         />
       </div>
-      <div className="relative w-[60%] mt-2">
-        <div className="absolute -top-10 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[22px] font-bold w-[200px]" style={{borderRadius:"20px 20px 0px 0px "}}>
+      <div className="relative w-[60%] mt-8">
+        <div className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[20px] font-bold  text-nowrap" style={{borderRadius:"20px 20px 0px 0px "}}>
           {title}
         </div>
 

@@ -63,25 +63,19 @@ const Unit9_Page2_ReadingSection_U9 = () => {
             stopAtSecond={8.5}
           />
         </div>
+        <div className="flex justify-center items-center relative w-full mt-5">
 
-        {/* First Image */}
-        <div className="w-full flex justify-center mt-5">
-          <img
-            src={imgReading}
-            className="w-[60%] h-auto object-contain rounded-md"
-          />
+            <img
+              src={imgReading}
+              style={{ height: "auto", width: "60%" }}
+              className="object-contain rounded-md"
+            />
+         
         </div>
 
         {/* Second Image */}
-        <div className="w-[60%] flex justify-center">
-          <img
-            src={question}
-            style={{
-              height: "auto",
-              width: "60%",
-              objectFit: "contain",
-            }}
-          />
+        <div className="text-[15px] text-black text-left flex items-center justify-end mr-40">
+          <img src={question} style={{ height: "150px", width: "60%" }} />
         </div>
       </div>
 

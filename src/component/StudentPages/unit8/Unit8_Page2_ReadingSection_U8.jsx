@@ -89,7 +89,7 @@ const Unit8_Page2_ReadingSection_U8 = () => {
           />
         </div>
         <div className="relative w-[60%] mt-5">
-          <div className="absolute -top-10 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px_20px_0px_0px] text-[22px] font-bold">
+          <div className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px_20px_0px_0px] text-[20px] font-bold">
             Kahlil Gibran: Poet, Artist, and Encourager
           </div>
 

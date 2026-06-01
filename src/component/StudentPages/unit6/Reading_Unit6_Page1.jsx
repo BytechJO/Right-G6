@@ -9,7 +9,7 @@ import sound5 from "../../../assets/audio/ClassBook/U6/PG 56/Pg56_1.4_Adult Lady
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video3 from "../../../assets/videos/grade 5 unit 6 reading page 56-57.mp4";
+import video3 from "../../../assets/videos/grade 6 unit 6 page 46.mp4";
 
 const Reading_Unit6_Page1 = ({
   openPopup,
@@ -22,36 +22,29 @@ const Reading_Unit6_Page1 = ({
   useEffect(() => {
     setActiveAudio(null);
   }, [setActiveAudio]);
-  const captions = [
-    {
-      start: 0.16,
-      end: 70.58,
-      text: "Page 56, The Lights Go Out. Brian was at home with his younger brother, Freddy. Their father was working late that night. The boys sat on the sofa watching TV. Then, all of a sudden, the lights went out. “Don’t worry, Freddy, I have everything under control,” said Brian. He found a few candles and a couple of flashlights. He gave one flashlight to Freddy. Suddenly, they heard a loud noise. It sounded like someone crashed into something. “What was that?” cried Freddy. “I’m scared.” “I don’t know,” said Brian. “Would you please bring me the phone? I think I should call the police.” Freddy gave Brian the phone. Brian picked up the phone and then thought for a moment. He might call and then find out nothing was wrong. He decided to call only if there was an emergency. He remembered when a firefighter came to their school. He talked to the class about safety and how to stay safe. He also told them what to do during an emergency. He told them they should stay calm and not panic. “Don’t worry, Freddy, I’m sure there is nothing to worry about,” said Brian. Freddy still looked scared. “Shall we go look outside and check? I’m sure it’s nothing,” said Brian, trying to comfort Freddy.",
-    },
+const captions = [
+  {
+    start: 0.2,
+    end: 81.46,
+    text: "Page 56: Bonita's Neighborhood Garden. Bonita used to get bored at home, but lately there was a big building being built, and Bonita got to watch from her window. By now, Bonita was used to the noise of the big machines. Sometimes Bonita, her friend Agnes, and Bonita's aunt Florence went across the street to watch the building. There was a crane, and there were big machines moving and digging. \"There will be a place for a garden by the new building, won't there?\" Bonita asked worriedly. \"Yes. In fact, it'll be right where you're standing. It'll be next to the playground,\" the builder replied. Bonita just had to ask, \"There will be room for a big neighborhood garden, won't there?\" Bonita was used to gardening, and she loved it. For two months, the builders worked on the garden and the playground. Where there used to be dirt and machines, there was now a beautiful park and an area for a garden. Every day that spring, Bonita and her neighbors worked hard in the garden together. \"We planted enough vegetables to feed all of us, didn't we?\" asked Bonita. \"Yes, and when they are ready, we can have a big party to pick them and eat them,\" said Aunt Florence. Bonita and her friends began planning for the party. They painted some of the garden walls with pretty pictures.",
+  },
+  {
+    start: 82.5,
+    end: 93.54,
+    text: "Aunt Florence and Mama were planning for the party also. They were used to cooking large meals for all relatives, so they planned a big meal for the neighborhood with all the garden vegetables.",
+  },
+  {
+    start: 94.86,
+    end: 126.87,
+    text: "Once the vegetables were ready, Bonita and her friends picked them. Then Mama and Aunt Florence cooked many wonderful foods. By Saturday, everything was ready. \"There's going to be enough food, isn't there?\" worried Bonita. \"There will be plenty of food,\" Aunt Florence said. \"You and your friends have done a great job, Bonita,\" said Mama. Everyone enjoyed the great food, the beautiful flowers, and the paintings on the walls of the garden. \"We all worked together to make it special,\" Bonita said. \"That is the best part of all.\"",
+  },
+];
 
-    {
-      start: 72.28,
-      end: 95.18,
-      text: "Brian looked out the door while Freddy stood behind him. They both opened the door and pointed their flashlights onto the porch. They saw a flowerpot lying on its side. Could someone or something have knocked it over? Suddenly, something brown walked by. “Ah!” they both screamed. “Oh, look, it’s Pumpkin,” said Freddy. “Pumpkin must have knocked the flowerpot over,” said Brian.",
-    },
-
-    {
-      start: 96.2,
-      end: 134.78,
-      text: "Pumpkin was Mrs. Tupper’s cat. Mrs. Tupper was their neighbor who lived next door. She loved two things in life: books and cats. “I’m sure Mrs. Tupper is worried about Pumpkin. Let’s go and take Pumpkin to her,” said Brian. “Could you please go alone?” said Freddy. “I would rather go to sleep now.” “Okay, I’ll go alone,” said Brian. Brian took the cat, Pumpkin, and went to Mrs. Tupper’s house. He found her back door open. “Mrs. Tupper,” called Brian from behind the open door. There was no answer. He walked inside. It was very dark. “Mrs. Tupper,” he said while flashing his light on the couch.",
-    },
-
-    {
-      start: 135.84,
-      end: 166.92,
-      text: "Someone in the chair moved. There she was, Mrs. Tupper, sleeping in the chair. “Goodness,” she said, “I must have fallen asleep.” Brian gave the cat to Mrs. Tupper. “Thank you, Brian,” said Mrs. Tupper. “My son must have forgotten to close the door when he left to go out with his friends. That must be how Pumpkin got out of the house.” “Good night, Mrs. Tupper.” Brian went back home. He was relieved that nothing was wrong. As he opened his front door, the lights came back on. Finally. That was a night he wouldn’t forget.",
-    },
-  ];
   const clickableAreas = [
-    { x1: 15.11, y1: 29.66, x2: 52.6, y2: 52.17, sound: sound2 },
-    { x1: 55.62, y1: 32.7, x2: 92.89, y2: 51.83, sound: sound3 },
-    { x1: 15.11, y1: 80.26, x2: 53.38, y2: 95.83, sound: sound4 },
-    { x1: 55.62, y1: 76.7, x2: 93.67, y2: 95.66, sound: sound5 },
+    { x1: 14.47, y1: 32.93, x2: 52.73, y2: 51.07, sound: sound2 },
+    { x1: 55.62, y1: 30.37, x2: 94.07, y2: 50.93, sound: sound3 },
+    { x1: 14.47, y1: 83.72, x2: 52.73, y2: 96.43, sound: sound4 },
+    { x1: 55.80, y1: 53.98, x2: 93.86, y2: 96.25, sound: sound5 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();

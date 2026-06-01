@@ -17,7 +17,7 @@ const Unit10_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 27 })}
+          onClick={() => openPopup("exercise", { startIndex: 88 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -39,7 +39,7 @@ const Unit10_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 28 })}
+          onClick={() => openPopup("exercise", { startIndex: 89 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -61,7 +61,7 @@ const Unit10_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 29 })}
+          onClick={() => openPopup("exercise", { startIndex: 90 })}
           style={{ overflow: "visible" }}
         >
           <image

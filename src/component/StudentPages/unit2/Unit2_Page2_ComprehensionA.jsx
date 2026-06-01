@@ -140,9 +140,9 @@ const Unit2_Page2_ComprehensionA = () => {
       <div className="flex items-center gap-3 mb-7">
         <h5 className="header-title-page8-read" style={{ display: "block" }}>
           <span className="ex-A-read mr-2">A</span>
-          Put <strong className="text-red-500">M</strong> next to the sentences
+          Put <strong className="text-orange-500">M</strong> next to the sentences
           that tell about mountaineering. Put{" "}
-          <strong className="text-red-500">S</strong> next to the sentences that
+          <strong className="text-orange-500">S</strong> next to the sentences that
           tell about surfing.
         </h5>
       </div>

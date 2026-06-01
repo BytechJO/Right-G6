@@ -11,9 +11,9 @@ const Reading_Unit6_Page2 = ({ audioRef, activeAudio, setActiveAudio }) => {
     setActiveAudio(null);
   }, [setActiveAudio]);
   const clickableAreas = [
-    { x1: 6.12, y1: 31.35, x2: 43.82, y2: 50.13, sound: sound1 },
-    { x1: 50.72, y1: 23.73, x2: 88.86, y2: 49.97, sound: sound2 },
-    { x1: 51.15, y1: 54.87, x2: 88.86, y2: 73.66, sound: sound3 },
+    
+    { x1: 51.65, y1:7.82, x2: 94.21, y2: 41.27, sound: sound2 },
+    { x1: 51.65, y1: 43.38, x2: 94.21, y2: 76.97, sound: sound3 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();

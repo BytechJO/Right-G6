@@ -168,10 +168,10 @@ const Review7_Page2_Q1 = () => {
                 className="relative flex items-center cursor-pointer min-h-[50px]"
                 style={{
                   backgroundColor:
-                    selectedImg === i ? "#E8F5C8" : "transparent",
+                    selectedImg === i ? "#fff5e8ff" : "transparent",
                   border:
                     selectedImg === i
-                      ? "1px solid #83AC40"
+                      ? "1px solid #f79631"
                       : "1px solid transparent",
                   borderRadius: "10px",
                   padding: "8px 12px",
@@ -276,8 +276,8 @@ const Review7_Page2_Q1 = () => {
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="#83AC40"
-                strokeWidth="2.5"
+                stroke="#f79631"
+                strokeWidth="1.5"
                 strokeLinecap="round"
               />
             </g>
