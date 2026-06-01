@@ -13,7 +13,7 @@ import Posters_Page11 from "../posters/posters_Page11";
 import Posters_Page12 from "../posters/posters_Page12";
 import Posters_Page13 from "../posters/posters_Page13";
 import Posters_Page14 from "../posters/posters_Page14";
-// import Posters_Page15 from "../posters/posters_Page15";
+import Posters_Page15 from "../posters/posters_Page15";
 import Posters_Page16 from "../posters/posters_Page16";
 import Posters_Page17 from "../posters/posters_Page17";
 import Posters_Page18 from "../posters/posters_Page18";
@@ -29,16 +29,16 @@ export const posters = (openPopup) => [
   <Posters_Page6 openPopup={openPopup} />,
   <Posters_Page7 openPopup={openPopup} />,
   <Posters_Page8 openPopup={openPopup} />,
-  // <Posters_Page9 openPopup={openPopup} />,
-  // <Posters_Page10 openPopup={openPopup} />,
-  // <Posters_Page11 openPopup={openPopup} />,
-  // <Posters_Page12 openPopup={openPopup} />,
-  // <Posters_Page13 openPopup={openPopup} />,
-  // <Posters_Page14 openPopup={openPopup} />,
-  // <Posters_Page15 openPopup={openPopup} />,
-  // <Posters_Page16 openPopup={openPopup} />,
-  // <Posters_Page17 openPopup={openPopup} />,
-  // <Posters_Page18 openPopup={openPopup} />,
-  // <Posters_Page19 openPopup={openPopup} />,
-  // <Posters_Page20 openPopup={openPopup} />,
+  <Posters_Page9 openPopup={openPopup} />,
+  <Posters_Page10 openPopup={openPopup} />,
+  <Posters_Page11 openPopup={openPopup} />,
+  <Posters_Page12 openPopup={openPopup} />,
+  <Posters_Page13 openPopup={openPopup} />,
+  <Posters_Page14 openPopup={openPopup} />,
+  <Posters_Page15 openPopup={openPopup} />,
+  <Posters_Page16 openPopup={openPopup} />,
+  <Posters_Page17 openPopup={openPopup} />,
+  <Posters_Page18 openPopup={openPopup} />,
+  <Posters_Page19 openPopup={openPopup} />,
+  <Posters_Page20 openPopup={openPopup} />,
 ];

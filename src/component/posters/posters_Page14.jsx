@@ -1,79 +1,52 @@
 import React from "react";
-import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_16.png";
+import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_14.png";
 import audioBtn from "../../assets/Page 01/Audio btn.svg";
-import VocabularAudio from "../../assets/audio/ClassBook/U7/PG 58/cd32pg58-vocab.mp3";
-import sound1 from "../../assets/audio/ClassBook/U7/PG 58/sound1.mp3";
-import sound2 from "../../assets/audio/ClassBook/U7/PG 58/sound2.mp3";
-import sound3 from "../../assets/audio/ClassBook/U7/PG 58/sound3.mp3";
-import sound4 from "../../assets/audio/ClassBook/U7/PG 58/sound4.mp3";
-import sound5 from "../../assets/audio/ClassBook/U7/PG 58/sound5.mp3";
-import sound6 from "../../assets/audio/ClassBook/U7/PG 58/sound6.mp3";
-import sound7 from "../../assets/audio/ClassBook/U7/PG 58/sound7.mp3";
-import sound8 from "../../assets/audio/ClassBook/U7/PG 58/sound8.mp3";
-import sound9 from "../../assets/audio/ClassBook/U7/PG 58/sound9.mp3";
-import sound10 from "../../assets/audio/ClassBook/U7/PG 58/sound10.mp3";
-import sound11 from "../../assets/audio/ClassBook/U7/PG 58/sound11.mp3";
-import sound12 from "../../assets/audio/ClassBook/U7/PG 58/sound12.mp3";
-import sound13 from "../../assets/audio/ClassBook/U7/PG 58/sound13.mp3";
-import sound14 from "../../assets/audio/ClassBook/U7/PG 58/sound14.mp3";
-import sound15 from "../../assets/audio/ClassBook/U7/PG 58/sound15.mp3";
-import sound16 from "../../assets/audio/ClassBook/U7/PG 58/sound16.mp3";
+import VocabularAudio from "../../assets/audio/ClassBook/U7/PG 58/vocab7.mp3";
 import Vocabulary from "../Vocabulary";
 import "./posters.css";
 
-const Posters_Page16 = ({ openPopup }) => {
-  const sounds = [
-    sound1, sound2, sound3, sound4, sound5, sound6,
-    sound7, sound8, sound9, sound10, sound11, sound12,
-    sound13, sound14, sound15, sound16,
-  ];
-
+const Posters_Page26 = ({ openPopup }) => {
   const captionVoc = [
     {
-      start: 0.379,
-      end: 4.579,
-      text: "Page 58, unit seven, vocabulary. Listen and repeat.",
+      start: 0.299,
+      end: 7.879,
+      text: "Page 58, unit 7 vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
-    {
-      start: 5.0,
-      end: 7.919,
-      text: "Find the words and expressions in the conversation above.",
-    },
-    { start: 8.399, end: 10.039, text: "1. limping." },
-    { start: 10.939, end: 12.619, text: "2. stiff." },
-    { start: 13.819, end: 15.559, text: "3. oddly." },
-    { start: 16.52, end: 18.44, text: "4. albums." },
-    { start: 19.299, end: 21.119, text: "5. super." },
-    { start: 22.139, end: 25.359, text: "6. treasure (treasuring)" },
-    { start: 26.459, end: 29.379, text: "7. miss (verb)." },
-    { start: 30.399, end: 32.179, text: "8. orphanage." },
-    { start: 33.0, end: 34.859, text: "9. jotting down." },
-    { start: 35.779, end: 37.679, text: "10. wonderful." },
-    { start: 38.379, end: 41.279, text: "11. where do you want me to start?" },
-    { start: 42.239, end: 44.539, text: "12. make yourself at home." },
-    { start: 45.5, end: 47.619, text: "13. of course." },
-    { start: 48.619, end: 50.759, text: "14. deal with it." },
-    { start: 51.68, end: 53.739, text: "15. keeping busy." },
-    { start: 54.819, end: 57.88, text: "16. at the top of my list." },
+    { start: 8.539, end: 10.059, text: "1. silly." },
+    { start: 10.5, end: 12.039, text: "2. aware." },
+    { start: 12.519, end: 14.479, text: "3. previously." },
+    { start: 15.099, end: 16.899, text: "4. advice." },
+    { start: 17.559, end: 19.5, text: "5. combinations." },
+    { start: 20.079, end: 21.779, text: "6. background." },
+    { start: 22.42, end: 24.079, text: "7. stencils." },
+    { start: 24.439, end: 26.159, text: "8. ability." },
+    { start: 27.219, end: 29.079, text: "9. flatter." },
+    { start: 29.639, end: 31.439, text: "10. strokes." },
+    { start: 32.279, end: 34.659, text: "11. it's been too long." },
+    { start: 35.439, end: 37.139, text: "12. catch up." },
+    { start: 37.819, end: 39.68, text: "13. stand out." },
+    { start: 40.319, end: 42.579, text: "14. you're a natural." },
+    { start: 43.279, end: 46.0, text: "15. now is your chance." },
+    { start: 46.759, end: 48.7, text: "16. here I go." },
   ];
 
   const wordTimingsVoc = [
-    { start: 8.399, end: 10.039 },
-    { start: 10.939, end: 12.619 },
-    { start: 13.819, end: 15.559 },
-    { start: 16.52, end: 18.44 },
-    { start: 19.299, end: 21.119 },
-    { start: 22.139, end: 25.359 },
-    { start: 26.459, end: 29.379 },
-    { start: 30.399, end: 32.179 },
-    { start: 33.0, end: 34.859 },
-    { start: 35.779, end: 37.679 },
-    { start: 38.379, end: 41.279 },
-    { start: 42.239, end: 44.539 },
-    { start: 45.5, end: 47.619 },
-    { start: 48.619, end: 50.759 },
-    { start: 51.68, end: 53.739 },
-    { start: 54.819, end: 57.88 },
+    { start: 8.3, end: 10.059 },
+    { start: 10.3, end: 12.039 },
+    { start: 12.3, end: 14.479 },
+    { start: 14.8, end: 16.899 },
+    { start: 17.3, end: 19.5 },
+    { start: 19.8, end: 21.779 },
+    { start: 22.1, end: 24.079 },
+    { start: 24.2, end: 26.159 },
+    { start: 27.0, end: 29.079 },
+    { start: 29.4, end: 31.439 },
+    { start: 32.0, end: 34.659 },
+    { start: 35.1, end: 37.139 },
+    { start: 37.5, end: 39.68 },
+    { start: 40.0, end: 42.579 },
+    { start: 43.0, end: 46.0 },
+    { start: 46.5, end: 48.7 },
   ];
 
   return (
@@ -105,25 +78,24 @@ const Posters_Page16 = ({ openPopup }) => {
                   sound={VocabularAudio}
                   captions={captionVoc}
                   stopAtSecond={8}
-                  sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "limping",
-                    "stiff",
-                    "oddly",
-                    "albums",
-                    "super",
-                    "treasure (treasuring)",
-                    "miss (verb)",
-                    "orphanage",
-                    "jotting down",
-                    "wonderful",
-                    "where do you want me to start?",
-                    "make yourself at home",
-                    "of course",
-                    "deal with it",
-                    "keeping busy",
-                    "at the top of my list",
+                    "silly",
+                    "aware",
+                    "previously",
+                    "advice",
+                    "combinations",
+                    "background",
+                    "stencils",
+                    "ability",
+                    "flatter",
+                    "strokes",
+                    "It's been too long.",
+                    "Catch up.",
+                    "Stand out.",
+                    "You're a natural.",
+                    "Now is your chance.",
+                    "Here I go.",
                   ]}
                 />
               </div>,
@@ -146,4 +118,4 @@ const Posters_Page16 = ({ openPopup }) => {
   );
 };
 
-export default Posters_Page16;
+export default Posters_Page26;

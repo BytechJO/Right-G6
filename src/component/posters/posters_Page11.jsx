@@ -1,112 +1,112 @@
 import React from "react";
 import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_11.png";
 import audioBtn from "../../assets/Page 01/Audio btn.svg";
-import imgConversation1 from "../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/1.svg";
-import imgConversation2 from "../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/2.svg";
-import imgConversation3 from "../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/3.svg";
-import imgConversation4 from "../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/4.svg";
+import imgConversation1 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 5.svg";
+import imgConversation2 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 6.svg";
+import imgConversation3 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 9.svg";
+import imgConversation4 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 12.svg";
 import longAudio from "../../assets/audio/ClassBook/U6/PG 46/cd26pg46-conversation.mp3";
-import video from "../../assets/videos/grade 5 unit 6 page 46.mp4";
+import video from "../../assets/videos/grade 6 unit 2 page 10.mp4";
 import wordJson from "../../assets/json/cd26pg46-conversation_eng.json";
 import Conversation from "../Conversation";
 import "./posters.css";
 
-const Posters_Page11 = ({ openPopup }) => {
+const Posters_Page23 = ({ openPopup }) => {
   const captionsExample = [
     {
-      start: 0.56,
-      end: 7.019,
-      text: "Page 46, Conversation.Listen and read, then say.",
+      start: 0.319,
+      end: 5.259,
+      text: "Page 46, Conversation. Listen and read, then say.",
     },
     {
-      start: 7.019,
-      end: 9.859,
-      text: "Hooray, we made it to the carnival.",
+      start: 5.259,
+      end: 8.639,
+      text: "Is this piano in the living room yours, Helen?",
     },
     {
-      start: 9.859,
-      end: 14.079,
-      text: "Yes, and we're lucky because it's the last day.",
+      start: 8.639,
+      end: 13.439,
+      text: "It's my mother's piano. She used to play it perfectly when she was a young girl.",
     },
     {
-      start: 14.079,
-      end: 18.399,
-      text: "I think it's great that all the attractions are half price.",
+      start: 13.439,
+      end: 20.939,
+      text: "That sure is something. Your mom seems to be very talented. Does she still play the piano?",
     },
     {
-      start: 19.459,
-      end: 23.219,
-      text: "I'd like to take advantage of the discount and try to go on all the rides.",
+      start: 20.939,
+      end: 24.879,
+      text: "Yes, she plays it sometimes when we have a family celebration.",
     },
     {
-      start: 24.34,
-      end: 28.139,
-      text: "I could ride the white horse on the merry-go-round.",
+      start: 24.879,
+      end: 30.019,
+      text: "Wow, I never knew that. That's a good way to make a party entertaining.",
     },
     {
-      start: 28.139,
-      end: 32.819,
-      text: "I'll try the flying cars, but that new ride might not be what I like.",
+      start: 30.019,
+      end: 33.88,
+      text: "Speaking of entertainment, why don't we go to the arcade?",
     },
     {
-      start: 33.939,
-      end: 40.459,
-      text: "I'll try out a bunch of the rides, but I'd also like to play some games. Should we all try to win a prize?",
+      start: 33.88,
+      end: 37.219,
+      text: "Playing the piano seems more to my liking.",
     },
     {
-      start: 40.459,
-      end: 46.619,
-      text: "We must try the basketball game. I can sometimes shoot three baskets in a row.",
+      start: 37.219,
+      end: 39.919,
+      text: "Okay, you can go ahead and play it.",
     },
     {
-      start: 46.619,
-      end: 49.399,
-      text: "Here it is. Shall we? You first, Stella.",
+      start: 39.919,
+      end: 45.119,
+      text: "This piano makes such flawless musical sounds.",
     },
     {
-      start: 50.459,
-      end: 55.239,
-      text: "Okay, I'll give it a try. It looks easy when the man in the booth shoots it.",
+      start: 45.119,
+      end: 49.279,
+      text: "Try some more. Play some music you are familiar with.",
     },
     {
-      start: 56.299,
-      end: 62.979,
-      text: "Yeah, they can always make it look easy. While you're doing that, we're going to try out the bowling game.",
+      start: 49.279,
+      end: 51.419,
+      text: "By the way, I have a guitar at home.",
     },
     {
-      start: 62.979,
-      end: 67.079,
-      text: "We'll see if any of us is an expert at the games.",
+      start: 52.639,
+      end: 55.999,
+      text: "Really? I never knew that. Do you know how to play it well?",
     },
     {
-      start: 67.08,
-      end: 68.199,
-      text: "Hey, I got one in.",
+      start: 57.039,
+      end: 60.939,
+      text: "Yes. I played it at a summer school play years ago.",
     },
     {
-      start: 69.199,
-      end: 74.9,
-      text: "We got an action figure for a prize. I'll be really generous and give it to you, Helen.",
+      start: 61.959,
+      end: 64.139,
+      text: "Was the play a success?",
     },
     {
-      start: 75.939,
-      end: 79.079,
-      text: "No, thanks. I don't like action figures.",
+      start: 64.139,
+      end: 68.499,
+      text: "It sure was. Everyone loved it, and loved the guitar music.",
     },
     {
-      start: 79.08,
-      end: 85.799,
-      text: "Ugh, I got a doll with a pink dress for my prize. Who would want something like that?",
+      start: 69.559,
+      end: 72.919,
+      text: "That's great. You should be proud of yourself.",
     },
     {
-      start: 85.799,
-      end: 89.699,
-      text: "We'll take it. Pink is my favorite color.",
+      start: 72.919,
+      end: 77.979,
+      text: "Thanks. I can give you free guitar lessons if you like.",
     },
     {
-      start: 89.699,
-      end: 95.819,
-      text: "Good idea. We'll trade prizes. There's no way I'll carry a pink doll around the carnival.",
+      start: 77.979,
+      end: 81.419,
+      text: "That's sweet. Thank you, but I'll be happy to hear you play it.",
     },
   ];
 
@@ -175,20 +175,20 @@ const Posters_Page11 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Harley",
-          text: "Hooray, we made it to the carnival!",
+          speaker: "Stella",
+          text: "Is this piano in the living room yours, Helen?",
         },
         {
-          speaker: "Tom",
-          text: "Yes, and we are lucky because it's the last day.",
+          speaker: "Helen",
+          text: "It's my mother's piano. She used to play it perfectly when she was a young girl.",
         },
         {
           speaker: "Stella",
-          text: "I think it's great that all the attractions are half price.",
+          text: "That sure is something! Your mom seems to be very talented. Does she still play the piano?",
         },
         {
-          speaker: "Tom",
-          text: "I'd like to take advantage of the discount and try to go on all the rides.",
+          speaker: "Helen",
+          text: "Yes, she plays it sometimes when we have a family celebration.",
         },
       ],
     },
@@ -197,20 +197,20 @@ const Posters_Page11 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Sarah",
-          text: "I could ride the white horse on the merry-go-round!",
+          speaker: "Stella",
+          text: "Wow! I never knew that! That's a good way to make a party entertaining.",
         },
         {
-          speaker: "Harley",
-          text: "I'll try the flying cars, but that new ride might not be what I like.",
-        },
-        {
-          speaker: "Tom",
-          text: "I'll try out a bunch of the rides, but I'd also like to play some games. Should we all try to win a prize?",
+          speaker: "Helen",
+          text: "Speaking of entertainment, why don't we go to the arcade?",
         },
         {
           speaker: "Stella",
-          text: "We must try the basketball game. I can sometimes shoot three baskets in a row.",
+          text: "Playing the piano seems more to my liking.",
+        },
+        {
+          speaker: "Helen",
+          text: "OK, you can go ahead and play it.",
         },
       ],
     },
@@ -219,24 +219,24 @@ const Posters_Page11 = ({ openPopup }) => {
       image: imgConversation3,
       dialogues: [
         {
+          speaker: "Stella",
+          text: "This piano makes such flawless musical sounds.",
+        },
+        {
           speaker: "Helen",
-          text: "Here it is. Shall we? You first, Stella.",
+          text: "Try some more. Play some music you are familiar with.",
         },
         {
           speaker: "Stella",
-          text: "Okay, I'll give it a try. It looks easy when the man in the booth shoots it.",
+          text: "By the way, I have a guitar at home.",
         },
         {
-          speaker: "Tom",
-          text: "Yeah, they can always make it look easy. While you're doing that, we're going to try out the bowling game.",
+          speaker: "Helen",
+          text: "Really? I never knew that. Do you know how to play it well?",
         },
         {
-          speaker: "Harley",
-          text: "We'll see if any of us is an expert at the games!",
-        },
-        {
-          speaker: "Sarah",
-          text: "Hey, I got one in!",
+          speaker: "Stella",
+          text: "Yes! I played it at a summer school play years ago.",
         },
       ],
     },
@@ -245,24 +245,24 @@ const Posters_Page11 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
+          speaker: "Helen",
+          text: "Was the play a success?",
+        },
+        {
           speaker: "Stella",
-          text: "We got an action figure for a prize. I'll be really generous and give it to you, Helen!",
+          text: "It sure was! Everyone loved it and loved the guitar music.",
         },
         {
           speaker: "Helen",
-          text: "No thanks. I don't like action figures.",
+          text: "That's great! You should be proud of yourself!",
         },
         {
-          speaker: "Harley",
-          text: "Ugh. I got a doll with a pink dress for my prize! Who would want something like that?",
+          speaker: "Stella",
+          text: "Thanks! I can give you free guitar lessons if you like.",
         },
         {
-          speaker: "Sarah",
-          text: "We'll take it! Pink is my favorite color!",
-        },
-        {
-          speaker: "Harley",
-          text: "Good idea. We'll trade prizes. There's no way I'll carry a pink doll around the carnival!",
+          speaker: "Helen",
+          text: "That's sweet. Thank you, but I'll be happy to hear you play it.",
         },
       ],
     },
@@ -296,7 +296,7 @@ const Posters_Page11 = ({ openPopup }) => {
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={6.5}
+                  stopAtSecond={5.259}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -322,4 +322,4 @@ const Posters_Page11 = ({ openPopup }) => {
   );
 };
 
-export default Posters_Page11;
+export default Posters_Page23;

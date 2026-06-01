@@ -2,81 +2,56 @@ import React from "react";
 import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_12.png";
 import audioBtn from "../../assets/Page 01/Audio btn.svg";
 import VocabularAudio from "../../assets/audio/ClassBook/U6/PG 46/cd27pg46-vocab.mp3";
-import sound1 from "../../assets/audio/ClassBook/U6/PG 46/sound1.mp3";
-import sound2 from "../../assets/audio/ClassBook/U6/PG 46/sound2.mp3";
-import sound3 from "../../assets/audio/ClassBook/U6/PG 46/sound3.mp3";
-import sound4 from "../../assets/audio/ClassBook/U6/PG 46/sound4.mp3";
-import sound5 from "../../assets/audio/ClassBook/U6/PG 46/sound5.mp3";
-import sound6 from "../../assets/audio/ClassBook/U6/PG 46/sound6.mp3";
-import sound7 from "../../assets/audio/ClassBook/U6/PG 46/sound7.mp3";
-import sound8 from "../../assets/audio/ClassBook/U6/PG 46/sound8.mp3";
-import sound9 from "../../assets/audio/ClassBook/U6/PG 46/sound9.mp3";
-import sound10 from "../../assets/audio/ClassBook/U6/PG 46/sound10.mp3";
-import sound11 from "../../assets/audio/ClassBook/U6/PG 46/sound11.mp3";
-import sound12 from "../../assets/audio/ClassBook/U6/PG 46/sound12.mp3";
-import sound13 from "../../assets/audio/ClassBook/U6/PG 46/sound13.mp3";
-import sound14 from "../../assets/audio/ClassBook/U6/PG 46/sound14.mp3";
-import sound15 from "../../assets/audio/ClassBook/U6/PG 46/sound15.mp3";
-import sound16 from "../../assets/audio/ClassBook/U6/PG 46/sound16.mp3";
-import sound17 from "../../assets/audio/ClassBook/U6/PG 46/sound17.mp3";
 import Vocabulary from "../Vocabulary";
 import "./posters.css";
 
-const Posters_Page12 = ({ openPopup }) => {
-  const sounds = [
-    sound1, sound2, sound3, sound4, sound5, sound6,
-    sound7, sound8, sound9, sound10, sound11, sound12,
-    sound13, sound14, sound15, sound16, sound17,
-  ];
-
+const Posters_Page24 = ({ openPopup }) => {
   const captionVoc = [
     {
-      start: 0.399,
-      end: 4.519,
-      text: "Page 46, unit six, vocabulary. Listen and repeat.",
+      start: 0.359,
+      end: 4.299,
+      text: "Page 46, Unit 6 Vocabulary. Listen and repeat.",
     },
     {
-      start: 5.0,
-      end: 7.819,
+      start: 5.039,
+      end: 7.98,
       text: "Find the words and expressions in the conversation above.",
     },
-    { start: 8.399, end: 10.099, text: "1. attractions." },
-    { start: 10.8, end: 12.5, text: "2. discount." },
-    { start: 13.46, end: 15.139, text: "3. booth." },
-    { start: 16.1, end: 19.279, text: "4. shoot (a basketball)." },
-    { start: 20.279, end: 22.02, text: "5. bowling." },
-    { start: 23.119, end: 25.159, text: "6. (a) bunch." },
-    { start: 26.199, end: 28.079, text: "7. expert." },
-    { start: 28.799, end: 30.959, text: "8. action figure." },
-    { start: 31.819, end: 33.679, text: "9. generous." },
-    { start: 34.579, end: 36.459, text: "10. doll." },
-    { start: 37.399, end: 39.34, text: "11. trade." },
-    { start: 40.2, end: 42.139, text: "12. made it." },
-    { start: 43.159, end: 45.539, text: "13. half price." },
-    { start: 46.419, end: 48.84, text: "14. take advantage of." },
-    { start: 49.739, end: 51.759, text: "15. in a row." },
-    { start: 52.84, end: 55.019, text: "16. shall we?" },
-    { start: 55.959, end: 59.899, text: "17. try out (verb)." },
+    { start: 8.76, end: 10.219, text: "1, perfectly." },
+    { start: 10.659, end: 12.38, text: "2, talented." },
+    { start: 12.899, end: 14.839, text: "3, celebration." },
+    { start: 15.399, end: 17.26, text: "4, entertaining." },
+    { start: 18.0, end: 19.619, text: "5, flawless." },
+    { start: 20.199, end: 21.859, text: "6, familiar." },
+    { start: 22.559, end: 24.26, text: "7, summer school." },
+    { start: 24.659, end: 26.639, text: "8, success." },
+    { start: 27.26, end: 29.079, text: "9, proud." },
+    { start: 29.619, end: 31.239, text: "10, lessons." },
+    { start: 32.099, end: 34.759, text: "11, that sure is something." },
+    { start: 35.399, end: 37.36, text: "12, speaking of." },
+    { start: 38.0, end: 40.279, text: "13, to my liking." },
+    { start: 40.819, end: 42.619, text: "14, go ahead." },
+    { start: 43.34, end: 45.619, text: "15, by the way." },
+    { start: 46.379, end: 48.459, text: "16, years ago." },
   ];
 
   const wordTimingsVoc = [
-    { start: 8.399, end: 10.099 },
-    { start: 10.8, end: 12.5 },
-    { start: 13.46, end: 15.139 },
-    { start: 16.1, end: 19.279 },
-    { start: 20.279, end: 22.02 },
-    { start: 23.119, end: 25.159 },
-    { start: 26.199, end: 28.079 },
-    { start: 28.799, end: 30.959 },
-    { start: 31.819, end: 33.679 },
-    { start: 34.579, end: 36.459 },
-    { start: 37.399, end: 39.34 },
-    { start: 40.2, end: 42.139 },
-    { start: 43.159, end: 45.539 },
-    { start: 46.419, end: 48.84 },
-    { start: 49.739, end: 51.759 },
-    { start: 52.84, end: 55.019 },
-    { start: 55.959, end: 59.899 },
+    { start: 8.76, end: 10.219 },
+    { start: 10.659, end: 12.38 },
+    { start: 12.899, end: 14.839 },
+    { start: 15.399, end: 17.26 },
+    { start: 18.0, end: 19.619 },
+    { start: 20.199, end: 21.859 },
+    { start: 22.559, end: 24.26 },
+    { start: 24.659, end: 26.639 },
+    { start: 27.26, end: 29.079 },
+    { start: 29.619, end: 31.239 },
+    { start: 32.099, end: 34.759 },
+    { start: 35.399, end: 37.36 },
+    { start: 38.0, end: 40.279 },
+    { start: 40.819, end: 42.619 },
+    { start: 43.34, end: 45.619 },
+    { start: 46.379, end: 48.459 },
   ];
 
   return (
@@ -107,27 +82,25 @@ const Posters_Page12 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8}
-                  sounds={sounds}
+                  stopAtSecond={7.98}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "attractions",
-                    "discount",
-                    "booth",
-                    "shoot (a basketball)",
-                    "bowling",
-                    "(a) bunch",
-                    "expert",
-                    "action figure",
-                    "generous",
-                    "doll",
-                    "trade",
-                    "made it",
-                    "half price",
-                    "take advantage of",
-                    "in a row",
-                    "shall we?",
-                    "try out (verb)",
+                    "perfectly",
+                    "talented",
+                    "celebration",
+                    "entertaining",
+                    "flawless",
+                    "familiar",
+                    "summer school",
+                    "success",
+                    "proud",
+                    "lessons",
+                    "That sure is something!",
+                    "Speaking of ...",
+                    "to my liking",
+                    "go ahead",
+                    "By the way ...",
+                    "years ago",
                   ]}
                 />
               </div>,
@@ -150,4 +123,4 @@ const Posters_Page12 = ({ openPopup }) => {
   );
 };
 
-export default Posters_Page12;
+export default Posters_Page24;

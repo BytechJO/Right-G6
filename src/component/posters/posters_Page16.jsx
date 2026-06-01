@@ -1,79 +1,58 @@
 import React from "react";
-import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_14.png";
+import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_16.png";
 import audioBtn from "../../assets/Page 01/Audio btn.svg";
-import VocabularAudio from "../../assets/audio/ClassBook/U8/PG 64/cd37pg64-vocab.mp3";
-import sound1 from "../../assets/audio/ClassBook/U8/PG 64/sound1.mp3";
-import sound2 from "../../assets/audio/ClassBook/U8/PG 64/sound2.mp3";
-import sound3 from "../../assets/audio/ClassBook/U8/PG 64/sound3.mp3";
-import sound4 from "../../assets/audio/ClassBook/U8/PG 64/sound4.mp3";
-import sound5 from "../../assets/audio/ClassBook/U8/PG 64/sound5.mp3";
-import sound6 from "../../assets/audio/ClassBook/U8/PG 64/sound6.mp3";
-import sound7 from "../../assets/audio/ClassBook/U8/PG 64/sound7.mp3";
-import sound8 from "../../assets/audio/ClassBook/U8/PG 64/sound8.mp3";
-import sound9 from "../../assets/audio/ClassBook/U8/PG 64/sound9.mp3";
-import sound10 from "../../assets/audio/ClassBook/U8/PG 64/sound10.mp3";
-import sound11 from "../../assets/audio/ClassBook/U8/PG 64/sound11.mp3";
-import sound12 from "../../assets/audio/ClassBook/U8/PG 64/sound12.mp3";
-import sound13 from "../../assets/audio/ClassBook/U8/PG 64/sound13.mp3";
-import sound14 from "../../assets/audio/ClassBook/U8/PG 64/sound14.mp3";
-import sound15 from "../../assets/audio/ClassBook/U8/PG 64/sound15.mp3";
-import sound16 from "../../assets/audio/ClassBook/U8/PG 64/sound16.mp3";
+import VocabularAudio from "../../assets/audio/ClassBook/U8/PG 64/vocab8.mp3";
 import Vocabulary from "../Vocabulary";
 import "./posters.css";
 
-const Posters_Page14 = ({ openPopup }) => {
-  const sounds = [
-    sound1, sound2, sound3, sound4, sound5, sound6,
-    sound7, sound8, sound9, sound10, sound11, sound12,
-    sound13, sound14, sound15, sound16,
-  ];
-
+const Posters_Page28 = ({ openPopup }) => {
   const captionVoc = [
     {
-      start: 0.399,
-      end: 4.94,
-      text: "Page 64, unit eight, vocabulary. Listen and repeat.",
+      start: 0.119,
+      end: 7.759,
+      text: "Page 64, Unit 8, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
-    {
-      start: 5.46,
-      end: 8.119,
-      text: "Find the words and expressions in the conversation above.",
-    },
-    { start: 8.92, end: 10.939, text: "1. hot air balloon." },
-    { start: 11.759, end: 13.639, text: "2. rainbow." },
-    { start: 14.659, end: 16.819, text: "3. volunteer." },
-    { start: 17.76, end: 19.379, text: "4. doubt." },
-    { start: 20.399, end: 22.379, text: "5. landscape." },
-    { start: 23.359, end: 25.359, text: "6. recognize." },
-    { start: 26.239, end: 28.019, text: "7. pilot." },
-    { start: 28.939, end: 30.739, text: "8. crowded." },
-    { start: 31.699, end: 33.539, text: "9. lean." },
-    { start: 34.239, end: 36.699, text: "10. be shocked." },
-    { start: 37.559, end: 40.079, text: "11. looks like ants." },
-    { start: 41.04, end: 43.519, text: "12. top of the world." },
-    { start: 44.399, end: 46.699, text: "13. fly over." },
-    { start: 47.759, end: 50.619, text: "14. her second home." },
-    { start: 51.52, end: 53.699, text: "15. board games." },
-    { start: 54.639, end: 57.68, text: "16. spot (noun)." },
+    { start: 8.22, end: 9.8, text: "1. nighttime." },
+    { start: 10.239, end: 11.939, text: "2. glows." },
+    { start: 12.479, end: 14.34, text: "3. table lamp." },
+    { start: 14.839, end: 16.76, text: "4. wireless." },
+    { start: 17.539, end: 19.279, text: "5. helicopter." },
+    { start: 19.879, end: 21.959, text: "6. remote control." },
+    { start: 22.579, end: 24.1, text: "7. gadget." },
+    { start: 24.619, end: 26.42, text: "8. peculiar." },
+    { start: 27.359, end: 29.199, text: "9. electric." },
+    { start: 29.859, end: 31.759, text: "10. can opener." },
+    { start: 32.459, end: 34.319, text: "11. timer." },
+    { start: 35.04, end: 37.239, text: "12. memo holder." },
+    { start: 37.819, end: 39.739, text: "13. tablet." },
+    { start: 40.259, end: 42.099, text: "14. skills." },
+    { start: 42.86, end: 45.099, text: "15. in ages." },
+    { start: 45.86, end: 47.959, text: "16. here you are." },
+    { start: 48.539, end: 50.479, text: "17. show up." },
+    { start: 51.18, end: 53.279, text: "18. come in handy." },
+    { start: 54.039, end: 56.18, text: "19. a great deal." },
   ];
 
   const wordTimingsVoc = [
-    { start: 8.92, end: 10.939 },
-    { start: 11.759, end: 13.639 },
-    { start: 14.659, end: 16.819 },
-    { start: 17.76, end: 19.379 },
-    { start: 20.399, end: 22.379 },
-    { start: 23.359, end: 25.359 },
-    { start: 26.239, end: 28.019 },
-    { start: 28.939, end: 30.739 },
-    { start: 31.699, end: 33.539 },
-    { start: 34.239, end: 36.699 },
-    { start: 37.559, end: 40.079 },
-    { start: 41.04, end: 43.519 },
-    { start: 44.399, end: 46.699 },
-    { start: 47.759, end: 50.619 },
-    { start: 51.52, end: 53.699 },
-    { start: 54.639, end: 57.68 },
+    { start: 8.0, end: 9.8 },
+    { start: 10.039, end: 11.939 },
+    { start: 12.279, end: 14.34 },
+    { start: 14.639, end: 16.76 },
+    { start: 17.339, end: 19.279 },
+    { start: 19.679, end: 21.959 },
+    { start: 22.379, end: 24.1 },
+    { start: 24.419, end: 26.42 },
+    { start: 27.159, end: 29.199 },
+    { start: 29.659, end: 31.759 },
+    { start: 32.259, end: 34.319 },
+    { start: 34.84, end: 37.239 },
+    { start: 37.619, end: 39.739 },
+    { start: 40.059, end: 42.099 },
+    { start: 42.66, end: 45.099 },
+    { start: 45.66, end: 47.959 },
+    { start: 48.339, end: 50.479 },
+    { start: 51.08, end: 53.279 },
+    { start: 53.839, end: 56.18 },
   ];
 
   return (
@@ -104,26 +83,28 @@ const Posters_Page14 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8.3}
-                  sounds={sounds}
+                  stopAtSecond={7.8}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "hot air balloon",
-                    "rainbow",
-                    "volunteer",
-                    "doubt",
-                    "landscape",
-                    "recognize",
-                    "pilot",
-                    "crowded",
-                    "lean",
-                    "(be) shocked",
-                    "looks like ants",
-                    "top of the world",
-                    "fly over",
-                    "(her) second home",
-                    "board games",
-                    "spot (noun)",
+                    "nighttime",
+                    "glows",
+                    "table lamp",
+                    "wireless",
+                    "helicopter",
+                    "remote control",
+                    "gadget",
+                    "peculiar",
+                    "electric",
+                    "can opener",
+                    "timer",
+                    "memo holder",
+                    "tablet",
+                    "skills",
+                    "in ages",
+                    "here you are!",
+                    "show up",
+                    "come in handy",
+                    "a great deal",
                   ]}
                 />
               </div>,
@@ -146,4 +127,4 @@ const Posters_Page14 = ({ openPopup }) => {
   );
 };
 
-export default Posters_Page14;
+export default Posters_Page28;

@@ -1,82 +1,97 @@
 import React from "react";
-import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_15.png";
+import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_13.png";
 import audioBtn from "../../assets/Page 01/Audio btn.svg";
-import imgConversation1 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 15.svg";
-import imgConversation2 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 22.svg";
-import imgConversation3 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 23.svg";
-import imgConversation4 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 25.svg";
-import longAudio from "../../assets/audio/ClassBook/U7/PG 58/cd31pg58-conversation.mp3";
-import video from "../../assets/videos/grade 5 unit 7 page 58.mp4";
-import wordJson from "../../assets/json/cd31pg58-conversation_eng.json";
+import imgConversation1 from "../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 26.svg";
+import imgConversation2 from "../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 27.svg";
+import imgConversation3 from "../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 28.svg";
+import imgConversation4 from "../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 29.svg";
+import longAudio from "../../assets/audio/ClassBook/U7/PG 58/conversation7.mp3";
+import video from "../../assets/videos/grade 6 unit 7 page 58.mp4";
+import wordJson from "../../assets/json/conversation7_eng.json";
 import Conversation from "../Conversation";
 import "./posters.css";
 
-const Posters_Page15 = ({ openPopup }) => {
+const Posters_Page25 = ({ openPopup }) => {
   const captionsExample = [
     {
-      start: 0.299,
-      end: 4.8,
-      text: "Page 58, Conversation. Listen and read, then say.",
+      start: 0.319,
+      end: 5.319,
+      text: "Page 58. Conversation. Listen and read, then say.",
     },
     {
-      start: 5.4,
-      end: 9.199,
-      text: "Come in. I am putting some water in the kettle for tea.",
+      start: 6.48,
+      end: 14.34,
+      text: "Hi, Tom. I haven't seen you lately. If you had lived closer to me, I would see you more often. Maybe you don't want to play with me.",
     },
     {
-      start: 9.199,
-      end: 12.539,
-      text: "Hi, Grandma. You're limping today. Are you okay?",
+      start: 15.359,
+      end: 19.719,
+      text: "Don't be silly. It's just that I've been so busy with my new job.",
     },
     {
-      start: 13.779,
-      end: 21.299,
-      text: "Come inside, Helen. I'm fine, but I'm feeling a little tired today. I'm stiff from sitting down, so that's why I'm walking oddly.",
+      start: 19.719,
+      end: 26.279,
+      text: "Job? What job? It's been too long since I've seen you. I find it hard to catch up.",
     },
     {
-      start: 21.299,
-      end: 25.92,
-      text: "I'm glad I'm helping you today, Grandma. Where do you want me to start?",
+      start: 27.439,
+      end: 30.859,
+      text: "I've been working with my dad. I'm helping him paint the house.",
     },
     {
-      start: 25.92,
-      end: 33.52,
-      text: "First, thank you for coming. Now, sit down. Make yourself at home. I'm getting the photo albums for us to look at.",
+      start: 31.899,
+      end: 34.139,
+      text: "I wasn't aware that you could paint.",
     },
     {
-      start: 33.52,
-      end: 36.899,
-      text: "Super. Are you getting Mom's baby book also?",
+      start: 34.139,
+      end: 40.599,
+      text: "I couldn't previously, but my dad taught me how to paint. He even gave me advice on color combinations.",
     },
     {
-      start: 36.899,
-      end: 40.959,
-      text: "Of course. I know you love looking at your mom's baby pictures.",
+      start: 41.739,
+      end: 44.159,
+      text: "I wish I could help you paint.",
     },
     {
-      start: 40.959,
-      end: 50.639,
-      text: "You like seeing when you were a young mom. In some ways, you look so different, but in other ways you look the same. Do you ever miss being young, Grandma?",
+      start: 44.159,
+      end: 48.299,
+      text: "Well, why not? Come and join us. It's going to be lots of fun.",
     },
     {
-      start: 50.639,
-      end: 60.159,
-      text: "Oh, those were wonderful years. But I'm treasuring my life now. I learned a long time ago to treasure each minute of what I have so I don't miss it later.",
+      start: 49.479,
+      end: 57.52,
+      text: "Wow, look at the paint colors. I love your blue background color. It makes the stencils stand out.",
     },
     {
-      start: 60.159,
-      end: 64.999,
-      text: "That's a good way to deal with it. What are you doing on the weekends now, Grandma?",
+      start: 57.52,
+      end: 64.279,
+      text: "Yeah, I chose that color. If I had more blue paint, I would have painted the porch blue too.",
     },
     {
-      start: 65.0,
-      end: 73.839,
-      text: "Well, I'm keeping busy, that's for sure. I ride my bike to the orphanage to visit the children. They would love to meet you. Can you come next weekend?",
+      start: 64.279,
+      end: 69.899,
+      text: "If I had your ability to paint, I'd have painted all the houses of the neighborhood. You're a natural.",
     },
     {
-      start: 73.839,
-      end: 79.099,
-      text: "I'm jotting it down right now, Grandma. You're at the top of my list for next weekend.",
+      start: 70.939,
+      end: 72.979,
+      text: "You flatter me, Jack. Thank you.",
+    },
+    {
+      start: 74.0,
+      end: 78.36,
+      text: "It's true. Look at the colors. I'd love to learn how to paint like that.",
+    },
+    {
+      start: 79.4,
+      end: 90.399,
+      text: "Now is your chance. Let's begin. We are going to paint the borders of the windows now. Dip the brush in the paint and paint careful strokes with it, just like I'm doing.",
+    },
+    {
+      start: 91.479,
+      end: 94.299,
+      text: "You sure make it look easy. Here I go.",
     },
   ];
 
@@ -86,9 +101,10 @@ const Posters_Page15 = ({ openPopup }) => {
       filteredSegments[0]?.words || [],
       filteredSegments[1]?.words || [],
       filteredSegments[2]?.words || [],
+      filteredSegments[3]?.words || [],
     ],
-    [filteredSegments[3]?.words || [], filteredSegments[4]?.words || []],
     [
+      filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
       filteredSegments[6]?.words || [],
       filteredSegments[7]?.words || [],
@@ -99,18 +115,33 @@ const Posters_Page15 = ({ openPopup }) => {
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
     ],
+    [
+      filteredSegments[12]?.words || [],
+      filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
+    ],
   ];
 
   const captionTimings = [
-    [captionsExample[1], captionsExample[2], captionsExample[3]],
-    [captionsExample[4], captionsExample[5]],
-    [captionsExample[6], captionsExample[7], captionsExample[8]],
+    [
+      captionsExample[1],
+      captionsExample[2],
+      captionsExample[3],
+      captionsExample[4],
+    ],
+    [
+      captionsExample[5],
+      captionsExample[6],
+      captionsExample[7],
+      captionsExample[8],
+    ],
     [
       captionsExample[9],
       captionsExample[10],
       captionsExample[11],
       captionsExample[12],
     ],
+    [captionsExample[13], captionsExample[14], captionsExample[15]],
   ];
 
   const data = [
@@ -119,16 +150,20 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Grandma",
-          text: "Come in. I am putting some water in the kettle for tea.",
+          speaker: "Jack",
+          text: "Hi, Tom. I haven't seen you lately. If you had lived closer to me, I would see you more often. Maybe you don't want to play with me. (Jack smiles.)",
         },
         {
-          speaker: "Helen",
-          text: "Hi, Grandma! You're limping today. Are you okay?",
+          speaker: "Tom",
+          text: "Don't be silly! It's just that I've been so busy with my new job.",
         },
         {
-          speaker: "Grandma",
-          text: "Come inside, Helen. I'm fine, but I am feeling a little tired today. I'm stiff from sitting down, so that's why I'm walking oddly.",
+          speaker: "Jack",
+          text: "Job? What job? It's been too long since I've seen you. I find it hard to catch up.",
+        },
+        {
+          speaker: "Tom",
+          text: "I've been working with my dad. I'm helping him paint the house.",
         },
       ],
     },
@@ -137,12 +172,20 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "I'm glad I'm helping you today, Grandma. Where do you want me to start?",
+          speaker: "Jack",
+          text: "I wasn't aware that you could paint.",
         },
         {
-          speaker: "Grandma",
-          text: "First, thank you for coming. Now, sit down. Make yourself at home. I'm getting the photo albums out for us to look at.",
+          speaker: "Tom",
+          text: "I couldn't previously, but my dad taught me how to paint. He even gave me advice on color combinations.",
+        },
+        {
+          speaker: "Jack",
+          text: "I wish I could help you paint.",
+        },
+        {
+          speaker: "Tom",
+          text: "Well, why not? Come and join us. It's going to be lots of fun.",
         },
       ],
     },
@@ -151,16 +194,20 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation3,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "Super! Are you getting Mom's baby book also?",
+          speaker: "Jack",
+          text: "(inside Tom's house) Wow! Look at the paint colors. I love your blue background color. It makes the stencils stand out.",
         },
         {
-          speaker: "Grandma",
-          text: "Of course! I know you love looking at your mom's baby pictures.",
+          speaker: "Tom",
+          text: "Yeah, I chose that color. If I had more blue paint, I would have painted the porch blue too.",
         },
         {
-          speaker: "Helen",
-          text: "You like seeing when you were a young mom! In some ways you look so different, but in other ways you look the same! Do you ever miss being young, Grandma?",
+          speaker: "Jack",
+          text: "If I had your ability to paint, I'd have painted all the houses of the neighborhood! You're a natural!",
+        },
+        {
+          speaker: "Tom",
+          text: "You flatter me, Jack. Thank you.",
         },
       ],
     },
@@ -169,20 +216,16 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Grandma",
-          text: "Oh, those were wonderful years, but I'm treasuring my life now. I learned a long time ago to treasure each minute of what I have so I don't miss it later.",
+          speaker: "Jack",
+          text: "It's true. Look at the colors. I'd love to learn how to paint like that.",
         },
         {
-          speaker: "Helen",
-          text: "That's a good way to deal with it. What are you doing these weekends now, Grandma?",
+          speaker: "Tom",
+          text: "Now is your chance. Let's begin! (giving Jack a paintbrush) We are going to paint the borders of the windows now. Dip the brush in the paint and paint careful strokes with it, just like I'm doing.",
         },
         {
-          speaker: "Grandma",
-          text: "Well, I'm keeping busy, that's for sure! I ride my bike to the orphanage to visit the children. They would love to meet you. Can you come next weekend?",
-        },
-        {
-          speaker: "Helen",
-          text: "I'm jotting it down right now, Grandma! You're at the top of my list for next weekend!",
+          speaker: "Jack",
+          text: "You sure make it look easy. Here I go.",
         },
       ],
     },
@@ -216,7 +259,7 @@ const Posters_Page15 = ({ openPopup }) => {
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={4.8}
+                  stopAtSecond={5.8}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -243,4 +286,4 @@ const Posters_Page15 = ({ openPopup }) => {
   );
 };
 
-export default Posters_Page15;
+export default Posters_Page25;

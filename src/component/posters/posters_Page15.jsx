@@ -1,82 +1,97 @@
 import React from "react";
 import page_1 from "../../assets/imgs/pages/G6 Poster/Poster_Page_15.png";
 import audioBtn from "../../assets/Page 01/Audio btn.svg";
-import imgConversation1 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 15.svg";
-import imgConversation2 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 22.svg";
-import imgConversation3 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 23.svg";
-import imgConversation4 from "../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 25.svg";
-import longAudio from "../../assets/audio/ClassBook/U7/PG 58/cd31pg58-conversation.mp3";
-import video from "../../assets/videos/grade 5 unit 7 page 58.mp4";
-import wordJson from "../../assets/json/cd31pg58-conversation_eng.json";
+import imgConversation1 from "../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 3.svg";
+import imgConversation2 from "../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 7.svg";
+import imgConversation3 from "../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 6.svg";
+import imgConversation4 from "../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 4.svg";
+import longAudio from "../../assets/audio/ClassBook/U8/PG 64/conversation8.mp3";
+import video from "../../assets/videos/grade 6 unit 8 page 64.mp4";
+import wordJson from "../../assets/json/conversation8_eng.json";
 import Conversation from "../Conversation";
 import "./posters.css";
 
-const Posters_Page15 = ({ openPopup }) => {
+const Posters_Page27 = ({ openPopup }) => {
   const captionsExample = [
     {
-      start: 0.299,
-      end: 4.8,
-      text: "Page 58, Conversation. Listen and read, then say.",
+      start: 0.159,
+      end: 4.92,
+      text: "Page 64, Conversation. Listen and read, then say.",
     },
     {
-      start: 5.4,
-      end: 9.199,
-      text: "Come in. I am putting some water in the kettle for tea.",
+      start: 6.019,
+      end: 9.079,
+      text: "I love this store. I haven't been here in ages.",
     },
     {
-      start: 9.199,
-      end: 12.539,
-      text: "Hi, Grandma. You're limping today. Are you okay?",
+      start: 10.099,
+      end: 19.779,
+      text: "Look at this great pen. It glows in the dark. That would be good for my nighttime writing. I wouldn't need a table lamp anymore.",
     },
     {
-      start: 13.779,
-      end: 21.299,
-      text: "Come inside, Helen. I'm fine, but I'm feeling a little tired today. I'm stiff from sitting down, so that's why I'm walking oddly.",
+      start: 19.779,
+      end: 28.459,
+      text: "Look what I found! A flying helicopter! All I have to do is use this wireless remote control to make it fly.",
     },
     {
-      start: 21.299,
-      end: 25.92,
-      text: "I'm glad I'm helping you today, Grandma. Where do you want me to start?",
+      start: 28.459,
+      end: 32.059,
+      text: "Hi! Here you are! Tom told me that I'd find you here!",
     },
     {
-      start: 25.92,
-      end: 33.52,
-      text: "First, thank you for coming. Now, sit down. Make yourself at home. I'm getting the photo albums for us to look at.",
+      start: 33.099,
+      end: 39.559,
+      text: "Hi! Yeah, we told Tom that we would be here today. He didn't tell us that you'd show up!",
     },
     {
-      start: 33.52,
-      end: 36.899,
-      text: "Super. Are you getting Mom's baby book also?",
+      start: 39.559,
+      end: 44.139,
+      text: "Well, that's because he didn't know. I wanted to surprise you all.",
     },
     {
-      start: 36.899,
-      end: 40.959,
-      text: "Of course. I know you love looking at your mom's baby pictures.",
+      start: 44.139,
+      end: 47.18,
+      text: "What do you think of this little gadget, Stella?",
     },
     {
-      start: 40.959,
+      start: 47.18,
       end: 50.639,
-      text: "You like seeing when you were a young mom. In some ways, you look so different, but in other ways you look the same. Do you ever miss being young, Grandma?",
+      text: "It looks peculiar. What is it?",
     },
     {
       start: 50.639,
-      end: 60.159,
-      text: "Oh, those were wonderful years. But I'm treasuring my life now. I learned a long time ago to treasure each minute of what I have so I don't miss it later.",
+      end: 57.259,
+      text: "It's a new kind of can opener. It isn't electric, though. Here's a timer also. That would come in handy.",
     },
     {
-      start: 60.159,
+      start: 58.579,
       end: 64.999,
-      text: "That's a good way to deal with it. What are you doing on the weekends now, Grandma?",
+      text: "Wow, look at this! It's a notebook that looks like a piano. It's great for someone who likes music.",
     },
     {
-      start: 65.0,
-      end: 73.839,
-      text: "Well, I'm keeping busy, that's for sure. I ride my bike to the orphanage to visit the children. They would love to meet you. Can you come next weekend?",
+      start: 66.119,
+      end: 68.599,
+      text: "That would be nice to use in school or at home.",
     },
     {
-      start: 73.839,
-      end: 79.099,
-      text: "I'm jotting it down right now, Grandma. You're at the top of my list for next weekend.",
+      start: 69.659,
+      end: 72.279,
+      text: "Yes, and there's a memo holder here, too.",
+    },
+    {
+      start: 73.439,
+      end: 83.979,
+      text: "I want this! I can read storybooks on this tablet. It will read the words or sentences. All you have to do is point to where you want it to read.",
+    },
+    {
+      start: 83.979,
+      end: 87.879,
+      text: "That would help you a great deal to practice your reading skills.",
+    },
+    {
+      start: 87.879,
+      end: 89.599,
+      text: "This store sure is great!",
     },
   ];
 
@@ -87,29 +102,41 @@ const Posters_Page15 = ({ openPopup }) => {
       filteredSegments[1]?.words || [],
       filteredSegments[2]?.words || [],
     ],
-    [filteredSegments[3]?.words || [], filteredSegments[4]?.words || []],
     [
+      filteredSegments[3]?.words || [],
+      filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
-      filteredSegments[6]?.words || [],
-      filteredSegments[7]?.words || [],
     ],
     [
+      filteredSegments[6]?.words || [],
+      filteredSegments[7]?.words || [],
       filteredSegments[8]?.words || [],
       filteredSegments[9]?.words || [],
+    ],
+    [
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
+      filteredSegments[12]?.words || [],
+      filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
     ],
   ];
 
   const captionTimings = [
     [captionsExample[1], captionsExample[2], captionsExample[3]],
-    [captionsExample[4], captionsExample[5]],
-    [captionsExample[6], captionsExample[7], captionsExample[8]],
+    [captionsExample[4], captionsExample[5], captionsExample[6]],
     [
+      captionsExample[7],
+      captionsExample[8],
       captionsExample[9],
       captionsExample[10],
+    ],
+    [
       captionsExample[11],
       captionsExample[12],
+      captionsExample[13],
+      captionsExample[14],
+      captionsExample[15],
     ],
   ];
 
@@ -119,16 +146,16 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Grandma",
-          text: "Come in. I am putting some water in the kettle for tea.",
+          speaker: "Harley",
+          text: "I love this store. I haven't been here in ages!",
         },
         {
           speaker: "Helen",
-          text: "Hi, Grandma! You're limping today. Are you okay?",
+          text: "Look at this great pen. It glows in the dark. That would be good for my nighttime writing. I wouldn't need a table lamp anymore!",
         },
         {
-          speaker: "Grandma",
-          text: "Come inside, Helen. I'm fine, but I am feeling a little tired today. I'm stiff from sitting down, so that's why I'm walking oddly.",
+          speaker: "Hansel",
+          text: "Look what I found! A flying helicopter! All I have to do is use this wireless remote control to make it fly.",
         },
       ],
     },
@@ -137,12 +164,16 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "I'm glad I'm helping you today, Grandma. Where do you want me to start?",
+          speaker: "Stella",
+          text: "Hi! Here you are! Tom told me that I'd find you here!",
         },
         {
-          speaker: "Grandma",
-          text: "First, thank you for coming. Now, sit down. Make yourself at home. I'm getting the photo albums out for us to look at.",
+          speaker: "Helen",
+          text: "Hi! Yeah, we told Tom that we would be here today. He didn't tell us that you'd show up!",
+        },
+        {
+          speaker: "Stella",
+          text: "Well, that's because he didn't know. I wanted to surprise you all.",
         },
       ],
     },
@@ -151,16 +182,20 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation3,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "Super! Are you getting Mom's baby book also?",
+          speaker: "Harley",
+          text: "What do you think of this little gadget, Stella?",
         },
         {
-          speaker: "Grandma",
-          text: "Of course! I know you love looking at your mom's baby pictures.",
+          speaker: "Stella",
+          text: "It looks peculiar. What is it?",
         },
         {
-          speaker: "Helen",
-          text: "You like seeing when you were a young mom! In some ways you look so different, but in other ways you look the same! Do you ever miss being young, Grandma?",
+          speaker: "Harley",
+          text: "It's a new kind of can opener. It isn't electric, though. Here's a timer also. That would come in handy.",
+        },
+        {
+          speaker: "Stella",
+          text: "Wow, look at this! It's a notebook that looks like a piano. It's great for someone who likes music.",
         },
       ],
     },
@@ -169,20 +204,24 @@ const Posters_Page15 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Grandma",
-          text: "Oh, those were wonderful years, but I'm treasuring my life now. I learned a long time ago to treasure each minute of what I have so I don't miss it later.",
+          speaker: "Helen",
+          text: "That would be nice to use in school or at home.",
+        },
+        {
+          speaker: "Stella",
+          text: "Yes, and there's a memo holder here, too.",
         },
         {
           speaker: "Helen",
-          text: "That's a good way to deal with it. What are you doing these weekends now, Grandma?",
-        },
-        {
-          speaker: "Grandma",
-          text: "Well, I'm keeping busy, that's for sure! I ride my bike to the orphanage to visit the children. They would love to meet you. Can you come next weekend?",
+          text: "I want this! I can read storybooks on this tablet. It will read the words or sentences. All you have to do is point to where you want it to read.",
         },
         {
           speaker: "Helen",
-          text: "I'm jotting it down right now, Grandma! You're at the top of my list for next weekend!",
+          text: "That would help you a great deal to practice your reading skills.",
+        },
+        {
+          speaker: "Stella",
+          text: "This store sure is great!",
         },
       ],
     },
@@ -212,16 +251,15 @@ const Posters_Page15 = ({ openPopup }) => {
                 }}
               >
                 <Conversation
-                  title="Conversation"
+                  title="Listen and read. Then say."
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={4.8}
+                  stopAtSecond={4.9}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
                   video={video}
-                  imageWidth="300px"
                 />
               </div>,
             )
@@ -243,4 +281,4 @@ const Posters_Page15 = ({ openPopup }) => {
   );
 };
 
-export default Posters_Page15;
+export default Posters_Page27;
