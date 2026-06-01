@@ -22,9 +22,8 @@ const initAnswers = () => {
   ROWS.forEach(({ id }) => { a[id] = ""; });
   return a;
 };
-
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,'''']/g, "").replace(/\s+/g, " ").trim();
+  str.toLowerCase().replace(/[.?!,'’''']/g, "").replace(/\s+/g, " ").trim();
 
 const RowInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
   <div style={{ position: "relative", flex: 1 }}>
