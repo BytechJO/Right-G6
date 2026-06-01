@@ -173,7 +173,7 @@ const ReadingSection_U2 = () => {
           <QuestionAudioPlayer
             src={readingAudio}
             captions={captions}
-            stopAtSecond={11.35}
+            stopAtSecond={8.0}
           />
         </div>
         <div className="relative w-[60%] mt-2">
