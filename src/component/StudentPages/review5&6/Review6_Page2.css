@@ -4,8 +4,8 @@
   border-radius: 20px;
   border: rgb(255, 255, 255) solid 3px; */
   padding: 5px;
-  top: 3%;
-  left: 75.5%;
+  top: 5.5%;
+  left: 21.5%;
   cursor: pointer;
 }
 
@@ -19,8 +19,8 @@
 .click-icon-review6-page2-3 {
   position: absolute;
   padding: 5px;
-  top: 44%;
-  left: 25%;
+  top: 33%;
+  left: 24%;
   cursor: pointer;
 }
 .headset-icon-CD-review6-page2-1 {
@@ -39,13 +39,13 @@
     top: 1.5%;
     left: 31.5%;
   }
-      .click-icon-review6-page2-3 {
-        top: 45% !important;
-        left: 43.5% !important;
-    }
-        .click-icon-review6-page2-1 {
-        bottom: 28.5% !important;
-    }
+  .click-icon-review6-page2-3 {
+    top: 45% !important;
+    left: 43.5% !important;
+  }
+  .click-icon-review6-page2-1 {
+    bottom: 28.5% !important;
+  }
 }
 @media (max-width: 1024px) {
   .click-icon-review6-page2-1 {

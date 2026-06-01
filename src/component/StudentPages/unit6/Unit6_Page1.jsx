@@ -1,4 +1,4 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/Page 46.png";
 import "./Unit6_Page1.css";
 import longAudio from "../../../assets/audio/ClassBook/U6/PG 46/cd26pg46-conversation.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
@@ -6,229 +6,213 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U6/PG 46/cd27pg46-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U6/PG 46/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U6/PG 46/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U6/PG 46/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U6/PG 46/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U6/PG 46/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U6/PG 46/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U6/PG 46/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U6/PG 46/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U6/PG 46/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U6/PG 46/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U6/PG 46/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U6/PG 46/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U6/PG 46/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U6/PG 46/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U6/PG 46/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U6/PG 46/sound16.mp3";
-import sound17 from "../../../assets/audio/ClassBook/U6/PG 46/sound17.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/1.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/2.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/3.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 46/SVG/4.svg";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 5.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 6.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 9.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 12.svg";
 import wordJson from "../../../assets/json/cd26pg46-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 6 page 46.mp4";
+import video from "../../../assets/videos/grade 6 unit 2 page 10.mp4";
 
 const Unit6_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
-  const data = [
-    {
-      number: 1,
-      image: imgConversation1,
-      dialogues: [
-        {
-          speaker: "Harley",
-          text: "Hooray, we made it to the carnival!",
-        },
-        {
-          speaker: "Tom",
-          text: "Yes, and we are lucky because it’s the last day.",
-        },
-        {
-          speaker: "Stella",
-          text: "I think it’s great that all the attractions are half price.",
-        },
-        {
-          speaker: "Tom",
-          text: "I’d like to take advantage of the discount and try to go on all the rides.",
-        },
-      ],
-    },
+ const data = [
+  {
+    number: 1,
+    image: imgConversation1,
+    dialogues: [
+      {
+        speaker: "Stella",
+        text: "Is this piano in the living room yours, Helen?",
+      },
+      {
+        speaker: "Helen",
+        text: "It’s my mother’s piano. She used to play it perfectly when she was a young girl.",
+      },
+      {
+        speaker: "Stella",
+        text: "That sure is something! Your mom seems to be very talented. Does she still play the piano?",
+      },
+      {
+        speaker: "Helen",
+        text: "Yes, she plays it sometimes when we have a family celebration.",
+      },
+    ],
+  },
 
-    {
-      number: 2,
-      image: imgConversation2,
-      dialogues: [
-        {
-          speaker: "Sarah",
-          text: "I could ride the white horse on the merry-go-round!",
-        },
-        {
-          speaker: "Harley",
-          text: "I’ll try the flying cars, but that new ride might not be what I like.",
-        },
-        {
-          speaker: "Tom",
-          text: "I’ll try out a bunch of the rides, but I’d also like to play some games. Should we all try to win a prize?",
-        },
-        {
-          speaker: "Stella",
-          text: "We must try the basketball game. I can sometimes shoot three baskets in a row.",
-        },
-      ],
-    },
+  {
+    number: 2,
+    image: imgConversation2,
+    dialogues: [
+      {
+        speaker: "Stella",
+        text: "Wow! I never knew that! That’s a good way to make a party entertaining.",
+      },
+      {
+        speaker: "Helen",
+        text: "Speaking of entertainment, why don’t we go to the arcade?",
+      },
+      {
+        speaker: "Stella",
+        text: "Playing the piano seems more to my liking.",
+      },
+      {
+        speaker: "Helen",
+        text: "OK, you can go ahead and play it.",
+      },
+    ],
+  },
 
-    {
-      number: 3,
-      image: imgConversation3,
-      dialogues: [
-        {
-          speaker: "Helen",
-          text: "Here it is. Shall we? You first, Stella.",
-        },
-        {
-          speaker: "Stella",
-          text: "Okay, I’ll give it a try. It looks easy when the man in the booth shoots it.",
-        },
-        {
-          speaker: "Tom",
-          text: "Yeah, they can always make it look easy. While you’re doing that, we’re going to try out the bowling game.",
-        },
-        {
-          speaker: "Harley",
-          text: "We’ll see if any of us is an expert at the games!",
-        },
-        {
-          speaker: "Sarah",
-          text: "Hey, I got one in!",
-        },
-      ],
-    },
+  {
+    number: 3,
+    image: imgConversation3,
+    dialogues: [
+      {
+        speaker: "Stella",
+        text: "This piano makes such flawless musical sounds.",
+      },
+      {
+        speaker: "Helen",
+        text: "Try some more. Play some music you are familiar with.",
+      },
+      {
+        speaker: "Stella",
+        text: "By the way, I have a guitar at home.",
+      },
+      {
+        speaker: "Helen",
+        text: "Really? I never knew that. Do you know how to play it well?",
+      },
+      {
+        speaker: "Stella",
+        text: "Yes! I played it at a summer school play years ago.",
+      },
+    ],
+  },
 
-    {
-      number: 4,
-      image: imgConversation4,
-      dialogues: [
-        {
-          speaker: "Stella",
-          text: "We got an action figure for a prize. I’ll be really generous and give it to you, Helen!",
-        },
-        {
-          speaker: "Helen",
-          text: "No thanks. I don’t like action figures.",
-        },
-        {
-          speaker: "Harley",
-          text: "Ugh. I got a doll with a pink dress for my prize! Who would want something like that?",
-        },
-        {
-          speaker: "Sarah",
-          text: "We’ll take it! Pink is my favorite color!",
-        },
-        {
-          speaker: "Harley",
-          text: "Good idea. We’ll trade prizes. There’s no way I’ll carry a pink doll around the carnival!",
-        },
-      ],
-    },
-  ];
+  {
+    number: 4,
+    image: imgConversation4,
+    dialogues: [
+      {
+        speaker: "Helen",
+        text: "Was the play a success?",
+      },
+      {
+        speaker: "Stella",
+        text: "It sure was! Everyone loved it and loved the guitar music.",
+      },
+      {
+        speaker: "Helen",
+        text: "That’s great! You should be proud of yourself!",
+      },
+      {
+        speaker: "Stella",
+        text: "Thanks! I can give you free guitar lessons if you like.",
+      },
+      {
+        speaker: "Helen",
+        text: "That’s sweet. Thank you, but I’ll be happy to hear you play it.",
+      },
+    ],
+  },
+];
   const captionsExample = [
     {
-      start: 0.56,
-      end: 7.019,
-      text: "Page 46, Conversation.Listen and read, then say.",
+      start: 0.319,
+      end: 5.259,
+      text: "Page 46, Conversation. Listen and read, then say.",
     },
     {
-      start: 7.019,
-      end: 9.859,
-      text: "Hooray, we made it to the carnival.",
+      start: 5.259,
+      end: 8.639,
+      text: "Is this piano in the living room yours, Helen?",
     },
     {
-      start: 9.859,
-      end: 14.079,
-      text: "Yes, and we're lucky because it's the last day.",
+      start: 8.639,
+      end: 13.439,
+      text: "It's my mother's piano. She used to play it perfectly when she was a young girl.",
     },
     {
-      start: 14.079,
-      end: 18.399,
-      text: "I think it's great that all the attractions are half price.",
+      start: 13.439,
+      end: 20.939,
+      text: "That sure is something. Your mom seems to be very talented. Does she still play the piano?",
     },
     {
-      start: 19.459,
-      end: 23.219,
-      text: "I'd like to take advantage of the discount and try to go on all the rides.",
+      start: 20.939,
+      end: 24.879,
+      text: "Yes, she plays it sometimes when we have a family celebration.",
     },
     {
-      start: 24.34,
-      end: 28.139,
-      text: "I could ride the white horse on the merry-go-round.",
+      start: 24.879,
+      end: 30.019,
+      text: "Wow, I never knew that. That's a good way to make a party entertaining.",
     },
     {
-      start: 28.139,
-      end: 32.819,
-      text: "I'll try the flying cars, but that new ride might not be what I like.",
+      start: 30.019,
+      end: 33.88,
+      text: "Speaking of entertainment, why don't we go to the arcade?",
     },
     {
-      start: 33.939,
-      end: 40.459,
-      text: "I'll try out a bunch of the rides, but I'd also like to play some games. Should we all try to win a prize?",
+      start: 33.88,
+      end: 37.219,
+      text: "Playing the piano seems more to my liking.",
     },
     {
-      start: 40.459,
-      end: 46.619,
-      text: "We must try the basketball game. I can sometimes shoot three baskets in a row.",
+      start: 37.219,
+      end: 39.919,
+      text: "Okay, you can go ahead and play it.",
     },
     {
-      start: 46.619,
-      end: 49.399,
-      text: "Here it is. Shall we? You first, Stella.",
+      start: 39.919,
+      end: 45.119,
+      text: "This piano makes such flawless musical sounds.",
     },
     {
-      start: 50.459,
-      end: 55.239,
-      text: "Okay, I'll give it a try. It looks easy when the man in the booth shoots it.",
+      start: 45.119,
+      end: 49.279,
+      text: "Try some more. Play some music you are familiar with.",
     },
     {
-      start: 56.299,
-      end: 62.979,
-      text: "Yeah, they can always make it look easy. While you're doing that, we're going to try out the bowling game.",
+      start: 49.279,
+      end: 51.419,
+      text: "By the way, I have a guitar at home.",
     },
     {
-      start: 62.979,
-      end: 67.079,
-      text: "We'll see if any of us is an expert at the games.",
+      start: 52.639,
+      end: 55.999,
+      text: "Really? I never knew that. Do you know how to play it well?",
     },
     {
-      start: 67.08,
-      end: 68.199,
-      text: "Hey, I got one in.",
+      start: 57.039,
+      end: 60.939,
+      text: "Yes. I played it at a summer school play years ago.",
     },
     {
-      start: 69.199,
-      end: 74.9,
-      text: "We got an action figure for a prize. I'll be really generous and give it to you, Helen.",
+      start: 61.959,
+      end: 64.139,
+      text: "Was the play a success?",
     },
     {
-      start: 75.939,
-      end: 79.079,
-      text: "No, thanks. I don't like action figures.",
+      start: 64.139,
+      end: 68.499,
+      text: "It sure was. Everyone loved it, and loved the guitar music.",
     },
     {
-      start: 79.08,
-      end: 85.799,
-      text: "Ugh, I got a doll with a pink dress for my prize. Who would want something like that?",
+      start: 69.559,
+      end: 72.919,
+      text: "That's great. You should be proud of yourself.",
     },
     {
-      start: 85.799,
-      end: 89.699,
-      text: "We'll take it. Pink is my favorite color.",
+      start: 72.919,
+      end: 77.979,
+      text: "Thanks. I can give you free guitar lessons if you like.",
     },
     {
-      start: 89.699,
-      end: 95.819,
-      text: "Good idea. We'll trade prizes. There's no way I'll carry a pink doll around the carnival.",
+      start: 77.979,
+      end: 81.419,
+      text: "That's sweet. Thank you, but I'll be happy to hear you play it.",
     },
   ];
   const captionTimings = [
@@ -296,162 +280,182 @@ const Unit6_Page1 = ({ openPopup }) => {
     ],
   ];
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-    sound17,
-  ];
+
   const captionVoc = [
     {
-      start: 0.399,
-      end: 4.519,
-      text: "Page 46, unit six, vocabulary. Listen and repeat.",
-    },
-
-    {
-      start: 5.0,
-      end: 7.819,
-      text: "Find the words and expressions in the conversation above.",
-    },
-
-    {
-      start: 8.399,
-      end: 10.099,
-      text: "1. attractions.",
-    },
-
-    {
-      start: 10.8,
-      end: 12.5,
-      text: "2. discount.",
-    },
-
-    {
-      start: 13.46,
-      end: 15.139,
-      text: "3. booth.",
-    },
-
-    {
-      start: 16.1,
-      end: 19.279,
-      text: "4. shoot (a basketball).",
-    },
-
-    {
-      start: 20.279,
-      end: 22.02,
-      text: "5. bowling.",
-    },
-
-    {
-      start: 23.119,
-      end: 25.159,
-      text: "6. (a) bunch.",
-    },
-
-    {
-      start: 26.199,
-      end: 28.079,
-      text: "7. expert.",
-    },
-
-    {
-      start: 28.799,
-      end: 30.959,
-      text: "8. action figure.",
-    },
-
-    {
-      start: 31.819,
-      end: 33.679,
-      text: "9. generous.",
-    },
-
-    {
-      start: 34.579,
-      end: 36.459,
-      text: "10. doll.",
-    },
-
-    {
-      start: 37.399,
-      end: 39.34,
-      text: "11. trade.",
-    },
-
-    {
-      start: 40.2,
-      end: 42.139,
-      text: "12. made it.",
-    },
-
-    {
-      start: 43.159,
-      end: 45.539,
-      text: "13. half price.",
-    },
-
-    {
-      start: 46.419,
-      end: 48.84,
-      text: "14. take advantage of.",
-    },
-
-    {
-      start: 49.739,
-      end: 51.759,
-      text: "15. in a row.",
-    },
-
-    {
-      start: 52.84,
-      end: 55.019,
-      text: "16. shall we?",
-    },
-
-    {
-      start: 55.959,
-      end: 59.899,
-      text: "17. try out (verb).",
-    },
+    start: 0.359,
+    end: 4.299,
+    text: "Page 46, Unit 6 Vocabulary. Listen and repeat.",
+  },
+  {
+    start: 5.039,
+    end: 7.98,
+    text: "Find the words and expressions in the conversation above.",
+  },
+  {
+    start: 8.76,
+    end: 10.219,
+    text: "1, perfectly.",
+  },
+  {
+    start: 10.659,
+    end: 12.38,
+    text: "2, talented.",
+  },
+  {
+    start: 12.899,
+    end: 14.839,
+    text: "3, celebration.",
+  },
+  {
+    start: 15.399,
+    end: 17.26,
+    text: "4, entertaining.",
+  },
+  {
+    start: 18.0,
+    end: 19.619,
+    text: "5, flawless.",
+  },
+  {
+    start: 20.199,
+    end: 21.859,
+    text: "6, familiar.",
+  },
+  {
+    start: 22.559,
+    end: 24.26,
+    text: "7, summer school.",
+  },
+  {
+    start: 24.659,
+    end: 26.639,
+    text: "8, success.",
+  },
+  {
+    start: 27.26,
+    end: 29.079,
+    text: "9, proud.",
+  },
+  {
+    start: 29.619,
+    end: 31.239,
+    text: "10, lessons.",
+  },
+  {
+    start: 32.099,
+    end: 34.759,
+    text: "11, that sure is something.",
+  },
+  {
+    start: 35.399,
+    end: 37.36,
+    text: "12, speaking of.",
+  },
+  {
+    start: 38.0,
+    end: 40.279,
+    text: "13, to my liking.",
+  },
+  {
+    start: 40.819,
+    end: 42.619,
+    text: "14, go ahead.",
+  },
+  {
+    start: 43.34,
+    end: 45.619,
+    text: "15, by the way.",
+  },
+  {
+    start: 46.379,
+    end: 48.459,
+    text: "16, years ago.",
+  },
   ];
 
   const wordTimingsVoc = [
-    { start: 8.399, end: 10.099 },
-    { start: 10.8, end: 12.5 },
-    { start: 13.46, end: 15.139 },
-    { start: 16.1, end: 19.279 },
-    { start: 20.279, end: 22.02 },
-
-    { start: 23.119, end: 25.159 },
-    { start: 26.199, end: 28.079 },
-    { start: 28.799, end: 30.959 },
-    { start: 31.819, end: 33.679 },
-    { start: 34.579, end: 36.459 },
-
-    { start: 37.399, end: 39.34 },
-    { start: 40.2, end: 42.139 },
-    { start: 43.159, end: 45.539 },
-    { start: 46.419, end: 48.84 },
-    { start: 49.739, end: 51.759 },
-
-    { start: 52.84, end: 55.019 },
-    { start: 55.959, end: 59.899 },
+ 
+  {
+    start: 8.76,
+    end: 10.219,
+    text: "One, perfectly.",
+  },
+  {
+    start: 10.659,
+    end: 12.38,
+    text: "Two, talented.",
+  },
+  {
+    start: 12.899,
+    end: 14.839,
+    text: "Three, celebration.",
+  },
+  {
+    start: 15.399,
+    end: 17.26,
+    text: "Four, entertaining.",
+  },
+  {
+    start: 18.0,
+    end: 19.619,
+    text: "Five, flawless.",
+  },
+  {
+    start: 20.199,
+    end: 21.859,
+    text: "Six, familiar.",
+  },
+  {
+    start: 22.559,
+    end: 24.26,
+    text: "Seven, summer school.",
+  },
+  {
+    start: 24.659,
+    end: 26.639,
+    text: "Eight, success.",
+  },
+  {
+    start: 27.26,
+    end: 29.079,
+    text: "Nine, proud.",
+  },
+  {
+    start: 29.619,
+    end: 31.239,
+    text: "Ten, lessons.",
+  },
+  {
+    start: 32.099,
+    end: 34.759,
+    text: "Eleven, that sure is something.",
+  },
+  {
+    start: 35.399,
+    end: 37.36,
+    text: "Twelve, speaking of.",
+  },
+  {
+    start: 38.0,
+    end: 40.279,
+    text: "Thirteen, to my liking.",
+  },
+  {
+    start: 40.819,
+    end: 42.619,
+    text: "Fourteen, go ahead.",
+  },
+  {
+    start: 43.34,
+    end: 45.619,
+    text: "Fifteen, by the way.",
+  },
+  {
+    start: 46.379,
+    end: 48.459,
+    text: "Sixteen, years ago.",
+  },
   ];
 
   return (
@@ -482,7 +486,7 @@ const Unit6_Page1 = ({ openPopup }) => {
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={6.5}
+                  stopAtSecond={5.259}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -527,27 +531,26 @@ const Unit6_Page1 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8}
-                  sounds={sounds}
+                  stopAtSecond={7.98}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "attractions",
-                    "discount",
-                    "booth",
-                    "shoot (a basketball)",
-                    "bowling",
-                    "(a) bunch",
-                    "expert",
-                    "action figure",
-                    "generous",
-                    "doll",
-                    "trade",
-                    "made it",
-                    "half price",
-                    "take advantage of",
-                    "in a row",
-                    "shall we?",
-                    "try out (verb)",
+                    "perfectly",
+                    "talented",
+                    "celebration",
+                    "entertaining",
+                    "flawless",
+                    "familiar",
+                    "summer school",
+                    "success",
+                    "proud",
+                    "lessons",
+                    "That sure is something!",
+                    "Speaking of ...",
+                    "to my liking",
+                    "go ahead",
+                    "By the way ...",
+                    "years ago",
                   ]}
                 />
               </div>,
@@ -578,7 +581,7 @@ const Unit6_Page1 = ({ openPopup }) => {
             openPopup(
               "html",
               <CriticalThinking
-                title={"Why did Harley want to trade prizes?"}
+                title={"Does Helen like music? How can you tell?"}
               />,
             )
           }

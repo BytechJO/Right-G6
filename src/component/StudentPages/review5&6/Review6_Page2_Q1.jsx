@@ -1,111 +1,71 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review6_Page2_Q1 = () => {
   const questions = [
     {
-      sentence: "He rides his bike to school every day.",
-
-      hint: "(He is going to start next week.)",
-
-      answer: "He will ride his bike to school every day.",
+      sentence: "The Olympics used to be held in Greece.",
+      correct: "past action",
     },
-
     {
-      sentence: "I practice baseball before the game.",
-
-      hint: "(You’re saying it’s important and necessary for you to do this.)",
-
-      answer: "I must practice baseball before the game.",
+      sentence: "Helen and Elizabeth are used to swimming every day.",
+      correct: "accustomed",
     },
-
     {
-      sentence: "The detectives ask all the people involved many questions.",
-
-      hint: "(Ask if the detectives have to do this.)",
-
-      answer: "Must the detectives ask all the people involved many questions?",
+      sentence: "Peter isn't used to going to school on Saturday.",
+      correct: "accustomed",
     },
-
     {
-      sentence: "My sister wants some water.",
-
-      hint: "(Ask the waiter politely for her.)",
-
-      answer: "Can my sister have some water, please?",
+      sentence: "What did you use to do for break time at your old school?",
+      correct: "past action",
+    },
+    {
+      sentence: "My grandma used to be a stunt person in the movies.",
+      correct: "past action",
     },
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-
+  const [selected, setSelected] = useState(Array(questions.length).fill(""));
   const [result, setResult] = useState([]);
-
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/[’']/g, "'")
-      .replace(/\s+/g, " ")
-      .trim();
-
-  const handleChange = (i, val) => {
+  const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
-
-    const updated = [...answers];
-
-    updated[i] = val;
-
-    setAnswers(updated);
-
+    const updated = [...selected];
+    updated[i] = value;
+    setSelected(updated);
     setResult((prev) => {
       const copy = [...prev];
-
       copy[i] = undefined;
-
       return copy;
     });
   };
 
   const checkAnswers = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all answers.");
-
+    if (selected.some((s) => !s.trim())) {
+      ValidationAlert.info("Please answer all questions.");
       return;
     }
-
     let correctCount = 0;
-
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i].answer);
-
+    const newResults = selected.map((s, i) => {
+      const ok = s.trim().toLowerCase() === questions[i].correct.toLowerCase();
       if (ok) correctCount++;
-
       return ok;
     });
-
     setResult(newResults);
-
     const total = questions.length;
-
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
     const msg = `
-      <div style="font-size:18px;text-align:center;">
+      <div style="font-size:20px;text-align:center;">
         <span style="color:${color}; font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
     `;
-
     if (correctCount === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
     } else if (correctCount === 0) {
       ValidationAlert.error(msg);
@@ -115,114 +75,116 @@ const Review6_Page2_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "He will ride his bike to school every day.",
-      "I must practice baseball before the game.",
-      "Must the detectives ask all the people involved many questions?",
-      "Can my sister have some water, please?",
-    ]);
-
-    setResult([true, true, true, true]);
-
+    setSelected(questions.map((q) => q.correct));
+    setResult(questions.map(() => true));
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-
+    setSelected(Array(questions.length).fill(""));
     setResult([]);
-
     setLocked(false);
+  };
+
+  const renderInput = (i) => {
+    const isCorrect = result[i] === true;
+    const isWrong = result[i] === false;
+    return (
+      <span style={{ position: "relative", display: "inline-block" }}>
+        <input
+          type="text"
+          value={selected[i]}
+          onChange={(e) => handleChange(i, e.target.value)}
+          disabled={locked || isCorrect}
+          placeholder=""
+          style={{
+            width: "160px",
+            border: "none",
+            borderBottom: `1px solid ${isWrong ? "#D1232A" : "#222"}`,
+            outline: "none",
+            background: "transparent",
+            fontSize: "16px",
+            fontWeight: "600",
+            textAlign: "center",
+            padding: "0 4px 2px 4px",
+            // color: isWrong ? "#D1232A" : "#222",
+            cursor: locked || isCorrect ? "default" : "text",
+          }}
+        />
+        {isWrong && (
+          <span
+            style={{
+              position: "absolute",
+              top: "-8px",
+              right: "-8px",
+              width: "22px",
+              height: "22px",
+              background: "red",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              pointerEvents: "none",
+            }}
+          >
+            ✕
+          </span>
+        )}
+      </span>
+    );
   };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
+      <div className="div-forall" style={{ gap: "60px" }}>
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            E
-          </span>
-          Rewrite the sentence with a modal verb to change the meaning.
+        <h5 className="header-title-page8">
+          <span style={{ marginRight: "10px" }}>C</span>
+          Write{" "}
+          <span className="text-orange-500" style={{ fontWeight: "bold" }}>
+            "accustomed"
+          </span>{" "}
+          or{" "}
+          <span className="text-orange-500" style={{ fontWeight: "bold" }}>
+            "past action"
+          </span>{" "}
+          to tell what{" "}
+          <span className="text-orange-500" style={{ fontStyle: "italic" }}>
+            used to
+          </span>{" "}
+          /{" "}
+          <span className="text-orange-500" style={{ fontStyle: "italic" }}>
+            use to
+          </span>{" "}
+          means in each sentence.
         </h5>
 
         {/* QUESTIONS */}
-        <div className="flex flex-col gap-10">
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
           {questions.map((q, i) => (
             <div
               key={i}
-              className="
-                  flex
-                  items-start
-                  gap-4
-                "
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: "10px",
+                fontSize: "18px",
+                lineHeight: "2",
+              }}
             >
-              {/* NUMBER */}
-              <span className="font-bold text-[18px] w-6">{i + 1}</span>
-
-              <div className="flex-1">
-                {/* ORIGINAL */}
-                <div className="text-[18px] leading-[1.6]">
-                  <span>{q.sentence}</span>
-
-                  <span className=" ml-2">{q.hint}</span>
-                </div>
-
-                {/* ANSWER */}
-                <div className="relative mt-4">
-                  <input
-                    type="text"
-                    value={answers[i]}
-                    disabled={locked || result[i] === true}
-                    onChange={(e) => handleChange(i, e.target.value)}
-                    className={`
-                        w-full
-                        border-0
-                        border-b
-                        outline-none
-                        bg-transparent
-                        text-[18px]
-                        font-semibold
-                        pb-1
-
-                        ${
-                          result[i] === false
-                            ? "border-[#D1232A] text-[#6D2980]"
-                            : "border-black text-[#6D2980]"
-                        }
-                      `}
-                  />
-
-                  {/* WRONG */}
-                  {result[i] === false && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "-8px",
-                        right: "-8px",
-                        width: "20px",
-                        height: "20px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "11px",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                </div>
-              </div>
+              {/* number */}
+              <span style={{ fontWeight: "bold", minWidth: "16px" }}>
+                {i + 1}
+              </span>
+              {/* sentence */}
+              <span style={{ flex: 0.8 }}>{q.sentence}</span>
+              {/* input */}
+              {renderInput(i)}
             </div>
           ))}
         </div>
@@ -233,11 +195,9 @@ const Review6_Page2_Q1 = () => {
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>

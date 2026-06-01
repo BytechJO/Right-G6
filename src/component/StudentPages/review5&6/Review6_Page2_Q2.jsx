@@ -1,478 +1,300 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-const Review6_Page2_Q1 = () => {
-  const poemLines = [
-    ["It", "could", "be", "a", "feather."],
+const Review6_Page2_Q2 = () => {
+  const [youngerImg, setYoungerImg] = useState(null);
+  const [nowImg, setNowImg] = useState(null);
+  const [line1a, setLine1a] = useState("");
+  const [line1b, setLine1b] = useState("");
+  const [line2, setLine2] = useState("");
+  const [line3a, setLine3a] = useState("");
+  const [line3b, setLine3b] = useState("");
 
-    ["It", "might", "be", "a", "toad."],
+  const youngerRef = useRef();
+  const nowRef = useRef();
 
-    ["Might", "it", "be", "a", "toaster?"],
-
-    ["It", "couldn’t", "be", "a", "road."],
-
-    [],
-
-    ["Will", "you", "look", "inside", "the", "box?"],
-
-    ["Would", "you", "like", "to", "know?"],
-
-    ["No,", "let’s", "wait", "for", "a", "little", "more."],
-
-    ["I", "know!", "It", "could", "be", "snow."],
-
-    ["We", "could", "have", "all", "the", "answers"],
-
-    ["By", "looking", "inside."],
-
-    ["But", "then", "we", "might", "miss", "all", "the", "fun"],
-
-    ["Of", "trying", "to", "decide."],
-  ];
-
-  const [selectedWords, setSelectedWords] = useState({});
-
-  const [answers, setAnswers] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
-
-  const toggleWord = (lineIndex, wordIndex) => {
-    setSelectedWords((prev) => ({
-      ...prev,
-
-      [lineIndex]: prev[lineIndex] === wordIndex ? null : wordIndex,
-    }));
+  const handleImageUpload = (e, setter) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setter(url);
   };
 
-  const handleChange = (index, value) => {
-    const updated = [...answers];
+  const handleReset = () => {
+    setYoungerImg(null);
+    setNowImg(null);
+    setLine1a("");
+    setLine1b("");
+    setLine2("");
+    setLine3a("");
+    setLine3b("");
+  };
 
-    updated[index] = value;
-
-    setAnswers(updated);
+  const inputLineStyle = {
+    flex: 1,
+    border: "none",
+    borderBottom: "1px solid #222",
+    outline: "none",
+    background: "transparent",
+    fontSize: "18px",
+    padding: "0 4px 2px 4px",
+    color: "#222",
   };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
+      <div className="div-forall" style={{ gap: "25px" }}>
         {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            F
-          </span>
-          Circle all the modal verbs in the poem below called, WHAT IS IT{" "}
-          <br /> Write your own version of this poem by filling in the blank
-          lines.
-          <br /> Remember to use rhyming words in your poem.
+        <h5 className="header-title-page8">
+          <span style={{ marginRight: "10px" }}>D</span>
+          How have they changed? Paste two pictures of yourself, or of someone
+          famous, when younger and now. Write sentences describing how you, or
+          they, used to be and are now.
         </h5>
 
-        {/* CONTENT */}
-        <div className="flex gap-14 mb-10">
-          {/* LEFT POEM */}
-          <div className="flex flex-col gap-4 w-[360px]">
-            {/* TITLE */}
-            <div
-              className="
-                text-[18px]
-                mb-1
-              "
-            >
-              WHAT IS IT?
-            </div>
-
-            {poemLines.map((line, lineIndex) => {
-              if (line.length === 0) {
-                return <div key={lineIndex} className="h-5"></div>;
-              }
-
-              return (
-                <div
-                  key={lineIndex}
-                  className="
-                      flex
-                      flex-wrap
-                      gap-2
-                      text-[18px]
-                    "
-                >
-                  {line.map((word, wordIndex) => {
-                    const isSelected = selectedWords[lineIndex] === wordIndex;
-
-                    return (
-                      <span
-                        key={wordIndex}
-                        onClick={() => toggleWord(lineIndex, wordIndex)}
-                        className="
-                              relative
-                              cursor-pointer
-                              inline-block
-                              px-[3px]
-                              py-px
-                            "
-                      >
-                        {/* CIRCLE */}
-                        {isSelected && (
-                          <span
-                            className="
-                                  absolute
-                                  inset-[-5px]
-                                  border-2
-                                  border-[#6D2980]
-                                  rounded-full
-                                  pointer-events-none
-                                "
-                          ></span>
-                        )}
-
-                        <span className="relative z-10">{word}</span>
-                      </span>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="flex flex-col gap-4 w-[430px]">
-            {/* TITLE */}
-            <div
-              className="
-                text-[18px]
-                underline
-                mb-1
-              "
-            >
-              WHAT IS IT?
-            </div>
-
-            {/* 1 */}
-            <div className="flex items-end text-[18px]">
-              <span>It could be</span>
-
-              <input
-                type="text"
-                value={answers[0]}
-                onChange={(e) => handleChange(0, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>.</span>
-            </div>
-
-            {/* 2 */}
-            <div className="flex items-end text-[18px]">
-              <span>It might be</span>
-
-              <input
-                type="text"
-                value={answers[1]}
-                onChange={(e) => handleChange(1, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>.</span>
-            </div>
-
-            {/* 3 */}
-            <div className="flex items-end text-[18px]">
-              <span>Might it be a</span>
-
-              <input
-                type="text"
-                value={answers[2]}
-                onChange={(e) => handleChange(2, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>?</span>
-            </div>
-
-            {/* 4 */}
-            <div className="flex items-end text-[18px]">
-              <span>It couldn’t be a</span>
-
-              <input
-                type="text"
-                value={answers[3]}
-                onChange={(e) => handleChange(3, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-            </div>
-
-            <div className="h-5"></div>
-
-            {/* 5 */}
-            <div className="flex items-end text-[18px]">
-              <span>Will you</span>
-
-              <input
-                type="text"
-                value={answers[4]}
-                onChange={(e) => handleChange(4, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>?</span>
-            </div>
-
-            {/* 6 */}
-            <div className="flex items-end text-[18px]">
-              <span>Would you</span>
-
-              <input
-                type="text"
-                value={answers[5]}
-                onChange={(e) => handleChange(5, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>?</span>
-            </div>
-
-            {/* 7 */}
-            <div className="flex items-end text-[18px]">
-              <span>No, let’s</span>
-
-              <input
-                type="text"
-                value={answers[6]}
-                onChange={(e) => handleChange(6, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>.</span>
-            </div>
-
-            {/* 8 */}
-            <div className="flex items-end text-[18px]">
-              <span>I know!</span>
-
-              <input
-                type="text"
-                value={answers[7]}
-                onChange={(e) => handleChange(7, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  text-[18px]
-                  font-semibold
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>.</span>
-            </div>
-
-            {/* 9 */}
-            <div className="flex items-end text-[18px]">
-              <span>We could</span>
-
-              <input
-                type="text"
-                value={answers[8]}
-                onChange={(e) => handleChange(8, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-            </div>
-
-            {/* 10 */}
-            <div className="flex items-end text-[18px]">
-              <span>By</span>
-
-              <input
-                type="text"
-                value={answers[9]}
-                onChange={(e) => handleChange(9, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>.</span>
-            </div>
-
-            {/* 11 */}
-            <div className="flex items-end text-[18px]">
-              <span>But then we might</span>
-
-              <input
-                type="text"
-                value={answers[10]}
-                onChange={(e) => handleChange(10, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-            </div>
-
-            {/* 12 */}
-            <div className="flex items-end text-[18px]">
-              <span>Of trying</span>
-
-              <input
-                type="text"
-                value={answers[11]}
-                onChange={(e) => handleChange(11, e.target.value)}
-                className="
-                  flex-1
-                  border-0
-                  border-b
-                  border-black
-                  outline-none
-                  bg-transparent
-                  font-semibold
-                  text-[18px]
-                  ml-2
-                  text-[#6D2980]
-                "
-              />
-
-              <span>.</span>
-            </div>
-          </div>
-        </div>
-        {/* BUTTONS */}
-        <div className="action-buttons-container">
-          <button
-            className="try-again-button"
-            onClick={() => {
-              setAnswers(["", "", "", "", "", "", "", "", "", "", "", ""]);
-
-              setSelectedWords({});
+        {/* IMAGE BOX */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            border: "1.5px solid #a5c96a",
+            borderRadius: "10px",
+            overflow: "hidden",
+            minHeight: "220px",
+          }}
+        >
+          {/* Younger */}
+          <div
+            style={{
+              borderRight: "1.5px solid #a5c96a",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
-            Start Again ↻
-          </button>
+            <div
+              style={{
+                width: "100%",
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: "16px",
+                padding: "8px 0",
+                borderBottom: "1.5px solid #a5c96a",
+              }}
+            >
+              Younger
+            </div>
+            <div
+              style={{
+                flex: 1,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                padding: "10px",
+              }}
+              onClick={() => youngerRef.current.click()}
+            >
+              {youngerImg ? (
+                <img
+                  src={youngerImg}
+                  alt="younger"
+                  style={{
+                    maxHeight: "170px",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    borderRadius: "6px",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    border: "2px dashed #ccc",
+                    borderRadius: "8px",
+                    padding: "30px 20px",
+                    color: "#aaa",
+                    fontSize: "18px",
+                    textAlign: "center",
+                    userSelect: "none",
+                  }}
+                >
+                  + Upload Photo
+                </div>
+              )}
+              <input
+                ref={youngerRef}
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={(e) => handleImageUpload(e, setYoungerImg)}
+              />
+            </div>
+          </div>
+
+          {/* Now */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: "18px",
+                padding: "8px 0",
+                borderBottom: "1.5px solid #a5c96a",
+              }}
+            >
+              Now
+            </div>
+            <div
+              style={{
+                flex: 1,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                padding: "10px",
+              }}
+              onClick={() => nowRef.current.click()}
+            >
+              {nowImg ? (
+                <img
+                  src={nowImg}
+                  alt="now"
+                  style={{
+                    maxHeight: "170px",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    borderRadius: "6px",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    border: "2px dashed #ccc",
+                    borderRadius: "8px",
+                    padding: "30px 20px",
+                    color: "#aaa",
+                    fontSize: "18px",
+                    textAlign: "center",
+                    userSelect: "none",
+                  }}
+                >
+                  + Upload Photo
+                </div>
+              )}
+              <input
+                ref={nowRef}
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={(e) => handleImageUpload(e, setNowImg)}
+              />
+            </div>
+          </div>
         </div>
+
+        {/* WRITING LINES */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "18px",
+            marginTop: "8px",
+          }}
+        >
+          {/* Line 1: ___ used to be ___ */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "8px",
+              fontSize: "18px",
+            }}
+          >
+            <input
+              type="text"
+              value={line1a}
+              onChange={(e) => setLine1a(e.target.value)}
+              style={{ ...inputLineStyle, width: "120px", flex: "none" }}
+            />
+            <span style={{ whiteSpace: "nowrap" }}>used to be</span>
+            <input
+              type="text"
+              value={line1b}
+              onChange={(e) => setLine1b(e.target.value)}
+              style={inputLineStyle}
+            />
+          </div>
+
+          {/* Line 2: continuation */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "8px",
+              fontSize: "18px",
+            }}
+          >
+            <input
+              type="text"
+              value={line2}
+              onChange={(e) => setLine2(e.target.value)}
+              style={inputLineStyle}
+            />
+          </div>
+
+          {/* Line 3: Now, ___ */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "8px",
+              fontSize: "18px",
+            }}
+          >
+            <span style={{ whiteSpace: "nowrap" }}>Now,</span>
+            <input
+              type="text"
+              value={line3a}
+              onChange={(e) => setLine3a(e.target.value)}
+              style={inputLineStyle}
+            />
+          </div>
+
+          {/* Line 4: continuation */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: "8px",
+              fontSize: "18px",
+            }}
+          >
+            <input
+              type="text"
+              value={line3b}
+              onChange={(e) => setLine3b(e.target.value)}
+              style={inputLineStyle}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* RESET ONLY */}
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
       </div>
     </div>
   );
 };
 
-export default Review6_Page2_Q1;
+export default Review6_Page2_Q2;
