@@ -1,34 +1,18 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/Page 58.png";
 import "./Unit7_Page1.css";
-import longAudio from "../../../assets/audio/ClassBook/U7/PG 58/cd31pg58-conversation.mp3";
+import longAudio from "../../../assets/audio/ClassBook/U7/PG 58/conversation7.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
-import VocabularAudio from "../../../assets/audio/ClassBook/U7/PG 58/cd32pg58-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U7/PG 58/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U7/PG 58/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U7/PG 58/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U7/PG 58/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U7/PG 58/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U7/PG 58/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U7/PG 58/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U7/PG 58/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U7/PG 58/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U7/PG 58/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U7/PG 58/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U7/PG 58/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U7/PG 58/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U7/PG 58/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U7/PG 58/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U7/PG 58/sound16.mp3";
+import VocabularAudio from "../../../assets/audio/ClassBook/U7/PG 58/vocab7.mp3";
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 15.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 22.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 23.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 58/SVG/Asset 25.svg";
-import wordJson from "../../../assets/json/cd31pg58-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 7 page 58.mp4";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 26.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 27.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 28.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 29.svg";
+import wordJson from "../../../assets/json/conversation7_eng.json";
+import video from "../../../assets/videos/grade 6 unit 7 page 58.mp4";
 
 const Unit7_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
@@ -38,16 +22,20 @@ const Unit7_Page1 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Grandma",
-          text: "Come in. I am putting some water in the kettle for tea.",
+          speaker: "Jack",
+          text: "Hi, Tom. I haven’t seen you lately. If you had lived closer to me, I would see you more often. Maybe you don’t want to play with me. (Jack smiles.)",
         },
         {
-          speaker: "Helen",
-          text: "Hi, Grandma! You’re limping today. Are you okay?",
+          speaker: "Tom",
+          text: "Don’t be silly! It’s just that I’ve been so busy with my new job.",
         },
         {
-          speaker: "Grandma",
-          text: "Come inside, Helen. I’m fine, but I am feeling a little tired today. I’m stiff from sitting down, so that’s why I’m walking oddly.",
+          speaker: "Jack",
+          text: "Job? What job? It’s been too long since I’ve seen you. I find it hard to catch up.",
+        },
+        {
+          speaker: "Tom",
+          text: "I’ve been working with my dad. I’m helping him paint the house.",
         },
       ],
     },
@@ -57,12 +45,20 @@ const Unit7_Page1 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "I’m glad I’m helping you today, Grandma. Where do you want me to start?",
+          speaker: "Jack",
+          text: "I wasn’t aware that you could paint.",
         },
         {
-          speaker: "Grandma",
-          text: "First, thank you for coming. Now, sit down. Make yourself at home. I’m getting the photo albums out for us to look at.",
+          speaker: "Tom",
+          text: "I couldn’t previously, but my dad taught me how to paint. He even gave me advice on color combinations.",
+        },
+        {
+          speaker: "Jack",
+          text: "I wish I could help you paint.",
+        },
+        {
+          speaker: "Tom",
+          text: "Well, why not? Come and join us. It’s going to be lots of fun.",
         },
       ],
     },
@@ -72,16 +68,20 @@ const Unit7_Page1 = ({ openPopup }) => {
       image: imgConversation3,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "Super! Are you getting Mom’s baby book also?",
+          speaker: "Jack",
+          text: "(inside Tom’s house) Wow! Look at the paint colors. I love your blue background color. It makes the stencils stand out.",
         },
         {
-          speaker: "Grandma",
-          text: "Of course! I know you love looking at your mom’s baby pictures.",
+          speaker: "Tom",
+          text: "Yeah, I chose that color. If I had more blue paint, I would have painted the porch blue too.",
         },
         {
-          speaker: "Helen",
-          text: "You like seeing when you were a young mom! In some ways you look so different, but in other ways you look the same! Do you ever miss being young, Grandma?",
+          speaker: "Jack",
+          text: "If I had your ability to paint, I’d have painted all the houses of the neighborhood! You’re a natural!",
+        },
+        {
+          speaker: "Tom",
+          text: "You flatter me, Jack. Thank you.",
         },
       ],
     },
@@ -91,108 +91,132 @@ const Unit7_Page1 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Grandma",
-          text: "Oh, those were wonderful years, but I’m treasuring my life now. I learned a long time ago to treasure each minute of what I have so I don’t miss it later.",
+          speaker: "Jack",
+          text: "It’s true. Look at the colors. I’d love to learn how to paint like that.",
         },
         {
-          speaker: "Helen",
-          text: "That’s a good way to deal with it. What are you doing these weekends now, Grandma?",
+          speaker: "Tom",
+          text: "Now is your chance. Let’s begin! (giving Jack a paintbrush) We are going to paint the borders of the windows now. Dip the brush in the paint and paint careful strokes with it, just like I’m doing.",
         },
         {
-          speaker: "Grandma",
-          text: "Well, I’m keeping busy, that’s for sure! I ride my bike to the orphanage to visit the children. They would love to meet you. Can you come next weekend?",
-        },
-        {
-          speaker: "Helen",
-          text: "I’m jotting it down right now, Grandma! You’re at the top of my list for next weekend!",
+          speaker: "Jack",
+          text: "You sure make it look easy. Here I go.",
         },
       ],
     },
   ];
+
   const captionsExample = [
     {
-      start: 0.299,
-      end: 4.8,
-      text: "Page 58, Conversation. Listen and read, then say.",
-    },
-    {
-      start: 5.4,
-      end: 9.199,
-      text: "Come in. I am putting some water in the kettle for tea.",
+      start: 0.319,
+      end: 5.319,
+      text: "Page 58. Conversation. Listen and read, then say.",
     },
 
     {
-      start: 9.199,
-      end: 12.539,
-      text: "Hi, Grandma. You're limping today. Are you okay?",
+      start: 6.48,
+      end: 14.34,
+      text: "Hi, Tom. I haven't seen you lately. If you had lived closer to me, I would see you more often. Maybe you don't want to play with me.",
     },
 
     {
-      start: 13.779,
-      end: 21.299,
-      text: "Come inside, Helen. I'm fine, but I'm feeling a little tired today. I'm stiff from sitting down, so that's why I'm walking oddly.",
+      start: 15.359,
+      end: 19.719,
+      text: "Don't be silly. It's just that I've been so busy with my new job.",
     },
 
     {
-      start: 21.299,
-      end: 25.92,
-      text: "I'm glad I'm helping you today, Grandma. Where do you want me to start?",
+      start: 19.719,
+      end: 26.279,
+      text: "Job? What job? It's been too long since I've seen you. I find it hard to catch up.",
     },
 
     {
-      start: 25.92,
-      end: 33.52,
-      text: "First, thank you for coming. Now, sit down. Make yourself at home. I'm getting the photo albums for us to look at.",
+      start: 27.439,
+      end: 30.859,
+      text: "I've been working with my dad. I'm helping him paint the house.",
     },
 
     {
-      start: 33.52,
-      end: 36.899,
-      text: "Super. Are you getting Mom's baby book also?",
+      start: 31.899,
+      end: 34.139,
+      text: "I wasn't aware that you could paint.",
     },
 
     {
-      start: 36.899,
-      end: 40.959,
-      text: "Of course. I know you love looking at your mom's baby pictures.",
+      start: 34.139,
+      end: 40.599,
+      text: "I couldn't previously, but my dad taught me how to paint. He even gave me advice on color combinations.",
     },
 
     {
-      start: 40.959,
-      end: 50.639,
-      text: "You like seeing when you were a young mom. In some ways, you look so different, but in other ways you look the same. Do you ever miss being young, Grandma?",
+      start: 41.739,
+      end: 44.159,
+      text: "I wish I could help you paint.",
     },
 
     {
-      start: 50.639,
-      end: 60.159,
-      text: "Oh, those were wonderful years. But I'm treasuring my life now. I learned a long time ago to treasure each minute of what I have so I don't miss it later.",
+      start: 44.159,
+      end: 48.299,
+      text: "Well, why not? Come and join us. It's going to be lots of fun.",
     },
 
     {
-      start: 60.159,
-      end: 64.999,
-      text: "That's a good way to deal with it. What are you doing on the weekends now, Grandma?",
+      start: 49.479,
+      end: 57.52,
+      text: "Wow, look at the paint colors. I love your blue background color. It makes the stencils stand out.",
     },
 
     {
-      start: 65.0,
-      end: 73.839,
-      text: "Well, I'm keeping busy, that's for sure. I ride my bike to the orphanage to visit the children. They would love to meet you. Can you come next weekend?",
+      start: 57.52,
+      end: 64.279,
+      text: "Yeah, I chose that color. If I had more blue paint, I would have painted the porch blue too.",
     },
 
     {
-      start: 73.839,
-      end: 79.099,
-      text: "I'm jotting it down right now, Grandma. You're at the top of my list for next weekend.",
+      start: 64.279,
+      end: 69.899,
+      text: "If I had your ability to paint, I'd have painted all the houses of the neighborhood. You're a natural.",
+    },
+
+    {
+      start: 70.939,
+      end: 72.979,
+      text: "You flatter me, Jack. Thank you.",
+    },
+
+    {
+      start: 74.0,
+      end: 78.36,
+      text: "It's true. Look at the colors. I'd love to learn how to paint like that.",
+    },
+
+    {
+      start: 79.4,
+      end: 90.399,
+      text: "Now is your chance. Let's begin. We are going to paint the borders of the windows now. Dip the brush in the paint and paint careful strokes with it, just like I'm doing.",
+    },
+
+    {
+      start: 91.479,
+      end: 94.299,
+      text: "You sure make it look easy. Here I go.",
     },
   ];
   const captionTimings = [
-    [captionsExample[1], captionsExample[2], captionsExample[3]],
+    [
+      captionsExample[1],
+      captionsExample[2],
+      captionsExample[3],
+      captionsExample[4],
+    ],
 
-    [captionsExample[4], captionsExample[5]],
-
-    [captionsExample[6], captionsExample[7], captionsExample[8]],
+    [
+      captionsExample[5],
+      captionsExample[6],
+      captionsExample[7],
+      captionsExample[8],
+    ],
 
     [
       captionsExample[9],
@@ -200,7 +224,10 @@ const Unit7_Page1 = ({ openPopup }) => {
       captionsExample[11],
       captionsExample[12],
     ],
+
+    [captionsExample[13], captionsExample[14], captionsExample[15]],
   ];
+
   const filteredSegments = wordJson.segments.slice(1);
 
   const Voc = [
@@ -208,11 +235,11 @@ const Unit7_Page1 = ({ openPopup }) => {
       filteredSegments[0]?.words || [],
       filteredSegments[1]?.words || [],
       filteredSegments[2]?.words || [],
+      filteredSegments[3]?.words || [],
     ],
 
-    [filteredSegments[3]?.words || [], filteredSegments[4]?.words || []],
-
     [
+      filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
       filteredSegments[6]?.words || [],
       filteredSegments[7]?.words || [],
@@ -224,156 +251,87 @@ const Unit7_Page1 = ({ openPopup }) => {
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
     ],
+
+    [
+      filteredSegments[12]?.words || [],
+      filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
+    ],
   ];
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-  ];
+
   const captionVoc = [
     {
-      start: 0.379,
-      end: 4.579,
-      text: "Page 58, unit seven, vocabulary. Listen and repeat.",
+      start: 0.299,
+      end: 7.879,
+      text: "Page 58, unit 7 vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
 
-    {
-      start: 5.0,
-      end: 7.919,
-      text: "Find the words and expressions in the conversation above.",
-    },
+    { start: 8.539, end: 10.059, text: "1. silly." },
 
-    {
-      start: 8.399,
-      end: 10.039,
-      text: "1. limping.",
-    },
+    { start: 10.5, end: 12.039, text: "2. aware." },
 
-    {
-      start: 10.939,
-      end: 12.619,
-      text: "2. stiff.",
-    },
+    { start: 12.519, end: 14.479, text: "3. previously." },
 
-    {
-      start: 13.819,
-      end: 15.559,
-      text: "3. oddly.",
-    },
+    { start: 15.099, end: 16.899, text: "4. advice." },
 
-    {
-      start: 16.52,
-      end: 18.44,
-      text: "4. albums.",
-    },
+    { start: 17.559, end: 19.5, text: "5. combinations." },
 
-    {
-      start: 19.299,
-      end: 21.119,
-      text: "5. super.",
-    },
+    { start: 20.079, end: 21.779, text: "6. background." },
 
-    {
-      start: 22.139,
-      end: 25.359,
-      text: "6. treasure (treasuring)",
-    },
+    { start: 22.42, end: 24.079, text: "7. stencils." },
 
-    {
-      start: 26.459,
-      end: 29.379,
-      text: "7. miss (verb).",
-    },
+    { start: 24.439, end: 26.159, text: "8. ability." },
 
-    {
-      start: 30.399,
-      end: 32.179,
-      text: "8. orphanage.",
-    },
+    { start: 27.219, end: 29.079, text: "9. flatter." },
 
-    {
-      start: 33.0,
-      end: 34.859,
-      text: "9. jotting down.",
-    },
+    { start: 29.639, end: 31.439, text: "10. strokes." },
 
-    {
-      start: 35.779,
-      end: 37.679,
-      text: "10. wonderful.",
-    },
+    { start: 32.279, end: 34.659, text: "11. it's been too long." },
 
-    {
-      start: 38.379,
-      end: 41.279,
-      text: "11. where do you want me to start?",
-    },
+    { start: 35.439, end: 37.139, text: "12. catch up." },
 
-    {
-      start: 42.239,
-      end: 44.539,
-      text: "12. make yourself at home.",
-    },
+    { start: 37.819, end: 39.68, text: "13. stand out." },
 
-    {
-      start: 45.5,
-      end: 47.619,
-      text: "13. of course.",
-    },
+    { start: 40.319, end: 42.579, text: "14. you're a natural." },
 
-    {
-      start: 48.619,
-      end: 50.759,
-      text: "14. deal with it.",
-    },
+    { start: 43.279, end: 46.0, text: "15. now is your chance." },
 
-    {
-      start: 51.68,
-      end: 53.739,
-      text: "15. keeping busy.",
-    },
-
-    {
-      start: 54.819,
-      end: 57.88,
-      text: "16. at the top of my list.",
-    },
+    { start: 46.759, end: 48.7, text: "16. here I go." },
   ];
 
   const wordTimingsVoc = [
-    { start: 8.399, end: 10.039 },
-    { start: 10.939, end: 12.619 },
-    { start: 13.819, end: 15.559 },
-    { start: 16.52, end: 18.44 },
-    { start: 19.299, end: 21.119 },
+    { start: 8.3, end: 10.059, text: "1. silly." },
 
-    { start: 22.139, end: 25.359 },
-    { start: 26.459, end: 29.379 },
-    { start: 30.399, end: 32.179 },
-    { start: 33.0, end: 34.859 },
-    { start: 35.779, end: 37.679 },
+    { start: 10.3, end: 12.039, text: "2. aware." },
 
-    { start: 38.379, end: 41.279 },
-    { start: 42.239, end: 44.539 },
-    { start: 45.5, end: 47.619 },
-    { start: 48.619, end: 50.759 },
-    { start: 51.68, end: 53.739 },
+    { start: 12.3, end: 14.479, text: "3. previously." },
 
-    { start: 54.819, end: 57.88 },
+    { start: 14.8, end: 16.899, text: "4. advice." },
+
+    { start: 17.3, end: 19.5, text: "5. combinations." },
+
+    { start: 19.8, end: 21.779, text: "6. background." },
+
+    { start: 22.1, end: 24.079, text: "7. stencils." },
+
+    { start: 24.2, end: 26.159, text: "8. ability." },
+
+    { start: 27.0, end: 29.079, text: "9. flatter." },
+
+    { start: 29.4, end: 31.439, text: "10. strokes." },
+
+    { start: 32.0, end: 34.659, text: "11. it's been too long." },
+
+    { start: 35.1, end: 37.139, text: "12. catch up." },
+
+    { start: 37.5, end: 39.68, text: "13. stand out." },
+
+    { start: 40.0, end: 42.579, text: "14. you're a natural." },
+
+    { start: 43.0, end: 46.0, text: "15. now is your chance." },
+
+    { start: 46.5, end: 48.7, text: "16. here I go." },
   ];
 
   return (
@@ -404,7 +362,7 @@ const Unit7_Page1 = ({ openPopup }) => {
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={4.8}
+                  stopAtSecond={5.8}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -451,25 +409,25 @@ const Unit7_Page1 = ({ openPopup }) => {
                   sound={VocabularAudio}
                   captions={captionVoc}
                   stopAtSecond={8}
-                  sounds={sounds}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "limping",
-                    "stiff",
-                    "oddly",
-                    "albums",
-                    "super",
-                    "treasure (treasuring)",
-                    "miss (verb)",
-                    "orphanage",
-                    "jotting down",
-                    "wonderful",
-                    "where do you want me to start?",
-                    "make yourself at home",
-                    "of course",
-                    "deal with it",
-                    "keeping busy",
-                    "at the top of my list",
+                    "silly",
+                    "aware",
+                    "previously",
+                    "advice",
+                    "combinations",
+                    "background",
+                    "stencils",
+                    "ability",
+                    "flatter",
+                    "strokes",
+                    "It's been too long.",
+                    "Catch up.",
+                    "Stand out.",
+                    "You're a natural.",
+                    "Now is your chance.",
+                    "Here I go.",
                   ]}
                 />
               </div>,
@@ -500,7 +458,7 @@ const Unit7_Page1 = ({ openPopup }) => {
             openPopup(
               "html",
               <CriticalThinking
-                title={"What does Grandma treasure?"}
+                title={"How did Tom learn how to paint?"}
               />,
             )
           }

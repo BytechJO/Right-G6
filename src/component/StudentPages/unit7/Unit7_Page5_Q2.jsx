@@ -1,81 +1,75 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Unit7_Page5_Q2 = () => {
-  const questions = [
-    {
-      scrambled: "store she is leaving the",
-      answer: "She is leaving the store.",
-    },
-    {
-      scrambled: "are a listening we symphony to",
-      answer: "We are listening to a symphony.",
-    },
-    {
-      scrambled: "playing children hide-and-seek the are",
-      answer: "The children are playing hide-and-seek.",
-    },
-    {
-      scrambled: "her teacher the talking to is students",
-      answer: "The teacher is talking to her students.",
-    },
-    {
-      scrambled: "Sarah jumping her with rope friends is",
-      answer: "Sarah is jumping rope with her friends.",
-    },
+  const correctAnswers = [
+    "It's been too long",
+    "catch up",
+    "Now is your chance",
+    "stand out",
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
+
   const [result, setResult] = useState([]);
+
   const [locked, setLocked] = useState(false);
 
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
+      .replace(/[.,!?;:'"‘’‚‛“”„‟`´]/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
-    updated[i] = value;
+
+    updated[index] = value;
+
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
-      copy[i] = undefined;
+
+      copy[index] = undefined;
+
       return copy;
     });
   };
 
   const checkAnswers = () => {
     if (locked) return;
+    const hasEmpty = answers.some((item) => !item.trim());
 
-    if (answers.some((a) => !a.trim())) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
+
       return;
     }
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i].answer);
-      if (ok) correctCount++;
-      return ok;
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(correctAnswers[index]);
+
+      if (correct) correctCount++;
+
+      return correct;
     });
 
     setResult(newResults);
 
-    const total = questions.length;
+    const total = correctAnswers.length;
+
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -83,6 +77,7 @@ const Unit7_Page5_Q2 = () => {
 
     if (correctCount === total) {
       setLocked(true);
+
       ValidationAlert.success(msg);
     } else if (correctCount === 0) {
       ValidationAlert.error(msg);
@@ -92,86 +87,112 @@ const Unit7_Page5_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(questions.map((q) => q.answer));
-    setResult([true, true, true, true, true]);
+    setAnswers([
+      "It's been too long",
+      "catch up",
+      "Now is your chance",
+      "stand out",
+    ]);
+
+    setResult([true, true, true, true]);
+
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
+    setAnswers(["", "", "", ""]);
+
     setResult([]);
+
     setLocked(false);
   };
 
+  const inputField = (index, width = "320px") => (
+    <span className="relative inline-block">
+      <input
+        type="text"
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
+        className={`
+          border-0
+          border-b
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          font-semibold
+
+          ${result[index] === false ? "border-[#D1232A]" : ""}
+        `}
+        style={{
+          width,
+          borderBottomWidth: "1px",
+        }}
+      />
+
+      {result[index] === false && (
+        <span
+          style={{
+            position: "absolute",
+            top: "-8px",
+            right: "-8px",
+            width: "20px",
+            height: "20px",
+            background: "red",
+            color: "white",
+            borderRadius: "50%",
+            fontSize: "12px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+            zIndex: 5,
+          }}
+        >
+          ✕
+        </span>
+      )}
+    </span>
+  );
+
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
+      <div className="div-forall w-full text-[18px]">
+        <h5 className="header-title-page8 mb-[15vh]">
+          <span
+            className="ex-A"
+            style={{
+              marginRight: "10px",
+            }}
+          >
             B
           </span>
-          Unscramble and write the sentences.
+          Fill in the blanks with the correct expressions.
         </h5>
 
-        <div className="flex flex-col gap-6">
-          {questions.map((q, i) => (
-            <div key={i} className="flex items-start gap-5">
-              <span className="font-bold text-[18px] w-6">{i + 1}</span>
+        <div className="flex flex-col gap-[9vh]">
+          <div>
+            <span className="font-bold mr-4">1</span>
+            {inputField(0)} . When was the last time we met?
+          </div>
 
-              <div className="flex-1">
-                <div className="text-[18px] mb-3">{q.scrambled}</div>
+          <div>
+            <span className="font-bold mr-4">2</span>
+            We need to {inputField(1)} to find out what we missed.
+          </div>
 
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={answers[i]}
-                    disabled={locked || result[i] === true}
-                    onChange={(e) => handleChange(i, e.target.value)}
-                    className={`
-                      w-full
-                      border-0
-                      border-b
-                      outline-none
-                      bg-transparent
-                      text-[18px]
-                      font-semibold
-                      pb-1
+          <div>
+            <span className="font-bold mr-4">3</span>
+            {inputField(2)} to prove that you are a good cook!
+          </div>
 
-                      ${
-                        result[i] === false
-                          ? "border-[#D1232A] text-[#6D2980]"
-                          : "border-black text-[#6D2980]"
-                      }
-                    `}
-                  />
-
-                  {result[i] === false && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "-8px",
-                        right: "-8px",
-                        width: "20px",
-                        height: "20px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "11px",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
+          <div>
+            <span className="font-bold mr-4">4</span>
+            Your red pillows {inputField(3)} on your bed.
+          </div>
         </div>
       </div>
 

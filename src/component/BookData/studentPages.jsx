@@ -81,12 +81,12 @@ import Unit5_Page6 from "../StudentPages/unit5/Unit5_Page6";
 
 // //==================== unit 7 pages
 
-// import Unit7_Page1 from "../StudentPages/unit7/Unit7_Page1";
-// import Unit7_Page2 from "../StudentPages/unit7/Unit7_Page2";
-// import Unit7_Page3 from "../StudentPages/unit7/Unit7_Page3";
-// import Unit7_Page4 from "../StudentPages/unit7/Unit7_Page4";
-// import Unit7_Page5 from "../StudentPages/unit7/Unit7_Page5";
-// import Unit7_Page6 from "../StudentPages/unit7/Unit7_Page6";
+import Unit7_Page1 from "../StudentPages/unit7/Unit7_Page1";
+import Unit7_Page2 from "../StudentPages/unit7/Unit7_Page2";
+import Unit7_Page3 from "../StudentPages/unit7/Unit7_Page3";
+import Unit7_Page4 from "../StudentPages/unit7/Unit7_Page4";
+import Unit7_Page5 from "../StudentPages/unit7/Unit7_Page5";
+import Unit7_Page6 from "../StudentPages/unit7/Unit7_Page6";
 
 // //==================== unit 8 pages
 
@@ -246,12 +246,12 @@ export const studentPages = (openPopup, goToUnit) => {
     // />,
     // //===================== unit 7 pages
 
-    // <Unit7_Page1 openPopup={openPopup} />,
-    // <Unit7_Page2 openPopup={openPopup} />,
-    // <Unit7_Page3 openPopup={openPopup} />,
-    // <Unit7_Page4 openPopup={openPopup} />,
-    // <Unit7_Page5 openPopup={openPopup} />,
-    // <Unit7_Page6 openPopup={openPopup} />,
+    <Unit7_Page1 openPopup={openPopup} />,
+    <Unit7_Page2 openPopup={openPopup} />,
+    <Unit7_Page3 openPopup={openPopup} />,
+    <Unit7_Page4 openPopup={openPopup} />,
+    <Unit7_Page5 openPopup={openPopup} />,
+    <Unit7_Page6 openPopup={openPopup} />,
     // //===================== unit 8 pages
 
     <Unit8_Page1 openPopup={openPopup} />,

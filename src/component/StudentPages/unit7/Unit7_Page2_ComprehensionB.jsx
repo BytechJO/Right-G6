@@ -4,20 +4,34 @@ import ActionButtons from "../../ActionButtons";
 
 const QUESTIONS = [
   {
-    statement: "Liquid mountaineering is an ancient sport.",
-    correct: ["false"],
+    before: "mountain",
+    after: "",
+    correct: ["eer"],
   },
   {
-    statement: "The athletes try to go as slowly as they can across the water.",
-    correct: ["false"],
+    before: "",
+    after: "possible",
+    correct: ["im"],
   },
   {
-    statement: "Liquid mountaineering needs special equipment and planning.",
-    correct: ["true"],
+    before: "equip",
+    after: "",
+    correct: ["ment"],
   },
   {
-    statement: "Everything you see about liquid mountaineering is real.",
-    correct: ["false"],
+    before: "",
+    after: "forms",
+    correct: ["plat"],
+  },
+  {
+    before: "week",
+    after: "",
+    correct: ["ends"],
+  },
+  {
+    before: "",
+    after: "correctly",
+    correct: ["in"],
   },
 ];
 
@@ -28,11 +42,9 @@ const normalize = (str) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const Unit7_Page2_ComprehensionA = () => {
+const Unit7_Page2_ComprehensionB = () => {
   const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
-
   const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
-
   const [locked, setLocked] = useState(false);
 
   const handleChange = (i, val) => {
@@ -68,7 +80,6 @@ const Unit7_Page2_ComprehensionA = () => {
     setErrors(newErrors);
 
     const total = QUESTIONS.length;
-
     const color =
       correct === total ? "green" : correct === 0 ? "red" : "orange";
 
@@ -99,21 +110,26 @@ const Unit7_Page2_ComprehensionA = () => {
   return (
     <div>
       <h5 className="header-title-page8-read mb-7">
-        <span className="ex-A-read mr-2">A</span>
-        Write <span className="text-[#F79530]">true</span> or <span className="text-[#F79530]">false</span> next to each statement.
+        <span className="ex-A-read mr-2">B</span>
+        Add word beginnings or endings to make a word from the story.
       </h5>
 
-      <div className="flex flex-col gap-8 text-[18px] mt-5">
+      <div className="grid grid-cols-2 gap-x-16 gap-y-8 text-[18px] mt-5">
         {QUESTIONS.map((q, i) => {
           const hasError = errors[i] === true;
           const isOk = errors[i] === false;
 
           return (
             <div key={i} className="flex items-center gap-3">
+              <span className="font-bold shrink-0">{i + 1}</span>
+
+              {q.before && <span className="shrink-0">{q.before}</span>}
+
               <div
                 className="relative"
                 style={{
-                  width: "90px",
+                  minWidth: "180px",
+                  flex: 1,
                 }}
               >
                 <input
@@ -126,7 +142,7 @@ const Unit7_Page2_ComprehensionA = () => {
                       hasError ? "1px solid #ef4444" : "1px solid #555"
                     }`,
                     outline: "none",
-                    textAlign: "center",
+                    textAlign: i % 2 === 0 ? "left" : "right",
                     background: "transparent",
                     fontSize: "18px",
                     fontWeight: "500",
@@ -139,7 +155,7 @@ const Unit7_Page2_ComprehensionA = () => {
                     style={{
                       position: "absolute",
                       top: "-8px",
-                      right: "-8px",
+                      left: i % 2 === 0 ? "auto" : "-8px",
                       width: "20px",
                       height: "20px",
                       background: "red",
@@ -160,9 +176,7 @@ const Unit7_Page2_ComprehensionA = () => {
                 )}
               </div>
 
-              <span className="font-bold">{i + 1}</span>
-
-              <span>{q.statement}</span>
+              {q.after && <span className="shrink-0">{q.after}</span>}
             </div>
           );
         })}
@@ -179,4 +193,4 @@ const Unit7_Page2_ComprehensionA = () => {
   );
 };
 
-export default Unit7_Page2_ComprehensionA;
+export default Unit7_Page2_ComprehensionB;
