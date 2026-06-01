@@ -147,8 +147,8 @@ const Review7_Page1_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        <h5 className="header-title-page8 mb-[25vh]">
+      <div className="div-forall w-full text-[18px]" style={{ gap: "80px" }}>
+        <h5 className="header-title-page8">
           <span
             style={{
               marginRight: "20px",
@@ -160,18 +160,20 @@ const Review7_Page1_Q3 = () => {
           <span className="text-[#F79530]">false</span>.
         </h5>
 
-        <div className="grid grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 gap-20">
           {/* Question 1 */}
-          <div className="flex gap-4 items-start h-[140px]">
+          <div className="flex gap-4 items-start h-[140px] w-full justify-between">
             {" "}
-            <span className="font-bold">1</span>
-            <div className="flex flex-col justify-between h-full">
-              <div>
-                <div>He is using stencils</div>
-                <div>to paint this wall.</div>
-              </div>
+            <div className="flex gap-5 h-full">
+              <span className="font-bold">1</span>
+              <div className="flex flex-col justify-between h-full">
+                <div>
+                  <div>He is using stencils</div>
+                  <div>to paint this wall.</div>
+                </div>
 
-              <div>{inputField(0)}</div>
+                <div>{inputField(0)}</div>
+              </div>
             </div>
             <img
               src={img1}
@@ -184,17 +186,18 @@ const Review7_Page1_Q3 = () => {
             />
           </div>
 
-          <div className="flex gap-4 items-start h-[140px]">
-            <span className="font-bold">2</span>
+          <div className="flex gap-4 items-start h-[140px]  w-full justify-between">
+            <div className="flex gap-5 h-full">
+              <span className="font-bold">2</span>
 
-            <div className="flex flex-col justify-between h-full">
-              <div>
-                <div>The dog looks silly.</div>
+              <div className="flex flex-col justify-between h-full">
+                <div>
+                  <div>The dog looks silly.</div>
+                </div>
+
+                <div>{inputField(1)}</div>
               </div>
-
-              <div>{inputField(1)}</div>
             </div>
-
             <img
               src={img2}
               alt=""

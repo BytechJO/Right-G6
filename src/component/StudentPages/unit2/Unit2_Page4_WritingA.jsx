@@ -22,13 +22,14 @@ const WritingA = () => {
   return (
     <div className="space-y-8 w-full max-w-[900px] mx-auto">
       {/* العنوان */}
-      <h5 className="header-title-page8-read leading-7">
+      <div className="header-title-page8-read leading-7">
         <span className="ex-A-read mr-2">A</span>
+        <div>
         Write a short description about each of the following items. Use{" "}
         <span className="text-[#55c271] font-bold">so</span> and{" "}
         <span className="text-[#e07b39] font-bold">such</span> in your
-        descriptions.
-      </h5>
+        descriptions.</div>
+      </div>
 
       <div className="flex flex-col gap-8 mt-5 text-[18px]">
         {QUESTIONS.map((q, i) => (

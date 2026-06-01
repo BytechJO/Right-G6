@@ -19,7 +19,7 @@ const Review9_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 35 })}
+          onClick={() => openPopup("exercise", { startIndex: 96 })}
           style={{ overflow: "visible" }}
         >
           <image
@@ -41,7 +41,7 @@ const Review9_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 36 })}
+          onClick={() => openPopup("exercise", { startIndex: 97 })}
           style={{ overflow: "visible" }}
         >
           <image

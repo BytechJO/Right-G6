@@ -113,7 +113,7 @@ const Unit10_Page2_ReadingSection_U10 = () => {
         </div>
 
         <div className="relative w-[60%] mt-5">
-          <div className="absolute -top-10 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px_20px_0px_0px] text-[22px] font-bold">
+          <div className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px_20px_0px_0px] text-[20px] font-bold">
             Which Career Is Right for You?
           </div>
 
@@ -151,7 +151,7 @@ const Unit10_Page2_ReadingSection_U10 = () => {
                     </div>
 
                     <div className="flex items-start gap-2 text-[16px]">
-                      <span className="text-[#D98A2B] text-[25px] leading-4">
+                      <span className="text-[#f79631] text-[35px] leading-4">
                         •
                       </span>
                       <span className="text-[14px] leading-relaxed text-black font-medium ">

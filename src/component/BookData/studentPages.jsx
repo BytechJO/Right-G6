@@ -76,8 +76,8 @@ import Review5_Page1 from "../StudentPages/review5&6/Review5_Page1";
 import Review5_Page2 from "../StudentPages/review5&6/Review5_Page2";
 import Review6_Page1 from "../StudentPages/review5&6/Review6_Page1";
 import Review6_Page2 from "../StudentPages/review5&6/Review6_Page2";
-// import Reading_Unit6_Page1 from "../StudentPages/unit6/Reading_Unit6_Page1";
-// import Reading_Unit6_Page2 from "../StudentPages/unit6/Reading_Unit6_Page2";
+import Reading_Unit6_Page1 from "../StudentPages/unit6/Reading_Unit6_Page1";
+import Reading_Unit6_Page2 from "../StudentPages/unit6/Reading_Unit6_Page2";
 
 // //==================== unit 7 pages
 
@@ -233,17 +233,17 @@ export const studentPages = (openPopup, goToUnit) => {
     <Review6_Page1 openPopup={openPopup} />,
     <Review6_Page2 openPopup={openPopup} />,
 
-    // <Reading_Unit6_Page1
-    //   openPopup={openPopup}
-    //   audioRef={sharedAudioRef}
-    //   activeAudio={activeAudio}
-    //   setActiveAudio={setActiveAudio}
-    // />,
-    // <Reading_Unit6_Page2
-    //   audioRef={sharedAudioRef}
-    //   activeAudio={activeAudio}
-    //   setActiveAudio={setActiveAudio}
-    // />,
+    <Reading_Unit6_Page1
+      openPopup={openPopup}
+      audioRef={sharedAudioRef}
+      activeAudio={activeAudio}
+      setActiveAudio={setActiveAudio}
+    />,
+    <Reading_Unit6_Page2
+      audioRef={sharedAudioRef}
+      activeAudio={activeAudio}
+      setActiveAudio={setActiveAudio}
+    />,
     // //===================== unit 7 pages
 
     <Unit7_Page1 openPopup={openPopup} />,
