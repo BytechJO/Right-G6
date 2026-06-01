@@ -1,106 +1,97 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
+const wordBank = [
+  "entertaining",
+  "summer school",
+  "talented",
+  "proud",
+  "success",
+  "celebration",
+  "perfectly",
+  "lessons",
+  "flawless",
+  "familiar",
+];
+
+const correctAnswers = {
+  Nouns: ["summer school", "success", "celebration", "lessons"],
+  Adjectives: ["entertaining", "talented", "proud", "flawless", "familiar"],
+  Adverb: ["perfectly"],
+};
+
+const columns = ["Nouns", "Adjectives", "Adverb"];
+const NUM_ROWS = 5;
+
 const Unit6_Page5_Q1 = () => {
-  const words = ["attractions", "shoot", "bunch", "trade"];
+  // table[col][rowIdx] = string typed by student
+  const emptyTable = () => ({
+    Nouns: Array(NUM_ROWS).fill(""),
+    Adjectives: Array(NUM_ROWS).fill(""),
+    Adverb: Array(NUM_ROWS).fill(""),
+  });
 
-  const sentences = [
-    {
-      before: "There are many",
-      after: "at a carnival, such as rides, games, and shows.",
-    },
-
-    {
-      before: "We could",
-      after: "cars. I’ll give you this red one for your blue one.",
-    },
-
-    {
-      before: "How many baskets can you",
-      after: "in one game?",
-    },
-
-    {
-      before: "I bought a",
-      after: "of tickets so I can go on lots of rides.",
-    },
-  ];
-
-  const correctAnswers = [["attractions"], ["trade"], ["shoot"], ["bunch"]];
-
-  const [answers, setAnswers] = useState(["", "", "", ""]);
-
+  const [table, setTable] = useState(emptyTable());
+  const [cellStatus, setCellStatus] = useState(null); // null | { col: { rowIdx: "correct"|"error" } }
   const [locked, setLocked] = useState(false);
 
-  const [result, setResult] = useState([]);
-
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-
-  const handleChange = (i, val) => {
-    if (locked || result[i] === true) return;
-
-    const updated = [...answers];
-
-    updated[i] = val;
-
-    setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
+  const updateCell = (col, rowIdx, value) => {
+    if (locked) return;
+    setTable((prev) => {
+      const updated = { ...prev, [col]: [...prev[col]] };
+      updated[col][rowIdx] = value;
+      return updated;
     });
+    // clear status for this cell
+    if (cellStatus) {
+      setCellStatus((prev) => {
+        if (!prev) return prev;
+        const updated = { ...prev, [col]: { ...prev[col] } };
+        delete updated[col][rowIdx];
+        return updated;
+      });
+    }
   };
+
+  const normalize = (text) => text.trim().toLowerCase().replace(/\s+/g, " ");
 
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all fields.");
-
+    // Check if at least something is filled
+    const allValues = Object.values(table)
+      .flat()
+      .filter((v) => v.trim() !== "");
+    if (allValues.length === 0) {
+      ValidationAlert.info("Please fill in at least one cell.");
       return;
     }
 
-    let correctCount = 0;
+    let score = 0;
+    let total = 0;
+    const newStatus = { Nouns: {}, Adjectives: {}, Adverb: {} };
 
-    const newResults = answers.map((ans, i) => {
-      const ok = correctAnswers[i].some(
-        (correct) => normalize(correct) === normalize(ans),
-      );
-
-      if (ok) correctCount++;
-
-      return ok;
+    columns.forEach((col) => {
+      table[col].forEach((val, rowIdx) => {
+        if (val.trim() === "") return;
+        total++;
+        const isCorrect = correctAnswers[col]
+          .map(normalize)
+          .includes(normalize(val));
+        newStatus[col][rowIdx] = isCorrect ? "correct" : "error";
+        if (isCorrect) score++;
+      });
     });
 
-    setResult(newResults);
+    setCellStatus(newStatus);
 
-    const total = answers.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span></div>`;
 
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    if (score === total && total === wordBank.length) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (score === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
@@ -108,186 +99,172 @@ const Unit6_Page5_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      correctAnswers[0][0],
-      correctAnswers[1][0],
-      correctAnswers[2][0],
-      correctAnswers[3][0],
-    ]);
-
-    setResult([true, true, true, true]);
-
+    const filled = emptyTable();
+    columns.forEach((col) => {
+      correctAnswers[col].forEach((word, i) => {
+        filled[col][i] = word;
+      });
+    });
+    setTable(filled);
+    setCellStatus(null);
     setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(["", "", "", ""]);
-
-    setResult([]);
-
+  const reset = () => {
+    setTable(emptyTable());
+    setCellStatus(null);
     setLocked(false);
   };
 
+  const getCellStyle = (col, rowIdx) => {
+    const status = cellStatus?.[col]?.[rowIdx];
+    if (status === "error")
+      return { borderColor: "#ef4444" };
+    return {borderColor: "#80ac3e" };
+  };
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-      }}
-    >
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-15">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            A
-          </span>
-          Read and write the correct word.
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "20px" }}>
+        {/* HEADER */}
+        <h5 className="header-title-page8 mb-4">
+          <span className="ex-A mr-2">A</span>
+          Divide the vocabulary words into the groups below. A noun is a person,
+          place, thing, or idea; an adjective tells what kind, which one, or how
+          many about a noun; and an adverb is a word that describes the verb or
+          adjective.
         </h5>
 
         {/* WORD BANK */}
-        <div className="flex justify-center mb-10">
-          <div
-            className="
-              bg-[#E8DFF0]
-              rounded-2xl
-              px-10
-              py-4
-              flex
-              gap-24
-              text-[22px]
-              font-medium
-            "
-          >
-            {words.map((word, i) => (
-              <span key={i}>{word}</span>
-            ))}
-          </div>
-        </div>
-
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-8">
-          {sentences.map((item, i) => (
-            <div
-              key={i}
-              className="
-                  flex
-                  items-start
-                  gap-4
-                "
-            >
-              {/* NUMBER */}
-              <span
-                className="
-                    font-bold
-                    text-[22px]
-                    w-6
-                  "
-              >
-                {i + 1}
-              </span>
-
-              {/* SENTENCE */}
-              <div
-                className="
-                    flex
-                    items-end
-                    flex-wrap
-                    text-[22px]
-                    leading-[1.8]
-                    flex-1
-                  "
-              >
-                <span>{item.before}</span>
-
-                {/* INPUT */}
-                <div className="relative mx-2">
-                  <input
-                    type="text"
-                    value={answers[i]}
-                    disabled={locked || result[i] === true}
-                    onChange={(e) => handleChange(i, e.target.value)}
-                    className={`
-                        w-[170px]
-                        border-0
-                        border-b
-                        outline-none
-                        bg-transparent
-                        text-[22px]
-                        font-semibold
-                        pb-0.5
-                        ml-2
-                        ${
-                          result[i] === false
-                            ? "border-[#D1232A] text-[#6D2980]"
-                            : "border-black text-[#6D2980]"
-                        }
-                      `}
-                  />
-
-                  {/* WRONG */}
-                  {result[i] === false && (
-                    <span
-                      style={{
-                        position: "absolute",
-
-                        top: "-8px",
-
-                        right: "-8px",
-
-                        width: "22px",
-
-                        height: "22px",
-
-                        background: "#ef4444",
-
-                        color: "white",
-
-                        borderRadius: "50%",
-
-                        display: "flex",
-
-                        alignItems: "center",
-
-                        justifyContent: "center",
-
-                        fontSize: "12px",
-
-                        fontWeight: "bold",
-
-                        border: "2px solid white",
-
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                </div>
-
-                <span>{item.after}</span>
-              </div>
-            </div>
+        <div
+          style={{
+            // border: "2px solid #c8dfc8",
+            borderRadius: "10px",
+            padding: "12px 20px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+            justifyItems: "center",
+            gap: "18px",
+            marginBottom: "20px",
+            backgroundColor: "#e1e9d1",
+            fontSize: "15px",
+            fontWeight: "500",
+            color: "#333",
+          }}
+        >
+          {wordBank.map((word) => (
+            <span key={word}>{word}</span>
           ))}
         </div>
-      </div>
 
+        {/* TABLE */}
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "28px",
+            tableLayout: "fixed",
+          }}
+        >
+          <thead>
+            <tr>
+              {columns.map((col) => (
+                <th
+                  key={col}
+                  style={{
+                    border: "1px solid #80ac3e",
+                    backgroundColor: "#e1e9d1",
+                    color: "#80ac3e",
+                    fontWeight: "bold",
+                    fontSize: "16px",
+                    padding: "10px",
+                    textAlign: "center",
+                    width:
+                      col === "Nouns"
+                        ? "30%"
+                        : col === "Adjectives"
+                          ? "45%"
+                          : "25%",
+                  }}
+                >
+                  {col}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: NUM_ROWS }).map((_, rowIdx) => (
+              <tr key={rowIdx}>
+                {columns.map((col) => (
+                  <td
+                    key={col}
+                    style={{
+                      border: "1px solid #80ac3e",
+                      padding: "0",
+                      height: "42px",
+                      position: "relative",
+                      ...getCellStyle(col, rowIdx),
+                      transition: "background 0.2s",
+                    }}
+                  >
+                    {cellStatus?.[col]?.[rowIdx] === "error" && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          right: "0px",
+                          transform: "translateY(-50%)",
+                          width: "22px",
+                          height: "22px",
+                          background: "red",
+                          color: "white",
+                          borderRadius: "50%",
+                          fontSize: "12px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                        }}
+                      >
+                        ✕
+                      </div>
+                    )}
+
+                    <input
+                      type="text"
+                      value={table[col][rowIdx]}
+                      disabled={locked}
+                      onChange={(e) => updateCell(col, rowIdx, e.target.value)}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        border: "none",
+                        outline: "none",
+                        background: "transparent",
+                        textAlign: "center",
+                        fontSize: "15px",
+                        fontWeight: "600",
+                        padding: "0 8px",
+                        cursor: locked ? "default" : "text",
+                      }}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {/* BUTTONS */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
+        <button className="try-again-button" onClick={reset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>

@@ -1,5 +1,5 @@
 import React from "react";
-import page_3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 60.png";
+import page_3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/Page 583.png";
 import "./Unit7_Page3.css";
 import GrammarSection_U7 from "./Unit7_Page3_GrammarSection_U7";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";

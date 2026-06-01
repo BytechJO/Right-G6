@@ -4,10 +4,10 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Unit8_Page6_Q3 = () => {
   const questions = [
-    "Everyone knows the answer.",
-    "Mary sees somebody.",
-    "Everybody loves rainbows.",
-    "Steven knows someone who is a doctor.",
+    '"I will be at the library tonight."',
+    '"I want to come with you?"',
+    'The officer said, "I will get you home safely."',
+    'Andrea said, "There is a carnival at school today."',
   ];
 
   const [answers, setAnswers] = useState(["", "", "", ""]);
@@ -19,23 +19,23 @@ const Unit8_Page6_Q3 = () => {
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
+      .replace(/[.?!,“”"']/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[index] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      copy[index] = undefined;
 
       return copy;
     });
@@ -44,7 +44,9 @@ const Unit8_Page6_Q3 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
+    const hasEmpty = answers.some((answer) => !answer.trim());
+
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
 
       return;
@@ -52,12 +54,12 @@ const Unit8_Page6_Q3 = () => {
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(questions[index]);
 
-      if (ok) correctCount++;
+      if (correct) correctCount++;
 
-      return ok;
+      return correct;
     });
 
     setResult(newResults);
@@ -69,7 +71,7 @@ const Unit8_Page6_Q3 = () => {
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -88,10 +90,10 @@ const Unit8_Page6_Q3 = () => {
 
   const showAnswers = () => {
     setAnswers([
-      "Everyone knows the answer.",
-      "Mary sees somebody.",
-      "Everybody loves rainbows.",
-      "Steven knows someone who is a doctor.",
+      '"I will be at the library tonight."',
+      '"I want to come with you?"',
+      'The officer said, "I will get you home safely."',
+      'Andrea said, "There is a carnival at school today."',
     ]);
 
     setResult([true, true, true, true]);
@@ -107,13 +109,13 @@ const Unit8_Page6_Q3 = () => {
     setLocked(false);
   };
 
-  const sentenceInput = (i) => (
-    <span className="relative flex-1">
+  const inputField = (index) => (
+    <span className="relative block w-full">
       <input
         type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
         className={`
           w-full
           border-0
@@ -121,17 +123,18 @@ const Unit8_Page6_Q3 = () => {
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
-          leading-none
-          align-middle
           px-1
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${result[index] === false ? "border-[#D1232A]" : ""}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -159,57 +162,64 @@ const Unit8_Page6_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-18">
+      <div className="div-forall w-full text-[18px]">
+        <h5 className="header-title-page8 mb-[8vh]">
           <span
             className="ex-A"
             style={{
               marginRight: "10px",
             }}
           >
-            E
+            F
           </span>
-          Make sentences from the words given.
+          Using the sentences from Exercise E, write direct quotes of what the
+          people said. Remember to use quotation marks (“...”) at the beginning
+          and ending of the quote.
         </h5>
 
-        {/* QUESTIONS */}
-        <div className="text-[18px] leading-[3.6] flex flex-col gap-8">
-          <div className="flex items-center gap-4">
-            <span className="font-bold">1</span>
+        <div className="flex flex-col gap-[10vh]">
+          {/* 1 */}
+          <div>
+            <div className="flex items-center gap-4">
+              <span className="font-bold">1</span>
 
-            <span>know/answer/everyone</span>
+              <span>John said,</span>
 
-            {sentenceInput(0, "w-[520px]")}
+              <div className="flex-1">{inputField(0)}</div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-bold">2</span>
+          {/* 2 */}
+          <div>
+            <div className="flex items-center gap-4">
+              <span className="font-bold">2</span>
 
-            <span>somebody/Mary/see</span>
+              <span>Did Carly say,</span>
 
-            {sentenceInput(1, "w-[520px]")}
+              <div className="flex-1">{inputField(1)}</div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-bold">3</span>
+          {/* 3 */}
+          <div>
+            <div className="flex items-center gap-4">
+              <span className="font-bold">3</span>
 
-            <span>everybody/love/rainbow</span>
-
-            {sentenceInput(2, "w-[520px]")}
+              <div className="flex-1">{inputField(2)}</div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="font-bold">4</span>
+          {/* 4 */}
+          <div>
+            <div className="flex items-center gap-4">
+              <span className="font-bold">4</span>
 
-            <span>Steven/know/who is a doctor/someone</span>
-
-            {sentenceInput(3, "w-[420px]")}
+              <div className="flex-1">{inputField(3)}</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

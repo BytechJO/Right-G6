@@ -1,286 +1,179 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaRedo, FaEye, FaCheck } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
+
+const QUESTIONS = [
+  {
+    statement: "Liquid mountaineering is an ancient sport.",
+    correct: ["false"],
+  },
+  {
+    statement: "The athletes try to go as slowly as they can across the water.",
+    correct: ["false"],
+  },
+  {
+    statement: "Liquid mountaineering needs special equipment and planning.",
+    correct: ["true"],
+  },
+  {
+    statement: "Everything you see about liquid mountaineering is real.",
+    correct: ["false"],
+  },
+];
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""';:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const Unit7_Page2_ComprehensionA = () => {
-  const correctAnswers = [
-    "The name of Jenny’s horse is Cinderella. The name of Lori’s horse is Nancy. Nancy is faster.",
-    "They are both 11 years old.",
-  ];
+  const [answers, setAnswers] = useState(Array(QUESTIONS.length).fill(""));
 
-  const [answers, setAnswers] = useState(["", ""]);
-
-  const [errors, setErrors] = useState([false, false]);
-
-  const [correctLocked, setCorrectLocked] = useState([false, false]);
+  const [errors, setErrors] = useState(Array(QUESTIONS.length).fill(null));
 
   const [locked, setLocked] = useState(false);
 
-  // normalize
-  const normalize = (text) => {
-    return text.trim().toLowerCase().replace(/\s+/g, " ").replace(/[?.]/g, "");
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === false) return;
+
+    if (errors[i] === true) {
+      setErrors((prev) => prev.map((e, idx) => (idx === i ? null : e)));
+    }
+
+    setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  // update
-  const updateAnswer = (index, value) => {
-    const updated = [...answers];
-
-    updated[index] = value;
-
-    setAnswers(updated);
-
-    const updatedErrors = [...errors];
-
-    updatedErrors[index] = false;
-
-    setErrors(updatedErrors);
-  };
-
-  // check
   const handleCheck = () => {
     if (locked) return;
 
-    const isEmpty = answers.some((a) => normalize(a) === "");
-
-    if (isEmpty) {
+    if (answers.includes("")) {
       ValidationAlert.info("Please complete all fields.");
-
       return;
     }
 
-    let score = 0;
+    let correct = 0;
 
-    const newErrors = answers.map((ans, i) => {
-      const isCorrect = normalize(ans) === normalize(correctAnswers[i]);
+    const newErrors = answers.map((a, i) => {
+      const ok = QUESTIONS[i].correct.some(
+        (c) => normalize(a) === normalize(c),
+      );
 
-      if (isCorrect) score++;
+      if (ok) correct++;
 
-      return !isCorrect;
-    });
-
-    const newLocked = answers.map((ans, i) => {
-      return normalize(ans) === normalize(correctAnswers[i]);
+      return ok ? false : true;
     });
 
     setErrors(newErrors);
 
-    setCorrectLocked(newLocked);
+    const total = QUESTIONS.length;
 
-    const total = 2;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
 
-    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${score} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (score === total) {
+    if (correct === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (score === 0) {
+    } else if (correct === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
     }
   };
 
-  // show
   const handleShow = () => {
-    setAnswers(correctAnswers);
-
-    setErrors([false, false]);
-
-    setCorrectLocked([true, true]);
-
+    setAnswers(QUESTIONS.map((q) => q.correct[0]));
+    setErrors(Array(QUESTIONS.length).fill(false));
     setLocked(true);
   };
 
-  // reset
   const handleReset = () => {
-    setAnswers(["", ""]);
-
-    setErrors([false, false]);
-
-    setCorrectLocked([false, false]);
-
+    setAnswers(Array(QUESTIONS.length).fill(""));
+    setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
   };
 
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-10">
+      <h5 className="header-title-page8-read mb-7">
         <span className="ex-A-read mr-2">A</span>
-        Read the story, and then answer the questions.
+        Write <span className="text-[#F79530]">true</span> or <span className="text-[#F79530]">false</span> next to each statement.
       </h5>
 
-      {/* QUESTIONS */}
-      <div className="space-y-10 text-[20px] mt-10">
-        {/* 1 */}
-        <div className="flex gap-4 items-start">
-          <span className="font-bold">1</span>
+      <div className="flex flex-col gap-8 text-[18px] mt-5">
+        {QUESTIONS.map((q, i) => {
+          const hasError = errors[i] === true;
+          const isOk = errors[i] === false;
 
-          <div className="flex-1">
-            {/* question */}
-            <div className="leading-relaxed mb-6">
-              <p>
-                What is the name of Jenny’s horse? What is the name of Lori’s
-                horse?
-              </p>
-
-              <p>Which horse was faster?</p>
-            </div>
-
-            {/* answer line 1 */}
-            <div className="relative">
-              <input
-                type="text"
-                value={answers[0]}
-                disabled={locked || correctLocked[0]}
-                onChange={(e) => updateAnswer(0, e.target.value)}
-                className={`border-b outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent
-                ${errors[0] ? "border-red-500" : "border-black"}
-                `}
-              />
-
-              {/* ❌ */}
-              {errors[0] && (
-                <div
+          return (
+            <div key={i} className="flex items-center gap-3">
+              <div
+                className="relative"
+                style={{
+                  width: "90px",
+                }}
+              >
+                <input
+                  value={answers[i]}
+                  disabled={locked || isOk}
+                  onChange={(e) => handleChange(i, e.target.value)}
                   style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-30px",
-                    transform: "translateY(-50%)",
-                    width: "22px",
-                    height: "22px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                    width: "100%",
+                    borderBottom: `${
+                      hasError ? "1px solid #ef4444" : "1px solid #555"
+                    }`,
+                    outline: "none",
+                    textAlign: "center",
+                    background: "transparent",
+                    fontSize: "18px",
+                    fontWeight: "500",
+                    padding: "2px 0",
                   }}
-                >
-                  ✕
-                </div>
-              )}
+                />
+
+                {hasError && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      width: "20px",
+                      height: "20px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      zIndex: 5,
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </div>
+
+              <span className="font-bold">{i + 1}</span>
+
+              <span>{q.statement}</span>
             </div>
-          </div>
-        </div>
-
-        {/* 2 */}
-        <div className="flex gap-4 items-start">
-          <span className="font-bold">2</span>
-
-          <div className="flex-1">
-            {/* question */}
-            <div className="leading-relaxed mb-6">
-              <p>
-                In five years, Jenny and Lori will be 16 years old. How old are
-                they now?
-              </p>
-            </div>
-
-            {/* answer */}
-            <div className="relative">
-              <input
-                type="text"
-                value={answers[1]}
-                disabled={locked || correctLocked[1]}
-                onChange={(e) => updateAnswer(1, e.target.value)}
-                className={`border-b outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent
-                ${errors[1] ? "border-red-500" : "border-black"}
-                `}
-              />
-
-              {/* ❌ */}
-              {errors[1] && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-30px",
-                    transform: "translateY(-50%)",
-                    width: "22px",
-                    height: "22px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  ✕
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
 
-      {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      <div className="flex justify-center gap-6 mt-8">
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

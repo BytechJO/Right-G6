@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 70/SVG/Asset 14.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 70/SVG/Asset 16.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 70/SVG/Asset 15.svg";
-import img4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 70/SVG/Asset 17.svg";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Review7_Page1_Q2 = () => {
-  const questions = ["true", "true", "false", "true"];
+  const questions = [
+    "stand out",
+    "catch up",
+    "It's been too long.",
+    "You're a natural.",
+    "Here I go.",
+    "Now is your chance.",
+  ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", "", ""]);
 
   const [result, setResult] = useState([]);
 
@@ -19,23 +21,22 @@ const Review7_Page1_Q2 = () => {
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
+      .replace(/[.!?'"‘’“”]/g, "")
       .replace(/\s+/g, " ")
       .trim();
-
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+  const handleChange = (index, value) => {
+    if (locked || result[index] === true) return;
 
     const updated = [...answers];
 
-    updated[i] = value;
+    updated[index] = value;
 
     setAnswers(updated);
 
     setResult((prev) => {
       const copy = [...prev];
 
-      copy[i] = undefined;
+      copy[index] = undefined;
 
       return copy;
     });
@@ -44,7 +45,9 @@ const Review7_Page1_Q2 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
+    const hasEmpty = answers.some((item) => !item.trim());
+
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all answers.");
 
       return;
@@ -52,12 +55,12 @@ const Review7_Page1_Q2 = () => {
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = answers.map((answer, index) => {
+      const correct = normalize(answer) === normalize(questions[index]);
 
-      if (ok) correctCount++;
+      if (correct) correctCount++;
 
-      return ok;
+      return correct;
     });
 
     setResult(newResults);
@@ -69,7 +72,7 @@ const Review7_Page1_Q2 = () => {
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
+        <span style="color:${color};font-weight:bold;">
           Score: ${correctCount} / ${total}
         </span>
       </div>
@@ -87,46 +90,54 @@ const Review7_Page1_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers(["true", "true", "false", "true"]);
+    setAnswers([
+      "stand out",
+      "catch up",
+      "It's been too long.",
+      "You're a natural.",
+      "Here I go.",
+      "Now is your chance.",
+    ]);
 
-    setResult([true, true, true, true]);
+    setResult([true, true, true, true, true, true]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    setAnswers(["", "", "", "", "", ""]);
 
     setResult([]);
 
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className="relative inline-block">
+  const inputField = (index) => (
+    <span className="relative block w-full">
       <input
         type="text"
-        value={answers[i]}
-        disabled={locked || result[i] === true}
-        onChange={(e) => handleChange(i, e.target.value)}
+        value={answers[index]}
+        disabled={locked || result[index] === true}
+        onChange={(e) => handleChange(index, e.target.value)}
         className={`
-          ${width}
+          w-full
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#1DA1F2]
+          text-black
           font-semibold
-          leading-none
-          align-middle
           px-1
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${result[index] === false ? "border-[#D1232A]" : ""}
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result[index] === false && (
         <span
           style={{
             position: "absolute",
@@ -154,107 +165,76 @@ const Review7_Page1_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-20">
+      <div className="div-forall w-full text-[18px]">
+        <h5 className="header-title-page8 mb-[7vh]">
           <span
             style={{
-              marginRight: "10px",
+              marginRight: "20px",
             }}
           >
             B
           </span>
-          Read, look, and write <span className="text-[#1DA1F2]">true</span> or{" "}
-          <span className="text-[#1DA1F2]">false</span>.
+          Change one word in each expression below to make it correct. Rewrite
+          the expression.
         </h5>
 
-        {/* QUESTIONS */}
-        <div className="grid grid-cols-2 gap-y-14 gap-x-24">
+        <div className="flex flex-col gap-[6vh]">
           {/* 1 */}
-          <div className="flex items-end gap-5">
-            <span className="font-bold text-[18px] self-start">1</span>
+          <div className="flex items-center gap-4">
+            <span className="font-bold">1</span>
 
-            <img
-              src={img1}
-              alt=""
-              style={{
-                width: "140px",
-                height: "auto",
-              }}
-            />
+            <span>stand in</span>
 
-            <div className="text-[18px] mt-3 self-start w-[230px] h-[120px] flex flex-col justify-between">
-              <div className="leading-[2]">He is keeping busy.</div>
-
-              <div>{inputField(0, "w-[150px]")}</div>
-            </div>
+            <div className="flex-1">{inputField(0)}</div>
           </div>
 
           {/* 2 */}
-          <div className="flex items-end gap-5">
-            <span className="font-bold text-[18px] self-start">2</span>
+          <div className="flex items-center gap-4">
+            <span className="font-bold">2</span>
 
-            <img
-              src={img2}
-              alt=""
-              style={{
-                width: "140px",
-                height: "auto",
-              }}
-            />
+            <span>catch down</span>
 
-            <div className="text-[18px] mt-3 self-start w-[230px] h-[120px] flex flex-col justify-between">
-              <div className="leading-[2]">
-                They are jotting down some information.
-              </div>
-
-              <div>{inputField(1, "w-[150px]")}</div>
-            </div>
+            <div className="flex-1">{inputField(1)}</div>
           </div>
 
           {/* 3 */}
-          <div className="flex items-end gap-5">
-            <span className="font-bold text-[18px] self-start ">3</span>
+          <div className="flex items-center gap-4">
+            <span className="font-bold">3</span>
 
-            <img
-              src={img3}
-              alt=""
-              style={{
-                width: "140px",
-                height: "auto",
-              }}
-            />
+            <span>It’s had too long ...</span>
 
-            <div className="text-[18px] mt-3 self-start w-[230px] h-[120px] flex flex-col justify-between">
-              <div className="leading-[2]">He is limping stiffly.</div>
-
-              <div>{inputField(2, "w-[150px]")}</div>
-            </div>
+            <div className="flex-1">{inputField(2)}</div>
           </div>
 
           {/* 4 */}
-          <div className="flex items-end gap-5">
-            <span className="font-bold text-[18px] self-start ">4</span>
+          <div className="flex items-center gap-4">
+            <span className="font-bold">4</span>
 
-            <img
-              src={img4}
-              alt=""
-              style={{
-                width: "140px",
-                height: "auto",
-              }}
-            />
+            <span>You’re a normal!</span>
 
-            <div className="text-[18px] mt-3 self-start w-[230px] h-[120px] flex flex-col justify-between">
-              <div className="leading-[2]">She is looking at photo albums.</div>
+            <div className="flex-1">{inputField(3)}</div>
+          </div>
 
-              <div>{inputField(3, "w-[150px]")}</div>
-            </div>
+          {/* 5 */}
+          <div className="flex items-center gap-4">
+            <span className="font-bold">5</span>
+
+            <span>Here I went.</span>
+
+            <div className="flex-1">{inputField(4)}</div>
+          </div>
+
+          {/* 6 */}
+          <div className="flex items-center gap-4">
+            <span className="font-bold">6</span>
+
+            <span>Later is your chance.</span>
+
+            <div className="flex-1">{inputField(5)}</div>
           </div>
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

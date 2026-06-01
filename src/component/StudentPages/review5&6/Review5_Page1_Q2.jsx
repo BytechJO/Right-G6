@@ -1,150 +1,84 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
+import basketImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 22.svg";
+
+const correctAnswers = [
+  "a while",
+  "I guess",
+  "after all",
+  "if you say so",
+  "suits your taste",
+  "Suit yourself",
+];
+
+const emptyAnswers = () => Array(6).fill("");
 
 const Review5_Page1_Q2 = () => {
-  const questions = [
-    {
-      before: "He had lots of",
-      underlined: "information",
-      after: "about British Columbia.",
-      tf: "true",
-      correction: "",
-    },
-
-    {
-      before: "The",
-      underlined: "presentation",
-      after: "consisted of meat and vegetables.",
-      tf: "false",
-      correction: "shish kebab",
-    },
-
-    {
-      before: "Maybe we could",
-      underlined: "assignment",
-      after: "shish kebabs tonight.",
-      tf: "false",
-      correction: "barbecue",
-    },
-
-    {
-      before: "Mark ate the",
-      underlined: "both",
-      after: "apple cake by himself.",
-      tf: "false",
-      correction: "entire",
-    },
-
-    {
-      before: "I have an",
-      underlined: "entire",
-      after: "to do in math class tomorrow.",
-      tf: "false",
-      correction: "exam",
-    },
-  ];
-
-  const [answers, setAnswers] = useState(
-    questions.map(() => ({
-      tf: "",
-      correction: "",
-    })),
-  );
-
-  const [result, setResult] = useState([]);
-
+  const [answers, setAnswers] = useState(emptyAnswers());
+  const [errors, setErrors] = useState(Array(6).fill(false));
+  const [correctLocked, setCorrectLocked] = useState(Array(6).fill(false));
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
+  const normalize = (text) =>
+    text.trim().toLowerCase().replace(/\s+/g, " ").replace(/[?.!]/g, "");
 
-  const handleChange = (i, field, value) => {
-    if (locked || result[i]?.tf === true) return;
-
+  const updateAnswer = (index, value) => {
+    if (locked || correctLocked[index]) return;
     const updated = [...answers];
-
-    updated[i][field] = value;
-
-    // إذا كتب true فضي التصحيح
-    if (field === "tf" && value.toLowerCase().trim() === "true") {
-      updated[i].correction = "";
-    }
-
+    updated[index] = value;
     setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+    const errs = [...errors];
+    errs[index] = false;
+    setErrors(errs);
   };
 
   const checkAnswers = () => {
     if (locked) return;
 
-    const hasEmpty = answers.some((a) => {
-      if (!a.tf.trim()) return true;
-
-      if (normalize(a.tf) === "false" && !a.correction.trim()) return true;
-
-      return false;
-    });
-
-    if (hasEmpty) {
+    const isEmpty = answers.some((a) => normalize(a) === "");
+    if (isEmpty) {
       ValidationAlert.info("Please complete all fields.");
-
       return;
     }
 
-    let correctCount = 0;
+    const normalizedCorrect = correctAnswers.map(normalize);
+    const usedAnswers = [];
 
-    const newResults = answers.map((a, i) => {
-      const tfCorrect = normalize(a.tf) === questions[i].tf;
+    let score = 0;
 
-      let correctionCorrect = true;
+    const newErrors = answers.map((ans) => {
+      const normalizedAns = normalize(ans);
 
-      if (questions[i].tf === "false") {
-        correctionCorrect =
-          normalize(a.correction) === normalize(questions[i].correction);
+      const isCorrectWord =
+        normalizedCorrect.includes(normalizedAns) &&
+        !usedAnswers.includes(normalizedAns);
+
+      if (isCorrectWord) {
+        usedAnswers.push(normalizedAns);
+        score++;
       }
 
-      if (tfCorrect && correctionCorrect) {
-        correctCount++;
-      }
-
-      return {
-        tf: tfCorrect,
-        correction: correctionCorrect,
-      };
+      return !isCorrectWord;
     });
 
-    setResult(newResults);
+    setErrors(newErrors);
+    setCorrectLocked(newErrors.map((e) => !e));
 
-    const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
+    const total = 6;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
 
     const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
+    <div style="font-size:20px;text-align:center;">
+      <span style="color:${color};font-weight:bold;">
+        Score: ${score} / ${total}
+      </span>
+    </div>
+  `;
 
-    if (correctCount === total) {
+    if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (score === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
@@ -152,228 +86,126 @@ const Review5_Page1_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      {
-        tf: "true",
-        correction: "",
-      },
-
-      {
-        tf: "false",
-        correction: "shish kebab",
-      },
-
-      {
-        tf: "false",
-        correction: "barbecue",
-      },
-
-      {
-        tf: "false",
-        correction: "entire",
-      },
-
-      {
-        tf: "false",
-        correction: "exam",
-      },
-    ]);
-
-    setResult(
-      questions.map(() => ({
-        tf: true,
-        correction: true,
-      })),
-    );
-
+    setAnswers([...correctAnswers]);
+    setErrors(Array(6).fill(false));
+    setCorrectLocked(Array(6).fill(true));
     setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(
-      questions.map(() => ({
-        tf: "",
-        correction: "",
-      })),
-    );
-
-    setResult([]);
-
+  const reset = () => {
+    setAnswers(emptyAnswers());
+    setErrors(Array(6).fill(false));
+    setCorrectLocked(Array(6).fill(false));
     setLocked(false);
   };
 
-  return (
-    <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-20 flex">
-          <span className="mr-2.5">B</span>
-
-          <div className="flex flex-col">
-            <span>
-              Read and write <span className="text-[#1DA1F2]">true</span> or{" "}
-              <span className="text-[#1DA1F2]">false</span>.
-            </span>
-
-            <span>
-              For false, change the underlined word to make the sentence
-              correct.
-            </span>
+  const renderInput = (index) => (
+    <div
+      key={index}
+      style={{ display: "flex", alignItems: "flex-end", gap: "6px" }}
+    >
+      <span style={{ fontWeight: "bold", fontSize: "16px", flexShrink: 0 }}>
+        {index + 1}
+      </span>
+      <div style={{ flex: 1, position: "relative" }}>
+        <input
+          type="text"
+          value={answers[index]}
+          disabled={locked || correctLocked[index]}
+          onChange={(e) => updateAnswer(index, e.target.value)}
+          style={{
+            width: "100%",
+            border: "none",
+            borderBottom: errors[index] ? "2px solid red" : "1px solid black",
+            outline: "none",
+            textAlign: "center",
+            background: "transparent",
+            fontSize: "18px",
+            // fontWeight: "600",
+            // color: "#6D2980",
+            padding: "2px 28px 2px 4px",
+          }}
+        />
+        {errors[index] && (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "0",
+              transform: "translateY(-50%)",
+              width: "22px",
+              height: "22px",
+              background: "red",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+            }}
+          >
+            ✕
           </div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "20px" }}>
+        {/* HEADER */}
+        <h5 className="header-title-page8 mb-6">
+          <span className="mr-2">B</span>
+          The words in the basket need to be put into the correct sentences in
+          order to make the expressions. Use the words to make the six
+          expressions, then cross out the ones that are not needed.
         </h5>
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-8">
-          {questions.map((q, i) => {
-            const isTrue = normalize(answers[i].tf) === "true";
 
-            return (
-              <div
-                key={i}
-                className="
-                    flex
-                    items-start
-                    gap-4
-                  "
-              >
-                {/* NUMBER */}
-                <span
-                  className="
-                      font-bold
-                      text-[18px]
-                      w-6
-                    "
-                >
-                  {i + 1}
-                </span>
+        {/* BASKET IMAGE */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            // marginBottom: "28px",
+          }}
+        >
+          <img
+            src={basketImg}
+            alt="word basket"
+            style={{ height: "250px", width: "auto" }}
+          />
+        </div>
 
-                {/* TF INPUT */}
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={answers[i].tf}
-                    disabled={locked || result[i]?.tf === true}
-                    onChange={(e) => handleChange(i, "tf", e.target.value)}
-                    className={`
-                        w-[86px]
-                        h-[34px]
-                        rounded-full
-                        border
-                        border-[#7A2D91]
-                        text-center
-                        outline-none
-                        bg-transparent
-                        text-[18px]
-                        font-semibold
-                        text-[#1DA1F2]
-                      `}
-                  />
-
-                  {/* TF WRONG */}
-                  {result[i]?.tf === false && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "-8px",
-                        right: "-8px",
-                        width: "20px",
-                        height: "20px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "12px",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                </div>
-
-                {/* SENTENCE */}
-                <div className="flex items-end flex-wrap gap-2 text-[20px] leading-[1.7]">
-                  <span>{q.before}</span>
-
-                  <span className="underline">{q.underlined}</span>
-
-                  <span>{q.after}</span>
-
-                  {/* CORRECTION */}
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={answers[i].correction}
-                      disabled={
-                        isTrue || locked || result[i]?.correction === true
-                      }
-                      onChange={(e) =>
-                        handleChange(i, "correction", e.target.value)
-                      }
-                      className={`
-                        w-[190px]
-                        border-0
-                        border-b
-                        outline-none
-                        bg-transparent
-                        text-[18px]
-                        font-semibold
-                        pb-0.5
-
-                        ${
-                          result[i]?.correction === false
-                            ? "border-[#D1232A] text-[#6D2980]"
-                            : "border-black text-[#6D2980]"
-                        }
-
-                        ${isTrue ? "opacity-40" : ""}
-                      `}
-                    />
-
-                    {!isTrue && result[i]?.correction === false && (
-                      <span
-                        style={{
-                          position: "absolute",
-                          top: "-8px",
-                          right: "-8px",
-                          width: "22px",
-                          height: "22px",
-                          background: "#ef4444",
-                          color: "white",
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          border: "2px solid white",
-                          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                        }}
-                      >
-                        ✕
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        {/* 6 ANSWERS IN 2 COLUMNS */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "18px 40px",
+            marginBottom: "10px",
+          }}
+        >
+          {/* pairs: 1&2, 3&4, 5&6 */}
+          {[0, 2, 4].map((i) => (
+            <React.Fragment key={i}>
+              {renderInput(i)}
+              {renderInput(i + 1)}
+            </React.Fragment>
+          ))}
         </div>
       </div>
-
       {/* BUTTONS */}
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
+      <div className="action-buttons-container mt-10">
+        <button className="try-again-button" onClick={reset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>

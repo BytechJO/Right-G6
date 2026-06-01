@@ -2,76 +2,90 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 const Unit4_Page6_Q1 = () => {
-  const correctAnswers = [
-    "Does he often go skiing in the winter?",
-    "Does she often cook Mexican food for the family?",
-    "Do you sometimes like to shop at malls?",
+  const questions = [
+    {
+      id: 0,
+      activeText: "We mail the letter.",
+      answer: "The letter is mailed by us",
+      prefilled: false,
+    },
+    {
+      id: 1,
+      activeText: "The mechanics fixed the cars.",
+      answer: "The cars are fixed by the mechanics",
+      prefilled: false,
+    },
+    {
+      id: 2,
+      activeText: "Bryan teaches the students.",
+      answer: "The students are taught by Bryan",
+      prefilled: false,
+    },
   ];
 
-  const answerText = [
-    "No, he rarely goes skiing in the winter.",
-    "No, she usually cooks Italian food for the family.",
-    "Yes, I sometimes like to shop at Riverside Mall.",
-  ];
+  const initAnswers = () => questions.map((q) => (q.prefilled ? q.answer : ""));
 
-  const [answers, setAnswers] = useState(["", "", ""]);
-  const [errors, setErrors] = useState([false, false, false]);
-  const [correctLocked, setCorrectLocked] = useState([false, false, false]);
+  const initErrors = () => questions.map(() => false);
+  const initLocked = () => questions.map((q) => q.prefilled);
+
+  const [answers, setAnswers] = useState(initAnswers);
+  const [errors, setErrors] = useState(initErrors);
+  const [correctLocked, setCorrectLocked] = useState(initLocked);
   const [locked, setLocked] = useState(false);
 
-  // normalize
-  const normalize = (text) => {
-    return text
+  const normalize = (text) =>
+    text
       .toLowerCase()
-      .replace(/[.,!?]/g, "")
+      .replace(/[.,!?''""''’;:]/g, "")
       .replace(/\s+/g, " ")
       .trim();
-  };
 
-  // update
   const handleChange = (i, value) => {
-    if (correctLocked[i]) return;
-
+    if (locked || correctLocked[i]) return;
     const updated = [...answers];
     updated[i] = value;
-
     setAnswers(updated);
-
     const updatedErrors = [...errors];
     updatedErrors[i] = false;
-
     setErrors(updatedErrors);
   };
 
-  // check
   const handleCheck = () => {
     if (locked) return;
 
-    if (answers.some((a) => normalize(a) === "")) {
+    const hasEmpty = answers.some(
+      (a, i) => !correctLocked[i] && normalize(a) === "",
+    );
+    if (hasEmpty) {
       ValidationAlert.info("Complete all fields.");
       return;
     }
 
     let score = 0;
-
     const newErrors = answers.map((a, i) => {
-      const correct = normalize(a) === normalize(correctAnswers[i]);
-
+      if (correctLocked[i]) {
+        score++;
+        return false;
+      }
+      const correct = normalize(a) === normalize(questions[i].answer);
       if (correct) score++;
-
       return !correct;
     });
 
-    const updatedLocked = answers.map((a, i) => {
-      return normalize(a) === normalize(correctAnswers[i]);
+    const newLocked = answers.map((a, i) => {
+      if (correctLocked[i]) return true;
+      return normalize(a) === normalize(questions[i].answer);
     });
 
     setErrors(newErrors);
-    setCorrectLocked(updatedLocked);
+    setCorrectLocked(newLocked);
 
-    const total = correctAnswers.length;
-
-    const msg = `Score: ${score} / ${total}`;
+    const total = questions.length;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `
+      <div style="font-size:20px;text-align:center;">
+        <span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span>
+      </div>`;
 
     if (score === total) {
       setLocked(true);
@@ -83,19 +97,17 @@ const Unit4_Page6_Q1 = () => {
     }
   };
 
-  // show
   const handleShow = () => {
-    setAnswers(correctAnswers);
-    setErrors([false, false, false]);
-    setCorrectLocked([true, true, true]);
+    setAnswers(questions.map((q) => q.answer));
+    setErrors(questions.map(() => false));
+    setCorrectLocked(questions.map(() => true));
     setLocked(true);
   };
 
-  // reset
   const handleReset = () => {
-    setAnswers(["", "", ""]);
-    setErrors([false, false, false]);
-    setCorrectLocked([false, false, false]);
+    setAnswers(initAnswers());
+    setErrors(initErrors());
+    setCorrectLocked(initLocked());
     setLocked(false);
   };
 
@@ -105,70 +117,72 @@ const Unit4_Page6_Q1 = () => {
         {/* HEADER */}
         <h5 className="header-title-page8 mb-15">
           <span className="ex-A" style={{ marginRight: "10px" }}>
-            D
+            C
           </span>
-          Write a question for each answer.
+          Change the active verb to a passive one for each sentence. Rewrite the
+          sentence.
         </h5>
 
         {/* QUESTIONS */}
         <div className="flex flex-col gap-10 mt-6">
-          {[0, 1, 2].map((i) => (
-            <div key={i}>
-              {/* TOP */}
-              <div className="flex items-start gap-5">
-                {/* NUMBER */}
-                <span className="font-bold text-[18px] mt-2 w-5">{i + 1}</span>
-
-                {/* INPUT */}
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    value={answers[i]}
-                    disabled={locked || correctLocked[i]}
-                    onChange={(e) => handleChange(i, e.target.value)}
-                    className={`
-                      w-full
-                      bg-transparent
-                      outline-none
-                      border-b
-                      text-[20px]
-                      pb-1
-                      font-semibold
-                      text-[#6D2980]
-                      ${errors[i] ? "border-red-500" : "border-black"}
-                    `}
-                  />
-
-                  {/* ❌ */}
-                  {errors[i] && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "-10px",
-                        right: "-20px",
-                        width: "22px",
-                        transform: "translateY(-50%)",
-                        height: "22px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        fontSize: "12px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                </div>
+          {questions.map((q, i) => (
+            <div key={q.id}>
+              {/* Active sentence */}
+              <div className="flex items-start gap-5 items-center">
+                <span className="font-bold text-[20px] w-5">{i + 1}</span>
+                <span className="text-[20px]">{q.activeText}</span>
               </div>
 
-              {/* ANSWER TEXT */}
-              <div className="ml-10 mt-6 text-[18px]">{answerText[i]}</div>
+              {/* Input — passive rewrite */}
+              <div className="relative ml-10 mt-3">
+                <input
+                  type="text"
+                  value={answers[i]}
+                  disabled={locked || correctLocked[i]}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  style={{
+                    textDecoration: q.prefilled ? "underline" : "none",
+                    textDecorationStyle: q.prefilled ? "solid" : undefined,
+                  }}
+                  className={`
+                    w-full bg-transparent outline-none border-b
+                    text-[20px] pb-1 font-semibold
+                    ${
+                      errors[i]
+                        ? "border-red-500"
+                        : correctLocked[i]
+                          ? "border-black"
+                          : "border-black"
+                    }
+                  `}
+                />
+
+                {/* ❌ error badge */}
+                {errors[i] && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-10px",
+                      right: "-20px",
+                      transform: "translateY(-50%)",
+                      width: "22px",
+                      height: "22px",
+                      background: "#ef4444",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -178,11 +192,9 @@ const Unit4_Page6_Q1 = () => {
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-
           <button className="show-answer-btn" onClick={handleShow}>
             Show Answer
           </button>
-
           <button className="check-button2" onClick={handleCheck}>
             Check Answer ✓
           </button>

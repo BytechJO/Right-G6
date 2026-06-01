@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 37/SVG/Asset 25.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 37/SVG/Asset 44.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 4 Shopping with Our Friends Folder/Page 37/SVG/Asset 45.svg";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 53.svg";
+import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 55.svg";
+import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 57.svg";
+import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 56.svg";
 
 const Review4_Page2_Q1 = () => {
-  const [answers, setAnswers] = useState(["", "", ""]);
+  // Only 3 answers (questions 2, 3, 4) — question 1 is an example
+  const [answers, setAnswers] = useState(["", "", "", ""]);
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState([]);
 
   const correctAnswers = [
-    "He often goes to the",
-    "She rarely goes to the",
-    "I usually go to the",
+    "The letter is written by Sam.",
+    "The milk is drunk by the cat.",
+    "The van is driven by Mom.",
+    "The plants are watered by the gardener.",
   ];
 
   const normalize = (str) =>
@@ -36,35 +39,45 @@ const Review4_Page2_Q1 = () => {
     });
   };
 
-  const input = (i, width = "w-[520px]") => (
-    <span className="relative inline-block mx-1">
+  const renderInput = (i) => (
+    <span className="relative inline-block" style={{ width: "100%" }}>
       <input
         disabled={locked || result[i] === true}
         value={answers[i]}
         onChange={(e) => handleChange(i, e.target.value)}
-        className={`border-b outline-none text-[#6D2980] font-semibold ${width}
-        ${result[i] === false ? "border-red-500" : "border-black"}
-      `}
+        style={{
+          width: "100%",
+          borderTop: "none",
+          borderLeft: "none",
+          borderRight: "none",
+          borderBottom: `1.5px solid ${result[i] === false ? "#ef4444" : "black"}`,
+          outline: "none",
+          fontSize: "17px",
+          // color: "#6D2980",
+          fontWeight: "600",
+          background: "transparent",
+          paddingBottom: "2px",
+          marginTop: "28px",
+        }}
       />
-
       {result[i] === false && (
         <span
           style={{
             position: "absolute",
-            top: "-10px",
+            top: "18px",
             right: "-10px",
-            width: "20px",
-            height: "20px",
-            background: "#ef4444",
+            width: "22px",
+            height: "22px",
+            background: "red",
             color: "white",
             borderRadius: "50%",
-            display: "flex",
+            fontSize: "12px",
+            display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "12px",
             fontWeight: "bold",
             border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
             pointerEvents: "none",
             zIndex: 3,
           }}
@@ -87,16 +100,13 @@ const Review4_Page2_Q1 = () => {
 
     const res = answers.map((a, i) => {
       const ok = normalize(a) === normalize(correctAnswers[i]);
-
       if (ok) correctCount++;
-
       return ok;
     });
 
     setResult(res);
 
     const total = correctAnswers.length;
-
     const color =
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
 
@@ -125,16 +135,43 @@ const Review4_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
-    setAnswers(["", "", ""]);
+    setAnswers(["", "", "", ""]);
     setResult([]);
     setLocked(false);
   };
 
   const imageStyle = {
-    width: "100%",
-    height: "auto",
+    width: "auto",
+    height: "140px",
     objectFit: "contain",
+    // border: "1.5px solid #bbb",
+    borderRadius: "6px",
+    flexShrink: 0,
   };
+
+  // Editable rows (questions 2, 3, 4)
+  const editableRows = [
+    {
+      img: img1,
+      question: "Does Marcy or Sam write the letter?",
+      idx: 0,
+    },
+    {
+      img: img2,
+      question: "Does the cat or the mouse drink the milk?",
+      idx: 1,
+    },
+    {
+      img: img3,
+      question: "Does Mom or Dad drive the van?",
+      idx: 2,
+    },
+    {
+      img: img4,
+      question: "Does the gardener or my sister water the plants?",
+      idx: 3,
+    },
+  ];
 
   return (
     <div
@@ -147,163 +184,65 @@ const Review4_Page2_Q1 = () => {
     >
       <div className="div-forall">
         <h5 className="header-title-page8 mb-17">
-          <span className="mr-2">D</span>
-          Look, read, and write.
+          <span className="mr-6">C</span>
+          Who did it? Look at the pictures and answer the question, using the
+          present simple passive.
         </h5>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "50px",
-            fontSize: "18px",
-          }}
-        >
-          {/* 1 */}
-          <div
-            style={{
-              position: "relative",
-              display: "grid",
-              gridTemplateColumns: "140px 180px 1fr auto",
-              alignItems: "center",
-              gap: "20px",
-              paddingLeft: "40px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                fontSize: "22px",
-                position: "absolute",
-                top: "0",
-                left: "0",
-              }}
-            >
-              1
-            </span>
-
-            <img src={img1} alt="" style={imageStyle} />
-
+        <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
+          {/* Editable rows */}
+          {editableRows.map((row, i) => (
             <div
+              key={i}
               style={{
-                fontSize: "18px",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "24px",
+                marginBottom: "36px",
               }}
             >
-              (often) &nbsp; (he)
+              {/* Number */}
+              <span
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  minWidth: "20px",
+                  paddingTop: "50px",
+                }}
+              >
+                {i + 1}
+              </span>
+
+              {/* Image */}
+              <img src={row.img} alt="" style={imageStyle} />
+
+              {/* Question + Input */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection:"column",
+                  justifyContent: "space-around",
+                  height: "140px",
+                  width:"100%",
+                  fontSize: "17px",
+                }}
+              >
+                <p style={{ margin: "0", color: "#222" }}>{row.question}</p>
+                {renderInput(row.idx)}
+              </div>
             </div>
-
-            {input(0, "w-[500px]")}
-
-            <span
-              style={{
-                fontSize: "20px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              science museum.
-            </span>
-          </div>
-
-          {/* 2 */}
-          <div
-            style={{
-              position: "relative",
-              display: "grid",
-              gridTemplateColumns: "140px 180px 1fr auto",
-              alignItems: "center",
-              gap: "20px",
-              paddingLeft: "40px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                fontSize: "22px",
-                position: "absolute",
-                top: "0",
-                left: "0",
-              }}
-            >
-              2
-            </span>
-
-            <img src={img2} alt="" style={imageStyle} />
-
-            <div
-              style={{
-                fontSize: "18px",
-              }}
-            >
-              (rarely) &nbsp; (she)
-            </div>
-
-            {input(1, "w-[500px]")}
-
-            <span
-              style={{
-                fontSize: "20px",
-              }}
-            >
-              zoo.
-            </span>
-          </div>
-
-          {/* 3 */}
-          <div
-            style={{
-              position: "relative",
-              display: "grid",
-              gridTemplateColumns: "140px 180px 1fr auto",
-              alignItems: "center",
-              gap: "20px",
-              paddingLeft: "40px",
-            }}
-          >
-            <span
-              style={{
-                fontWeight: "bold",
-                fontSize: "22px",
-                position: "absolute",
-                top: "0",
-                left: "0",
-              }}
-            >
-              3
-            </span>
-
-            <img src={img3} alt="" style={imageStyle} />
-
-            <div
-              style={{
-                fontSize: "18px",
-              }}
-            >
-              (usually) &nbsp; (I)
-            </div>
-
-            {input(2, "w-[500px]")}
-
-            <span
-              style={{
-                fontSize: "20px",
-              }}
-            >
-              aquarium.
-            </span>
-          </div>
+          ))}
         </div>
       </div>
 
       {/* BUTTONS */}
-      <div className="action-buttons-container">
+      <div className="action-buttons-container mt-10">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>

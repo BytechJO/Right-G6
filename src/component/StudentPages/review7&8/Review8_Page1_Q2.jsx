@@ -2,22 +2,50 @@ import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
+import trueImg from "../../../assets/imgs/true.svg";
+import falseImg from "../../../assets/imgs/false.svg";
+
 const Review8_Page1_Q2 = () => {
-  const wordBank = [
-    "hot-air balloon",
-    "spotted",
-    "I’m shocked",
-    "look like ants",
-    "second home",
+  const questions = [
+    {
+      status: "true",
+      correction: "",
+    },
+
+    {
+      status: "false",
+      correction: "a great deal",
+    },
+
+    {
+      status: "true",
+      correction: "",
+    },
+
+    {
+      status: "false",
+      correction: "Here you are!",
+    },
+
+    {
+      status: "false",
+      correction: "show up",
+    },
   ];
 
-  const questions = [
-    "hot-air balloon",
-    "look like ants",
-    "I’m shocked",
-    "spotted",
-    "second home",
+  const sentences = [
+    <>in ages</>,
+
+    <>a great real</>,
+
+    <>come in handy</>,
+
+    <>Here you am!</>,
+
+    <>show down</>,
   ];
+
+  const [marks, setMarks] = useState(["", "", "", "", ""]);
 
   const [answers, setAnswers] = useState(["", "", "", "", ""]);
 
@@ -28,12 +56,38 @@ const Review8_Page1_Q2 = () => {
   const normalize = (str) =>
     str
       .toLowerCase()
-      .replace(/[.?!,]/g, "")
+      .replace(/[.?!,’']/g, "")
       .replace(/\s+/g, " ")
       .trim();
 
+  const handleMark = (i, value) => {
+    if (locked || result[i]?.mark === true) return;
+
+    const updatedMarks = [...marks];
+
+    updatedMarks[i] = value;
+
+    setMarks(updatedMarks);
+
+    if (value === "true") {
+      const updatedAnswers = [...answers];
+
+      updatedAnswers[i] = "";
+
+      setAnswers(updatedAnswers);
+    }
+
+    setResult((prev) => {
+      const copy = [...prev];
+
+      copy[i] = undefined;
+
+      return copy;
+    });
+  };
+
   const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
+    if (locked || result[i]?.row === true || marks[i] === "true") return;
 
     const updated = [...answers];
 
@@ -53,20 +107,45 @@ const Review8_Page1_Q2 = () => {
   const checkAnswers = () => {
     if (locked) return;
 
-    if (answers.some((a) => !a.trim())) {
+    const hasEmptyMark = marks.some((m) => !m);
+
+    if (hasEmptyMark) {
       ValidationAlert.info("Please complete all answers.");
+
+      return;
+    }
+
+    const hasMissingCorrection = marks.some(
+      (m, i) => m === "false" && !answers[i].trim(),
+    );
+
+    if (hasMissingCorrection) {
+      ValidationAlert.info(
+        "Please write the correct expression for ✕ answers.",
+      );
 
       return;
     }
 
     let correctCount = 0;
 
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i]);
+    const newResults = marks.map((mark, i) => {
+      const markOk = mark === questions[i].status;
 
-      if (ok) correctCount++;
+      const correctionOk =
+        mark === "true"
+          ? true
+          : normalize(answers[i]) === normalize(questions[i].correction);
 
-      return ok;
+      const rowOk = markOk && correctionOk;
+
+      if (rowOk) correctCount++;
+
+      return {
+        mark: markOk,
+        correction: correctionOk,
+        row: rowOk,
+      };
     });
 
     setResult(newResults);
@@ -96,20 +175,44 @@ const Review8_Page1_Q2 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "hot-air balloon",
-      "look like ants",
-      "I’m shocked",
-      "spotted",
-      "second home",
-    ]);
+    setMarks(["true", "false", "true", "false", "false"]);
 
-    setResult([true, true, true, true, true]);
+    setAnswers(["", "a great deal", "", "Here you are!", "show up"]);
+
+    setResult([
+      {
+        mark: true,
+        correction: true,
+        row: true,
+      },
+      {
+        mark: true,
+        correction: true,
+        row: true,
+      },
+      {
+        mark: true,
+        correction: true,
+        row: true,
+      },
+      {
+        mark: true,
+        correction: true,
+        row: true,
+      },
+      {
+        mark: true,
+        correction: true,
+        row: true,
+      },
+    ]);
 
     setLocked(true);
   };
 
   const handleReset = () => {
+    setMarks(["", "", "", "", ""]);
+
     setAnswers(["", "", "", "", ""]);
 
     setResult([]);
@@ -117,31 +220,100 @@ const Review8_Page1_Q2 = () => {
     setLocked(false);
   };
 
-  const inputField = (i, width) => (
-    <span className="relative inline-block">
+  const markBox = (i, value, img) => {
+    const active = marks[i] === value;
+
+    const showError =
+      result[i]?.mark === false &&
+      ((value === "true" && marks[i] === "true") ||
+        (value === "false" && marks[i] === "false"));
+
+    return (
+      <button
+        type="button"
+        disabled={locked || result[i]?.mark === true}
+        onClick={() => handleMark(i, value)}
+        className="relative flex items-center  justify-center"
+        style={{
+          width: "34px",
+          height: "34px",
+          border: "1.5px solid #7DBA3C",
+          borderRadius: "6px",
+          background: "transparent",
+          cursor: locked || result[i]?.mark === true ? "default" : "pointer",
+        }}
+      >
+        {active && (
+          <img
+            src={img}
+            alt={value}
+            style={{
+              width: "22px",
+              height: "22px",
+              position: "relative",
+              zIndex: 2,
+            }}
+          />
+        )}
+
+        {showError && (
+          <span
+            style={{
+              position: "absolute",
+              top: "-8px",
+              right: "-8px",
+              width: "20px",
+              height: "20px",
+              background: "#ef4444",
+              color: "white",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "11px",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+            }}
+          >
+            ✕
+          </span>
+        )}
+      </button>
+    );
+  };
+
+  const inputField = (i) => (
+    <div className="relative w-full">
       <input
         type="text"
         value={answers[i]}
-        disabled={locked || result[i] === true}
+        placeholder={marks[i] === "false" ? "Write the correct expression" : ""}
+        disabled={locked || result[i]?.row === true || marks[i] === "true"}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
-          ${width}
+          w-full
           border-0
           border-b
           outline-none
           bg-transparent
           text-[18px]
-          text-[#6D2980]
+          text-black
           font-semibold
-          leading-none
-          align-middle
           px-1
 
-          ${result[i] === false ? "border-[#D1232A]" : "border-black"}
+          ${
+            result[i]?.correction === false && marks[i] === "false"
+              ? "border-[#D1232A]"
+              : "border-black"
+          }
         `}
+        style={{
+          borderBottomWidth: "1px",
+        }}
       />
 
-      {result[i] === false && (
+      {result[i]?.correction === false && marks[i] === "false" && (
         <span
           style={{
             position: "absolute",
@@ -164,76 +336,41 @@ const Review8_Page1_Q2 = () => {
           ✕
         </span>
       )}
-    </span>
+    </div>
   );
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-8">
-          <span
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            B
-          </span>
-          Write the correct words in each blank.
-        </h5>
-
-        {/* WORD BOX */}
-        <div
-          style={{
-            width: "770px",
-            background: "#E9E1EC",
-            borderRadius: "14px",
-            padding: "16px 30px",
-            display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
-            rowGap: "10px",
-            margin: "0 auto 35px auto",
-            fontSize: "17px",
-          }}
-        >
-          {wordBank.map((word, i) => {
-            return <span key={i}>{word}</span>;
-          })}
+      <div className="div-forall text-[18px] w-full">
+        <div className="header-title-page8 mb-[10vh]">
+          <span className="mr-4">B</span>
+          Read the expressions and write{" "}
+          <span className="text-[#D1252B]">✓</span> or{" "}
+          <span className="text-[#D1252B]">✗</span>. Correct the expressions
+          that are incorrect.
         </div>
 
-        {/* STORY */}
-        <div className="text-[17px] leading-[2.2] mb-7">
-          <div className="mb-3">
-            “Look at the {inputField(0, "w-[220px]")}. It’s up so high.”
-          </div>
+        <div className="flex flex-col gap-10">
+          {sentences.map((sentence, index) => (
+            <div key={index}>
+              <div className="flex items-center gap-5 w-full">
+                <span className="font-bold w-5">{index + 1}</span>
 
-          <div className="mb-3">
-            “Yeah, we probably {inputField(1, "w-[220px]")} down here.
-            {inputField(2, "w-[220px]")} they’re flying today. It looks like
-            there could be a storm coming soon,” noticed Rick.
-          </div>
+                <div className="flex items-center gap-2 ">
+                  {markBox(index, "true", trueImg)}
 
-          <div className="mb-3">
-            “Oh, I see what you mean. I hope the balloon pilot has{" "}
-            {inputField(3, "w-[220px]")} the clouds already.”
-          </div>
+                  {markBox(index, "false", falseImg)}
+                </div>
 
-          <div className="mb-3">
-            Rick offered, “Maybe we don’t want to stay at the park much longer.
-            Do you want to come over?”
-            <br />
-            Frank replied, “Thank you. Your house is getting to be my{" "}
-            {inputField(4, "w-[220px]")}. Are you sure your mom won’t mind?”
-          </div>
+                <div className="min-w-[260px]">{sentence}</div>
 
-          <div>
-            Rick said, “No, she loves having people over. You’re always welcome
-            at our house.”
-          </div>
+                <div className="flex-1">{inputField(index)}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* BUTTONS */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>
           Start Again ↻

@@ -1,15 +1,17 @@
 import React from "react";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 1 How Late Am I Folder/Page 6/SVG/Asset 1.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
+
 const GrammarA = () => {
   return (
     <div>
       {/* العنوان */}
       <div className="flex items-center gap-2 mb-5 mt-5">
-        <h5 className="header-title-page8-read ">
+        <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read" style={{ marginRight: "10px" }}>
             A
           </span>
-          Read and say. Replace the highlighted words with the new words.
+          Read, change, and say. Replace the highlighted words with the new
+          words.
         </h5>
       </div>
 
@@ -21,22 +23,20 @@ const GrammarA = () => {
             alt=""
             style={{ width: "40px", height: "40px", marginTop: -6 }}
           />
-
           <div>
-            <p className=" text-[18px]">
-              My brother is
-              <span className="text-[#12C8F9]"> playing in the finals</span>.
+            <p className="text-[18px]">
+              If the world hadn’t entered the Space Race,{" "}
+              <span className="text-[#f79631] font-medium">
+                the exploration of space would have been slower
+              </span>{" "}
+              .
             </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
+            <div className="grid grid-cols-1 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
               <span>
-                <b className="mr-2">1</b>jumping on the trampoline
+                <b>1</b> there wouldn’t have been a space station
               </span>
               <span>
-                <b className="mr-2">2</b>catching butterflies in the net
-              </span>
-              <span>
-                <b className="mr-2">3</b>jumping rope in the gym
+                <b>2</b> we wouldn’t have learned about the moon
               </span>
             </div>
           </div>
@@ -51,22 +51,21 @@ const GrammarA = () => {
             alt=""
             style={{ width: "40px", height: "40px", marginTop: -6 }}
           />
-
           <div>
-            <p className=" text-[18px]">
-              Are the
-              <span className="text-[#12C8F9]"> players winning the first game</span>?
+            <p className="text-[18px]">
+              If Tim had{" "}
+              <span className="text-[#f79631] font-medium">seen the movie</span>{" "}
+              , he could have told us about it.
             </p>
-
-            <div className="grid grid-cols-3 gap-10 mt-5 text-[17px] w-[900px]">
+            <div className="grid grid-cols-3 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
               <span>
-                <b className="mr-2">1</b>squirrels searching the grass for nuts
+                <b>1</b> called us earlier
               </span>
               <span>
-                <b className="mr-2">2</b>violinists playing for the first time 
+                <b>2</b> studied the chapter
               </span>
               <span>
-                <b className="mr-2">3</b>farmers harvesting the wheat
+                <b>3</b> read the note
               </span>
             </div>
           </div>

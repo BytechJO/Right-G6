@@ -1,4 +1,4 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/Page 40.png";
 import "./Unit5_Page1.css";
 import longAudio from "../../../assets/audio/ClassBook/U5/PG 40/cd21pg40-conversation.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
@@ -6,32 +6,14 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U5/PG 40/cd22pg40-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U5/PG 40/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U5/PG 40/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U5/PG 40/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U5/PG 40/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U5/PG 40/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U5/PG 40/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U5/PG 40/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U5/PG 40/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U5/PG 40/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U5/PG 40/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U5/PG 40/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U5/PG 40/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U5/PG 40/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U5/PG 40/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U5/PG 40/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U5/PG 40/sound16.mp3";
-import sound17 from "../../../assets/audio/ClassBook/U5/PG 40/sound17.mp3";
-import sound18 from "../../../assets/audio/ClassBook/U5/PG 40/sound18.mp3";
-import sound19 from "../../../assets/audio/ClassBook/U5/PG 40/sound19.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/23.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/24.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/25.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 5 What Would You Like to Read Folder/Page 40/SVG/Asset 8.svg";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 11.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 12.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 13.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 14.svg";
 import wordJson from "../../../assets/json/cd21pg40-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 5 page 40.mp4";
+import video from "../../../assets/videos/grade 6 unit 1 page 4.mp4";
 
 const Unit5_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
@@ -41,20 +23,20 @@ const Unit5_Page1 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Librarian",
-          text: "Good afternoon! How can I help you both today?",
-        },
-        {
           speaker: "Tom",
-          text: "I’d like to read some books about sharks. I have to write a report about them and give a presentation in front of the class.",
-        },
-        {
-          speaker: "Librarian",
-          text: "Okay, and how about you? What would you like to read?",
+          text: "Harley, let’s go to the library and find some fun books to read.",
         },
         {
           speaker: "Harley",
-          text: "I’m actually looking for some recipe books about Mediterranean food. Do you have anything available?",
+          text: "You’re a bookworm, aren’t you?",
+        },
+        {
+          speaker: "Tom",
+          text: "Not really, but I haven’t read in a while. You love science fiction stories, don’t you?",
+        },
+        {
+          speaker: "Harley",
+          text: "Yes. I guess we could go to the library after all.",
         },
       ],
     },
@@ -63,16 +45,20 @@ const Unit5_Page1 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Librarian",
-          text: "Yes, I do. I have great books for you. Follow me, and I’ll show you what I have in mind.",
+          speaker: "Tom",
+          text: "Look what I found! This is a book about outer space. You would like it, wouldn’t you?",
         },
         {
           speaker: "Harley",
-          text: "Thanks very much!",
+          text: "Let me see. I suppose you’re right. It looks interesting, doesn’t it?",
         },
         {
           speaker: "Tom",
-          text: "Thanks for your help.",
+          text: "It sure does. It suits your taste. You’ll take it, won’t you?",
+        },
+        {
+          speaker: "Harley",
+          text: "If you say so, boss.",
         },
       ],
     },
@@ -81,12 +67,20 @@ const Unit5_Page1 = ({ openPopup }) => {
       image: imgConversation3,
       dialogues: [
         {
-          speaker: "Librarian",
-          text: "Would you like big picture books about sharks or books with more information?",
+          speaker: "Tom",
+          text: "Wow! I’m finding such great mystery books. They’ll keep me busy for quite some time.",
+        },
+        {
+          speaker: "Harley",
+          text: "You love mystery books, don’t you?",
         },
         {
           speaker: "Tom",
-          text: "I would actually prefer to look at both. I think it would really be great to include pictures in my presentation.",
+          text: "I sure do! They keep your brain and imagination active.",
+        },
+        {
+          speaker: "Harley",
+          text: "You’re trying to persuade me to get mystery books, aren’t you?",
         },
       ],
     },
@@ -95,103 +89,109 @@ const Unit5_Page1 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Librarian",
-          text: "Here you go! I hope these help with your assignment.",
-        },
-        {
           speaker: "Tom",
-          text: "Thanks! These look great.",
-        },
-        {
-          speaker: "Librarian",
-          text: "I have five recipe books on Mediterranean food, but I think you should start off with these two books as they are the best.",
+          text: "No, that’s not what I intended. You could even choose a comedy book if you like. I’m just giving you my opinion.",
         },
         {
           speaker: "Harley",
-          text: "Thanks for all your help. I can’t wait till I find a shish kebab recipe. I plan to do a barbecue for the entire family.",
+          text: "I’ll stick to the science fiction books for now. Perhaps I can try reading some mystery or comedy books later.",
         },
         {
-          speaker: "Librarian",
-          text: "Good luck to you both!",
+          speaker: "Tom",
+          text: "Suit yourself. Did you find all the books you need?",
+        },
+        {
+          speaker: "Harley",
+          text: "Yes. I’m ready to go whenever you are.",
         },
       ],
     },
   ];
   const captionsExample = [
     {
-      start: 0.239,
-      end: 5.5,
-      text: "Page 40, Conversation. Listen and read, then say",
+      start: 0.219,
+      end: 4.299,
+      text: "Page 40, conversation. Listen and read, then say",
     },
     {
-      start: 6.54,
-      end: 10.48,
-      text: "Good afternoon! How can I help you both today?",
+      start: 5.319,
+      end: 9.559,
+      text: "Harley, let's go to the library and find some fun books to read.",
     },
     {
-      start: 10.479,
-      end: 17.779,
-      text: "I’d like to read some books about sharks. I have to write a report about them and give a presentation in front of the class.",
+      start: 9.559,
+      end: 11.699,
+      text: "You're a bookworm, aren't you?",
     },
     {
-      start: 17.779,
-      end: 21.399,
-      text: "Okay, and how about you? What would you like to read?",
+      start: 11.699,
+      end: 17.079,
+      text: "Not really, but I haven't read in a while. You love science fiction stories, don't you?",
     },
     {
-      start: 21.399,
-      end: 28.259,
-      text: "I’m actually looking for some recipe books about Mediterranean food. Do you have anything available?",
+      start: 17.079,
+      end: 21.039,
+      text: "Yes, I guess we could go to the library after all.",
     },
     {
-      start: 28.26,
-      end: 31.439,
-      text: "Yes, I do. I have great books for you.",
+      start: 21.039,
+      end: 26.879,
+      text: "Look what I found. This is a book about outer space. You would like it, wouldn't you?",
     },
     {
-      start: 31.439,
-      end: 33.259,
-      text: "Thanks very much!",
+      start: 26.879,
+      end: 31.379,
+      text: "Let me see. I suppose you're right. It looks interesting, doesn't it?",
     },
     {
-      start: 33.259,
-      end: 34.679,
-      text: "Thanks for your help.",
+      start: 31.379,
+      end: 36.159,
+      text: "It sure does. It suits your taste. You'll take it, won't you?",
     },
     {
-      start: 34.68,
-      end: 39.459,
-      text: "Would you like big picture books about sharks or books with more information?",
+      start: 36.159,
+      end: 37.639,
+      text: "If you say so, boss.",
     },
     {
-      start: 39.459,
-      end: 46.52,
-      text: "I would actually prefer to look at both. I think it would really be great to include pictures in my presentation.",
+      start: 38.7,
+      end: 45.239,
+      text: "Wow, I'm finding such great mystery books. They'll keep me busy for quite some time.",
     },
     {
-      start: 46.52,
-      end: 50.259,
-      text: "Here you go! I hope these help with your assignment.",
+      start: 45.239,
+      end: 48.479,
+      text: "You love mystery books, don't you?",
     },
     {
-      start: 50.259,
-      end: 52.039,
-      text: "Thanks! These look great.",
+      start: 48.479,
+      end: 52.719,
+      text: "I sure do. They keep your brain and imagination active.",
     },
     {
-      start: 53.119,
-      end: 59.879,
-      text: "I have five recipe books on Mediterranean food, but I think you should start off with these two books as they are the best.",
+      start: 52.719,
+      end: 56.659,
+      text: "You're trying to persuade me to get mystery books, aren't you?",
     },
     {
-      start: 59.879,
-      end: 69.019,
-      text: "Thanks for all your help. I can’t wait till I find a shish kebab recipe. I plan to do a barbecue for the entire family.",
+      start: 56.659,
+      end: 63.759,
+      text: "No, that's not what I intended. You could even choose a comedy book if you like. I'm just giving you my opinion.",
     },
     {
-      start: 69.019,
-      end: 70.019,
-      text: "Good luck to you both!",
+      start: 63.759,
+      end: 71.619,
+      text: "I'll stick to the science fiction books for now. Perhaps I can try reading some mystery or comedy books later.",
+    },
+    {
+      start: 71.619,
+      end: 75.059,
+      text: "Suit yourself. Did you find all the books you need?",
+    },
+    {
+      start: 75.059,
+      end: 77.279,
+      text: "Yes, I'm ready to go whenever you are.",
     },
   ];
   const captionTimings = [
@@ -202,16 +202,26 @@ const Unit5_Page1 = ({ openPopup }) => {
       captionsExample[4],
     ],
 
-    [captionsExample[5], captionsExample[6], captionsExample[7]],
-
-    [captionsExample[8], captionsExample[9]],
+    [
+      captionsExample[5],
+      captionsExample[6],
+      captionsExample[7],
+      captionsExample[8],
+    ],
 
     [
+      captionsExample[9],
       captionsExample[10],
       captionsExample[11],
       captionsExample[12],
+    ],
+
+    [
       captionsExample[13],
       captionsExample[14],
+      captionsExample[15],
+      captionsExample[16],
+    
     ],
   ];
   const filteredSegments = wordJson.segments.slice(1);
@@ -228,106 +238,188 @@ const Unit5_Page1 = ({ openPopup }) => {
       filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
       filteredSegments[6]?.words || [],
+      filteredSegments[7]?.words || [],
     ],
 
-    [filteredSegments[7]?.words || [], filteredSegments[8]?.words || []],
+    [filteredSegments[8]?.words || [], filteredSegments[9]?.words || [], filteredSegments[10]?.words || [], filteredSegments[11]?.words || []],
 
     [
-      filteredSegments[9]?.words || [],
-      filteredSegments[10]?.words || [],
-      filteredSegments[11]?.words || [],
       filteredSegments[12]?.words || [],
       filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
+      filteredSegments[15]?.words || [],
     ],
   ];
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-    sound17,
-    sound18,
-    sound19,
-  ];
+
   const captionVoc = [
     {
-      start: 0.379,
-      end: 4.38,
-      text: "Page 40, Unit 5, Vocabulary. Listen and repeat.",
+      start: 0.34,
+      end: 8.679,
+      text: "Page 40, unit five vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
-
     {
-      start: 5.759,
-      end: 8.659,
-      text: "Find the words and expressions in the conversation above.",
+      start: 8.679,
+      end: 10.279,
+      text: "1, bookworm.",
     },
-
-    { start: 9.42, end: 11.039, text: "1. sharks." },
-    { start: 11.859, end: 13.579, text: "2. report." },
-    { start: 14.519, end: 16.52, text: "3. assignment." },
-    { start: 17.26, end: 19.339, text: "4. presentation." },
-    { start: 20.26, end: 22.139, text: "5. recipe." },
-
-    { start: 23.18, end: 25.76, text: "6. Mediterranean food." },
-    { start: 26.699, end: 28.739, text: "7. information." },
-    { start: 29.639, end: 31.519, text: "8. barbecue." },
-    { start: 32.419, end: 34.299, text: "9. librarian." },
-    { start: 35.139, end: 37.059, text: "10. shish kebab." },
-    { start: 37.899, end: 39.639, text: "11. both." },
-    { start: 40.54, end: 42.359, text: "12. entire." },
-
-    { start: 43.259, end: 45.639, text: "13. give a presentation." },
-    { start: 46.599, end: 49.059, text: "14. what would you like?" },
     {
-      start: 50.059,
-      end: 53.18,
-      text: "15. do you have anything available?",
+      start: 10.88,
+      end: 12.759,
+      text: "2, science fiction.",
     },
-    { start: 54.139, end: 56.659, text: "16. have in mind." },
-    { start: 57.539, end: 59.719, text: "17. here you go." },
-    { start: 60.719, end: 62.859, text: "18. start off." },
     {
-      start: 63.84,
-      end: 66.519,
-      text: "19. good luck to you both.",
+      start: 13.239,
+      end: 15.0,
+      text: "3, suppose.",
+    },
+    {
+      start: 15.719,
+      end: 17.299,
+      text: "4, boss.",
+    },
+    {
+      start: 17.979,
+      end: 19.499,
+      text: "5, comedy.",
+    },
+    {
+      start: 20.199,
+      end: 21.92,
+      text: "6, active.",
+    },
+    {
+      start: 22.579,
+      end: 24.459,
+      text: "7, imagination.",
+    },
+    {
+      start: 25.019,
+      end: 26.699,
+      text: "8, persuade.",
+    },
+    {
+      start: 27.819,
+      end: 29.659,
+      text: "9, intended.",
+    },
+    {
+      start: 30.34,
+      end: 31.959,
+      text: "10, opinion.",
+    },
+    {
+      start: 34.059,
+      end: 34.679,
+      text: "11, a while.",
+    },
+    {
+      start: 35.38,
+      end: 37.359,
+      text: "12, I guess.",
+    },
+    {
+      start: 38.0,
+      end: 39.959,
+      text: "13, after all.",
+    },
+    {
+      start: 40.68,
+      end: 43.059,
+      text: "14, it suits your taste.",
+    },
+    {
+      start: 43.879,
+      end: 45.939,
+      text: "15, if you say so.",
+    },
+    {
+      start: 46.919,
+      end: 49.119,
+      text: "16, suit yourself.",
     },
   ];
-
   const wordTimingsVoc = [
-    { start: 9.42, end: 11.039 },
-    { start: 11.859, end: 13.579 },
-    { start: 14.519, end: 16.52 },
-    { start: 17.26, end: 19.339 },
-    { start: 20.26, end: 22.139 },
-
-    { start: 23.18, end: 25.76 },
-    { start: 26.699, end: 28.739 },
-    { start: 29.639, end: 31.519 },
-    { start: 32.419, end: 34.299 },
-    { start: 35.139, end: 37.059 },
-    { start: 37.899, end: 39.639 },
-    { start: 40.54, end: 42.359 },
-
-    { start: 43.259, end: 45.639 },
-    { start: 46.599, end: 49.059 },
-    { start: 50.059, end: 53.18 },
-    { start: 54.139, end: 56.659 },
-    { start: 57.539, end: 59.719 },
-    { start: 60.719, end: 62.859 },
-    { start: 63.84, end: 66.519 },
+    {
+      start: 8.679,
+      end: 10.279,
+      text: "1, bookworm.",
+    },
+    {
+      start: 10.88,
+      end: 12.759,
+      text: "2, science fiction.",
+    },
+    {
+      start: 13.239,
+      end: 15.0,
+      text: "3, suppose.",
+    },
+    {
+      start: 15.719,
+      end: 17.299,
+      text: "4, boss.",
+    },
+    {
+      start: 17.979,
+      end: 19.499,
+      text: "5, comedy.",
+    },
+    {
+      start: 20.199,
+      end: 21.92,
+      text: "6, active.",
+    },
+    {
+      start: 22.579,
+      end: 24.459,
+      text: "7, imagination.",
+    },
+    {
+      start: 25.019,
+      end: 26.699,
+      text: "8, persuade.",
+    },
+    {
+      start: 27.819,
+      end: 29.659,
+      text: "9, intended.",
+    },
+    {
+      start: 30.34,
+      end: 31.959,
+      text: "10, opinion.",
+    },
+    {
+      start: 34.059,
+      end: 34.679,
+      text: "11, a while.",
+    },
+    {
+      start: 35.38,
+      end: 37.359,
+      text: "12, I guess.",
+    },
+    {
+      start: 38.0,
+      end: 39.959,
+      text: "13, after all.",
+    },
+    {
+      start: 40.68,
+      end: 43.059,
+      text: "14, it suits your taste.",
+    },
+    {
+      start: 43.879,
+      end: 45.939,
+      text: "15, if you say so.",
+    },
+    {
+      start: 46.919,
+      end: 49.119,
+      text: "16, suit yourself.",
+    },
   ];
 
   return (
@@ -358,7 +450,7 @@ const Unit5_Page1 = ({ openPopup }) => {
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={5.7}
+                  stopAtSecond={4.299}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
@@ -404,29 +496,26 @@ const Unit5_Page1 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8.7}
-                  sounds={sounds}
+                  stopAtSecond={8.679}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "sharks",
-                    "report",
-                    "assignment",
-                    "presentation",
-                    "recipe",
-                    "Mediterranean food",
-                    "information",
-                    "barbecue",
-                    "librarian",
-                    "shish kebab",
-                    "both",
-                    "entire",
-                    "give a presentation",
-                    "what would you like?",
-                    "do you have anything available?",
-                    "have in mind",
-                    "here you go!",
-                    "start off",
-                    "good luck to you both",
+                    "bookworm",
+                    "science fiction",
+                    "suppose",
+                    "boss",
+                    "comedy",
+                    "active",
+                    "imagination",
+                    "persuade",
+                    "intended",
+                    "opinion",
+                    "a while",
+                    "I guess",
+                    "after all",
+                    "It suits your taste.",
+                    "If you say so.",
+                    "Suit yourself.",
                   ]}
                 />
               </div>,
@@ -457,7 +546,7 @@ const Unit5_Page1 = ({ openPopup }) => {
             openPopup(
               "html",
               <CriticalThinking
-                title={"Why did Tomneed books about sharks?"}
+                title={"How does Tom encourage Harley to find a good book?"}
               />,
             )
           }

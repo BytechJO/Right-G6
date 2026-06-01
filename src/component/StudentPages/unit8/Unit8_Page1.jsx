@@ -1,34 +1,19 @@
-import page_1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 64.png";
+import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 64.png";
 import "./Unit8_Page1.css";
-import longAudio from "../../../assets/audio/ClassBook/U8/PG 64/cd36pg64-conversation.mp3";
+import longAudio from "../../../assets/audio/ClassBook/U8/PG 64/conversation8.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
-import VocabularAudio from "../../../assets/audio/ClassBook/U8/PG 64/cd37pg64-vocab.mp3";
-import sound1 from "../../../assets/audio/ClassBook/U8/PG 64/sound1.mp3";
-import sound2 from "../../../assets/audio/ClassBook/U8/PG 64/sound2.mp3";
-import sound3 from "../../../assets/audio/ClassBook/U8/PG 64/sound3.mp3";
-import sound4 from "../../../assets/audio/ClassBook/U8/PG 64/sound4.mp3";
-import sound5 from "../../../assets/audio/ClassBook/U8/PG 64/sound5.mp3";
-import sound6 from "../../../assets/audio/ClassBook/U8/PG 64/sound6.mp3";
-import sound7 from "../../../assets/audio/ClassBook/U8/PG 64/sound7.mp3";
-import sound8 from "../../../assets/audio/ClassBook/U8/PG 64/sound8.mp3";
-import sound9 from "../../../assets/audio/ClassBook/U8/PG 64/sound9.mp3";
-import sound10 from "../../../assets/audio/ClassBook/U8/PG 64/sound10.mp3";
-import sound11 from "../../../assets/audio/ClassBook/U8/PG 64/sound11.mp3";
-import sound12 from "../../../assets/audio/ClassBook/U8/PG 64/sound12.mp3";
-import sound13 from "../../../assets/audio/ClassBook/U8/PG 64/sound13.mp3";
-import sound14 from "../../../assets/audio/ClassBook/U8/PG 64/sound14.mp3";
-import sound15 from "../../../assets/audio/ClassBook/U8/PG 64/sound15.mp3";
-import sound16 from "../../../assets/audio/ClassBook/U8/PG 64/sound16.mp3";
+import VocabularAudio from "../../../assets/audio/ClassBook/U8/PG 64/vocab8.mp3";
+
 import CriticalThinking from "../../CriticalThinking";
-import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 64/SVG/1.svg";
-import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 64/SVG/2.svg";
-import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 64/SVG/3.svg";
-import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 64/SVG/4.svg";
-import wordJson from "../../../assets/json/cd36pg64-conversation_eng.json";
-import video from "../../../assets/videos/grade 5 unit 8 page 64.mp4";
+import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 3.svg";
+import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 7.svg";
+import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 6.svg";
+import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 4.svg";
+import wordJson from "../../../assets/json/conversation8_eng.json";
+import video from "../../../assets/videos/grade 6 unit 8 page 64.mp4";
 
 const Unit8_Page1 = ({ openPopup }) => {
   // ==================== conversation data ==================== //
@@ -38,24 +23,16 @@ const Unit8_Page1 = ({ openPopup }) => {
       image: imgConversation1,
       dialogues: [
         {
-          speaker: "Tom",
-          text: "Hey, everyone! Those are the hot-air balloons! Do you think anyone is giving rides?",
+          speaker: "Harley",
+          text: "I love this store. I haven't been here in ages!",
         },
         {
           speaker: "Helen",
-          text: "We could ask someone.",
+          text: "Look at this great pen. It glows in the dark. That would be good for my nighttime writing. I wouldn't need a table lamp anymore!",
         },
         {
-          speaker: "Harley",
-          text: "I’m shocked our parents said we could take a ride.",
-        },
-        {
-          speaker: "Stella",
-          text: "Wow, there’s a rainbow one over there. It’s beautiful!",
-        },
-        {
-          speaker: "Tom",
-          text: "Excuse me, sir. Is somebody giving hot-air balloon rides today?",
+          speaker: "Hansel",
+          text: "Look what I found! A flying helicopter! All I have to do is use this wireless remote control to make it fly.",
         },
       ],
     },
@@ -65,20 +42,16 @@ const Unit8_Page1 = ({ openPopup }) => {
       image: imgConversation2,
       dialogues: [
         {
-          speaker: "Helen",
-          text: "What a view! Everyone down there looks like ants.",
+          speaker: "Stella",
+          text: "Hi! Here you are! Tom told me that I'd find you here!",
         },
         {
-          speaker: "Tom",
-          text: "Someone has to get some pictures.",
+          speaker: "Helen",
+          text: "Hi! Yeah, we told Tom that we would be here today. He didn't tell us that you'd show up!",
         },
         {
           speaker: "Stella",
-          text: "I brought my camera, so I’ll volunteer.",
-        },
-        {
-          speaker: "Helen",
-          text: "I feel like I’m on the top of the world! The landscape is beautiful up here.",
+          text: "Well, that's because he didn't know. I wanted to surprise you all.",
         },
       ],
     },
@@ -89,11 +62,19 @@ const Unit8_Page1 = ({ openPopup }) => {
       dialogues: [
         {
           speaker: "Harley",
-          text: "Is that your house, Tom? We’re about to fly over it.",
+          text: "What do you think of this little gadget, Stella?",
         },
         {
-          speaker: "Tom",
-          text: "Let me see. Yeah, that is my house! Oh, I recognize the lady out in front, my aunt Phyllis. Our house is her second home. She plays board games with me. She’s a pilot.",
+          speaker: "Stella",
+          text: "It looks peculiar. What is it?",
+        },
+        {
+          speaker: "Harley",
+          text: "It's a new kind of can opener. It isn't electric, though. Here's a timer also. That would come in handy.",
+        },
+        {
+          speaker: "Stella",
+          text: "Wow, look at this! It's a notebook that looks like a piano. It's great for someone who likes music.",
         },
       ],
     },
@@ -103,131 +84,147 @@ const Unit8_Page1 = ({ openPopup }) => {
       image: imgConversation4,
       dialogues: [
         {
-          speaker: "Stella",
-          text: "Now, we are flying over my favorite mall. There are so many people there. It’s really crowded. It has a nice cinema.",
-        },
-        {
-          speaker: "Harley",
-          text: "Yes, let’s go there this weekend! Hey, do you think anyone can spot us?",
+          speaker: "Helen",
+          text: "That would be nice to use in school or at home.",
         },
         {
           speaker: "Stella",
-          text: "I doubt it. Don’t lean too far out of the basket, Harley! Let’s see if we can find the park from up here!",
+          text: "Yes, and there's a memo holder here, too.",
+        },
+        {
+          speaker: "Helen",
+          text: "I want this! I can read storybooks on this tablet. It will read the words or sentences. All you have to do is point to where you want it to read.",
+        },
+        {
+          speaker: "Helen",
+          text: "That would help you a great deal to practice your reading skills.",
+        },
+        {
+          speaker: "Stella",
+          text: "This store sure is great!",
         },
       ],
     },
   ];
   const captionsExample = [
     {
-      start: 0.219,
-      end: 4.98,
+      start: 0.159,
+      end: 4.92,
       text: "Page 64, Conversation. Listen and read, then say.",
     },
 
     {
       start: 6.019,
-      end: 10.619,
-      text: "Hey, everyone. Those are the hot air balloons. Do you think anyone is giving rides?",
+      end: 9.079,
+      text: "I love this store. I haven't been here in ages.",
     },
 
     {
-      start: 11.739,
-      end: 13.719,
-      text: "We could ask someone.",
+      start: 10.099,
+      end: 19.779,
+      text: "Look at this great pen. It glows in the dark. That would be good for my nighttime writing. I wouldn't need a table lamp anymore.",
     },
 
     {
-      start: 13.719,
-      end: 16.5,
-      text: "I'm shocked our parents said we could take a ride.",
+      start: 19.779,
+      end: 28.459,
+      text: "Look what I found! A flying helicopter! All I have to do is use this wireless remote control to make it fly.",
     },
 
     {
-      start: 17.539,
-      end: 21.879,
-      text: "Wow, there's a rainbow one over there. It's beautiful.",
+      start: 28.459,
+      end: 32.059,
+      text: "Hi! Here you are! Tom told me that I'd find you here!",
     },
 
     {
-      start: 21.879,
-      end: 25.559,
-      text: "Excuse me, sir. Is somebody giving hot air balloon rides today?",
+      start: 33.099,
+      end: 39.559,
+      text: "Hi! Yeah, we told Tom that we would be here today. He didn't tell us that you'd show up!",
     },
 
     {
-      start: 26.619,
-      end: 29.5,
-      text: "What a view. Everyone down there looks like ants.",
+      start: 39.559,
+      end: 44.139,
+      text: "Well, that's because he didn't know. I wanted to surprise you all.",
     },
 
     {
-      start: 30.659,
-      end: 33.259,
-      text: "Someone has to get some pictures.",
+      start: 44.139,
+      end: 47.18,
+      text: "What do you think of this little gadget, Stella?",
     },
 
     {
-      start: 33.259,
-      end: 35.599,
-      text: "I brought my camera, so I'll volunteer.",
+      start: 47.18,
+      end: 50.639,
+      text: "It looks peculiar. What is it?",
     },
 
     {
-      start: 36.719,
-      end: 42.0,
-      text: "I feel like I'm on the top of the world. The landscape is beautiful up here.",
+      start: 50.639,
+      end: 57.259,
+      text: "It's a new kind of can opener. It isn't electric, though. Here's a timer also. That would come in handy.",
     },
 
     {
-      start: 42.0,
-      end: 45.86,
-      text: "Is that your house, Tom? We're about to fly over it.",
+      start: 58.579,
+      end: 64.999,
+      text: "Wow, look at this! It's a notebook that looks like a piano. It's great for someone who likes music.",
     },
 
     {
-      start: 45.86,
-      end: 59.979,
-      text: "Let me see. Yeah, that is my house. Oh, I recognize the lady out in front, my Aunt Phyllis. Our house is her second home. She plays board games with me. She's a pilot.",
+      start: 66.119,
+      end: 68.599,
+      text: "That would be nice to use in school or at home.",
     },
 
     {
-      start: 59.979,
-      end: 69.719,
-      text: "Now we are flying over my favorite mall. There are so many people there. It's really crowded. It has a nice cinema.",
+      start: 69.659,
+      end: 72.279,
+      text: "Yes, and there's a memo holder here, too.",
     },
 
     {
-      start: 69.72,
-      end: 75.199,
-      text: "Yes, let's go there this weekend. Hey, do you think anyone can spot us?",
+      start: 73.439,
+      end: 83.979,
+      text: "I want this! I can read storybooks on this tablet. It will read the words or sentences. All you have to do is point to where you want it to read.",
     },
 
     {
-      start: 76.239,
-      end: 82.999,
-      text: "I doubt it. Don't lean too far out of the basket, Harley. Let's see if we can find the park from up here.",
+      start: 83.979,
+      end: 87.879,
+      text: "That would help you a great deal to practice your reading skills.",
+    },
+
+    {
+      start: 87.879,
+      end: 89.599,
+      text: "This store sure is great!",
     },
   ];
+
   const captionTimings = [
-    [
-      captionsExample[1],
-      captionsExample[2],
-      captionsExample[3],
-      captionsExample[4],
-      captionsExample[5],
-    ],
+    [captionsExample[1], captionsExample[2], captionsExample[3]],
+
+    [captionsExample[4], captionsExample[5], captionsExample[6]],
 
     [
-      captionsExample[6],
       captionsExample[7],
       captionsExample[8],
       captionsExample[9],
+      captionsExample[10],
     ],
 
-    [captionsExample[10], captionsExample[11]],
-
-    [captionsExample[12], captionsExample[13], captionsExample[14]],
+    [
+      captionsExample[11],
+      captionsExample[12],
+      captionsExample[13],
+      captionsExample[14],
+      captionsExample[15],
+    ],
   ];
+
   const filteredSegments = wordJson.segments.slice(1);
 
   const Voc = [
@@ -235,174 +232,88 @@ const Unit8_Page1 = ({ openPopup }) => {
       filteredSegments[0]?.words || [],
       filteredSegments[1]?.words || [],
       filteredSegments[2]?.words || [],
-      filteredSegments[3]?.words || [],
-      filteredSegments[4]?.words || [],
     ],
 
     [
+      filteredSegments[3]?.words || [],
+      filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
+    ],
+
+    [
       filteredSegments[6]?.words || [],
       filteredSegments[7]?.words || [],
       filteredSegments[8]?.words || [],
+      filteredSegments[9]?.words || [],
     ],
 
-    [filteredSegments[9]?.words || [], filteredSegments[10]?.words || []],
-
     [
+      filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
       filteredSegments[12]?.words || [],
       filteredSegments[13]?.words || [],
+      filteredSegments[14]?.words || [],
     ],
   ];
+
   /////////////////VOCABULARY/////////////////
-  const sounds = [
-    sound1,
-    sound2,
-    sound3,
-    sound4,
-    sound5,
-    sound6,
-    sound7,
-    sound8,
-    sound9,
-    sound10,
-    sound11,
-    sound12,
-    sound13,
-    sound14,
-    sound15,
-    sound16,
-  ];
+
   const captionVoc = [
     {
-      start: 0.399,
-      end: 4.94,
-      text: "Page 64, unit eight, vocabulary. Listen and repeat.",
+      start: 0.119,
+      end: 7.759,
+      text: "Page 64, Unit 8, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
 
-    {
-      start: 5.46,
-      end: 8.119,
-      text: "Find the words and expressions in the conversation above.",
-    },
+    { start: 8.22, end: 9.8, text: "1. nighttime." },
+    { start: 10.239, end: 11.939, text: "2. glows." },
+    { start: 12.479, end: 14.34, text: "3. table lamp." },
+    { start: 14.839, end: 16.76, text: "4. wireless." },
 
-    {
-      start: 8.92,
-      end: 10.939,
-      text: "1. hot air balloon.",
-    },
+    { start: 17.539, end: 19.279, text: "5. helicopter." },
+    { start: 19.879, end: 21.959, text: "6. remote control." },
+    { start: 22.579, end: 24.1, text: "7. gadget." },
+    { start: 24.619, end: 26.42, text: "8. peculiar." },
 
-    {
-      start: 11.759,
-      end: 13.639,
-      text: "2. rainbow.",
-    },
+    { start: 27.359, end: 29.199, text: "9. electric." },
+    { start: 29.859, end: 31.759, text: "10. can opener." },
+    { start: 32.459, end: 34.319, text: "11. timer." },
+    { start: 35.04, end: 37.239, text: "12. memo holder." },
 
-    {
-      start: 14.659,
-      end: 16.819,
-      text: "3. volunteer.",
-    },
+    { start: 37.819, end: 39.739, text: "13. tablet." },
+    { start: 40.259, end: 42.099, text: "14. skills." },
+    { start: 42.86, end: 45.099, text: "15. in ages." },
+    { start: 45.86, end: 47.959, text: "16. here you are." },
 
-    {
-      start: 17.76,
-      end: 19.379,
-      text: "4. doubt.",
-    },
-
-    {
-      start: 20.399,
-      end: 22.379,
-      text: "5. landscape.",
-    },
-
-    {
-      start: 23.359,
-      end: 25.359,
-      text: "6. recognize.",
-    },
-
-    {
-      start: 26.239,
-      end: 28.019,
-      text: "7. pilot.",
-    },
-
-    {
-      start: 28.939,
-      end: 30.739,
-      text: "8. crowded.",
-    },
-
-    {
-      start: 31.699,
-      end: 33.539,
-      text: "9. lean.",
-    },
-
-    {
-      start: 34.239,
-      end: 36.699,
-      text: "10. be shocked.",
-    },
-
-    {
-      start: 37.559,
-      end: 40.079,
-      text: "11. looks like ants.",
-    },
-
-    {
-      start: 41.04,
-      end: 43.519,
-      text: "12. top of the world.",
-    },
-
-    {
-      start: 44.399,
-      end: 46.699,
-      text: "13. fly over.",
-    },
-
-    {
-      start: 47.759,
-      end: 50.619,
-      text: "14. her second home.",
-    },
-
-    {
-      start: 51.52,
-      end: 53.699,
-      text: "15. board games.",
-    },
-
-    {
-      start: 54.639,
-      end: 57.68,
-      text: "16. spot (noun).",
-    },
+    { start: 48.539, end: 50.479, text: "17. show up." },
+    { start: 51.18, end: 53.279, text: "18. come in handy." },
+    { start: 54.039, end: 56.18, text: "19. a great deal." },
   ];
 
   const wordTimingsVoc = [
-    { start: 8.92, end: 10.939 },
-    { start: 11.759, end: 13.639 },
-    { start: 14.659, end: 16.819 },
-    { start: 17.76, end: 19.379 },
-    { start: 20.399, end: 22.379 },
+    { start: 8.0, end: 9.8, text: "1. nighttime." },
+    { start: 10.039, end: 11.939, text: "2. glows." },
+    { start: 12.279, end: 14.34, text: "3. table lamp." },
+    { start: 14.639, end: 16.76, text: "4. wireless." },
 
-    { start: 23.359, end: 25.359 },
-    { start: 26.239, end: 28.019 },
-    { start: 28.939, end: 30.739 },
-    { start: 31.699, end: 33.539 },
-    { start: 34.239, end: 36.699 },
+    { start: 17.339, end: 19.279, text: "5. helicopter." },
+    { start: 19.679, end: 21.959, text: "6. remote control." },
+    { start: 22.379, end: 24.1, text: "7. gadget." },
+    { start: 24.419, end: 26.42, text: "8. peculiar." },
 
-    { start: 37.559, end: 40.079 },
-    { start: 41.04, end: 43.519 },
-    { start: 44.399, end: 46.699 },
-    { start: 47.759, end: 50.619 },
-    { start: 51.52, end: 53.699 },
+    { start: 27.159, end: 29.199, text: "9. electric." },
+    { start: 29.659, end: 31.759, text: "10. can opener." },
+    { start: 32.259, end: 34.319, text: "11. timer." },
+    { start: 34.84, end: 37.239, text: "12. memo holder." },
 
-    { start: 54.639, end: 57.68 },
+    { start: 37.619, end: 39.739, text: "13. tablet." },
+    { start: 40.059, end: 42.099, text: "14. skills." },
+    { start: 42.66, end: 45.099, text: "15. in ages." },
+    { start: 45.66, end: 47.959, text: "16. here you are." },
+
+    { start: 48.339, end: 50.479, text: "17. show up." },
+    { start: 51.08, end: 53.279, text: "18. come in handy." },
+    { start: 53.839, end: 56.18, text: "19. a great deal." },
   ];
 
   return (
@@ -429,16 +340,15 @@ const Unit8_Page1 = ({ openPopup }) => {
                 }}
               >
                 <Conversation
-                  title="Conversation"
+                  title="Listen and read. Then say."
                   items={data}
                   sound={longAudio}
                   captions={captionsExample}
-                  stopAtSecond={5}
+                  stopAtSecond={4.9}
                   captionTimings={captionTimings}
                   wordTimings={Voc}
                   openPopup={openPopup}
                   video={video}
-                  imageWidth="300px"
                 />
               </div>,
             )
@@ -457,7 +367,7 @@ const Unit8_Page1 = ({ openPopup }) => {
         </svg>
       </div>
       <div
-        className="headset-icon-CD-page4-2 hover:scale-110 transition"
+        className="headset-icon-CD-unit8-page1-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
         <svg
@@ -479,26 +389,29 @@ const Unit8_Page1 = ({ openPopup }) => {
                   subtitle="Listen and repeat. Find the words and expressions in the conversation above."
                   sound={VocabularAudio}
                   captions={captionVoc}
-                  stopAtSecond={8.3}
-                  sounds={sounds}
+                  stopAtSecond={7.8}
+                  // sounds={sounds}
                   wordTimings={wordTimingsVoc}
                   words={[
-                    "hot air balloon",
-                    "rainbow",
-                    "volunteer",
-                    "doubt",
-                    "landscape",
-                    "recognize",
-                    "pilot",
-                    "crowded",
-                    "lean",
-                    "(be) shocked",
-                    "looks like ants",
-                    "top of the world",
-                    "fly over",
-                    "(her) second home",
-                    "board games",
-                    "spot (noun)",
+                    "nighttime",
+                    "glows",
+                    "table lamp",
+                    "wireless",
+                    "helicopter",
+                    "remote control",
+                    "gadget",
+                    "peculiar",
+                    "electric",
+                    "can opener",
+                    "timer",
+                    "memo holder",
+                    "tablet",
+                    "skills",
+                    "in ages",
+                    "here you are!",
+                    "show up",
+                    "come in handy",
+                    "a great deal",
                   ]}
                 />
               </div>,
@@ -518,7 +431,7 @@ const Unit8_Page1 = ({ openPopup }) => {
         </svg>
       </div>
       <div
-        className="headset-icon-CD-page4-3 hover:scale-110 transition"
+        className="click-icon-unit8-page1-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
         <svg
@@ -529,7 +442,7 @@ const Unit8_Page1 = ({ openPopup }) => {
             openPopup(
               "html",
               <CriticalThinking
-                title={"Why does Tom like his aunt Phyllis?"}
+                title={"What kind of store are the children in?"}
               />,
             )
           }

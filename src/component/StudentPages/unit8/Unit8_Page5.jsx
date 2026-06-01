@@ -1,4 +1,4 @@
-import page_5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 68.png";
+import page_5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 68.png";
 import "./Unit8_Page5.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 const Unit8_Page5 = ({ openPopup }) => {
@@ -32,7 +32,7 @@ const Unit8_Page5 = ({ openPopup }) => {
       </div>
 
       <div
-        className="click-icon-unit8-page5-2 hover:scale-110 transition"
+        className="click-icon-unit8-page5-3 hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
         <svg
@@ -52,7 +52,27 @@ const Unit8_Page5 = ({ openPopup }) => {
           />
         </svg>
       </div>
-
+      <div
+        className="click-icon-unit8-page5-2 hover:scale-110 transition"
+        style={{ overflow: "visible" }}
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 90 90"
+          onClick={() => openPopup("exercise", { startIndex: 75 })}
+          style={{ overflow: "visible" }}
+        >
+          <image
+            className="svg-img"
+            href={arrowBtn}
+            x="0"
+            y="0"
+            width="90"
+            height="90"
+          />
+        </svg>
+      </div>
     </div>
   );
 };

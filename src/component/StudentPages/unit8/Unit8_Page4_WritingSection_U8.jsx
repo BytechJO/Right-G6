@@ -1,24 +1,20 @@
 import WritingA from "./Unit8_Page4_WritingA";
-import Unit6_Page4_WritingB from "./Unit8_Page4_WritingB";
 import WritingB from "./Unit8_Page4_WritingB";
-import ReadingBG from "../../../assets/imgs/conversation.svg";
-import img from "../../../assets/imgs/pages/classbook/Right 5 Unit 8 Lets Ride In a Hot-Air Balloon Folder/Page 67/SVG/Asset 27.svg";
-import WritingC from "./Unit8_Page4_WritingC";
+import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 14.svg";
 
-const WritingSection_U7 = () => {
+const WritingSection_U8 = () => {
   return (
     <div>
       {/* العنوان */}
       <div className="w-[60%] mx-auto mb-4 flex items-center">
-        <div
-          className="px-4 py-1 font-bold text-black w-fit"
+        <img
+          src={ReadingBG}
           style={{
-            backgroundImage: `url(${ReadingBG})`,
-            backgroundSize: "cover",
+            height: "70px",
+            width: "auto",
           }}
-        >
-          Writing
-        </div>
+        />
       </div>
 
       {/* المحتوى */}
@@ -30,10 +26,9 @@ const WritingSection_U7 = () => {
         />
         <WritingA />
         <WritingB />
-        <WritingC />
       </div>
     </div>
   );
 };
 
-export default WritingSection_U7;
+export default WritingSection_U8;

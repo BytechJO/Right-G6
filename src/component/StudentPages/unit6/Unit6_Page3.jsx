@@ -1,5 +1,5 @@
 import React from "react";
-import page_3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 6 Shall We Should We Folder/Page 48.png";
+import page_3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/Page 48.png";
 import "./Unit6_Page3.css";
 import GrammarSection_U6 from "./Unit6_Page3_GrammarSection_U6";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";

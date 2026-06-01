@@ -1,306 +1,197 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../Button";
 
-// IMAGES
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 62/SVG/Asset 12.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 62/SVG/Asset 13.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 62/SVG/Asset 14.svg";
-import img4 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 62/SVG/Asset 15.svg";
-import img5 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 62/SVG/Asset 16.svg";
-import img6 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 62/SVG/Asset 17.svg";
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.,!?''""'';:\s]/g, "")
+    .trim();
+
+// الكلمات والتعريفات
+const WORDS = [
+  { num: 1, word: "flatter" },
+  { num: 2, word: "silly" },
+  { num: 3, word: "aware" },
+  { num: 4, word: "previously" },
+  { num: 5, word: "strokes" },
+  { num: 6, word: "advice" },
+];
+
+const DEFINITIONS = [
+  { letter: "a", text: "an opinion about what someone should do" },
+  { letter: "b", text: "knowing that something exists" },
+  {
+    letter: "c",
+    text: "to cause someone to feel pleased by saying something nice",
+  },
+  {
+    letter: "d",
+    text: "playful or funny",
+  },
+  { letter: "e", text: "earlier in time or order" },
+  { letter: "f", text: "gentle movements with the hand" },
+];
+
+// الإجابات الصحيحة: رقم السؤال → الحرف
+const CORRECT = ["c", "d", "b", "e", "f", "a"];
 
 const Unit7_Page5_Q1 = () => {
-  const questions = [
-    {
-      image: img1,
-      answer: "super",
-    },
-
-    {
-      image: img2,
-      answer: "album",
-    },
-
-    {
-      image: img3,
-      answer: "jotting down",
-    },
-
-    {
-      image: img4,
-      answer: "treasure",
-    },
-
-    {
-      image: img5,
-      answer: "orphanage",
-    },
-
-    {
-      image: img6,
-      answer: "miss",
-    },
-  ];
-
-  const [answers, setAnswers] = useState(["", "", "", "", "", ""]);
-
-  const [result, setResult] = useState([]);
-
+  const [answers, setAnswers] = useState(Array(6).fill(""));
+  const [errors, setErrors] = useState(Array(6).fill(null));
   const [locked, setLocked] = useState(false);
 
-  const normalize = (str) => str.toLowerCase().trim();
-
-  const handleChange = (i, value) => {
-    if (locked || result[i] === true) return;
-
+  const handleChange = (i, val) => {
+    if (locked || errors[i] === true) return;
     const updated = [...answers];
-
-    updated[i] = value;
-
+    updated[i] = val;
     setAnswers(updated);
-
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+    const updatedErr = [...errors];
+    updatedErr[i] = null;
+    setErrors(updatedErr);
   };
 
   const checkAnswers = () => {
     if (locked) return;
-
     if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info("Please complete all answers.");
-
+      ValidationAlert.info();
       return;
     }
-
-    let correctCount = 0;
-
-    const newResults = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(questions[i].answer);
-
-      if (ok) correctCount++;
-
+    let score = 0;
+    const newErr = answers.map((a, i) => {
+      const ok = normalize(a) === normalize(CORRECT[i]);
+      if (ok) score++;
       return ok;
     });
-
-    setResult(newResults);
-
-    const total = questions.length;
-
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:18px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    setErrors(newErr);
+    const total = CORRECT.length;
+    const msg = `Score: ${score} / ${total}`;
+    if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
-      ValidationAlert.error(msg);
-    } else {
-      ValidationAlert.warning(msg);
-    }
+    } else if (score === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setAnswers([
-      "super",
-      "album",
-      "jotting down",
-      "treasure",
-      "orphanage",
-      "miss",
-    ]);
-
-    setResult([true, true, true, true, true, true]);
-
+    setAnswers(CORRECT);
+    setErrors(Array(6).fill(true));
     setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(["", "", "", "", "", ""]);
-
-    setResult([]);
-
+  const reset = () => {
+    setAnswers(Array(6).fill(""));
+    setErrors(Array(6).fill(null));
     setLocked(false);
   };
 
-  return (
-    <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-13">
+  const InputBox = ({ index }) => {
+    const isOk = errors[index] === true;
+    const isWrong = errors[index] === false;
+    return (
+      <span style={{ position: "relative", display: "inline-block" }}>
+        <input
+          value={answers[index]}
+          disabled={locked || isOk}
+          onChange={(e) => handleChange(index, e.target.value)}
+          style={{
+            width: "50px",
+            borderBottom: isWrong ? "1px solid #ef4444" : "1px solid #aaa",
+            outline: "none",
+            background: "transparent",
+            textAlign: "center",
+            fontSize: "17px",
+            fontWeight: "bold",
+            // color: isOk ? "#84ad40" : "#6D2980",
+          }}
+        />
+        {isWrong && (
           <span
-            className="ex-A"
             style={{
-              marginRight: "10px",
+              position: "absolute",
+              top: "-8px",
+              right: "-8px",
+              width: "18px",
+              height: "18px",
+              background: "red",
+              color: "white",
+              borderRadius: "50%",
+              fontSize: "12px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              zIndex: 5,
             }}
           >
-            A
+            ✕
           </span>
-          Look and match.
+        )}
+      </span>
+    );
+  };
+
+  return (
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "40px" }}>
+        <h5 className="header-title-page8 ">
+          <span className="ex-A mr-4">A</span>
+          Match each vocabulary word to its definition.
         </h5>
 
-        {/* WORD BOX */}
         <div
           style={{
-            width: "760px",
-            height: "52px",
-            background: "#E9E1EC",
-            borderRadius: "12px",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            margin: "0 auto 35px auto",
+            gap: "120px",
+            marginTop: "15px",
             fontSize: "18px",
-            fontWeight: "600",
           }}
         >
-          <span>
-            {" "}
-            <span className="font-bold mr-2">a</span> album
-          </span>
-
-          <span>
-            <span className="font-bold mr-2">b</span> orphanage
-          </span>
-
-          <span>
-            <span className="font-bold mr-2">c</span> treasure
-          </span>
-
-          <span>
-            <span className="font-bold mr-2">d </span>miss
-          </span>
-
-          <span>
-            <span className="font-bold mr-2">e </span>jotting down
-          </span>
-
-          <span>
-            <span className="font-bold mr-2">f </span>super
-          </span>
-        </div>
-
-        {/* QUESTIONS */}
-        <div
-          className="
-            grid
-            grid-cols-3
-            gap-y-14
-            gap-x-20
-          "
-        >
-          {questions.map((q, i) => (
-            <div
-              key={i}
-              className="
-                  flex
-                  items-start
-                  gap-4
-                "
-            >
-              {/* NUMBER */}
-              <span className="font-bold text-[18px]">{i + 1}</span>
-
-              {/* IMAGE + INPUT */}
+          {/* العمود الأيسر - الكلمات مع الفراغات */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
+          >
+            {WORDS.map((item, i) => (
               <div
-                className="
-    flex
-    items-end
-    gap-3
-  "
+                key={i}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                <img
-                  src={q.image}
-                  alt=""
-                  style={{
-                    width: "130px",
-                    height: "130px",
-                    objectFit: "cover",
-                  }}
-                />
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={answers[i]}
-                    disabled={locked || result[i] === true}
-                    onChange={(e) => handleChange(i, e.target.value)}
-                    className={`
-        w-[145px]
-        border-0
-        border-b
-        outline-none
-        bg-transparent
-        text-[18px]
-        font-bold
-        pb-1
-
-        ${
-          result[i] === false
-            ? "border-[#D1232A] text-[#6D2980]"
-            : "border-black text-[#6D2980]"
-        }
-      `}
-                  />
-
-                  {/* WRONG */}
-                  {result[i] === false && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "-8px",
-                        right: "-8px",
-                        width: "20px",
-                        height: "20px",
-                        background: "#ef4444",
-                        color: "white",
-                        borderRadius: "50%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "11px",
-                        fontWeight: "bold",
-                        border: "2px solid white",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      ✕
-                    </span>
-                  )}
-                </div>
+                <InputBox index={i} />
+                <span style={{ fontWeight: "bold", color: "#333" }}>
+                  {item.num}
+                </span>
+                <span style={{ color: "#333" }}>{item.word}</span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* العمود الأيمن - التعريفات */}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
+          >
+            {DEFINITIONS.map((def, i) => (
+              <div
+                key={i}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <span style={{ fontWeight: "bold", color: "#333" }}>
+                  {def.letter}
+                </span>
+                <span style={{ color: "#333" }}>{def.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* BUTTONS */}
+      {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
-
-        <button className="show-answer-btn" onClick={showAnswers}>
-          Show Answer
-        </button>
-
-        <button className="check-button2" onClick={checkAnswers}>
-          Check Answer ✓
-        </button>
+        <ActionButtons
+          handleShowAnswer={showAnswers}
+          handleStartAgain={reset}
+          checkAnswers={checkAnswers}
+        />
       </div>
     </div>
   );

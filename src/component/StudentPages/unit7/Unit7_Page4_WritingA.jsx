@@ -1,309 +1,287 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
-
+import ActionButtons from "../../ActionButtons";
 const Unit7_Page4_WritingA = () => {
-  const [errors, setErrors] = useState([false, false, false, false, false]);
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [matches, setMatches] = useState({});
+  const [showResult, setShowResult] = useState(false);
+  const [locked, setLocked] = useState(false);
+  const [validatedMatches, setValidatedMatches] = useState({});
 
-  const [correctLocked, setCorrectLocked] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const paragraphs = [
-    {
-      text: "Let’s trot for a while, I suggested.",
+  const imageRefs = useRef([]);
+  const sentenceRefs = useRef([]);
+  const containerRef = useRef(null);
 
-      quotes: [
-        [0, 1],
-        [23, 24, 25, 26],
-      ],
-    },
-
-    {
-      text: "Yes, good idea, agreed Lori.",
-
-      quotes: [
-        [0, 1],
-        [15, 14, 16],
-      ],
-    },
-
-    {
-      text: "Maybe when we get back to the ranch, we could do some jumping, I added.",
-
-      quotes: [
-        [0, 1],
-        [62, 63],
-      ],
-    },
-
-    {
-      text: "Lori smiled, Yes, I’d love to. Do you do a lot of jumping? ",
-
-      quotes: [[12, 13], [58]],
-    },
-
-    {
-      text: "Well, I’m not very good, but I love to practice, I answered.",
-
-      quotes: [
-        [0, 1],
-        [48, 49],
-      ],
-    },
+  const questions = [
+    { id: 0, text: "If there had been a pot of gold at the end of that rainbow," },
+    { id: 1, text: "If he hadn’t lost his money," },
+    { id: 2, text: "If they had invited him," },
+    { id: 3, text: "If she had reminded me," },
   ];
 
-  const [selectedQuotes, setSelectedQuotes] = useState([[], [], [], [], []]);
+  const sentences = [
+    { id: 0, text: "we would have been very happy." },
+    { id: 1, text: "he would have come." },
+    { id: 2, text: "he could have bought lunch." },
+    { id: 3, text: "I would have done it." },
+  ];
 
-  const [locked, setLocked] = useState(false);
-
-  // toggle quote
-  const toggleQuote = (paragraphIndex, charIndex) => {
-    if (locked || correctLocked[paragraphIndex]) return;
-
-    const updated = [...selectedQuotes];
-
-    if (updated[paragraphIndex].includes(charIndex)) {
-      updated[paragraphIndex] = updated[paragraphIndex].filter(
-        (i) => i !== charIndex,
-      );
-    } else {
-      updated[paragraphIndex] = [...updated[paragraphIndex], charIndex];
-    }
-
-    setSelectedQuotes(updated);
-
-    // يشيل الاكس أول ما يعدل
-    const updatedErrors = [...errors];
-    updatedErrors[paragraphIndex] = false;
-    setErrors(updatedErrors);
+  const correct = {
+    0:0,
+    1: 2,
+    2: 1,
+    3: 3,
   };
 
-  // check
-  const handleCheck = () => {
-    if (locked) return;
+  const selectImage = (id) => {
+    if (showResult && validatedMatches[id] === correct[id]) return;
 
-    let score = 0;
+    setSelectedImg(id);
 
-    let hasMissingQuotes = false;
-
-    const newErrors = [];
-    const newLocked = [];
-
-    paragraphs.forEach((paragraph, i) => {
-      const selected = [...selectedQuotes[i]].sort((a, b) => a - b);
-
-      // إذا أقل من المطلوب فقط
-      if (selected.length < paragraph.quotes.length) {
-        newErrors[i] = false;
-        newLocked[i] = false;
-
-        hasMissingQuotes = true;
-
-        return;
-      }
-
-      // التحقق مع السماح بأكثر من مكان صحيح
-      const isCorrect =
-        selected.length === paragraph.quotes.length &&
-        selected.every((selectedValue, idx) =>
-          paragraph.quotes[idx].includes(selectedValue),
-        );
-
-      if (isCorrect) score++;
-
-      newErrors[i] = !isCorrect;
-      newLocked[i] = isCorrect;
+    // أول ما يبدأ يعدل شيل التقييم القديم
+    setValidatedMatches((prev) => {
+      const updated = { ...prev };
+      delete updated[id];
+      return updated;
     });
+  };
 
-    // إذا في نقص لا تظهر ✕
-    if (hasMissingQuotes) {
-      setErrors([false, false, false, false, false]);
-
-      ValidationAlert.info("Please complete all quotation marks.");
-
+  const selectSentence = (id) => {
+    if (selectedImg === null) return;
+    if (locked) {
+      return;
+    }
+    if (showResult && validatedMatches[selectedImg] === correct[selectedImg]) {
+      setSelectedImg(null);
       return;
     }
 
-    setErrors(newErrors);
+    const alreadyCorrectlyUsed =
+      showResult &&
+      Object.entries(validatedMatches).some(
+        ([imgId, sentId]) =>
+          Number(sentId) === id &&
+          correct[imgId] === Number(sentId) &&
+          Number(imgId) !== selectedImg,
+      );
 
-    setCorrectLocked(newLocked);
+    if (alreadyCorrectlyUsed) {
+      return;
+    }
 
-    const total = paragraphs.length;
+    setMatches((prev) => {
+      const updated = { ...prev };
 
-    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+      // احذف الربط القديم لنفس الكلمة
+      Object.keys(updated).forEach((imgKey) => {
+        // إذا الكلمة مستخدمة بصورة ثانية
+        if (updated[imgKey] === id) {
+          // إذا الصورة مثبتة صح لا تحذفها
+          if (showResult && validatedMatches[imgKey] === correct[imgKey]) {
+            return;
+          }
 
-    const msg = `
-    <div style="font-size:20px;text-align:center;">
-      <span style="color:${color}; font-weight:bold;">
-        Score: ${score} / ${total}
-      </span>
-    </div>
+          // غير هيك احذف الربط القديم
+          delete updated[imgKey];
+        }
+      });
+
+      updated[selectedImg] = id;
+
+      return updated;
+    });
+
+    setSelectedImg(null);
+  };
+  const checkAnswers = () => {
+    if (locked) return;
+
+    if (Object.keys(matches).length !== questions.length) {
+      ValidationAlert.info("Please match all.");
+      return;
+    }
+
+    let correctCount = 0;
+
+    Object.entries(matches).forEach(([imgId, sentId]) => {
+      if (correct[imgId] === sentId) correctCount++;
+    });
+
+    const total = questions.length;
+
+    const message = `
+        Score: ${correctCount} / ${total}
   `;
 
-    if (score === total) {
+    if (correctCount === total) {
       setLocked(true);
-
-      ValidationAlert.success(msg);
-    } else if (score === 0) {
-      ValidationAlert.error(msg);
+      ValidationAlert.success(message);
+    } else if (correctCount === 0) {
+      ValidationAlert.error(message);
     } else {
-      ValidationAlert.warning(msg);
+      ValidationAlert.warning(message);
     }
+    setValidatedMatches(matches);
+    setShowResult(true);
   };
 
-  // reset
-  const handleReset = () => {
-    setSelectedQuotes([[], [], [], [], []]);
+  const showAnswers = () => {
+    setMatches(correct);
+    setLocked(true);
+    setShowResult(true);
+  };
 
-    setErrors([false, false, false, false, false]);
-
-    setCorrectLocked([false, false, false, false, false]);
-
+  const reset = () => {
+    setValidatedMatches({});
+    setSelectedImg(null);
+    setMatches({});
+    setShowResult(false);
     setLocked(false);
   };
 
-  // show
-  const handleShow = () => {
-    const showAnswers = paragraphs.map((paragraph) =>
-      paragraph.quotes.map((group) => group[0]),
-    );
-
-    setSelectedQuotes(showAnswers);
-
-    setLocked(true);
-  };
-
-  // render line
-  const renderLine = (text, paragraphIndex) => {
-    const chars = text.split("");
-
-    return (
-      <>
-        {chars.map((char, charIndex) => {
-          const hasQuote = selectedQuotes[paragraphIndex].includes(charIndex);
-
-          return (
-            <span key={charIndex} className="relative">
-              <span
-                onClick={() => toggleQuote(paragraphIndex, charIndex)}
-                className="cursor-pointer"
-              >
-                {hasQuote && <span className="text-red-600 font-bold">"</span>}
-
-                {char}
-              </span>
-            </span>
-          );
-        })}
-
-        {/* clickable end area */}
-        <span
-          onClick={() => toggleQuote(paragraphIndex, chars.length)}
-          className="cursor-pointer inline-block min-w-3"
-        >
-          {selectedQuotes[paragraphIndex].includes(chars.length) && (
-            <span className="text-red-600 font-bold">"</span>
-          )}
-        </span>
-      </>
-    );
-  };
-
   return (
-    <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-8">
+    <div
+      ref={containerRef}
+      className="relative space-y-4 w-full max-w-[900px] mx-auto"
+    >
+      <h5 className="header-title-page8-read pb-2.5">
         <span className="ex-A-read mr-2">A</span>
-        Put quotation marks into the conversation below.
+        Match the “<span className="text-[#F59E0B]">if</span>” part of the
+        sentence with the “<span className="text-[#F59E0B]">then</span>” part.
       </h5>
+      {/* 🔥 الصور فوق */}
+      <div className="w-full max-w-6xl mx-auto flex flex-col gap-y-12">
+        {questions.map((item, i) => (
+          <div
+            key={i}
+            className="grid grid-cols-[1fr_1fr] items-center gap-x-24"
+          >
+            {/* Question */}
+            <div
+              onClick={() => selectImage(i)}
+              className="relative flex items-center cursor-pointer min-h-[50px]"
+              style={{
+                backgroundColor: selectedImg === i ? "#E8F5C8" : "transparent",
+                border:
+                  selectedImg === i
+                    ? "1px solid #83AC40"
+                    : "1px solid transparent",
+                borderRadius: "10px",
+                padding: "8px 12px",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <span className="font-bold text-[18px] w-8 shrink-0">
+                {i + 1}
+              </span>
 
-      {/* PARAGRAPHS */}
-      <div className="space-y-5 text-[18px] leading-relaxed mt-10">
-        {paragraphs.map((paragraph, i) => (
-          <div key={i} className="relative">
-            {renderLine(paragraph.text, i)}
+              <span className="text-[18px]">{item.text}</span>
 
-            {errors[i] && (
               <div
+                ref={(el) => (imageRefs.current[i] = el)}
                 style={{
                   position: "absolute",
+                  right: 0,
                   top: "50%",
-                  right: "-35px",
                   transform: "translateY(-50%)",
-                  width: "22px",
-                  height: "22px",
-                  background: "#ef4444",
-                  color: "white",
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: "#F59E0B",
                   borderRadius: "50%",
-                  fontSize: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  border: "2px solid white",
-                  boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
                 }}
-              >
-                ✕
-              </div>
-            )}
+              />
+              {showResult &&
+                validatedMatches[i] !== undefined &&
+                correct[i] !== validatedMatches[i] && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "25px",
+                      width: "20px",
+                      height: "20px",
+                      background: "#ef4444",
+                      color: "white",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+            </div>
+            {/* Answer */}
+            <div
+              onClick={() => selectSentence(i)}
+              className="relative flex items-center cursor-pointer min-h-[50px]"
+            >
+              <div
+                ref={(el) => (sentenceRefs.current[i] = el)}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: "#F59E0B",
+                  borderRadius: "50%",
+                }}
+              />
+
+              <span className="font-bold text-[18px] ml-8 mr-4 w-5">
+                {String.fromCharCode(97 + i)}
+              </span>
+
+              <span className="text-[18px]">{sentences[i].text}</span>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
+      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        {Object.entries(matches).map(([imgId, sentId], i) => {
+          const imgDot = imageRefs.current[imgId];
+          const sentDot = sentenceRefs.current[sentId];
 
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
+          if (!imgDot || !sentDot || !containerRef.current) return null;
 
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
+          const imgRect = imgDot.getBoundingClientRect();
+          const sentRect = sentDot.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
 
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
+          const x1 = imgRect.left + imgRect.width / 2 - containerRect.left;
+          const y1 = imgRect.top + imgRect.height / 2 - containerRect.top;
 
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+          const x2 = sentRect.left + sentRect.width / 2 - containerRect.left;
+          const y2 = sentRect.top + sentRect.height / 2 - containerRect.top;
+          return (
+            <g key={i}>
+              <line
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#83AC40"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+            </g>
+          );
+        })}
+      </svg>
+      <div className="flex justify-center gap-6">
+        <ActionButtons
+          onReset={reset}
+          onShow={showAnswers}
+          onCheck={checkAnswers}
+        />
       </div>
     </div>
   );

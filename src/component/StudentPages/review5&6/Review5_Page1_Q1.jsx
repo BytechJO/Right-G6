@@ -1,112 +1,107 @@
 import React, { useState } from "react";
-
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-const Unit6_Page2_Q1 = () => {
-  const words = [
-    "shark",
-    "barbecue",
-    "recipe",
-    "Mediterranean food",
-    "assignment",
-  ];
+const wordBank = [
+  "bookworm",
+  "science fiction",
+  "suppose",
+  "boss",
+  "comedy",
+  "active",
+  "imagination",
+  "persuade",
+  "intended",
+  "opinion",
+];
 
-  const definitions = [
-    "Cooking over an open fire using charcoal",
+// sorted alphabetically with syllable counts
+const correctAnswers = [
+  { word: "active", syllables: "2" },
+  { word: "bookworm", syllables: "2" },
+  { word: "boss", syllables: "1" },
+  { word: "comedy", syllables: "3" },
+  { word: "imagination", syllables: "5" },
+  { word: "intended", syllables: "3" },
+  { word: "opinion", syllables: "3" },
+  { word: "persuade", syllables: "2" },
+  { word: "science fiction", syllables: "4" },
+  { word: "suppose", syllables: "2" },
+];
 
-    "A type of food found in a certain part of the world",
+const emptyAnswers = () =>
+  Array(10)
+    .fill(null)
+    .map(() => ({ word: "", syllables: "" }));
 
-    "A type of fish that lives in the ocean",
-
-    "A set of directions for cooking something",
-
-    "A job, or work, that is given to someone",
-  ];
-
-  const correctAnswers = [
-    ["barbecue"],
-
-    ["Mediterranean food"],
-
-    ["shark"],
-
-    ["recipe"],
-
-    ["assignment"],
-  ];
-
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
-
+const Review5_Page1_Q1 = () => {
+  const [answers, setAnswers] = useState(emptyAnswers());
+  const [wordErrors, setWordErrors] = useState(Array(10).fill(false));
+  const [syllableErrors, setSyllableErrors] = useState(Array(10).fill(false));
+  const [correctLocked, setCorrectLocked] = useState(Array(10).fill(false));
   const [locked, setLocked] = useState(false);
 
-  const [result, setResult] = useState([]);
+  const normalize = (text) =>
+    text.trim().toLowerCase().replace(/\s+/g, " ").replace(/[?.""'',!]/g, "");
 
-  const normalize = (str) =>
-    str
-      .toLowerCase()
-      .replace(/[.?!,]/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-
-  const handleChange = (i, val) => {
-    if (locked || result[i] === true) return;
-
+  const updateWord = (index, value) => {
+    if (locked || correctLocked[index]) return;
     const updated = [...answers];
-
-    updated[i] = val;
-
+    updated[index] = { ...updated[index], word: value };
     setAnswers(updated);
+    const errs = [...wordErrors];
+    errs[index] = false;
+    setWordErrors(errs);
+  };
 
-    setResult((prev) => {
-      const copy = [...prev];
-
-      copy[i] = undefined;
-
-      return copy;
-    });
+  const updateSyllables = (index, value) => {
+    if (locked || correctLocked[index]) return;
+    const updated = [...answers];
+    updated[index] = { ...updated[index], syllables: value };
+    setAnswers(updated);
+    const errs = [...syllableErrors];
+    errs[index] = false;
+    setSyllableErrors(errs);
   };
 
   const checkAnswers = () => {
     if (locked) return;
-
-    if (answers.some((a) => !a.trim())) {
+    const isEmpty = answers.some(
+      (a) => normalize(a.word) === "" || normalize(a.syllables) === "",
+    );
+    if (isEmpty) {
       ValidationAlert.info("Please complete all fields.");
-
       return;
     }
 
-    let correctCount = 0;
+    let score = 0;
+    const newWordErrors = Array(10).fill(false);
+    const newSyllableErrors = Array(10).fill(false);
+    const newLocked = Array(10).fill(false);
 
-    const newResults = answers.map((ans, i) => {
-      const ok = correctAnswers[i].some(
-        (correct) => normalize(correct) === normalize(ans),
-      );
-
-      if (ok) correctCount++;
-
-      return ok;
+    answers.forEach((ans, i) => {
+      const wordOk = normalize(ans.word) === normalize(correctAnswers[i].word);
+      const syllOk =
+        normalize(ans.syllables) === normalize(correctAnswers[i].syllables);
+      newWordErrors[i] = !wordOk;
+      newSyllableErrors[i] = !syllOk;
+      if (wordOk && syllOk) {
+        score++;
+        newLocked[i] = true;
+      }
     });
 
-    setResult(newResults);
+    setWordErrors(newWordErrors);
+    setSyllableErrors(newSyllableErrors);
+    setCorrectLocked(newLocked);
 
-    const total = answers.length;
+    const total = 10;
+    const color = score === total ? "green" : score === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:20px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${score} / ${total}</span></div>`;
 
-    const color =
-      correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
-
-    const msg = `
-      <div style="font-size:20px;text-align:center;">
-        <span style="color:${color}; font-weight:bold;">
-          Score: ${correctCount} / ${total}
-        </span>
-      </div>
-    `;
-
-    if (correctCount === total) {
+    if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
-    } else if (correctCount === 0) {
+    } else if (score === 0) {
       ValidationAlert.error(msg);
     } else {
       ValidationAlert.warning(msg);
@@ -114,167 +109,193 @@ const Unit6_Page2_Q1 = () => {
   };
 
   const showAnswers = () => {
-    setAnswers([
-      correctAnswers[0][0],
-      correctAnswers[1][0],
-      correctAnswers[2][0],
-      correctAnswers[3][0],
-      correctAnswers[4][0],
-    ]);
-
-    setResult([true, true, true, true, true]);
-
+    setAnswers(
+      correctAnswers.map((a) => ({ word: a.word, syllables: a.syllables })),
+    );
+    setWordErrors(Array(10).fill(false));
+    setSyllableErrors(Array(10).fill(false));
+    setCorrectLocked(Array(10).fill(true));
     setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(["", "", "", "", ""]);
-
-    setResult([]);
-
+  const reset = () => {
+    setAnswers(emptyAnswers());
+    setWordErrors(Array(10).fill(false));
+    setSyllableErrors(Array(10).fill(false));
+    setCorrectLocked(Array(10).fill(false));
     setLocked(false);
   };
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "30px",
-      }}
-    >
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-12">
-          <span
+  const renderRow = (index) => {
+    const ans = answers[index];
+    const wErr = wordErrors[index];
+    const sErr = syllableErrors[index];
+    const lck = locked || correctLocked[index];
+
+    return (
+      <div
+        key={index}
+        style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}
+      >
+        {/* Number */}
+        <span
+          style={{
+            fontWeight: "bold",
+            fontSize: "16px",
+            minWidth: "20px",
+            flexShrink: 0,
+          }}
+        >
+          {index + 1}
+        </span>
+
+        {/* Word input */}
+        <div style={{ flex: 1, position: "relative" }}>
+          <input
+            type="text"
+            value={ans.word}
+            disabled={lck}
+            onChange={(e) => updateWord(index, e.target.value)}
             style={{
-              marginRight: "10px",
+              width: "100%",
+              border: "none",
+              borderBottom: wErr ? "2px solid #ef4444" : "1px solid black",
+              outline: "none",
+              textAlign:"center",
+              background: "transparent",
+              fontSize: "18px",
+              // fontWeight: "600",
+              // color: "#6D2980",
+              padding: "2px 4px",
             }}
-          >
-            A
-          </span>
-          Read and write the word with its definition.
+          />
+          {wErr && (
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "0",
+                transform: "translateY(-50%)",
+                width: "22px",
+                height: "22px",
+                background: "red",
+                color: "white",
+                borderRadius: "50%",
+                fontSize: "12px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                border: "2px solid white",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              }}
+            >
+              ✕
+            </div>
+          )}
+        </div>
+
+        {/* Syllables input */}
+        <div style={{ width: "52px", position: "relative" }}>
+          <input
+            type="text"
+            value={ans.syllables}
+            disabled={lck}
+            onChange={(e) => updateSyllables(index, e.target.value)}
+            style={{
+              width: "100%",
+              border: "none",
+              borderBottom: sErr ? "2px solid #ef4444" : "1px solid black",
+              outline: "none",
+              background: "transparent",
+              fontSize: "18px",
+              // fontWeight: "600",
+              // color: "#6D2980",
+              padding: "2px 4px",
+              textAlign: "center",
+            }}
+          />
+          {sErr && (
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                right: "0",
+                transform: "translateY(-50%)",
+                width: "22px",
+                height: "22px",
+                background: "red",
+                color: "white",
+                borderRadius: "50%",
+                fontSize: "12px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                border: "2px solid white",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+              }}
+            >
+              ✕
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="p-[30px] flex flex-col items-center">
+      <div className="div-forall" style={{ gap: "30px" }}>
+        {/* HEADER */}
+        <h5 className="header-title-page8 mb-6">
+          <span className="mr-2">A</span>
+          Put the vocabulary words into alphabetical order. How many syllables
+          does each one have?
         </h5>
 
         {/* WORD BANK */}
-        <div className="flex justify-center mb-10">
-          <div
-            className="
-              bg-[#E8DFF0]
-              rounded-[18px]
-              px-8
-              py-4
-              flex
-              gap-12
-              text-[18px]
-              font-medium
-            "
-          >
-            {words.map((word, i) => (
-              <span key={i}>{word}</span>
-            ))}
-          </div>
-        </div>
+        <div
+          style={{
+            // border: "2px solid #c8dfc8",
+            borderRadius: "10px",
+            padding: "12px 20px",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
 
-        {/* QUESTIONS */}
-        <div className="flex flex-col gap-8">
-          {definitions.map((q, i) => (
-            <div
-              key={i}
-              className="
-                flex
-                items-start
-                gap-4
-              "
-            >
-              {/* NUMBER */}
-              <span
-                className="
-                  font-bold
-                  text-[18px]
-                  w-7
-                "
-              >
-                {i + 1}
-              </span>
-
-              {/* QUESTION + INPUT */}
-              <div className="flex-1 relative">
-                <div
-                  className="
-                    text-[18px]
-                    leading-[1.7]
-                    inline
-                  "
-                >
-                  {q}
-                </div>
-
-                <input
-                  type="text"
-                  value={answers[i]}
-                  disabled={locked || result[i] === true}
-                  onChange={(e) => handleChange(i, e.target.value)}
-                  className={`
-                    ml-3
-                    w-[420px]
-                    border-0
-                    border-b
-                    outline-none
-                    bg-transparent
-                    text-[18px]
-                    font-semibold
-                    pb-1
-
-                    ${
-                      result[i] === false
-                        ? "border-[#D1232A] text-[#6D2980]"
-                        : "border-black text-[#6D2980]"
-                    }
-                  `}
-                />
-
-                {/* WRONG */}
-                {result[i] === false && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "-8px",
-                      right: "-8px",
-                      width: "20px",
-                      height: "20px",
-                      background: "#ef4444",
-                      color: "white",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      border: "2px solid white",
-                      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                    }}
-                  >
-                    ✕
-                  </span>
-                )}
-              </div>
-            </div>
+            gap: "20px",
+            marginBottom: "28px",
+            backgroundColor: "#e1e9d1",
+            fontSize: "18px",
+            fontWeight: "500",
+            color: "#333",
+          }}
+        >
+          {wordBank.map((w) => (
+            <span key={w}>{w}</span>
           ))}
         </div>
-      </div>
 
+        {/* TWO-COLUMN GRID */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "18px 40px",
+          }}
+        >
+          {/* odd: left col, even: right col — rendered in pairs */}
+          {Array.from({ length: 10 }).map((_, i) => renderRow(i))}
+        </div>
+      </div>
       {/* BUTTONS */}
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
+      <div className="action-buttons-container mt-10">
+        <button className="try-again-button" onClick={reset}>
           Start Again ↻
         </button>
-
         <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
-
         <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>
@@ -283,4 +304,4 @@ const Unit6_Page2_Q1 = () => {
   );
 };
 
-export default Unit6_Page2_Q1;
+export default Review5_Page1_Q1;
