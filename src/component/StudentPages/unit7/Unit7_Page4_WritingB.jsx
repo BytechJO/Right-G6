@@ -1,113 +1,75 @@
 import React, { useState } from "react";
-import { FaRedo } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
 
-const Unit7_Page4_WritingB = () => {
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+const WritingB = () => {
+  const [answers, setAnswers] = useState([
+    ["", ""],
+    ["", ""],
+    ["", ""],
+  ]);
 
-  // update
-  const updateAnswer = (index, value) => {
+  const handleInput = (questionIndex, inputIndex, value) => {
     const updated = [...answers];
-
-    updated[index] = value;
-
+    updated[questionIndex][inputIndex] = value;
     setAnswers(updated);
   };
 
-  // reset
-  const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+  const reset = () => {
+    setAnswers([
+      ["", ""],
+      ["", ""],
+      ["", ""],
+    ]);
   };
 
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-10 leading-relaxed">
+      <div className="header-title-page8-read pb-2.5">
         <span className="ex-A-read mr-2">B</span>
-        On the lines below, write a conversation between Lori and Jenny.
-        Remember to use quotation marks.
-      </h5>
-
-      {/* CONTENT */}
-      <div className="space-y-10 text-[18px] mt-10">
-        {/* 1 */}
-        <div className="flex items-center gap-3">
-          <span>Lori said,</span>
-
-          <div className="flex-1">
-            <input
-              type="text"
-              value={answers[0]}
-              onChange={(e) => updateAnswer(0, e.target.value)}
-              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent"
-            />
-          </div>
-        </div>
-
-        {/* 2 */}
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <input
-              type="text"
-              value={answers[1]}
-              onChange={(e) => updateAnswer(1, e.target.value)}
-              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent"
-            />
-          </div>
-
-          <span>Jenny answered.</span>
-        </div>
-
-        {/* 3 */}
-        <div className="flex items-center gap-3">
-          <div className="flex-1">
-            <input
-              type="text"
-              value={answers[2]}
-              onChange={(e) => updateAnswer(2, e.target.value)}
-              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent"
-            />
-          </div>
-
-          <span>she asked.</span>
-        </div>
-
-        {/* 4 */}
-        <div className="flex items-center gap-3">
-          <span>Jenny remarked,</span>
-
-          <div className="flex-1">
-            <input
-              type="text"
-              value={answers[3]}
-              onChange={(e) => updateAnswer(3, e.target.value)}
-              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent"
-            />
-          </div>
-
-          <span>.</span>
+        <div style={{ display: "block" }}>
+          Write down several “<span className="text-[#F59E0B]">if</span>”
+          statements about an impossible past condition and result. Use the
+          correct verb tense.
         </div>
       </div>
 
-      {/* BUTTON */}
-      <div className="flex justify-center mt-12">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
+      <div className="flex flex-col gap-8 mt-10 text-[18px]">
+        {[1, 2, 3].map((num, qIndex) => (
+          <div key={qIndex} className="flex flex-wrap items-center gap-2">
+            <span className="font-bold">{num}</span>
 
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
+            <span>If</span>
+
+            <div className="flex-1 min-w-[300px]">
+              <input
+                type="text"
+                value={answers[qIndex][0]}
+                onChange={(e) => handleInput(qIndex, 0, e.target.value)}
+                className="w-full border-b border-gray-400 outline-none bg-transparent text-[17px] font-semibold py-1"
+              />
+            </div>
+
+            <span>,</span>
+
+            <div className="flex-1 min-w-[300px]">
+              <input
+                type="text"
+                value={answers[qIndex][1]}
+                onChange={(e) => handleInput(qIndex, 1, e.target.value)}
+                className="w-full border-b border-gray-400 outline-none bg-transparent text-[17px] font-semibold py-1"
+              />
+            </div>
+
+            <span>.</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-center gap-6 mt-10">
+        <ActionButtons onReset={reset} />
       </div>
     </div>
   );
 };
 
-export default Unit7_Page4_WritingB;
+export default WritingB;

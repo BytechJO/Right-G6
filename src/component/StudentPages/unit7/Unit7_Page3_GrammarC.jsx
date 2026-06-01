@@ -1,76 +1,102 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
-import img1 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 60/SVG/Asset 8.svg";
-import img2 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 60/SVG/Asset 9.svg";
-import img3 from "../../../assets/imgs/pages/classbook/Right 5 Unit 7 Helen Is Visiting Grandma Folder/Page 60/SVG/Asset 24.svg";
+import ActionButtons from "../../ActionButtons";
 
-const Unit6_Page3_GrammarC = () => {
-  const correctAnswers = [
-    "The boy is making a sandwich.",
-    "The woman is combing her hair.",
-    "The woman is riding on the subway.",
+const GrammarC = () => {
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.,!?;:'"‘’‚‛“”„‟`´]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const questions = [
+    {
+      mark: "✓",
+      before: "If he",
+      after: "asked me, I",
+      end: "done it.",
+      answers: ["had", "would have"],
+    },
+    {
+      mark: "✗",
+      before: "If we",
+      after: "moved, we",
+      end: "met you.",
+      answers: [
+        ["hadn't", "had not"],
+        ["wouldn't have", "would not have"],
+      ],
+    },
+    {
+      mark: "✗",
+      before: "If Marcus",
+      after: "received his pilot’s license, he",
+      end: "been able to fly us to London.",
+      answers: [
+        ["hadn't", "had not"],
+        ["wouldn't have", "would not have"],
+      ],
+    },
+    {
+      mark: "✓",
+      before: "They",
+      after: "gotten better grades if they",
+      end: "studied the teacher’s notes.",
+      answers: ["would have", "had"],
+    },
   ];
 
-  const [answers, setAnswers] = useState(["", "", ""]);
+  const [answers, setAnswers] = useState(questions.map(() => ["", ""]));
 
-  const [errors, setErrors] = useState([false, false, false]);
-
-  const [correctLocked, setCorrectLocked] = useState([false, false, false]);
+  const [result, setResult] = useState(questions.map(() => [null, null]));
 
   const [locked, setLocked] = useState(false);
 
-  // normalize
-  const normalize = (text) => {
-    return text.trim().toLowerCase().replace(/\s+/g, " ").replace(/[?.]/g, "");
+  const handleInput = (qIndex, inputIndex, value) => {
+    if (locked || result[qIndex][inputIndex] === true) return;
+
+    const updatedAnswers = [...answers];
+    updatedAnswers[qIndex][inputIndex] = value;
+    setAnswers(updatedAnswers);
+
+    const updatedResult = [...result];
+    updatedResult[qIndex][inputIndex] = null;
+    setResult(updatedResult);
   };
 
-  // update
-  const updateAnswer = (index, value) => {
-    const updated = [...answers];
-
-    updated[index] = value;
-
-    setAnswers(updated);
-
-    const updatedErrors = [...errors];
-
-    updatedErrors[index] = false;
-
-    setErrors(updatedErrors);
-  };
-
-  // check
-  const handleCheck = () => {
+  const checkAnswers = () => {
     if (locked) return;
 
-    const isEmpty = answers.some((a) => normalize(a) === "");
+    const hasEmpty = answers.some((row) =>
+      row.some((cell) => cell.trim() === ""),
+    );
 
-    if (isEmpty) {
+    if (hasEmpty) {
       ValidationAlert.info("Please complete all fields.");
-
       return;
     }
 
     let score = 0;
 
-    const newErrors = answers.map((ans, i) => {
-      const isCorrect = normalize(ans) === normalize(correctAnswers[i]);
+    const results = answers.map((row, qIndex) =>
+      row.map((ans, inputIndex) => {
+        const accepted = Array.isArray(questions[qIndex].answers[inputIndex])
+          ? questions[qIndex].answers[inputIndex]
+          : [questions[qIndex].answers[inputIndex]];
 
-      if (isCorrect) score++;
+        const isCorrect = accepted.some(
+          (correctAnswer) => normalize(ans) === normalize(correctAnswer),
+        );
 
-      return !isCorrect;
-    });
+        if (isCorrect) score++;
+        return isCorrect;
+      }),
+    );
 
-    const newLocked = answers.map((ans, i) => {
-      return normalize(ans) === normalize(correctAnswers[i]);
-    });
+    setResult(results);
 
-    setErrors(newErrors);
-
-    setCorrectLocked(newLocked);
-
-    const total = 3;
+    const total = questions.length * 2;
 
     const color = score === total ? "green" : score === 0 ? "red" : "orange";
 
@@ -84,7 +110,6 @@ const Unit6_Page3_GrammarC = () => {
 
     if (score === total) {
       setLocked(true);
-
       ValidationAlert.success(msg);
     } else if (score === 0) {
       ValidationAlert.error(msg);
@@ -93,262 +118,148 @@ const Unit6_Page3_GrammarC = () => {
     }
   };
 
-  // show
-  const handleShow = () => {
-    setAnswers(correctAnswers);
+  const showAnswers = () => {
+    setAnswers(questions.map((q) => [...q.answers]));
 
-    setErrors([false, false, false]);
-
-    setCorrectLocked([true, true, true]);
+    setResult(questions.map(() => [true, true]));
 
     setLocked(true);
   };
 
-  // reset
-  const handleReset = () => {
-    setAnswers(["", "", ""]);
+  const reset = () => {
+    setAnswers(questions.map(() => ["", ""]));
 
-    setErrors([false, false, false]);
-
-    setCorrectLocked([false, false, false]);
+    setResult(questions.map(() => [null, null]));
 
     setLocked(false);
   };
 
   return (
     <div>
-      {/* HEADER */}
-      <h5 className="header-title-page8-read mb-10">
+      <h5 className="header-title-page8-read mb-5">
         <span className="ex-A-read mr-2">C</span>
-        Look and write sentences
+        Complete the sentences with <span className="text-[#F79530]">
+          had
+        </span>, <span className="text-[#F79530]">hadn’t</span>,{" "}
+        <span className="text-[#F79530]">would have</span>, or{" "}
+        <span className="text-[#F79530]">wouldn’t have</span>.
       </h5>
 
-      {/* QUESTIONS */}
-      <div className="space-y-2 text-[18px] mt-10">
-        {/* 1 */}
-        <div className="flex gap-6 items-center">
-          <span className="font-bold -mt-20">1</span>
+      <div className="flex flex-col gap-10 mt-10 text-[18px]">
+        {questions.map((q, qIndex) => (
+          <div key={qIndex}>
+            <div className="flex flex-wrap items-center gap-2 leading-[2.2]">
+              <span className="font-bold">{qIndex + 1}</span>(
+              <span className="font-bold text-[18px] text-red-600">
+                {q.mark}
+              </span>
+              )<span>{q.before}</span>
+              <div className="relative inline-block min-w-[140px]">
+                <input
+                  type="text"
+                  value={answers[qIndex][0]}
+                  disabled={locked || result[qIndex][0] === true}
+                  onChange={(e) => handleInput(qIndex, 0, e.target.value)}
+                  className={` w-full
+          border-0
+          border-b
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          font-semibold
+          px-1
+          text-center ${
+            result[qIndex][0] === false ? "border-red-500" : "border-black"
+          }`}
+                />
 
-          {/* IMAGE */}
-          <img
-            src={img1}
-            alt="museum"
-            style={{
-              width: "120px",
-              height: "120px",
-              objectFit: "contain",
-            }}
-          />
-
-          {/* INPUT */}
-          <div className="flex-1 mt-10 relative">
-            <input
-              type="text"
-              value={answers[0]}
-              disabled={locked || correctLocked[0]}
-              onChange={(e) => updateAnswer(0, e.target.value)}
-              className={`border-b outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent
-              ${errors[0] ? "border-red-500" : "border-black"}
-              `}
-            />
-
-            {/* ❌ */}
-            {errors[0] && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "-30px",
-                  transform: "translateY(-50%)",
-                  width: "22px",
-                  height: "22px",
-                  background: "#ef4444",
-                  color: "white",
-                  borderRadius: "50%",
-                  fontSize: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  border: "2px solid white",
-                  boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                }}
-              >
-                ✕
+                {result[qIndex][0] === false && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "0px",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      transform: "translateY(-50%)",
+                    }}
+                  >
+                    ✕
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
+              <span>{q.after}</span>
+              <div className="relative inline-block min-w-[180px]">
+                <input
+                  type="text"
+                  value={answers[qIndex][1]}
+                  disabled={locked || result[qIndex][1] === true}
+                  onChange={(e) => handleInput(qIndex, 1, e.target.value)}
+                  className={` w-full
+          border-0
+          border-b
+          outline-none
+          bg-transparent
+          text-[18px]
+          text-black
+          font-semibold
+          px-1
+          text-center ${
+            result[qIndex][1] === false ? "border-red-500" : "border-black"
+          }`}
+                />
 
-        {/* 2 */}
-        <div className="flex gap-6 items-center">
-          <span className="font-bold -mt-20">2</span>
-
-          {/* IMAGE */}
-          <img
-            src={img2}
-            alt="mountains"
-            style={{
-              width: "120px",
-              height: "120px",
-              objectFit: "contain",
-            }}
-          />
-
-          {/* INPUTS */}
-          <div className="flex-1 flex items-center mt-6">
-            {/* first line */}
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={answers[1]}
-                disabled={locked || correctLocked[1]}
-                onChange={(e) => updateAnswer(1, e.target.value)}
-                className={`border-b outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent
-      ${errors[1] ? "border-red-500" : "border-black"}
-      `}
-              />
-
-              {/* ❌ */}
-              {errors[1] && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-30px",
-                    transform: "translateY(-50%)",
-                    width: "22px",
-                    height: "22px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  ✕
-                </div>
-              )}
+                {result[qIndex][1] === false && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "0px",
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      transform: "translateY(-50%)",
+                    }}
+                  >
+                    ✕
+                  </div>
+                )}
+              </div>
+              <span>{q.end}</span>
             </div>
           </div>
-        </div>
-
-        {/* 3 */}
-        <div className="flex gap-6 items-center">
-          <span className="font-bold -mt-20">3</span>
-
-          {/* IMAGE */}
-          <img
-            src={img3}
-            alt="mountains"
-            style={{
-              width: "120px",
-              height: "120px",
-              objectFit: "contain",
-            }}
-          />
-
-          {/* INPUTS */}
-          <div className="flex-1 flex items-center mt-6">
-            {/* first line */}
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={answers[2]}
-                disabled={locked || correctLocked[2]}
-                onChange={(e) => updateAnswer(2, e.target.value)}
-                className={`border-b outline-none w-full text-[#6D2980] font-semibold px-2 bg-transparent
-      ${errors[2] ? "border-red-500" : "border-black"}
-      `}
-              />
-
-              {/* ❌ */}
-              {errors[2] && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "-30px",
-                    transform: "translateY(-50%)",
-                    width: "22px",
-                    height: "22px",
-                    background: "#ef4444",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  ✕
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      <div className="flex justify-center gap-6 ">
+        <ActionButtons
+          onReset={reset}
+          onShow={showAnswers}
+          onCheck={checkAnswers}
+        />
       </div>
     </div>
   );
 };
 
-export default Unit6_Page3_GrammarC;
+export default GrammarC;
