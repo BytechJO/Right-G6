@@ -1,12 +1,10 @@
 import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
-// بدّل المسار للصورة الفعلية
 import wheelImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U5 Folder/SVG/1.svg";
 
 const BORDER = "#84ad40";
 
-// تعريف الكلمات: كل حرف إما { fixed: "x" } أو { input: true }
 const WORDS = [
   {
     id: 1,
@@ -73,9 +71,8 @@ const WORDS = [
 ];
 
 const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+    str.toLowerCase().replace(/[.?!,''']/g, "").replace(/\s+/g, " ").trim();
 
-// build initial letter answers
 const initLetters = () => {
   const a = {};
   WORDS.forEach(({ id, answer, slots, prefilled }) => {
@@ -98,7 +95,7 @@ const initWords = () => {
   return a;
 };
 
-// ── LetterBox — OUTSIDE parent ──
+// ✅ LetterBox مع badge وبس underline أحمر بدون تأثيرات ثانية
 const LetterBox = ({ value, onChange, onKeyDown, inputRef, isCorrect, isWrong, disabled, fixed }) => {
   if (fixed) {
     return (
@@ -114,33 +111,43 @@ const LetterBox = ({ value, onChange, onKeyDown, inputRef, isCorrect, isWrong, d
     );
   }
   return (
-    <input
-      ref={inputRef}
-      type="text"
-      maxLength={2}
-      value={value}
-      disabled={disabled}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      onFocus={(e) => e.target.select()}
-      style={{
-        width: "28px", height: "32px",
-        border: "none",
-        borderBottom: `1px solid ${isWrong ? "#D1232A" : isCorrect ? BORDER : "#333"}`,
-        outline: "none",
-        background: isCorrect ? "#e8f5d0" : isWrong ? "#ffeaea" : "transparent",
-        textAlign: "center",
-        fontSize: "16px", fontWeight: "700",
-        color: isCorrect ? "#2d6a0f" : isWrong ? "#D1232A" : "#333",
-        fontFamily: "inherit",
-        padding: 0,
-        caretColor: "transparent",
-      }}
-    />
+    <div style={{ position: "relative", display: "inline-flex" }}>
+      <input
+        ref={inputRef}
+        type="text"
+        maxLength={2}
+        value={value}
+        disabled={disabled}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        onFocus={(e) => e.target.select()}
+        style={{
+          width: "28px", height: "32px",
+          border: "none",
+          borderBottom: `1px solid ${isWrong ? "#D1232A" : isCorrect ? BORDER : "#333"}`,
+          outline: "none",
+          background: "transparent",
+          textAlign: "center",
+          fontSize: "16px", fontWeight: "700",
+          color: isCorrect ? "#2d6a0f" : "#333",
+          fontFamily: "inherit",
+          padding: 0,
+          caretColor: "transparent",
+        }}
+      />
+      {isWrong && (
+        <span style={{
+          position: "absolute", top: "-8px", right: "-8px",
+          width: "16px", height: "16px", background: "#ef4444", color: "white",
+          borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "10px", fontWeight: "bold", border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        }}>✕</span>
+      )}
+    </div>
   );
 };
 
-// ── WordInput — OUTSIDE parent ──
 const WordInput = ({ wId, value, onChange, isCorrect, isWrong, disabled, prefilled }) => (
   <span style={{ position: "relative", display: "inline-block", minWidth: "140px" }}>
     <input
@@ -175,7 +182,6 @@ const WordInput = ({ wId, value, onChange, isCorrect, isWrong, disabled, prefill
   </span>
 );
 
-// ── MAIN COMPONENT ──
 const WB_Unit5_WheelOfFortune_A = () => {
   const [letters,  setLetters]  = useState(initLetters);
   const [wordAns,  setWordAns]  = useState(initWords);
@@ -191,7 +197,6 @@ const WB_Unit5_WheelOfFortune_A = () => {
     setLetters((prev) => ({ ...prev, [`${id}-${si}`]: ch }));
     setResult((prev) => ({ ...prev, [id]: undefined }));
     if (ch) {
-      // find next input slot
       const word = WORDS.find((w) => w.id === id);
       for (let nsi = si + 1; nsi < word.slots.length; nsi++) {
         if (word.slots[nsi].input) {
@@ -226,7 +231,11 @@ const WB_Unit5_WheelOfFortune_A = () => {
 
   const checkAnswers = () => {
     if (locked) return;
-    const hasEmpty = WORDS.filter((w) => !w.prefilled).some(({ id }) => !wordAns[id].trim());
+
+    const hasEmpty = WORDS.filter((w) => !w.prefilled).some(({ id, slots }) => {
+      if (!wordAns[id].trim()) return true;
+      return slots.some((slot, si) => slot.input && !letters[`${id}-${si}`]?.trim());
+    });
     if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
 
     let correct = 0;
@@ -239,7 +248,7 @@ const WB_Unit5_WheelOfFortune_A = () => {
     });
     setResult(nr);
     const total = WORDS.filter((w) => !w.prefilled).length;
-    const scored = correct - 1;
+    const scored = correct; // ✅ شيلنا الـ -1
     const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
     if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
@@ -274,17 +283,14 @@ const WB_Unit5_WheelOfFortune_A = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
         <h5 className="header-title-page8 mb-8">
           <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
           It's time to play Wheel of Fortune™! Imagine you are on the show and have guessed
           the letters shown. Which vocabulary word is it? Write the complete word on the line.
         </h5>
 
-        {/* Body */}
         <div style={{ display: "flex", gap: "24px", alignItems: "flex-start", marginBottom: "3em", marginTop: "1em", flexWrap: "wrap" }}>
 
-          {/* Wheel Image */}
           <div style={{ flexShrink: 0 }}>
             <img
               src={wheelImg}
@@ -293,7 +299,6 @@ const WB_Unit5_WheelOfFortune_A = () => {
             />
           </div>
 
-          {/* Words */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "20px" }}>
             {WORDS.map(({ id, slots, prefilled }) => {
               const isCorrect = result[id] === true;
@@ -301,10 +306,8 @@ const WB_Unit5_WheelOfFortune_A = () => {
               return (
                 <div key={id} style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
 
-                  {/* Number */}
                   <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>{id}</span>
 
-                  {/* Letter boxes */}
                   <div style={{ display: "flex", gap: "6px", alignItems: "flex-end" }}>
                     {slots.map((slot, si) => (
                       <LetterBox
@@ -321,7 +324,6 @@ const WB_Unit5_WheelOfFortune_A = () => {
                     ))}
                   </div>
 
-                  {/* Word input */}
                   <WordInput
                     wId={id}
                     value={wordAns[id]}
@@ -329,7 +331,6 @@ const WB_Unit5_WheelOfFortune_A = () => {
                     isCorrect={isCorrect}
                     isWrong={isWrong}
                     disabled={locked || isCorrect || prefilled}
-                    prefilled={prefilled}
                   />
 
                 </div>
@@ -340,7 +341,6 @@ const WB_Unit5_WheelOfFortune_A = () => {
         </div>
       </div>
 
-      {/* Buttons */}
       <div className="action-buttons-container">
         <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
         <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
