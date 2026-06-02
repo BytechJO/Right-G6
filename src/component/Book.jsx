@@ -8,14 +8,14 @@ import RightSidebar from "./Book/Sidebars/RightSidebar";
 // === cover img ===
 import workbookCover from "../assets/imgs/pages/workbook-cover.jpg";
 import stbookCover from "../assets/imgs/pages/classbook-cover.png";
-import teacherBookCover from "../assets/imgs/pages/classbook-cover.png";
+import teacherBookCover from "../assets/imgs/pages/Right InternationalTB/Right 2nd edition TB G6_Page_001.png";
 
 // === VIEWERS ===
 
 // === POPUP ===
 import Popup from "./Popup/Popup";
 import LessonNavigator from "./StudentPages/LessonNavigator";
-import teacherPdf from "../../public/Right International TB G5-Apple’s iMac (3).pdf";
+import teacherPdf from "../assets/Right International TB G5-Apple’s iMac (3).pdf";
 
 // === ASSETS ===
 import logo from "../assets/Page 01/PMAAlogo.svg";
