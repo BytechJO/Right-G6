@@ -17,15 +17,15 @@
 .headset-icon-CD-page17-p,
 .headset-icon-CD-page18-p,
 .headset-icon-CD-page19-p,
-.headset-icon-CD-page20-p {
+.headset-icon-CD-page20-p,.headset-icon-CD-page-voc {
   position: absolute;
   transform: translate(-50%, -50%);
   cursor: pointer;
   padding: 5px;
 }
 .headset-icon-CD-page1-p {
-    top: 3.5%;
-    right: -2.8%;
+       top: 5.5%;
+    right: 47.2%;
 }
 
 .headset-icon-CD-page2-p {
@@ -34,8 +34,8 @@
 }
 
 .headset-icon-CD-page3-p {
-    top: 3.5%;
-    right: -2.8%;
+       top: 5.5%;
+    right: 52.2%;
 }
 
 .headset-icon-CD-page4-p {
@@ -44,8 +44,8 @@
 }
 
 .headset-icon-CD-page5-p {
-     top: 3.5%;
-    right: -2.8%;
+       top: 5.5%;
+    right: 58.2%;
 }
 
 .headset-icon-CD-page6-p {
@@ -54,8 +54,8 @@
 }
 
 .headset-icon-CD-page7-p {
-    top: 3.5%;
-    right: -2.8%;
+   top: 5.5%;
+    right: 63.2%;
 }
 
 .headset-icon-CD-page8-p {
@@ -64,8 +64,8 @@
 }
 
 .headset-icon-CD-page9-p {
-    top: 3.5%;
-    right: -2.8%;
+       top: 5.5%;
+    right: 44.2%;
 }
 
 .headset-icon-CD-page10-p {
@@ -74,8 +74,8 @@
 }
 
 .headset-icon-CD-page11-p {
-    top: 3.5%;
-    right: -2.8%;
+  top: 5.5%;
+    right: 51.2%;
 }
 
 .headset-icon-CD-page12-p {
@@ -84,8 +84,8 @@
 }
 
 .headset-icon-CD-page13-p {
-    top: 3.5%;
-    right: -2.8%;
+    top: 11.5%;
+    right: 62.2%;
 }
 
 .headset-icon-CD-page14-p {
@@ -94,8 +94,8 @@
 }
 
 .headset-icon-CD-page15-p {
-    top: 3.5%;
-    right: -2.8%;
+  top: 5.5%;
+    right: 56.2%;
 }
 
 .headset-icon-CD-page16-p {
@@ -104,8 +104,8 @@
 }
 
 .headset-icon-CD-page17-p {
-    top: 3.5%;
-    right: -2.8%;
+  top: 5.5%;
+    right: 35.2%;
 }
 
 .headset-icon-CD-page18-p {
@@ -114,11 +114,16 @@
 }
 
 .headset-icon-CD-page19-p {
-    top: 3.5%;
-    right: -2.8%;
+   top: 5.5%;
+    right: 35.2%;
 }
 
 .headset-icon-CD-page20-p {
     top: 3.5%;
     right: -2.8%;
+}
+
+.headset-icon-CD-page-voc {
+    top: 11.5%;
+    left: 26.2%;
 }

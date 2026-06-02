@@ -244,7 +244,7 @@ const Posters_Page5 = ({ openPopup }) => {
       style={{ backgroundImage: `url(${page_1})` }}
     >
       <div
-        className="headset-icon-CD-page1-p hover:scale-110 transition"
+        className="headset-icon-CD-page5-p hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
         <svg
