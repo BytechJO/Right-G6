@@ -2,7 +2,7 @@ import WritingA from "./Unit6_Page4_WritingA";
 import WritingB from "./Unit6_Page4_WritingB";
 import WritingC from "./Unit6_Page4_WritingC";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
-import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 17.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/12.svg";
 const WritingSection_U1 = () => {
   return (
     <div>

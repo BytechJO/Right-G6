@@ -1,7 +1,7 @@
 import ReadingSection from "../../ReadingSection";
 import ComprehensionA from "./Unit2_Page2_ComprehensionA";
 import ComprehensionB from "./Unit2_Page2_ComprehensionB";
-import question from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/Asset 29.svg";
+import question from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/Asset 111.svg";
 import imgReading from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/Asset 29.svg";
 import readingAudio from "../../../assets/audio/ClassBook/U2/PG 11/reading_U2.mp3";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
