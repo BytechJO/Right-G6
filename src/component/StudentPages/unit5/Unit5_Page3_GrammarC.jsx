@@ -33,7 +33,27 @@ const Unit4_Page5_GrammarC = () => {
     return text
       .toLowerCase()
       .trim()
-      .replace(/'/g, "") // remove apostrophes
+      .replace(/isn't/g, "is not")
+      .replace(/isn’t/g, "is not")
+      .replace(/aren’t/g, "are not")
+      .replace(/aren't/g, "are not")
+      .replace(/wasn't/g, "was not")
+      .replace(/wasn’t/g, "was not")
+      .replace(/weren't/g, "were not")
+      .replace(/weren’t/g, "were not")
+      .replace(/don't/g, "do not")
+      .replace(/don’t/g, "do not")
+      .replace(/didn't/g, "did not")
+      .replace(/didn’t/g, "did not")
+      .replace(/can't/g, "can not")
+      .replace(/can’t/g, "can not")
+      .replace(/won't/g, "will not")
+      .replace(/won’t/g, "will not")
+        .replace(/has't/g, "has not")
+      .replace(/has’t/g, "has not")
+        .replace(/have't/g, "have not")
+      .replace(/have’t/g, "have not")
+      .replace(/[.,!?'"’;:]/g, "")
       .replace(/\s+/g, " "); // normalize spaces
   };
   const expandContractions = (text) => {
@@ -208,7 +228,7 @@ const Unit4_Page5_GrammarC = () => {
     <div>
       {/* HEADER */}
       <h5 className="header-title-page8-read mb-8">
-        <span className="ex-A-read mr-2">C</span>
+        <span className="ex-A-read mr-2 mb-5">C</span>
         Write the negative contraction for each helping verb.
       </h5>
 

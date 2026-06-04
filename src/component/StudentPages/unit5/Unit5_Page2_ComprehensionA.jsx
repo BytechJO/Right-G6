@@ -9,10 +9,10 @@ const Unit5_Page2_ComprehensionA = () => {
 
   const words = [
     { text: "hard-working", correct: true },
-    { text: "actor", correct: false },
+    { text: "actor", correct: true },
     { text: "selfish", correct: false },
     { text: "sad", correct: false },
-    { text: "married", correct: false },
+    { text: "married", correct: true },
     { text: "talented", correct: true },
     { text: "unpopular", correct: false },
   ];

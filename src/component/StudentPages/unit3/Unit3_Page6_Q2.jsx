@@ -24,7 +24,7 @@ const QUESTIONS = [
     parts: [
       { prefix: "If they", inputKey: "q2_p1", suffix: ", " },
       { prefix: "wold", inputKey: "q2_p2", suffix: " " },
-      { inputKey: "q2_p3", prefix: "open", suffix: "?" },
+      {  prefix: "open",inputKey: "q2_p3", suffix: "?" },
     ],
   },
   {
@@ -45,7 +45,7 @@ const CORRECT = {
   q1_p1: ["grade the tests easily"],
   q1_p2: ["multiple choice tests"],
   q2_p1: ["had more books"],
-  q2_p2: ["it on weekends"],
+  q2_p2: ["the library"],
   q2_p3: ["soon"],
   q3_p1: ["Karl wouldn’t buy a bicycle if he didn’t save his money from work."],
   q4_p1: ["We would get a swimming pool if we moved to the desert."],
@@ -68,7 +68,7 @@ const LineInput = ({ inputKey, answers, errors, locked, onChange }) => {
         position: "relative",
         display: "inline-block",
         flex: 1,
-        minWidth: "120px",
+        width: "100%",
       }}
     >
       <input
@@ -198,10 +198,10 @@ const Unit3_Page6_Q2 = () => {
           }}
         >
           {QUESTIONS.map((q) => (
-            <div key={q.id}>
+            <div key={q.id} className="flex flex-wrap">
               {/* السطر الأول: رقم + رمز + أول part */}
               <div
-                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                style={{ display: "flex", alignItems: "center",width:"100%", gap: "8px" }}
               >
                 <span style={{ fontWeight: "bold", minWidth: "20px" }}>
                   {q.id}
@@ -241,7 +241,7 @@ const Unit3_Page6_Q2 = () => {
                     {q.parts[0].prefix}
                   </span>
                 )}
-                <LineInput inputKey={q.parts[0].inputKey} {...inputProps} />
+                <LineInput inputKey={q.parts[0].inputKey} {...inputProps}  />
                 {q.parts[0].suffix && (
                   <span style={{ color: "#333", whiteSpace: "nowrap" }}>
                     {q.parts[0].suffix}
@@ -257,7 +257,7 @@ const Unit3_Page6_Q2 = () => {
                     alignItems: "center",
                     gap: "8px",
                     marginTop: "10px",
-                    paddingLeft: "56px",
+                    // paddingLeft: "56px",
                   }}
                 >
                   {q.parts[1].prefix && (
@@ -269,6 +269,30 @@ const Unit3_Page6_Q2 = () => {
                   {q.parts[1].suffix && (
                     <span style={{ color: "#333", whiteSpace: "nowrap" }}>
                       {q.parts[1].suffix}
+                    </span>
+                  )}
+                </div>
+              )}
+
+                {q.parts[2] && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginTop: "10px",
+                    // paddingLeft: "56px",
+                  }}
+                >
+                  {q.parts[2].prefix && (
+                    <span style={{ color: "#333", whiteSpace: "nowrap" }}>
+                      {q.parts[2].prefix}
+                    </span>
+                  )}
+                  <LineInput inputKey={q.parts[2].inputKey} {...inputProps} />
+                  {q.parts[2].suffix && (
+                    <span style={{ color: "#333", whiteSpace: "nowrap" }}>
+                      {q.parts[2].suffix}
                     </span>
                   )}
                 </div>

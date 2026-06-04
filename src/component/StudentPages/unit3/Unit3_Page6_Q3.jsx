@@ -186,12 +186,7 @@ const Unit3_Page6_Q3 = () => {
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-          <button onClick={handleShow} className="show-answer-btn">
-            Show Answer
-          </button>
-          <button className="check-button2" onClick={handleCheck}>
-            Check Answer ✓
-          </button>
+        
         </div>
       </div>
     </div>

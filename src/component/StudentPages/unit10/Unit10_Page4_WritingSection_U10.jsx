@@ -1,7 +1,7 @@
 import WritingA from "./Unit10_Page4_WritingA";
 import WritingB from "./Unit10_Page4_WritingB";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Writing.svg";
-import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/7.svg";
+import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 10.svg";
 
 const WritingSection_U10 = () => {
   return (

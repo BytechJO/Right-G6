@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 21.svg";
+import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 31.svg";
 
 const Review9_Page2_Q2 = () => {
   const questions = [
@@ -165,7 +165,7 @@ const Review9_Page2_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
+      <div className="div-forall w-full text-[18px] mb-10">
         {/* TITLE */}
         <div className="header-title-page8 mb-12">
           <span className="ex-A mr-2">E</span>
@@ -180,8 +180,8 @@ const Review9_Page2_Q2 = () => {
             src={img1}
             alt="activity table"
             style={{
-              width: "200px",
-              height: "auto",
+              width: "auto",
+              height: "220px",
               objectFit: "contain",
             }}
           />

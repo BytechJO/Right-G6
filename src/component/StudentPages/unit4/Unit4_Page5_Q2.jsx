@@ -16,10 +16,12 @@ const Unit4_Page5_Q2 = () => {
   const questions = [
     {
       id: 0,
-      parts: [
-        { type: "text", value: "The car is " },
-        { type: "input", id: "0_0", answer: "fixed" },
-        { type: "text", value: " by the mechanic." },
+       parts: [
+        {
+          type: "input",
+          id: "0_0",
+          answer: "The car is fixed by the mechanic",
+        },
       ],
     },
     {
@@ -89,8 +91,7 @@ const Unit4_Page5_Q2 = () => {
   );
   const [correctLocked, setCorrectLocked] = useState(
     Object.keys(allInputs).reduce((acc, k) => {
-      // السؤال الأول مثال جاهز
-      acc[k] = k.startsWith("0_");
+     
       return acc;
     }, {}),
   );
@@ -215,7 +216,7 @@ const Unit4_Page5_Q2 = () => {
     fontSize: "18px",
     textAlign: "center",
     fontWeight: 600,
-    width: id === "5_0" ? "450px" : "160px",
+    width: id === "5_0" ||  id === "0_0" ? "450px" : "160px",
     background: "transparent",
 
     textDecoration: isUnderlineOnly ? "line-through" : "none",
