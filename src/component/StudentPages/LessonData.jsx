@@ -69,7 +69,6 @@ import Unit6_Page5_Q3 from "./unit6/Unit6_Page5_Q3";
 import Unit6_Page6_Q1 from "./unit6/Unit6_Page6_Q1";
 import Unit6_Page6_Q2 from "./unit6/Unit6_Page6_Q2";
 
-
 // //review5&6
 import Review5_Page1_Q1 from "./review5&6/Review5_Page1_Q1";
 import Review5_Page1_Q2 from "./review5&6/Review5_Page1_Q2";
@@ -168,7 +167,7 @@ export const lessons = [
   { component: Review2_Page1_Q2, unit: 2, isReview: true }, //18
 
   { component: Review2_Page2_Q1, unit: 2, isReview: true }, //19
-  { component: Review2_Page2_Q2, unit: 2, isReview: true }, //20
+  { component: Review2_Page2_Q2, unit: 2, isReview: true, lastOfUnit: true }, //20
 
   // //unit3
   { component: Unit3_Page5_Q1, unit: 3 }, //21
@@ -211,7 +210,7 @@ export const lessons = [
   { component: Unit6_Page5_Q2, unit: 6 }, //48
   { component: Unit6_Page5_Q3, unit: 6 }, //49
   { component: Unit6_Page6_Q1, unit: 6 }, //50
-  { component: Unit6_Page6_Q2, unit: 6 , lastOfUnit: true }, //51
+  { component: Unit6_Page6_Q2, unit: 6, lastOfUnit: true }, //51
 
   // //review5&6
   { component: Review5_Page1_Q1, unit: 6, isReview: true }, //52
@@ -222,7 +221,7 @@ export const lessons = [
 
   { component: Review6_Page1_Q1, unit: 6, isReview: true }, //57
   { component: Review6_Page1_Q2, unit: 6, isReview: true }, //58
-{ component: Review6_Page2_Q1, unit: 6, isReview: true }, //59
+  { component: Review6_Page2_Q1, unit: 6, isReview: true }, //59
   { component: Review6_Page2_Q2, unit: 6, isReview: true, lastOfUnit: true }, //60
 
   // //unit7

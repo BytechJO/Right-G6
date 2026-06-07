@@ -104,13 +104,15 @@ const Review2_Page2_Q2 = () => {
           ))}
         </div>
 
-        {/* زر Reset فقط */}
-        <div className="flex justify-center mt-8">
+       
+      </div> 
+      
+      {/* زر Reset فقط */}
+        <div className="action-buttons-container">
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
         </div>
-      </div>
     </div>
   );
 };

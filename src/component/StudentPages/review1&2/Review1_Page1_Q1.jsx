@@ -142,7 +142,7 @@ const VocabularyA_WordShape = () => {
       <div className="div-forall" style={{ gap: "40px" }}>
         {/* العنوان */}
         <h5 className="header-title-page8">
-          <span className="ex-A mr-2">A</span>
+          <span className="mr-2">A</span>
           Words have a shape based on how many high or low letters they have.
           High letters go above the line: b, d, f, h, etc. Low letters go below
           the line: g, j, p, q, etc. Look at the shape of the words below to
