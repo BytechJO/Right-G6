@@ -189,7 +189,7 @@ const Review10_Page1_Q3 = () => {
       <div className="div-forall w-full text-[18px]">
         {/* TITLE */}
         <div className="header-title-page8 mb-[10vh]">
-          <span className="ex-A mr-2">C</span>
+          <span className="mr-2">C</span>
           Write the missing words for each expression, and then fill in the
           blank lines from a to d.
         </div>

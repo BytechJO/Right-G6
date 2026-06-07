@@ -157,7 +157,7 @@ const Review8_Page2_Q2 = () => {
       <div className="div-forall w-full text-[18px]">
         <h5 className="header-title-page8 mb-6">
           <span
-            className="ex-A"
+          
             style={{
               marginRight: "10px",
             }}

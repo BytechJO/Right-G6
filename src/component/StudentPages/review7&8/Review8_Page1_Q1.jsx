@@ -186,13 +186,12 @@ const Unit3_Page5_Q1 = () => {
         </div>
       </div>
       {/* Buttons */}
-      <div className="action-buttons-container">
-        <ActionButtons
-          handleShowAnswer={showAnswers}
-          handleStartAgain={reset}
-          checkAnswers={checkAnswers}
-        />
-      </div>
+
+      <ActionButtons
+        handleShowAnswer={showAnswers}
+        handleStartAgain={reset}
+        checkAnswers={checkAnswers}
+      />
     </div>
   );
 };

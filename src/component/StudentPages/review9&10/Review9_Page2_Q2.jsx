@@ -168,7 +168,7 @@ const Review9_Page2_Q2 = () => {
       <div className="div-forall w-full text-[18px] mb-10">
         {/* TITLE */}
         <div className="header-title-page8 mb-12">
-          <span className="ex-A mr-2">E</span>
+          <span className="mr-2">E</span>
           Everyone is done with morning classes, and it’s time for lunch. What
           have the students been doing this morning? Use the present perfect
           progressive.
