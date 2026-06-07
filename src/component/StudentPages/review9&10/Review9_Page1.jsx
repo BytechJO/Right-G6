@@ -1,8 +1,9 @@
 import React from "react";
 import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/Page 88.png";
-import "./Review9_Page1.css";
+
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
-// import Unit4_Page6_Q2 from "./Unit4_Page6_Q2";
+import "./Review9_Page1.css";
+
 const Review9_Page1 = ({ openPopup }) => {
   return (
     <div
