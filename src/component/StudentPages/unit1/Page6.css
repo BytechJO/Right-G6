@@ -44,3 +44,6 @@
   left: 60%; /* عدلها حسب المكان */
   cursor: pointer;
 }
+.student-unit1-answer-input::placeholder {
+  font-size: 0.78em;
+}

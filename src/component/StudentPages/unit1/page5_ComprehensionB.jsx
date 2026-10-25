@@ -146,11 +146,13 @@ const ComprehensionB = () => {
               <input
                 type="text"
                 value={answers[index]}
+                placeholder="Type the answer"
+                title="Type the answer"
                 disabled={locked || errors[index] === false}
                 onChange={(e) => {
                   handleChange(index, e.target.value);
                 }}
-                className={`${q.width} text-center bg-transparent border-b-1 outline-none
+                className={`student-unit1-answer-input ${q.width} text-center bg-transparent border-b-1 outline-none
                   ${errors[index] ? "border-red-500" : "border-black"}`}
               />
 

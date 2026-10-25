@@ -72,3 +72,6 @@ top: 47.5%;
   z-index: 3;
   pointer-events: none;
 }
+.student-unit1-answer-input::placeholder {
+  font-size: 0.78em;
+}

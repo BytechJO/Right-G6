@@ -1,13 +1,18 @@
 import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import spainImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U1 Folder/SVG/Asset 13.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import WBUnit1AudioText, {
+  stopUnit1Audio,
+  unit1Audio,
+} from "./WB_Unit1_AudioText";
 
 const WB_Unit1_Page8_H = () => {
   const questions = [
-    { id: 1, text: "Has he ever traveled to Spain?",        answer: "c" },
-    { id: 2, text: "Has he ever met Jim?",                  answer: "a" },
-    { id: 3, text: "Have they lived in that house long?",   answer: "d" },
-    { id: 4, text: "How many books has she written?",       answer: "e" },
+    { id: 1, text: "Has he ever traveled to Spain?", answer: "c" },
+    { id: 2, text: "Has he ever met Jim?", answer: "a" },
+    { id: 3, text: "Have they lived in that house long?", answer: "d" },
+    { id: 4, text: "How many books has she written?", answer: "e" },
     { id: 5, text: "Has she been playing piano for a long time?", answer: "b" },
   ];
 
@@ -20,23 +25,36 @@ const WB_Unit1_Page8_H = () => {
   ];
 
   const [answers, setAnswers] = useState(questions.map(() => ""));
-  const [result, setResult]   = useState([]);
-  const [locked, setLocked]   = useState(false);
+  const [result, setResult] = useState([]);
+  const [locked, setLocked] = useState(false);
   const inputsRef = useRef({});
+  const questionAudio = [1, 4, 6, 8, 10];
+  const responseAudio = [2, 3, 5, 7, 9];
 
-const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’'']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
     const updated = [...answers];
     updated[i] = value.toLowerCase();
     setAnswers(updated);
-    setResult((prev) => { const c = [...prev]; c[i] = undefined; return c; });
+    setResult((prev) => {
+      const c = [...prev];
+      c[i] = undefined;
+      return c;
+    });
 
     // auto move to next
     if (value) {
-      const nexat = inputsRef.current[i + 1];
-      if (next) { next.focus(); next.select(); }
+      const next = inputsRef.current[i + 1];
+      if (next) {
+        next.focus();
+        next.select();
+      }
     }
   };
 
@@ -54,10 +72,13 @@ const normalize = (str) =>
     });
     setResult(newResult);
     const total = questions.length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
@@ -68,6 +89,7 @@ const normalize = (str) =>
   };
 
   const handleReset = () => {
+    stopUnit1Audio();
     setAnswers(questions.map(() => ""));
     setResult([]);
     setLocked(false);
@@ -76,51 +98,77 @@ const normalize = (str) =>
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* Title */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>H</span>
-          Match each statement to its correct response.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="H"
+          title="Match each statement to its correct response."
+          subTitle="Start with one item, find the response or definition that matches its meaning, then confirm the pair before moving on."
+        />
 
         {/* Two columns */}
         <div className="flex gap-16 text-[18px]">
-
           {/* LEFT — questions */}
           <div className="flex flex-col gap-10 flex-1">
             {questions.map((q, i) => {
-              const isWrong   = result[i] === false;
+              const isWrong = result[i] === false;
               const isCorrect = result[i] === true;
               return (
                 <div key={q.id} className="flex items-start gap-3">
                   {/* input */}
-                  <span className="relative inline-block" style={{ marginTop: "2px" }}>
+                  <span
+                    className="relative inline-block"
+                    style={{ marginTop: "2px" }}
+                  >
                     <input
                       ref={(el) => (inputsRef.current[i] = el)}
                       type="text"
                       maxLength={1}
                       value={answers[i]}
+                      placeholder="a"
+                      title="Type the matching letter"
                       disabled={locked || isCorrect}
                       onFocus={(e) => e.target.select()}
                       onChange={(e) => handleChange(i, e.target.value)}
                       className={`
-                        w-[40px] border-0 border-b outline-none bg-transparent
+                        wb-unit1-answer-input w-[40px] border-0 border-b outline-none bg-transparent
                         text-[18px]  text-center px-1
                         ${isWrong ? "border-[#D1232A]" : "border-black"}
                       `}
                     />
                     {isWrong && (
-                      <span style={{
-                        position: "absolute", top: "-8px", right: "-6px",
-                        width: "18px", height: "18px", background: "#ef4444", color: "white",
-                        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-                        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                      }}>✕</span>
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: "-6px",
+                          width: "18px",
+                          height: "18px",
+                          background: "#ef4444",
+                          color: "white",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "11px",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                        }}
+                      >
+                        ✕
+                      </span>
                     )}
                   </span>
 
                   <span className="font-bold min-w-[20px]">{q.id}</span>
-                  <span>{q.text}</span>
+                  <WBUnit1AudioText
+                    src={unit1Audio(
+                      "Page 8 - Exercise H",
+                      `Item_${String(questionAudio[i]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play question ${q.id}`}
+                  >
+                    {q.text}
+                  </WBUnit1AudioText>
                 </div>
               );
             })}
@@ -131,17 +179,24 @@ const normalize = (str) =>
             {responses.map((r) => (
               <div key={r.label} className="flex gap-3">
                 <span className="font-bold min-w-[20px]">{r.label}</span>
-                <span>{r.text}</span>
+                <WBUnit1AudioText
+                  src={unit1Audio(
+                    "Page 8 - Exercise H",
+                    `Item_${String(responseAudio[responses.indexOf(r)]).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play response ${r.label}`}
+                >
+                  {r.text}
+                </WBUnit1AudioText>
               </div>
             ))}
           </div>
-
         </div>
 
         {/* Image */}
         <img
           src={spainImg}
-          alt="Spain coast"
+          alt="A coastal town in Spain with colorful buildings, a beach, and the sea"
           style={{
             width: "100%",
             maxHeight: "220px",
@@ -149,17 +204,21 @@ const normalize = (str) =>
             borderRadius: "8px",
             marginTop: "32px",
             marginBottom: "4em",
-
           }}
         />
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

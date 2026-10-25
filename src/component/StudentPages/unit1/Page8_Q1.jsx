@@ -157,12 +157,14 @@ const Page8_Q1 = () => {
     <span className="relative inline-flex items-center mx-1">
       <input
         value={answers[i]}
+        placeholder="Type the word"
+        title="Type the word"
         disabled={locked || errors[i] === false}
         onChange={(e) => handleChange(i, e.target.value)}
         aria-label={`Blank ${i + 1} of ${CORRECT.length}`}
         aria-invalid={errors[i] === true}
         style={{ width, height: "40px" }}
-        className={`border-b outline-none text-center font-semibold bg-transparent
+        className={`student-unit1-answer-input border-b outline-none text-center font-semibold bg-transparent
           ${errors[i] === true ? "border-red-500" : "border-black"}`}
       />
       {errors[i] === true && (

@@ -281,6 +281,13 @@ img {
   /* white-space: nowrap; */
   width: 100%;
   margin-bottom: 2;
+}/* Global keyboard focus for all inputs */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
 }
 .sub-header {
   margin: 0;

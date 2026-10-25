@@ -8,7 +8,6 @@ const Popup = ({ isOpen, onClose, type = "default", children }) => {
   const popupRef = useRef(null);
   const previousFocusRef = useRef(null);
 
-  // اختر حجم البوب اب بناء على النوع
   const sizeClass = {
     audio: "audio-size",
     video: "video-size",
@@ -149,7 +148,6 @@ const Popup = ({ isOpen, onClose, type = "default", children }) => {
           className={`popup-close-btn type-${type}`}
           onClick={onClose}
           aria-label="Close dialog"
-          title="Close"
         >
           <FontAwesomeIcon icon={faTimes} aria-hidden="true" />
         </button>

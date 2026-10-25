@@ -29,7 +29,7 @@ const GrammarB = () => {
 
   const exampleIndex = 0; // Q1 is pre-filled as example
 
-  const initialAnswers = questions.map((q, i) => "");
+  const initialAnswers = questions.map(() => "");
 
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
@@ -189,6 +189,8 @@ const GrammarB = () => {
               <div className="ml-6">
                 <input
                   value={answers[i]}
+                  placeholder="Type the sentence"
+                  title="Type the sentence"
                   disabled={isLocked}
                   onChange={(e) => {
                     const updated = [...answers];
@@ -200,10 +202,9 @@ const GrammarB = () => {
                       [i]: undefined,
                     }));
                   }}
-                  className={`border-b outline-none w-full max-w-[480px] font-semibold
+                  className={`student-unit1-answer-input border-b outline-none w-full max-w-[480px] font-semibold
                     ${errors[i] === true ? "border-red-500" : "border-black"}
                   `}
-                  placeholder={"Write your answer here..."}
                 />
               </div>
             </div>

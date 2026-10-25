@@ -197,10 +197,13 @@ const Page9_Q3 = () => {
                   <div style={{ flex: 1, position: "relative" }}>
                     <input
                       value={answers[idx]}
+                      placeholder="Type the sentence"
+                      title="Type the sentence"
                       disabled={locked || isOk}
                       onChange={(e) => handleChange(idx, e.target.value)}
                       aria-label={`Sentence about picture ${i + 1}`}
                       aria-invalid={hasError}
+                      className="student-unit1-answer-input"
                       style={{
                         width: "100%",
                         borderBottom: hasError

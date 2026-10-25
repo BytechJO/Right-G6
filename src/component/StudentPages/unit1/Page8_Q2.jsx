@@ -349,6 +349,8 @@ const Page8_Q2 = () => {
                         inputsRef.current[exprIdx][globalBlankIdx] = el;
                       }}
                       value={letterAnswers[exprIdx]?.[globalBlankIdx] ?? ""}
+                      placeholder="a"
+                      title="Type the missing letter"
                       disabled={locked || isOk}
                       aria-label={`Expression ${expr.num}, missing letter ${globalBlankIdx + 1}`}
                       aria-invalid={hasError}
@@ -360,7 +362,7 @@ const Page8_Q2 = () => {
                         )
                       }
                       maxLength={1}
-                      className={`w-[18px] border-b outline-none text-center font-semibold bg-transparent text-[18px]
+                      className={`student-unit1-answer-input w-[18px] border-b outline-none text-center font-semibold bg-transparent text-[18px]
                       ${hasError ? "border-red-500" : "border-black"}`}
                     />
                     {hasError && (
@@ -422,11 +424,13 @@ const Page8_Q2 = () => {
               <div className="relative">
                 <input
                   value={sentenceAnswers[i]}
+                  placeholder="Type the expression"
+                  title="Type the expression"
                   disabled={locked || matchErrors[i] === false}
                   onChange={(e) => handleSentenceChange(i, e.target.value)}
                   aria-label={`Expression matching definition ${i + 1}`}
                   aria-invalid={matchErrors[i] === true}
-                  className={`w-[320px] h-[42px] px-3 rounded-full border-2 outline-none text-[18px]
+                  className={`student-unit1-answer-input w-[320px] h-[42px] px-3 rounded-full border-2 outline-none text-[18px]
           ${matchErrors[i] === true ? "border-red-400" : "border-[#55c271]"}`}
                 />
 

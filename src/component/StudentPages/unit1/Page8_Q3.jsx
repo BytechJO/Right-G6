@@ -186,6 +186,8 @@ const VerbTable = ({
                     >
                       <input
                         value={values[rowIdx]?.[col] ?? ""}
+                        placeholder="Type the word"
+                        title="Type the word"
                         disabled={locked || isCorrect}
                         onChange={(e) => onChange(rowIdx, col, e.target.value)}
                         aria-label={`${tableLabel}, row ${rowIdx + 1}, ${
@@ -196,6 +198,7 @@ const VerbTable = ({
                               : "verb"
                         }`}
                         aria-invalid={hasError}
+                        className="student-unit1-answer-input"
                         style={{
                           width: col === "pastParticiple" ? "120px" : "100px",
                           height: "52px",

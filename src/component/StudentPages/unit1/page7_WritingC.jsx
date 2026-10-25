@@ -26,8 +26,9 @@ const WritingC = () => {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="w-full h-[120px] border border-gray-300 p-2 mt-3 outline-none resize-none"
+          className="student-unit1-answer-input w-full h-[120px] border border-gray-300 p-2 mt-3 outline-none resize-none"
           placeholder="Write your paragraph here..."
+          title="Write your paragraph here"
         />
 
         {/* Reset Icon */}

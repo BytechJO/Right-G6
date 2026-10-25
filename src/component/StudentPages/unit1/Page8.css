@@ -86,3 +86,6 @@ top: 66.2%;
   pointer-events: none;
 }
 
+.student-unit1-answer-input::placeholder {
+  font-size: 0.78em;
+}

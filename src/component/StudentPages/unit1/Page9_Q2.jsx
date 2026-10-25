@@ -223,10 +223,13 @@ const Page9_Q2 = () => {
                     <div className="ml-8 relative">
                       <input
                         value={answers[idx]}
+                        placeholder="Type the sentence"
+                        title="Type the sentence"
                         disabled={locked || isOk}
                         onChange={(e) => handleChange(idx, e.target.value)}
                         aria-label={`Present perfect sentence ${i + 1}`}
                         aria-invalid={hasError}
+                        className="student-unit1-answer-input"
                         style={{
                           width: "100%",
                           borderBottom: ` ${hasError ? "2px solid #ef4444" : "1px solid #555"}`,

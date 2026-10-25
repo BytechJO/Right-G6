@@ -10,12 +10,14 @@ const WritingA = () => {
       <span className="font-bold text-[15px]">{i + 1}</span>
       <input
         value={answers[i]}
+        placeholder="Type the sentence"
+        title="Type the sentence"
         onChange={(e) => {
           const updated = [...answers];
           updated[i] = e.target.value;
           setAnswers(updated);
         }}
-        className="border-b border-black outline-none flex-1 text-[#6D2980] font-semibold bg-transparent"
+        className="student-unit1-answer-input border-b border-black outline-none flex-1 text-[#6D2980] font-semibold bg-transparent"
       />
     </div>
   );

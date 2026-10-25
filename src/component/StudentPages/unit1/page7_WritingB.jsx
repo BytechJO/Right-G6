@@ -29,7 +29,7 @@ const WritingB = () => {
     });
 
   const inputStyle =
-    "border-b border-black outline-none flex-1 text-[#6D2980] font-semibold bg-transparent";
+    "student-unit1-answer-input border-b border-black outline-none flex-1 text-[#6D2980] font-semibold bg-transparent";
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -48,6 +48,8 @@ const WritingB = () => {
               <span className="whitespace-nowrap">Festival's name:</span>
               <input
                 value={answers.festivalName}
+                placeholder="Type the festival name"
+                title="Type the festival name"
                 onChange={(e) => handleChange("festivalName", e.target.value)}
                 className={inputStyle}
               />
@@ -56,6 +58,8 @@ const WritingB = () => {
               <span className="whitespace-nowrap">Where it is:</span>
               <input
                 value={answers.whereItIs}
+                placeholder="Type the place"
+                title="Type where the festival is"
                 onChange={(e) => handleChange("whereItIs", e.target.value)}
                 className={inputStyle}
               />
@@ -67,6 +71,8 @@ const WritingB = () => {
             <span className="whitespace-nowrap">When it is held:</span>
             <input
               value={answers.whenHeld}
+              placeholder="Type when it is held"
+              title="Type when the festival is held"
               onChange={(e) => handleChange("whenHeld", e.target.value)}
               className={inputStyle}
             />
@@ -78,19 +84,25 @@ const WritingB = () => {
               <span className="whitespace-nowrap">Events of the festival:</span>
               <input
                 value={answers.events1}
+                placeholder="Type a festival event"
+                title="Type a festival event"
                 onChange={(e) => handleChange("events1", e.target.value)}
                 className={inputStyle}
               />
             </div>
             <input
               value={answers.events2}
+              placeholder="Type another event"
+              title="Type another festival event"
               onChange={(e) => handleChange("events2", e.target.value)}
-              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold bg-transparent"
+              className="student-unit1-answer-input border-b border-black outline-none w-full text-[#6D2980] font-semibold bg-transparent"
             />
             <input
               value={answers.events3}
+              placeholder="Type another event"
+              title="Type another festival event"
               onChange={(e) => handleChange("events3", e.target.value)}
-              className="border-b border-black outline-none w-full text-[#6D2980] font-semibold bg-transparent"
+              className="student-unit1-answer-input border-b border-black outline-none w-full text-[#6D2980] font-semibold bg-transparent"
             />
           </div>
 
@@ -99,6 +111,8 @@ const WritingB = () => {
             <span className="whitespace-nowrap">Reason(s) for the festival:</span>
             <input
               value={answers.reasons}
+              placeholder="Type the reasons"
+              title="Type the reasons for the festival"
               onChange={(e) => handleChange("reasons", e.target.value)}
               className={inputStyle}
             />
@@ -109,6 +123,8 @@ const WritingB = () => {
             <span className="whitespace-nowrap">Anything else important about the festival:</span>
             <input
               value={answers.anythingElse}
+              placeholder="Type anything else"
+              title="Type anything else important about the festival"
               onChange={(e) => handleChange("anythingElse", e.target.value)}
               className={inputStyle}
             />

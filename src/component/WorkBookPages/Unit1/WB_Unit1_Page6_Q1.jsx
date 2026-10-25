@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WBUnit1AudioText, { stopUnit1Audio, unit1Audio } from "./WB_Unit1_AudioText";
 
 const WB_Unit1_Page6_E = () => {
   const questions = [
@@ -77,6 +79,7 @@ const WB_Unit1_Page6_E = () => {
   };
 
   const handleReset = () => {
+    stopUnit1Audio();
     setAnswers(questions.map(() => ""));
     setResult([]);
     setLocked(false);
@@ -85,11 +88,11 @@ const WB_Unit1_Page6_E = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
-          Unscramble the <span style={{color : "orange"}}>present perfect</span>  sentences.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title={<>Unscramble the <span style={{ color: "orange" }}>present perfect</span> sentences.</>}
+          subTitle="Say the correct sentence first, then reorder the words and check capitalization and punctuation."
+        />
 
         {/* Questions */}
         <div className="flex flex-col gap-4 text-[18px]" style={ {marginBottom:"3em"}}>
@@ -113,7 +116,12 @@ boxShadow: "6px 6px 14px rgba(0,0,0,0.2)",
                 {/* Scrambled sentence */}
                 <div className="flex items-center gap-3">
                   <span className="font-bold min-w-[20px]">{i + 1}</span>
-                  <span>{q.scrambled}</span>
+                  <WBUnit1AudioText
+                    src={i < 4 ? unit1Audio("Page 6 - Exercise E", `Item_${String(i + 1).padStart(3, "0")}_`) : null}
+                    ariaLabel={`Play scrambled sentence ${i + 1}`}
+                  >
+                    {q.scrambled}
+                  </WBUnit1AudioText>
                 </div>
 
                 {/* Answer input */}
@@ -121,10 +129,12 @@ boxShadow: "6px 6px 14px rgba(0,0,0,0.2)",
                   <input
                     type="text"
                     value={answers[i]}
+                    placeholder="Type the sentence"
+                    title="Type the sentence"
                     disabled={locked || isCorrect}
                     onChange={(e) => handleChange(i, e.target.value)}
                     className={`
-                      w-full border-0 border-b outline-none bg-transparent
+                      wb-unit1-answer-input w-full border-0 border-b outline-none bg-transparent
                       text-[18px] font-semibold px-1 mb-3
                       ${isWrong ? "border-[#D1232A]" : "border-black"}
                     `}
