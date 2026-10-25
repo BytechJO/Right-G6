@@ -15,18 +15,15 @@ const ComprehensionB = () => {
     },
     {
       id: 2,
-      before:
-        "The Monkey Buffet Festival has become a big",
-      after:
-        "attraction and brings business to the city.",
+      before: "The Monkey Buffet Festival has become a big",
+      after: "attraction and brings business to the city.",
       answer: "tourist",
       width: "w-[260px]",
     },
     {
       id: 3,
       before: "A",
-      after:
-        "supply of fruits and other foods are put on a table.",
+      after: "supply of fruits and other foods are put on a table.",
       answer: "countless",
       width: "w-[220px]",
     },
@@ -45,25 +42,23 @@ const ComprehensionB = () => {
   };
 
   // handle input
-const handleChange = (index, value) => {
-  const updated = [...answers];
-  updated[index] = value;
-  setAnswers(updated);
+  const handleChange = (index, value) => {
+    const updated = [...answers];
+    updated[index] = value;
+    setAnswers(updated);
 
-  // احذف الخطأ فقط للانبوت الحالي
-  setErrors((prev) => ({
-    ...prev,
-    [index]: undefined,
-  }));
-};
+    // احذف الخطأ فقط للانبوت الحالي
+    setErrors((prev) => ({
+      ...prev,
+      [index]: undefined,
+    }));
+  };
 
   // check
   const handleCheck = () => {
     if (locked) return;
 
-    const isEmpty = answers.some(
-      (item) => item.trim() === ""
-    );
+    const isEmpty = answers.some((item) => item.trim() === "");
 
     if (isEmpty) {
       ValidationAlert.info("Please complete all fields.");
@@ -74,10 +69,7 @@ const handleChange = (index, value) => {
     const newErrors = {};
 
     questions.forEach((q, index) => {
-      if (
-        normalize(answers[index]) ===
-        normalize(q.answer)
-      ) {
+      if (normalize(answers[index]) === normalize(q.answer)) {
         correct++;
         newErrors[index] = false;
       } else {
@@ -90,11 +82,7 @@ const handleChange = (index, value) => {
     const total = questions.length;
 
     const color =
-      correct === total
-        ? "green"
-        : correct === 0
-        ? "red"
-        : "orange";
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:20px;text-align:center;">
@@ -133,10 +121,7 @@ const handleChange = (index, value) => {
       {/* Title */}
       <div className="flex items-center gap-3 mb-8">
         <h5 className="header-title-page8-read">
-          <span
-            className="ex-A-read"
-            style={{ marginRight: "10px" }}
-          >
+          <span className="ex-A-read" style={{ marginRight: "10px" }}>
             B
           </span>
           Complete each sentence with a word from the story.
@@ -162,16 +147,11 @@ const handleChange = (index, value) => {
                 type="text"
                 value={answers[index]}
                 disabled={locked || errors[index] === false}
-                onChange={(e) =>{
-                  handleChange(index, e.target.value)
-                }
-                }
+                onChange={(e) => {
+                  handleChange(index, e.target.value);
+                }}
                 className={`${q.width} text-center bg-transparent border-b-1 outline-none
-                  ${
-                    errors[index]
-                      ? "border-red-500"
-                      : "border-black"
-                  }`}
+                  ${errors[index] ? "border-red-500" : "border-black"}`}
               />
 
               {/* ❌ Error */}
@@ -193,8 +173,7 @@ const handleChange = (index, value) => {
                     justifyContent: "center",
                     fontWeight: "bold",
                     border: "2px solid white",
-                    boxShadow:
-                      "0 1px 6px rgba(0,0,0,0.2)",
+                    boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
                     pointerEvents: "none",
                   }}
                 >
@@ -210,13 +189,13 @@ const handleChange = (index, value) => {
       </div>
 
       {/* Buttons */}
-      
+
       <div className="flex justify-center gap-6 mt-10">
-     <ActionButtons
-  onReset={handleReset}
-  onShow={handleShow}
-  onCheck={handleCheck}
-/>
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

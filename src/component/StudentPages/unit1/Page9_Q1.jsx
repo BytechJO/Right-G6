@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { FaVolumeUp } from "react-icons/fa";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import trueIcon from "../../../assets/imgs/true.svg";
 import falseIcon from "../../../assets/imgs/false.svg";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 import sound from "../../../assets/audio/ClassBook/U1/PG 9/CD5.Pg9_Instruction1_Adult Lady.mp3";
 import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 9.svg";
+import sentenceAudio1 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise D/Item_001_Jane_hasn't_been_to_the_mall_this_week.mp3";
+import sentenceAudio2 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise D/Item_002_Mike_has_visited_his_grandparents.mp3";
+import sentenceAudio3 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise D/Item_003_Suzy_has_already_seen_the_new_movie.mp3";
+import sentenceAudio4 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise D/Item_004_Mark_and_Tom_haven't_eaten_at_the_cafeteria.mp3";
+import sentenceAudio5 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise D/Item_005_The_cousins_haven't_bought_a_new_bike_to_share.mp3";
+
+const PAGE_TITLE = (
+  <>
+    Listen, and then write <span style={{ color: "#dc2626" }}>✓</span> or{" "}
+    <span style={{ color: "#dc2626" }}>✗</span>.
+  </>
+);
+
 const SENTENCES = [
-  { id: 0, text: "Jane hasn't been to the mall this week." },
-  { id: 1, text: "Mike has visited his grandparents." },
-  { id: 2, text: "Suzy has already seen the new movie." },
-  { id: 3, text: "Mark and Tom haven't eaten at the cafeteria." },
-  { id: 4, text: "The cousins haven't bought a new bike to share." },
+  {
+    id: 0,
+    text: "Jane hasn't been to the mall this week.",
+    audio: sentenceAudio1,
+  },
+  { id: 1, text: "Mike has visited his grandparents.", audio: sentenceAudio2 },
+  {
+    id: 2,
+    text: "Suzy has already seen the new movie.",
+    audio: sentenceAudio3,
+  },
+  {
+    id: 3,
+    text: "Mark and Tom haven't eaten at the cafeteria.",
+    audio: sentenceAudio4,
+  },
+  {
+    id: 4,
+    text: "The cousins haven't bought a new bike to share.",
+    audio: sentenceAudio5,
+  },
 ];
 
 // الإجابات الصحيحة: true = ✓ | false = ✗
@@ -21,6 +52,67 @@ const Page9_Q1 = () => {
   const [answers, setAnswers] = useState(Array(SENTENCES.length).fill(null));
   const [errors, setErrors] = useState(Array(SENTENCES.length).fill(null));
   const [locked, setLocked] = useState(false);
+  const [activeAudio, setActiveAudio] = useState(null);
+  const audioRef = useRef(null);
+  const playerRef = useRef(null);
+
+  useEffect(
+    () => () => {
+      audioRef.current?.pause();
+      audioRef.current = null;
+    },
+    [],
+  );
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    setActiveAudio(null);
+  };
+
+  const playAudio = (id, src) => {
+    stopAudio();
+    playerRef.current?.pause();
+    document.querySelectorAll("audio, video").forEach((media) => media.pause());
+    const audio = new Audio(src);
+    audioRef.current = audio;
+    setActiveAudio(id);
+    const finish = () => {
+      if (audioRef.current === audio) {
+        audioRef.current = null;
+        setActiveAudio(null);
+      }
+    };
+    audio.onended = finish;
+    audio.onerror = finish;
+    audio.play().catch(finish);
+  };
+
+  const audioText = (sentence) => (
+    <span
+      className="unit1-inline-audio text-gray-800"
+      role="button"
+      tabIndex={0}
+      aria-label={`Play audio: ${sentence.text}`}
+      aria-pressed={activeAudio === sentence.id}
+      onClick={() => playAudio(sentence.id, sentence.audio)}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        playAudio(sentence.id, sentence.audio);
+      }}
+    >
+      {sentence.text}
+      {activeAudio === sentence.id && (
+        <span className="unit1-inline-audio-indicator" aria-hidden="true">
+          <FaVolumeUp size={14} color="#111827" background="#fff" />
+        </span>
+      )}
+    </span>
+  );
 
   const handleSelect = (idx, value) => {
     if (locked || errors[idx] === false) return;
@@ -34,39 +126,9 @@ const Page9_Q1 = () => {
 
   const captions = [
     {
-      start: 0.459,
-      end: 3.579,
-      text: "Page 6, grammar. Present perfect.",
-    },
-    {
-      start: 4.199,
-      end: 6.259,
-      text: "Larry has seen the new movie.",
-    },
-    {
-      start: 6.739,
-      end: 8.159,
-      text: "Has Larry seen the new movie?",
-    },
-    {
-      start: 8.76,
-      end: 10.079,
-      text: "They have gone to the beach.",
-    },
-    {
-      start: 10.659,
-      end: 11.84,
-      text: "Have they gone to the beach?",
-    },
-    {
-      start: 12.259,
-      end: 13.759,
-      text: "You haven't gone to the beach.",
-    },
-    {
-      start: 14.679,
-      end: 16.02,
-      text: "Haven't you gone to the beach?",
+      start: 0,
+      end: 6,
+      text: "Listen, and then write a check mark or an X.",
     },
   ];
 
@@ -109,6 +171,8 @@ const Page9_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopAudio();
+    playerRef.current?.pause();
     setAnswers(Array(SENTENCES.length).fill(null));
     setErrors(Array(SENTENCES.length).fill(null));
     setLocked(false);
@@ -116,17 +180,18 @@ const Page9_Q1 = () => {
 
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{ gap: "20px" }}>
-        {/* Title */}
-        <h5 className="header-title-page8">
-          <span className="ex-A mr-2">D</span>
-          Listen, and then write <b className="text-red-500">✓</b> or{" "}
-          <b className="text-red-500">✗</b>.
-        </h5>
+      <div className="div-forall mb-10" style={{ gap: "20px" }}>
+        <ExerciseHeader
+          sectionLetter="D"
+          title={PAGE_TITLE}
+          subTitle="Check the key detail in each statement before choosing ✓/✗ or true/false; correct the wording when the task requires it."
+        />
         <QuestionAudioPlayer
+          ref={playerRef}
           src={sound}
           captions={captions}
           stopAtSecond={2.5}
+          pageId="sb_unit1_page9_q1_instruction"
         />
         <div className="flex gap-5 w-full items-center">
           {/* Sentences list */}
@@ -148,6 +213,8 @@ const Page9_Q1 = () => {
                     <button
                       disabled={locked || isOk}
                       onClick={() => handleSelect(i, true)}
+                      aria-label={`Choose check mark for statement ${i + 1}`}
+                      aria-pressed={answers[i] === true}
                       style={{
                         width: "38px",
                         height: "38px",
@@ -159,7 +226,7 @@ const Page9_Q1 = () => {
                               : "1px solid #84ad40"
                             : "1px solid #ccc"
                         }`,
-                       
+
                         fontSize: "20px",
                         fontWeight: "bold",
                         cursor: locked || isOk ? "default" : "pointer",
@@ -171,12 +238,13 @@ const Page9_Q1 = () => {
                       }}
                     >
                       {answers[i] === true ? (
-                        <img src={trueIcon} style={{ height: "25px" }} />
+                        <img src={trueIcon} alt="" style={{ height: "25px" }} />
                       ) : (
                         ""
                       )}
                       {hasError && answers[i] === true && (
                         <span
+                          aria-hidden="true"
                           style={{
                             position: "absolute",
                             top: "-8px",
@@ -205,6 +273,8 @@ const Page9_Q1 = () => {
                     <button
                       disabled={locked || isOk}
                       onClick={() => handleSelect(i, false)}
+                      aria-label={`Choose X for statement ${i + 1}`}
+                      aria-pressed={answers[i] === false}
                       style={{
                         width: "38px",
                         height: "38px",
@@ -216,7 +286,7 @@ const Page9_Q1 = () => {
                               : "1px solid #16a34a"
                             : "1px solid #ccc"
                         }`,
-                      
+
                         fontSize: "20px",
                         fontWeight: "bold",
                         cursor: locked || isOk ? "default" : "pointer",
@@ -228,12 +298,17 @@ const Page9_Q1 = () => {
                       }}
                     >
                       {answers[i] === false ? (
-                        <img src={falseIcon} style={{ height: "25px" }} />
+                        <img
+                          src={falseIcon}
+                          alt=""
+                          style={{ height: "25px" }}
+                        />
                       ) : (
                         ""
                       )}
                       {hasError && answers[i] === false && (
                         <span
+                          aria-hidden="true"
                           style={{
                             position: "absolute",
                             top: "-8px",
@@ -260,12 +335,16 @@ const Page9_Q1 = () => {
                   </div>
 
                   {/* نص الجملة */}
-                  <span className="text-gray-800">{sent.text}</span>
+                  {audioText(sent)}
                 </div>
               );
             })}
           </div>
-          <img src={img} style={{ height: "200px", width: "auto" }} />
+          <img
+            src={img}
+            alt="A blue bicycle."
+            style={{ height: "200px", width: "auto" }}
+          />
         </div>
         {/* Buttons */}
         <div className="action-buttons-container">
@@ -275,7 +354,11 @@ const Page9_Q1 = () => {
           <button onClick={handleShow} className="show-answer-btn">
             Show Answer
           </button>
-          <button className="check-button2" onClick={handleCheck}>
+          <button
+            className="check-button2"
+            onClick={handleCheck}
+            aria-disabled={locked}
+          >
             Check Answer ✓
           </button>
         </div>

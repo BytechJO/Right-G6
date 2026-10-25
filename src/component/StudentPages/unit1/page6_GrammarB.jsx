@@ -35,22 +35,17 @@ const GrammarB = () => {
   const [errors, setErrors] = useState([]);
   const [locked, setLocked] = useState(false);
 
-const normalize = (text) => {
-  return text
-    .trim()
-    .toLowerCase()
-
-    // contractions
-    .replace(/\bhave not\b/g, "haven't")
-    .replace(/\bhas not\b/g, "hasn't")
-
-    // remove punctuation
-    .replace(/’/g, "'")
-
-    // normalize spaces
-    .replace(/\s+/g, " ")
-    .trim();
-};
+  const normalize = (text) => {
+    return text
+      .trim()
+      .toLowerCase()
+      .replace(/’/g, "'")
+      .replace(/\bhave not\b/g, "haven't")
+      .replace(/\bhas not\b/g, "hasn't")
+      .replace(/\s+/g, " ")
+      .replace(/\s+([?.!,])/g, "$1")
+      .trim();
+  };
   const handleCheck = () => {
     if (locked) return;
 

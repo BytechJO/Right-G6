@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import Rabbit from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
 
+const activationKeys = {
+  onKeyDown: (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!event.repeat) {
+      event.currentTarget.click();
+    }
+  },
+
+  onKeyUp: (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  },
+};
+
 const GrammarA = () => {
-  // ✅ Dynamic Data
+  const [selectedOptions, setSelectedOptions] = useState([
+    "have gone to",
+    "has run",
+  ]);
+
+  const [announcement, setAnnouncement] = useState("");
+
   const questions = [
     {
-      sentence: (
-        <>
-          We <span className="text-[#F28C28]">have gone to</span> the mountains.
-        </>
-      ),
-
+      before: "We",
+      after: "the mountains.",
+      initial: "have gone to",
       options: [
         "have hiked in",
         "have seen",
@@ -20,18 +43,46 @@ const GrammarA = () => {
     },
 
     {
-      sentence: (
-        <>
-          Emily <span className="text-[#F28C28]">has run</span> the race.
-        </>
-      ),
-
+      before: "Emily",
+      after: "the race.",
+      initial: "has run",
       options: ["hasn't lost", "has finished", "has won", "has watched"],
     },
   ];
 
+  const chooseOption = (questionIndex, option) => {
+    setSelectedOptions((previous) =>
+      previous.map((value, index) =>
+        index === questionIndex ? option : value,
+      ),
+    );
+
+    const question = questions[questionIndex];
+
+    setAnnouncement(`${question.before} ${option} ${question.after}`);
+  };
+
   return (
-    <div>
+    <div data-unit1-scope="grammar-a">
+      <style>
+        {`
+          [data-unit1-scope="grammar-a"] [data-choice]:focus-visible {
+            outline: 4px solid #2563eb;
+            outline-offset: 3px;
+            border-radius: 6px;
+          }
+        `}
+      </style>
+
+      <div
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {announcement}
+      </div>
+
       {/* Title */}
       <div className="flex items-center gap-2 mb-7 mt-5">
         <h5 className="header-title-page8-read pb-2.5">
@@ -51,22 +102,47 @@ const GrammarA = () => {
             <img
               src={Rabbit}
               alt=""
-              style={{ height: "34px", width: "34px" }}
+              style={{
+                height: "34px",
+                width: "34px",
+              }}
               className="w-[34px] h-[34px] mt-[-2px]"
             />
 
             {/* Content */}
             <div>
               {/* Sentence */}
-              <p className="text-[18px] leading-[1.8]">{q.sentence}</p>
+              <p className="text-[18px] leading-[1.8]">
+                {q.before}{" "}
+                <span className="text-[#F28C28]">{selectedOptions[index]}</span>{" "}
+                {q.after}
+              </p>
 
               {/* Options */}
               <div className="grid grid-cols-4 gap-8 mt-3 text-[17px]">
-                {q.options.map((option, i) => (
-                  <span key={i}>
-                    <b>{i + 1}</b>&nbsp;&nbsp;{option}
-                  </span>
-                ))}
+                {q.options.map((option, i) => {
+                  const isSelected = selectedOptions[index] === option;
+
+                  return (
+                    <span
+                      key={i}
+                      role="button"
+                      tabIndex={0}
+                      data-choice
+                      aria-label={`Use ${option} in example ${index + 1}`}
+                      aria-pressed={isSelected}
+                      {...activationKeys}
+                      onClick={() => chooseOption(index, option)}
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      <b>{i + 1}</b>
+                      &nbsp;&nbsp;
+                      {option}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -1,5 +1,41 @@
-import React, { useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import React, { useEffect, useRef, useState } from "react";
+import { FaVolumeUp } from "react-icons/fa";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import headerParticipleAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_001_past_participle_(for.mp3";
+import headerVerbAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_002_verb.mp3";
+import headerPastAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_003_past_tense.mp3";
+import headerPerfectAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_004_present_perfect).mp3";
+import doAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_005_do.mp3";
+import didAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_006_did.mp3";
+import doneAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_007_done.mp3";
+import broughtAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_008_brought.mp3";
+import wentAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_009_went.mp3";
+import seeAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_010_see.mp3";
+import seenAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_011_seen.mp3";
+import runAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_012_run.mp3";
+import cameAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_013_came.mp3";
+import buyAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_014_buy.mp3";
+import takenAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_015_taken.mp3";
+import drinkAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_016_drink.mp3";
+import ateAudio from "../../../assets/audio/ClassBook/U1/Page 8 - Exercise C/Item_017_ate.mp3";
+
+const WORD_AUDIO = {
+  do: doAudio,
+  did: didAudio,
+  done: doneAudio,
+  brought: broughtAudio,
+  went: wentAudio,
+  see: seeAudio,
+  seen: seenAudio,
+  run: runAudio,
+  came: cameAudio,
+  buy: buyAudio,
+  taken: takenAudio,
+  drink: drinkAudio,
+  ate: ateAudio,
+};
 
 // ─── data ────────────────────────────────────────────────────────────────────
 // null = خانة فارغة للطالب | string = خانة مملوءة (ثابتة)
@@ -47,7 +83,7 @@ function buildInitialState(tableData) {
 }
 
 function buildInitialErrors(tableData) {
-  return tableData.map((row) => ({
+  return tableData.map(() => ({
     verb: null,
     pastTense: null,
     pastParticiple: null,
@@ -56,22 +92,38 @@ function buildInitialErrors(tableData) {
 
 // ─── sub-component: one table ─────────────────────────────────────────────────
 const VerbTable = ({
+  tableId,
+  tableLabel,
   tableData,
-  answers,
   values,
   errors,
   onChange,
   locked,
+  audioText,
 }) => {
   const cols = ["verb", "pastTense", "pastParticiple"];
   const headers = [
-    "verb",
-    "past tense",
-    "past participle (for present perfect)",
+    audioText(`${tableId}-header-verb`, headerVerbAudio, "verb"),
+    audioText(`${tableId}-header-past`, headerPastAudio, "past tense"),
+    <React.Fragment key={`${tableId}-header-participle`}>
+      {audioText(
+        `${tableId}-header-participle-1`,
+        headerParticipleAudio,
+        "past participle (for",
+      )}{" "}
+      {audioText(
+        `${tableId}-header-participle-2`,
+        headerPerfectAudio,
+        "present perfect)",
+      )}
+    </React.Fragment>,
   ];
 
   return (
-    <table style={{ borderCollapse: "collapse", flex: 1 }}>
+    <table
+      aria-label={tableLabel}
+      style={{ borderCollapse: "collapse", flex: 1 }}
+    >
       <thead>
         <tr>
           {headers.map((h, i) => (
@@ -83,7 +135,7 @@ const VerbTable = ({
                 padding: "8px 12px",
                 fontSize: "17px",
                 fontWeight: "600",
-              
+
                 textAlign: "center",
                 border: "1px solid #84ad40",
                 minWidth: i === 2 ? "140px" : "80px",
@@ -96,10 +148,7 @@ const VerbTable = ({
       </thead>
       <tbody>
         {tableData.map((row, rowIdx) => (
-          <tr
-            key={rowIdx}
-            style={{ }}
-          >
+          <tr key={rowIdx} style={{}}>
             {cols.map((col) => {
               const isFixed = row[col] !== null;
               const hasError = errors[rowIdx]?.[col] === true;
@@ -112,7 +161,7 @@ const VerbTable = ({
                     border: "1px solid #84ad40",
                     padding: "4px 8px",
                     textAlign: "center",
-                     height: "52px",
+                    height: "52px",
                     position: "relative",
                   }}
                 >
@@ -121,11 +170,15 @@ const VerbTable = ({
                       style={{
                         fontSize: "18px",
                         fontWeight: "500",
-                        
+
                         // color: "#2d5a27",
                       }}
                     >
-                      {row[col]}
+                      {audioText(
+                        `${tableId}-${rowIdx}-${col}`,
+                        WORD_AUDIO[row[col]],
+                        row[col],
+                      )}
                     </span>
                   ) : (
                     <div
@@ -135,6 +188,14 @@ const VerbTable = ({
                         value={values[rowIdx]?.[col] ?? ""}
                         disabled={locked || isCorrect}
                         onChange={(e) => onChange(rowIdx, col, e.target.value)}
+                        aria-label={`${tableLabel}, row ${rowIdx + 1}, ${
+                          col === "pastTense"
+                            ? "past tense"
+                            : col === "pastParticiple"
+                              ? "past participle"
+                              : "verb"
+                        }`}
+                        aria-invalid={hasError}
                         style={{
                           width: col === "pastParticiple" ? "120px" : "100px",
                           height: "52px",
@@ -145,13 +206,14 @@ const VerbTable = ({
                           fontSize: "18px",
                           fontWeight: "500",
                           // color: "#6D2980",
-                         
+
                           padding: "0 6px",
                         }}
                       />
                       {/* ❌ فوق يمين الـ input */}
                       {hasError && (
                         <span
+                          aria-hidden="true"
                           style={{
                             position: "absolute",
                             top: "-8px",
@@ -197,6 +259,66 @@ const Page8_Q3 = () => {
     buildInitialErrors(RIGHT_TABLE),
   );
   const [locked, setLocked] = useState(false);
+  const [activeAudio, setActiveAudio] = useState(null);
+  const audioRef = useRef(null);
+
+  useEffect(
+    () => () => {
+      audioRef.current?.pause();
+      audioRef.current = null;
+    },
+    [],
+  );
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    setActiveAudio(null);
+  };
+
+  const playAudio = (id, src) => {
+    if (!src) return;
+    stopAudio();
+    document.querySelectorAll("audio, video").forEach((media) => media.pause());
+    const audio = new Audio(src);
+    audioRef.current = audio;
+    setActiveAudio(id);
+    const finish = () => {
+      if (audioRef.current === audio) {
+        audioRef.current = null;
+        setActiveAudio(null);
+      }
+    };
+    audio.onended = finish;
+    audio.onerror = finish;
+    audio.play().catch(finish);
+  };
+
+  const audioText = (id, src, text) => (
+    <span
+      className="unit1-inline-audio"
+      role="button"
+      tabIndex={0}
+      aria-label={`Play audio: ${text}`}
+      aria-pressed={activeAudio === id}
+      onClick={() => playAudio(id, src)}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        playAudio(id, src);
+      }}
+    >
+      {text}
+      {activeAudio === id && (
+        <span className="unit1-inline-audio-indicator" aria-hidden="true">
+          <FaVolumeUp size={14} color="#111827" background="#fff" />
+        </span>
+      )}
+    </span>
+  );
 
   const handleChange = (side, rowIdx, col, value) => {
     const setter = side === "left" ? setLeftValues : setRightValues;
@@ -310,6 +432,7 @@ const Page8_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopAudio();
     setLeftValues(buildInitialState(LEFT_TABLE));
     setRightValues(buildInitialState(RIGHT_TABLE));
     setLeftErrors(buildInitialErrors(LEFT_TABLE));
@@ -320,11 +443,11 @@ const Page8_Q3 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "70px" }}>
-        {/* Title */}
-        <h5 className="header-title-page8">
-          <span className="ex-A mr-2">C</span>
-          Complete the chart.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Complete the chart."
+          subTitle="Work through the chart one row at a time and use the row/column headings as clues before checking your entries."
+        />
 
         {/* ── Two tables side by side ── */}
         <div
@@ -336,20 +459,24 @@ const Page8_Q3 = () => {
           }}
         >
           <VerbTable
+            tableId="left"
+            tableLabel="Verb chart, left table"
             tableData={LEFT_TABLE}
-            answers={LEFT_ANSWERS}
             values={leftValues}
             errors={leftErrors}
             onChange={(r, c, v) => handleChange("left", r, c, v)}
             locked={locked}
+            audioText={audioText}
           />
           <VerbTable
+            tableId="right"
+            tableLabel="Verb chart, right table"
             tableData={RIGHT_TABLE}
-            answers={RIGHT_ANSWERS}
             values={rightValues}
             errors={rightErrors}
             onChange={(r, c, v) => handleChange("right", r, c, v)}
             locked={locked}
+            audioText={audioText}
           />
         </div>
 
@@ -361,7 +488,11 @@ const Page8_Q3 = () => {
           <button onClick={handleShow} className="show-answer-btn">
             Show Answer
           </button>
-          <button className="check-button2" onClick={handleCheck}>
+          <button
+            className="check-button2"
+            onClick={handleCheck}
+            aria-disabled={locked}
+          >
             Check Answer ✓
           </button>
         </div>

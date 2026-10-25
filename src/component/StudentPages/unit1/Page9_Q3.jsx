@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 14.svg";
@@ -9,22 +10,26 @@ import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There
 const QUESTIONS = [
   {
     img: img1,
+    alt: "A yellow school bus.",
     icon: "✗", // أيقونة حمراء
-    example: "Don hasn't ridden a school bus yet this week.",
+    example: "Dan hasn't ridden a school bus yet this week.",
     isExample: false,
   },
   {
     img: img2,
+    alt: "A neighborhood park with benches and a walking path.",
     icon: "✓", // أيقونة خضراء
     isExample: false,
   },
   {
     img: img3,
+    alt: "A group of runners competing in a race.",
     icon: "✗",
     isExample: false,
   },
   {
     img: img4,
+    alt: "Two children drinking glasses of water.",
     icon: "✓",
     isExample: false,
   },
@@ -32,23 +37,37 @@ const QUESTIONS = [
 
 const CORRECT = [
   // index 0 = السؤال 2 (الأول مثال)
-  ["Don hasn't ridden a school bus yet this week."],
   [
+    "Dan hasn't ridden a school bus yet this week.",
+    "Don hasn't ridden a school bus yet this week.",
+  ],
+  [
+    "Dan has visited the park this week.",
     "Don has visited the park this week.",
     "He has visited the park this week.",
     "Don has been to the park this week.",
   ],
   [
+    "Dan hasn't run a race yet this week.",
     "Don hasn't run a race yet this week.",
     "He hasn't run a race this week.",
     "Don has not run a race this week.",
   ],
   [
+    "Dan has drunk water this week.",
     "Don has drunk water this week.",
     "He has drunk water this week.",
     "Don has had water this week.",
   ],
 ];
+
+const PAGE_SUBTITLE = (
+  <span>
+    Task 1: Use the ✓/✗ picture cue to decide what Dan has or hasn't done.
+    <br />
+    Task 2: Write one complete present-perfect sentence for each picture.
+  </span>
+);
 
 const normalize = (str) =>
   str
@@ -70,7 +89,7 @@ const Page9_Q3 = () => {
     setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  const handleCheck = () => {
+  const _handleCheck = () => {
     if (locked) return;
     if (answers.some((a) => !a.trim())) {
       ValidationAlert.info("Please complete all fields.");
@@ -103,13 +122,13 @@ const Page9_Q3 = () => {
 
   const handleShow = () => {
     setAnswers(CORRECT.map((c) => c[0]));
-    setErrors([false, false, false]);
+    setErrors(Array(CORRECT.length).fill(false));
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "",""]);
-    setErrors([null, null, null,null]);
+    setAnswers(Array(CORRECT.length).fill(""));
+    setErrors(Array(CORRECT.length).fill(null));
     setLocked(false);
   };
 
@@ -118,12 +137,11 @@ const Page9_Q3 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "40px" }}>
-        {/* Title */}
-        <h5 className="header-title-page8">
-          <span className="ex-A mr-2">F</span>
-          What has Don done? Look at the picture, and then write a sentence
-          telling what he has or hasn't done this week.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="F"
+          title="What has Dan done? Use the pictures to write sentences telling what he has or hasn't done this week."
+          subTitle={PAGE_SUBTITLE}
+        />
 
         {/* Questions */}
         <div className="flex flex-col gap-6 w-full">
@@ -132,7 +150,6 @@ const Page9_Q3 = () => {
             const idx = inputIdx;
             const hasError = !q.isExample && errors[idx] === true;
             const isOk = !q.isExample && errors[idx] === false;
-            const isX = q.icon === "✗";
 
             return (
               <div key={i} className="flex items-center gap-4">
@@ -155,6 +172,7 @@ const Page9_Q3 = () => {
                   </span>
                   <img
                     src={q.img}
+                    alt={q.alt}
                     style={{
                       width: "150px",
                       height: "100px",
@@ -181,6 +199,8 @@ const Page9_Q3 = () => {
                       value={answers[idx]}
                       disabled={locked || isOk}
                       onChange={(e) => handleChange(idx, e.target.value)}
+                      aria-label={`Sentence about picture ${i + 1}`}
+                      aria-invalid={hasError}
                       style={{
                         width: "100%",
                         borderBottom: hasError
@@ -196,6 +216,7 @@ const Page9_Q3 = () => {
                     />
                     {hasError && (
                       <span
+                        aria-hidden="true"
                         style={{
                           position: "absolute",
                           top: "-8px",

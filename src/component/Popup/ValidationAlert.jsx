@@ -1,15 +1,13 @@
 import Swal from "sweetalert2";
-import './ValidationAlert.css';
+import "./ValidationAlert.css";
 import good from "../../assets/alert/goodjob.gif";
 import wrong from "../../assets/alert/wrong.gif";
 import Notice from "../../assets/alert/Notice.gif";
 
 const ValidationAlert = {
-
   // ✅ لكل الإجابات الصحيحة
   success: (scoreMessage) => {
     Swal.fire({
-      
       html: `
       <div style="font-size: 20px; text-align: center;">
         <p style="color: green; font-weight: bold;">
@@ -21,8 +19,8 @@ const ValidationAlert = {
       imageHeight: 200,
       background: "#dfeaf6",
       confirmButtonText: "Good Job",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
       buttonsStyling: false,
       customClass: {
         popup: "my-popup",
@@ -37,7 +35,6 @@ const ValidationAlert = {
   // 🟠 إذا في إجابات صحيحة وإجابات خاطئة
   warning: (scoreMessage) => {
     Swal.fire({
-    
       html: `
       <div style="font-size: 20px; text-align: center;">
         
@@ -50,8 +47,8 @@ const ValidationAlert = {
       imageHeight: 200,
       background: "#fff4d9",
       confirmButtonText: "Continue",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
       buttonsStyling: false,
       customClass: {
         popup: "my-popup",
@@ -66,7 +63,6 @@ const ValidationAlert = {
   // ❌ إذا ولا إجابة صحيحة
   error: (scoreMessage) => {
     Swal.fire({
-   
       html: `
       <div style="font-size: 20px; text-align: center;">
         <p style="color: red; font-weight: bold;">
@@ -79,8 +75,8 @@ const ValidationAlert = {
       imageHeight: 200,
       background: "#fde4e4",
       confirmButtonText: "Try Again",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
       buttonsStyling: false,
       customClass: {
         popup: "my-popup",
@@ -102,8 +98,8 @@ const ValidationAlert = {
       imageHeight: 200,
       background: "#dfeaf6",
       confirmButtonText: "OK",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
       buttonsStyling: false,
       customClass: {
         popup: "my-popup",

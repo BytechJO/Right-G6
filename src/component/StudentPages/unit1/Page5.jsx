@@ -5,6 +5,10 @@ import ReadingSection_U1 from "./page5_ReadingSection_U1";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 
 const Page5 = ({ openPopup }) => {
+  const openReading = () => {
+    openPopup("html", <ReadingSection_U1 />);
+  };
+
   return (
     <>
       <div
@@ -19,8 +23,20 @@ const Page5 = ({ openPopup }) => {
             width="22"
             height="22"
             viewBox="0 0 90 90"
-            onClick={() => openPopup("html", <ReadingSection_U1 />)}
-            style={{ overflow: "visible" }}
+            tabIndex={0}
+            role="button"
+            aria-label="Open reading activity"
+            onClick={openReading}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openReading();
+              }
+            }}
+            style={{
+              overflow: "visible",
+              cursor: "pointer",
+            }}
           >
             <image
               className="svg-img"

@@ -39,3 +39,36 @@ top: 47.5%;
     left: 54.9%;
   cursor: pointer;
 }
+
+.unit1-inline-audio {
+  position: relative;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.unit1-inline-audio:hover {
+  background-color: rgba(132, 173, 64, 0.14);
+}
+
+.unit1-inline-audio:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+.unit1-inline-audio-indicator {
+  position: absolute;
+  top: -14px;
+  right: -12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #6d2980;
+  background: #fff;
+  border-radius: 9999px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  pointer-events: none;
+}

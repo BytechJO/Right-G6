@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { FaVolumeUp } from "react-icons/fa";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 10.svg";
+import promptAudio1 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise E/Item_001_you_write_report_for_history.mp3";
+import promptAudio2 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise E/Item_002_Robert_and_John_see_the_Leaning_Tower_of_Pisa.mp3";
+import promptAudio3 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise E/Item_003_not_they_make_cake_for_dessert.mp3";
+import promptAudio4 from "../../../assets/audio/ClassBook/U1/Page 9 - Exercise E/Item_004_Craig_and_I_not_take_lunch_to_Grandma_yet.mp3";
 const QUESTIONS = [
   {
     words: "you / write / report / for / history / ?",
-
+    audio: promptAudio1,
     isExample: false,
   },
   {
     words: "Robert and John / see / the Leaning Tower of Pisa / .",
+    audio: promptAudio2,
     isExample: false,
   },
   {
     words: "not / they / make / cake / for / dessert / ?",
+    audio: promptAudio3,
     isExample: false,
   },
   {
     words: "Craig and I / not / take / lunch / to / Grandma / yet.",
+    audio: promptAudio4,
     isExample: false,
   },
 ];
@@ -39,9 +48,68 @@ const normalize = (str) =>
 
 const Page9_Q2 = () => {
   // 3 inputs فقط (السؤال 1 مثال جاهز)
-  const [answers, setAnswers] = useState(["", "", "",""]);
-  const [errors, setErrors] = useState([null, null, null,null]);
+  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [errors, setErrors] = useState([null, null, null, null]);
   const [locked, setLocked] = useState(false);
+  const [activeAudio, setActiveAudio] = useState(null);
+  const audioRef = useRef(null);
+
+  useEffect(
+    () => () => {
+      audioRef.current?.pause();
+      audioRef.current = null;
+    },
+    [],
+  );
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    setActiveAudio(null);
+  };
+
+  const playAudio = (index, src) => {
+    stopAudio();
+    document.querySelectorAll("audio, video").forEach((media) => media.pause());
+    const audio = new Audio(src);
+    audioRef.current = audio;
+    setActiveAudio(index);
+    const finish = () => {
+      if (audioRef.current === audio) {
+        audioRef.current = null;
+        setActiveAudio(null);
+      }
+    };
+    audio.onended = finish;
+    audio.onerror = finish;
+    audio.play().catch(finish);
+  };
+
+  const audioText = (question, index) => (
+    <span
+      className="unit1-inline-audio text-gray-700"
+      role="button"
+      tabIndex={0}
+      aria-label={`Play audio: ${question.words}`}
+      aria-pressed={activeAudio === index}
+      onClick={() => playAudio(index, question.audio)}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        playAudio(index, question.audio);
+      }}
+    >
+      {question.words}
+      {activeAudio === index && (
+        <span className="unit1-inline-audio-indicator" aria-hidden="true">
+          <FaVolumeUp size={14} color="#111827" background="#fff" />
+        </span>
+      )}
+    </span>
+  );
 
   const handleChange = (i, val) => {
     if (locked || errors[i] === false) return;
@@ -86,13 +154,14 @@ const Page9_Q2 = () => {
 
   const handleShow = () => {
     setAnswers(CORRECT.map((c) => c[0]));
-    setErrors([false, false, false]);
+    setErrors(Array(CORRECT.length).fill(false));
     setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "",""]);
-    setErrors([null, null, null,null]);
+    stopAudio();
+    setAnswers(Array(CORRECT.length).fill(""));
+    setErrors(Array(CORRECT.length).fill(null));
     setLocked(false);
   };
 
@@ -102,12 +171,11 @@ const Page9_Q2 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "90px" }}>
-        {/* Title */}
-        <h5 className="header-title-page8">
-          <span className="ex-A mr-2">E</span>
-          Use each set of words given to write a sentence in the present perfect
-          tense.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Use each set of words to write a sentence in the present perfect tense."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
         <div className="flex gap-5 w-full items-center">
           {/* Questions */}
           <div className="flex flex-col gap-6 text-[18px] w-full">
@@ -122,7 +190,7 @@ const Page9_Q2 = () => {
                   {/* السطر العلوي: رقم + كلمات */}
                   <div className="flex items-start gap-3">
                     <span className="font-bold shrink-0 w-[20px]">{i + 1}</span>
-                    <span className="text-gray-700">{q.words}</span>
+                    {audioText(q, i)}
                   </div>
 
                   {/* السطر السفلي: الجواب */}
@@ -157,6 +225,8 @@ const Page9_Q2 = () => {
                         value={answers[idx]}
                         disabled={locked || isOk}
                         onChange={(e) => handleChange(idx, e.target.value)}
+                        aria-label={`Present perfect sentence ${i + 1}`}
+                        aria-invalid={hasError}
                         style={{
                           width: "100%",
                           borderBottom: ` ${hasError ? "2px solid #ef4444" : "1px solid #555"}`,
@@ -170,6 +240,7 @@ const Page9_Q2 = () => {
                       />
                       {hasError && (
                         <span
+                          aria-hidden="true"
                           style={{
                             position: "absolute",
                             top: "-8px",
@@ -198,7 +269,11 @@ const Page9_Q2 = () => {
               );
             })}
           </div>
-          <img src={img} style={{ height: "350px", width: "auto" }} />
+          <img
+            src={img}
+            alt="The Leaning Tower of Pisa."
+            style={{ height: "350px", width: "auto" }}
+          />
         </div>
         {/* Buttons */}
         <div className="action-buttons-container">
@@ -208,7 +283,11 @@ const Page9_Q2 = () => {
           <button onClick={handleShow} className="show-answer-btn">
             Show Answer
           </button>
-          <button className="check-button2" onClick={handleCheck}>
+          <button
+            className="check-button2"
+            onClick={handleCheck}
+            aria-disabled={locked}
+          >
             Check Answer ✓
           </button>
         </div>
