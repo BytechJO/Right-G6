@@ -11,7 +11,7 @@ const Reading_Unit2_Page2 = ({ audioRef, activeAudio, setActiveAudio }) => {
     setActiveAudio(null);
   }, [setActiveAudio]);
   const clickableAreas = [
-    { x1: 5.81, y1: 48.36, x2: 94.00, y2: 75.84, sound: sound1 },
+    { x1: 5.81, y1: 48.36, x2: 94.0, y2: 75.84, sound: sound1 },
   ];
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();
@@ -48,6 +48,23 @@ const Reading_Unit2_Page2 = ({ audioRef, activeAudio, setActiveAudio }) => {
 
       {clickableAreas.map((area, index) => (
         <div
+          role="button"
+          tabIndex={0}
+          data-launcher
+          aria-label={`Read story section ${index + 1}`}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              event.stopPropagation();
+              if (!event.repeat) event.currentTarget.click();
+            }
+          }}
+          onKeyUp={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+          }}
           key={index}
           className={`clickable-area ${
             hoveredAreaIndex === index || activeAudio === `page2-${index}`

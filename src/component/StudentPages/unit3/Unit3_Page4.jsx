@@ -5,6 +5,21 @@ import WritingSection_U2 from "./Unit3_Page4_WritingSection_U2";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
 const Unit3_Page4 = ({ openPopup }) => {
+  const openWriting = () => {
+    openPopup("html", <WritingSection_U2 />);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openWriting();
+      }
+    }
+  };
+
   return (
     <div
       className="page1-img-wrapper"
@@ -18,8 +33,15 @@ const Unit3_Page4 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("html", <WritingSection_U2 />)}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open writing exercise"
+          onClick={openWriting}
+          onKeyDown={handleKeyDown}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -35,4 +57,5 @@ const Unit3_Page4 = ({ openPopup }) => {
     </div>
   );
 };
+
 export default Unit3_Page4;

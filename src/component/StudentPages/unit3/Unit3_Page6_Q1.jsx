@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3StudentAudioText, {
+  stopUnit3StudentAudio,
+  unit3StudentAudio,
+} from "./Unit3StudentAudioText";
 
 const normalize = (str) =>
   str
@@ -21,9 +27,9 @@ const ENDINGS = [
 ];
 
 // الإجابات الصحيحة
-const CORRECT_MATCH = ["c", "b", "a"]; // الحرف الصحيح لكل جملة
+const CORRECT_MATCH = ["c", "b", "a"];
 const CORRECT_FULL = [
-  "if they cleaned them and fixed them, they could sell the houses.",
+  "if they cleaned and fixed them, they could sell the houses.",
   "if it rained this much every year, the lake would get bigger",
   "if he played this well every game, frank would get a trophy",
 ];
@@ -33,14 +39,22 @@ const LineInput = ({
   value,
   disabled,
   onChange,
-  isOk,
   isWrong,
   width = "100%",
+  ariaLabel = "Write the full matched sentence",
 }) => (
   <span style={{ position: "relative", display: "inline-block", width }}>
     <input
       value={value}
       disabled={disabled}
+      placeholder={width === "50px" ? "a" : "Write the full sentence"}
+      title={
+        width === "50px"
+          ? "Choose the matching option"
+          : "Write the full matched sentence"
+      }
+      aria-label={ariaLabel}
+      className="unit3-student-answer-input"
       onChange={(e) => onChange(e.target.value)}
       style={{
         width: "100%",
@@ -84,7 +98,7 @@ const LineInput = ({
 
 const Unit3_Page6_Q1 = () => {
   const initState = () => ({
-    matches: ["", "", ""], // الحرف المختار لكل جملة
+    matches: ["", "", ""],
     fullSentences: ["", "", ""], // الجملة الكاملة
   });
   const initErrors = () => ({
@@ -95,15 +109,20 @@ const Unit3_Page6_Q1 = () => {
   const [answers, setAnswers] = useState(initState);
   const [errors, setErrors] = useState(initErrors);
   const [locked, setLocked] = useState(false);
-
-  const handleMatchChange = (i, val) => {
-    if (locked || errors.matches[i] === true) return;
-    const m = [...answers.matches];
-    m[i] = val;
-    setAnswers((prev) => ({ ...prev, matches: m }));
-    const me = [...errors.matches];
-    me[i] = null;
-    setErrors((prev) => ({ ...prev, matches: me }));
+  const handleMatchChange = (index, value) => {
+    if (locked || errors.matches[index] === true) return;
+    setAnswers((previous) => ({
+      ...previous,
+      matches: previous.matches.map((answer, answerIndex) =>
+        answerIndex === index ? value.slice(0, 1) : answer,
+      ),
+    }));
+    setErrors((previous) => ({
+      ...previous,
+      matches: previous.matches.map((result, resultIndex) =>
+        resultIndex === index ? null : result,
+      ),
+    }));
   };
 
   const handleFullChange = (i, val) => {
@@ -128,7 +147,7 @@ const Unit3_Page6_Q1 = () => {
 
     let score = 0;
     const newMatchErr = answers.matches.map((a, i) => {
-      const ok = normalize(a) === normalize(CORRECT_MATCH[i]);
+      const ok = normalize(a) === CORRECT_MATCH[i];
       if (ok) score++;
       return ok;
     });
@@ -152,8 +171,8 @@ const Unit3_Page6_Q1 = () => {
     setAnswers({
       matches: [...CORRECT_MATCH],
       fullSentences: CORRECT_FULL.map((s) => {
-        // capitalize first letter for display
-        return s.charAt(0).toUpperCase() + s.slice(1) + ".";
+        const display = s.charAt(0).toUpperCase() + s.slice(1);
+        return `${display.replace(/[.]+$/, "")}.`;
       }),
     });
     setErrors({
@@ -164,6 +183,7 @@ const Unit3_Page6_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit3StudentAudio();
     setAnswers(initState());
     setErrors(initErrors());
     setLocked(false);
@@ -171,71 +191,84 @@ const Unit3_Page6_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-8">
-      <div className="div-forall"  style={{ gap: "30px" }}>
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A mr-2.5">D</span>
-          Match the two parts of each sentence and write the full sentence
-          below. Use correct punctuation.
-        </h5>
+      <div className="div-forall" style={{ gap: "30px" }}>
+        <ExerciseHeader
+          sectionLetter="D"
+          title="Match the two parts of each sentence and write the full sentence using correct punctuation."
+          subTitle={
+            <>
+              Task 1: Match each first half with the ending that completes the
+              idea.
+              <br />
+              Task 2: Then rewrite the full sentence with correct capitalization
+              and punctuation.
+            </>
+          }
+        />
 
-        {/* القسم العلوي: جملتين + تعريفات */}
         <div
           style={{
-            display: "flex",
-            gap: "40px",
-            alignItems: "flex-start",
-            marginTop: "16px",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+            gap: "34px 70px",
+            alignItems: "start",
+            fontSize: "18px",
           }}
         >
-          {/* العمود الأيسر: الجمل مع فراغ الحرف */}
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "18px",
-              flex: 1,
-            }}
+            style={{ display: "flex", flexDirection: "column", gap: "28px" }}
           >
-            {SENTENCES.map((s, i) => (
+            {SENTENCES.map((sentence, index) => (
               <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  fontSize: "18px",
-                }}
+                key={sentence.num}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <LineInput
-                  value={answers.matches[i]}
-                  disabled={locked || errors.matches[i] === true}
-                  onChange={(v) => handleMatchChange(i, v)}
-                  isOk={errors.matches[i] === true}
-                  isWrong={errors.matches[i] === false}
+                  value={answers.matches[index]}
+                  disabled={locked || errors.matches[index] === true}
+                  onChange={(value) => handleMatchChange(index, value)}
+                  isWrong={errors.matches[index] === false}
                   width="50px"
+                  ariaLabel={`Write the matching letter for sentence ${sentence.num}`}
                 />
-                <span style={{ fontWeight: "bold" }}>{s.num}</span>
-                <span style={{ color: "#333" }}>{s.text}</span>
+                <Unit3StudentAudioText
+                  src={unit3StudentAudio(
+                    "Page 27 - Exercise D",
+                    `Item_${String([2, 4, 6][index]).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play sentence beginning ${sentence.num}`}
+                  style={{ justifyContent: "flex-start", textAlign: "left" }}
+                >
+                  <strong style={{ marginRight: "10px" }}>
+                    {sentence.num}
+                  </strong>
+                  {sentence.text}
+                </Unit3StudentAudioText>
               </div>
             ))}
           </div>
 
-          {/* العمود الأيمن: التعريفات */}
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "18px" }}
+            style={{ display: "flex", flexDirection: "column", gap: "28px" }}
           >
-            {ENDINGS.map((e, i) => (
+            {ENDINGS.map((ending, index) => (
               <div
-                key={i}
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  fontSize: "18px",
-                  color: "#333",
-                }}
+                key={ending.letter}
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                <span style={{ fontWeight: "bold" }}>{e.letter}</span>
-                <span>{e.text}</span>
+                <Unit3StudentAudioText
+                  src={unit3StudentAudio(
+                    "Page 27 - Exercise D",
+                    `Item_${String([1, 3, 5][index]).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play ending ${ending.letter}`}
+                  style={{ justifyContent: "flex-start", textAlign: "left" }}
+                >
+                  <strong style={{ marginRight: "10px" }}>
+                    {ending.letter}
+                  </strong>
+                  {ending.text}
+                </Unit3StudentAudioText>
               </div>
             ))}
           </div>
@@ -269,6 +302,7 @@ const Unit3_Page6_Q1 = () => {
                 onChange={(v) => handleFullChange(i, v)}
                 isOk={errors.fullSentences[i] === true}
                 isWrong={errors.fullSentences[i] === false}
+                ariaLabel={`Write complete sentence ${s.num}`}
               />
             </div>
           ))}

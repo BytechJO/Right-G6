@@ -1,36 +1,27 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
-import ValidationAlert from "../../Popup/ValidationAlert";
 import img1a from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/11.svg";
 import img1b from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/9.svg";
 import img2a from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/8.svg";
 import img2b from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/10.svg";
+import ExerciseHeader from "../../ExerciseHeader";
 
-const normalize = (str) =>
-  str
-    .toLowerCase()
-    .replace(/[.,!?''""''’;:]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-const CORRECT = [
-  "If we went to the museum, we would see many interesting things",
-  "Students’ answers will vary",
-];
-
-const LineInput = ({ value, disabled, onChange, isOk, isWrong }) => (
+const LineInput = ({ value, disabled, onChange, isWrong }) => (
   <span
     style={{
       position: "relative",
       display: "inline-block",
       flex: 1,
-     
+
       width: "100%",
-      
     }}
   >
     <input
       value={value}
       disabled={disabled}
+      placeholder="Write a complete second conditional sentence"
+      title="Write a complete second conditional sentence"
+      className="unit3-student-answer-input"
       onChange={(e) => onChange(e.target.value)}
       style={{
         width: "100%",
@@ -91,35 +82,6 @@ const Unit3_Page6_Q3 = () => {
     setErrors(e);
   };
 
-  const handleCheck = () => {
-    if (locked) return;
-    if (answers.some((a) => !a.trim())) {
-      ValidationAlert.info();
-      return;
-    }
-    let score = 0;
-    const newErr = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(CORRECT[i]);
-      if (ok) score++;
-      return ok;
-    });
-    setErrors(newErr);
-    const msg = `Score: ${score} / 2`;
-    if (score === 2) {
-      setLocked(true);
-      ValidationAlert.success(msg);
-    } else if (score === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
-  };
-
-  const handleShow = () => {
-    setAnswers(
-      CORRECT.map((c) => c.charAt(0).toUpperCase() + c.slice(1) + "."),
-    );
-    setErrors([true, true]);
-    setLocked(true);
-  };
-
   const handleReset = () => {
     setAnswers(["", ""]);
     setErrors([null, null]);
@@ -128,11 +90,12 @@ const Unit3_Page6_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-8">
-      <div className="div-forall" style={{gap:"40px"}}>
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A mr-2.5">F</span>
-          Use the pictures to help you write a second conditional sentence.
-        </h5>
+      <div className="div-forall" style={{ gap: "40px" }}>
+        <ExerciseHeader
+          sectionLetter="F"
+          title="Use the pictures to help you write a second conditional sentence."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         <div style={{ display: "flex", flexDirection: "column", gap: "45px" }}>
           {QUESTIONS.map((q, i) => (
@@ -142,7 +105,11 @@ const Unit3_Page6_Q3 = () => {
               >
                 <img
                   src={q.imgA}
-                  alt=""
+                  alt={
+                    i === 0
+                      ? "A historic museum building"
+                      : "A sandy beach beside the sea"
+                  }
                   style={{
                     width: "auto",
                     height: "110px",
@@ -152,7 +119,11 @@ const Unit3_Page6_Q3 = () => {
                 />
                 <img
                   src={q.imgB}
-                  alt=""
+                  alt={
+                    i === 0
+                      ? "A museum display of antique swords"
+                      : "Two children playing with a beach ball"
+                  }
                   style={{
                     width: "auto",
                     height: "110px",
@@ -186,7 +157,6 @@ const Unit3_Page6_Q3 = () => {
           <button className="try-again-button" onClick={handleReset}>
             Start Again ↻
           </button>
-        
         </div>
       </div>
     </div>

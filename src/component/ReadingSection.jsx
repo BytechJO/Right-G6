@@ -1,11 +1,10 @@
 import { useReadingHighlight } from "./useReadingHighlight";
 import React from "react";
-import ReadingBG from "../assets/imgs/conversation.svg";
-import think from "../assets/../assets/imgs/pages/classbook/think.svg";
 import QuestionAudioPlayer from "./QuestionAudioPlayer";
 import Button from "./Button";
 import ExerciseHeader from "./ExerciseHeader";
-
+import ReadingBG from "../assets/imgs/pages/classbook/Reading.svg";
+import comprehesion from "../assets/imgs/pages/classbook/comprehesion.svg";
 const ReadingSection = ({
   mainTitle,
   title,
@@ -34,17 +33,14 @@ const ReadingSection = ({
         <ExerciseHeader title={headerTitle} subTitle={subTitle} />
       </div>
       <div className="flex items-center gap-4 mb-4 w-[60%]">
-        <div
-          className="px-4 py-1 font-bold text-black"
+        <img
+          src={ReadingBG}
+          alt=""
           style={{
-            backgroundImage: `url(${ReadingBG})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
+            height: "50px",
+            width: "auto",
           }}
-        >
-          Reading
-        </div>
+        />
 
         <h2 className="font-bold text-[18px] text-black">
           {highlight(mainTitle)}
@@ -102,17 +98,14 @@ const ReadingSection = ({
 
       <div className="w-[60%] mt-3 space-y-6">
         <div className="flex items-center gap-4">
-          <div
-            className="px-4 py-1 font-bold text-black"
+          <img
+            src={comprehesion}
+            alt=""
             style={{
-              backgroundImage: `url(${ReadingBG})`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
+              height: "50px",
+              width: "auto",
             }}
-          >
-            Comprehension
-          </div>
+          />
         </div>
       </div>
     </div>

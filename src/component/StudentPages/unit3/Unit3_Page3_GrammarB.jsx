@@ -112,7 +112,6 @@ const GrammarB = () => {
           ✕
         </span>
       )}
- 
     </span>
   );
 
@@ -150,7 +149,7 @@ const GrammarB = () => {
 
       {/* Buttons */}
       <div className="flex justify-center gap-6 mt-10">
-         <ActionButtons
+        <ActionButtons
           onReset={reset}
           onShow={showAnswers}
           onCheck={checkAnswers}

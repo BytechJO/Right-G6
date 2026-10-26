@@ -1,15 +1,34 @@
 import ReadingSection from "./ReadingSection";
 import ComprehensionA from "./Unit3_Page2_ComprehensionA";
 import ComprehensionB from "./Unit3_Page2_ComprehensionB";
-import question from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/Asset 22.svg";
+import question from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/Asset 1 1.svg";
 import imgReading from "../../../assets/imgs/pages/classbook/Right 6 Unit 3 I Would If I Could Folder/SVG/Asset 23.svg";
 import readingAudio from "../../../assets/audio/ClassBook/U3/PG 23/pg23-reading.mp3";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
 import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
+import readingTimings from "../../../assets/json/pg23-reading_eng.json";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import { useReadingHighlight } from "../../useReadingHighlight";
+import ExerciseHeader from "../../ExerciseHeader";
 const ReadingSection_U2 = () => {
-
-
+  const { highlight, onTimeUpdate } = useReadingHighlight(
+    readingTimings,
+    [
+      {
+        printed: ["Well", "I'm", "late", "too"],
+        spoken: ["But", "I'm", "late", "too"],
+      },
+      {
+        printed: ["If", "I'd", "known"],
+        spoken: ["If", "I", "known"],
+      },
+      {
+        printed: ["we'd"],
+        spoken: ["we"],
+      },
+    ],
+    true,
+  );
   const captions = [
     {
       start: 0.699,
@@ -155,6 +174,12 @@ const ReadingSection_U2 = () => {
   return (
     <div className=" flex flex-col items-center">
       <div className="p-6 flex flex-col items-center gap-5">
+        <div className="w-[60%]">
+          <ExerciseHeader
+            title="Listen and read along: If Only..."
+            subTitle="Press Play and follow the text as it is read; pause or replay any part you need to hear again."
+          />
+        </div>
         <div className="flex justify-start gap-1 mb-4 w-[60%]">
           <img
             src={ReadingBG}
@@ -165,8 +190,9 @@ const ReadingSection_U2 = () => {
           />
 
           <h2 className="font-bold text-[18px] text-black">
-            How do you go to school? Do you take a bus to school? Have you ever
-            been late for school?
+            {highlight(
+              "How do you go to school? Do you take a bus to school? Have you ever been late for school?",
+            )}
           </h2>
         </div>
         <div className="w-[60%] mx-auto">
@@ -174,11 +200,16 @@ const ReadingSection_U2 = () => {
             src={readingAudio}
             captions={captions}
             stopAtSecond={8.0}
+            pageId="sb_unit3_page23_reading"
+            onTimeUpdate={onTimeUpdate}
           />
         </div>
         <div className="relative w-[60%] mt-2">
-          <div className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[20px] font-bold w-[200px]" style={{borderRadius:"20px 20px 0px 0px "}}>
-            If Only ...
+          <div
+            className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[20px] font-bold w-[200px]"
+            style={{ borderRadius: "20px 20px 0px 0px " }}
+          >
+            {highlight("If Only ...")}
           </div>
 
           <div className="border-2 border-[#84ad40] rounded-2xl p-4 pt-6 bg-white">
@@ -232,7 +263,7 @@ const ReadingSection_U2 = () => {
                     >
                       {line.name}:
                     </span>
-                    {line.text}
+                    {highlight(line.text)}
                   </p>
                 ))}
               </div>
@@ -264,7 +295,7 @@ const ReadingSection_U2 = () => {
                   >
                     {line.name}:
                   </span>
-                  {line.text}
+                  {highlight(line.text)}
                 </p>
               ))}
             </div>

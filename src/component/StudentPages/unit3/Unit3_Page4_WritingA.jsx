@@ -9,10 +9,19 @@ const WritingA = () => {
     results: "",
   };
 
-  const [answers, setAnswers] = useState({ ...emptyState, good: ["", "", ""], improve: ["", "", ""] });
+  const [answers, setAnswers] = useState({
+    ...emptyState,
+    good: ["", "", ""],
+    improve: ["", "", ""],
+  });
 
   const reset = () =>
-    setAnswers({ event: "", good: ["", "", ""], improve: ["", "", ""], results: "" });
+    setAnswers({
+      event: "",
+      good: ["", "", ""],
+      improve: ["", "", ""],
+      results: "",
+    });
 
   const lineInput = (value, onChange, width = "100%") => (
     <input
@@ -48,7 +57,11 @@ const WritingA = () => {
       {/* The event */}
       <div className="flex items-center gap-3 mb-8 text-[17px]">
         <span className="font-semibold whitespace-nowrap">The event:</span>
-        {lineInput(answers.event, (v) => setAnswers({ ...answers, event: v }), "300px")}
+        {lineInput(
+          answers.event,
+          (v) => setAnswers({ ...answers, event: v }),
+          "300px",
+        )}
       </div>
 
       {/* Two-column table */}
@@ -68,7 +81,9 @@ const WritingA = () => {
               {lineInput(answers.good[i], (v) => updateList("good", i, v))}
             </div>
             <div className="mb-5">
-              {lineInput(answers.improve[i], (v) => updateList("improve", i, v))}
+              {lineInput(answers.improve[i], (v) =>
+                updateList("improve", i, v),
+              )}
             </div>
           </React.Fragment>
         ))}
@@ -82,7 +97,7 @@ const WritingA = () => {
         {lineInput(
           answers.results,
           (v) => setAnswers({ ...answers, results: v }),
-          "350px"
+          "350px",
         )}
       </div>
 
@@ -91,13 +106,28 @@ const WritingA = () => {
         <div className="relative group">
           <div
             onClick={reset}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                if (!e.repeat) {
+                  reset();
+                }
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Reset activity"
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} className="text-gray-700" />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaRedo size={14} className="text-gray-700" aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+
+          <span
+            aria-hidden="true"
+            className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition"
+          >
             Reset
           </span>
         </div>
