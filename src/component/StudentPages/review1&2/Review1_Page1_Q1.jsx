@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
 import bagImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/8.svg"; // غير المسار حسب مشروعك
@@ -141,13 +143,21 @@ const VocabularyA_WordShape = () => {
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "40px" }}>
         {/* العنوان */}
-        <h5 className="header-title-page8">
-          <span className="mr-2">A</span>
-          Words have a shape based on how many high or low letters they have.
-          High letters go above the line: b, d, f, h, etc. Low letters go below
-          the line: g, j, p, q, etc. Look at the shape of the words below to
-          find out which vocabulary words they are.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Use the word shapes to identify and write the vocabulary words."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Compare each word shape with the example before typing.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Check tall and low letters as well as spelling before
+                submitting.
+              </span>
+            </>
+          }
+        />
 
         {/* مثال: supplies */}
         <div className="flex justify-center">
@@ -184,6 +194,9 @@ const VocabularyA_WordShape = () => {
                   <div className="relative" style={{ minWidth: "160px" }}>
                     <input
                       value={answers[i]}
+                      placeholder="Type the word"
+                      title="Type the vocabulary word"
+                      className="review-unit2-answer-input"
                       disabled={locked || isOk}
                       onChange={(e) => handleChange(i, e.target.value)}
                       style={{
@@ -232,7 +245,7 @@ const VocabularyA_WordShape = () => {
           {/* صورة الحقيبة */}
           <img
             src={bagImg}
-            alt="schoolbag"
+            alt="A blue schoolbag"
             style={{ width: "160px", height: "auto", objectFit: "contain" }}
           />
         </div>

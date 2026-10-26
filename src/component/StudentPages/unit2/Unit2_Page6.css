@@ -63,3 +63,6 @@
     left: 25%;
   }
 }
+.unit2-answer-input::placeholder {
+  font-size: 0.78em;
+}

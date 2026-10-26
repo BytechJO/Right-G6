@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import Unit2AudioText, { stopUnit2Audio, unit2Audio } from "../unit2/Unit2AudioText";
 
 const QUESTIONS = [
   { correct: ["has"] },
@@ -62,6 +64,7 @@ const Review1_Page2_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(QUESTIONS.length).fill(""));
     setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
@@ -80,6 +83,9 @@ const Review1_Page2_Q2 = () => {
       >
         <input
           value={answers[i]}
+          placeholder="Type the verb form"
+          title="Type the correct verb form"
+          className="review-unit2-answer-input"
           disabled={locked || isOk}
           onChange={(e) => handleChange(i, e.target.value)}
           style={{
@@ -124,14 +130,11 @@ const Review1_Page2_Q2 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "50px" }}>
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-5">D</span>
-          Put the correct part of the verb in each blank. Some will need{" "}
-          <strong style={{ color: "#f79631" }}>have</strong> or{" "}
-          <strong style={{ color: "#f79631" }}>has</strong> and some will need a{" "}
-          <strong style={{ color: "#f79631" }}>participle</strong> from the
-          chart in Ex C.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title="Put the correct part of the verb in each blank."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         <div
           style={{
@@ -144,31 +147,29 @@ const Review1_Page2_Q2 = () => {
           {/* 1 */}
           <div>
             <span style={{ fontWeight: "bold", marginRight: "10px" }}>1</span>
-            Steven {renderInput(0, "120px")} brought his new pet bird to show
-            us.
+            <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_001_")} ariaLabel="Play Steven">Steven</Unit2AudioText> {renderInput(0, "120px")} <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_002_")} ariaLabel="Play sentence phrase">brought his new pet bird to show us.</Unit2AudioText>
           </div>
 
           {/* 2 */}
           <div>
             <span style={{ fontWeight: "bold", marginRight: "10px" }}>2</span>
-            What {renderInput(1, "120px")} you written about in your report?
+            <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_003_")} ariaLabel="Play What">What</Unit2AudioText> {renderInput(1, "120px")} <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_004_")} ariaLabel="Play sentence phrase">you written about in your report?</Unit2AudioText>
           </div>
 
           {/* 3 */}
           <div>
             <span style={{ fontWeight: "bold", marginRight: "10px" }}>3</span>
-            Why have they {renderInput(2, "140px")} their bikes in the rain?
+            <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_005_")} ariaLabel="Play Why have they">Why have they</Unit2AudioText> {renderInput(2, "140px")} <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_006_")} ariaLabel="Play sentence phrase">their bikes in the rain?</Unit2AudioText>
           </div>
 
           {/* 4 */}
           <div>
             <span style={{ fontWeight: "bold", marginRight: "10px" }}>4</span>
-            The teachers {renderInput(3, "140px")} thought about our question,
-            and they have
+            <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_007_")} ariaLabel="Play The teachers">The teachers</Unit2AudioText> {renderInput(3, "140px")} <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_008_")} ariaLabel="Play sentence phrase">thought about our question, and they have</Unit2AudioText>
             <br />
             <br />
             <span style={{ marginTop: "20px", marginLeft: "28px" }}>
-              {renderInput(4, "140px")} to move the test date.
+              {renderInput(4, "140px")} <Unit2AudioText src={unit2Audio("Page 17 - Exercise D", "Item_009_")} ariaLabel="Play to move the test date">to move the test date.</Unit2AudioText>
             </span>
           </div>
         </div>

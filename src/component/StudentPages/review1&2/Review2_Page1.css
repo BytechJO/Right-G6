@@ -37,3 +37,6 @@
   left: 24.5%;
   cursor: pointer;
 }
+.review-unit2-answer-input::placeholder {
+  font-size: 0.78em;
+}

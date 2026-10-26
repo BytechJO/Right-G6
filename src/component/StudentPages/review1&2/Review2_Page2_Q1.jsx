@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import Unit2AudioText, {
+  stopUnit2Audio,
+  unit2Audio,
+} from "../unit2/Unit2AudioText";
 
 const TABLE_DATA = [
   {
@@ -23,11 +28,27 @@ const TABLE_DATA = [
   },
   { subject: "Mom", adverb: "so", adjNoun: "happy", clause: "she hugged us" },
 ];
+const TABLE_AUDIO_INDEX = {
+  "The doctor": 6,
+  helpful: 7,
+  "felt better within a day": 8,
+  so: 9,
+  such: 10,
+  athlete: 11,
+  "won a medal": 12,
+  Greg: 13,
+  Camping: 14,
+  "so much": 15,
+  fun: 16,
+  "we want to go again": 17,
+  happy: 18,
+  "she hugged us": 19,
+  Mom: 21,
+};
 
 const QUESTIONS = [
   {
     correct: ["The doctor was so helpful that I felt better within a day"],
-    
   },
   { correct: ["Greg is such a good athlete that he won a gold medal"] },
   { correct: ["Camping is so much fun that we all want to go again"] },
@@ -93,6 +114,7 @@ const Review2_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(inputCount).fill(""));
     setErrors(Array(inputCount).fill(null));
     setLocked(false);
@@ -140,6 +162,9 @@ const Review2_Page2_Q1 = () => {
         <div style={{ position: "relative", flex: 1 }}>
           <input
             value={answers[i]}
+            placeholder="Type the sentence"
+            title="Type the complete sentence"
+            className="review-unit2-answer-input"
             disabled={locked || isOk}
             onChange={(e) => handleChange(i, e.target.value)}
             style={{
@@ -188,9 +213,11 @@ const Review2_Page2_Q1 = () => {
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall">
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-2">C</span>
-       Put the sentence parts from the chart below together, to make sentences that make sense and then write them in the blank lines. </h5>
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Put the sentence parts from the chart together to make sentences using so or such."
+          subTitle="Read each row across the chart to build a logical sentence. Check whether so or such fits the noun or adjective pattern before writing."
+        />
 
         {/* الجدول */}
         <table
@@ -221,7 +248,15 @@ const Review2_Page2_Q1 = () => {
                     textAlign: "left",
                   }}
                 >
-                  {h}
+                  <Unit2AudioText
+                    src={unit2Audio(
+                      "Page 19 - Exercise C",
+                      `Item_${String(i + 1).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${h}`}
+                  >
+                    {h}
+                  </Unit2AudioText>
                 </th>
               ))}
             </tr>
@@ -236,12 +271,57 @@ const Review2_Page2_Q1 = () => {
                   <span style={{ fontWeight: "bold", marginRight: "6px" }}>
                     {i + 1}
                   </span>
-                  {row.subject}
+                  <Unit2AudioText
+                    src={unit2Audio(
+                      "Page 19 - Exercise C",
+                      `Item_${String(TABLE_AUDIO_INDEX[row.subject]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${row.subject}`}
+                  >
+                    {row.subject}
+                  </Unit2AudioText>
                 </td>
-                <td style={tdStyle}>{row.adverb}</td>
-                <td style={tdStyle}>{row.adjNoun}</td>
-                <td style={tdStyle}>that</td>
-                <td style={tdStyle}>{row.clause}</td>
+                <td style={tdStyle}>
+                  <Unit2AudioText
+                    src={unit2Audio(
+                      "Page 19 - Exercise C",
+                      `Item_${String(TABLE_AUDIO_INDEX[row.adverb]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${row.adverb}`}
+                  >
+                    {row.adverb}
+                  </Unit2AudioText>
+                </td>
+                <td style={tdStyle}>
+                  <Unit2AudioText
+                    src={unit2Audio(
+                      "Page 19 - Exercise C",
+                      `Item_${String(TABLE_AUDIO_INDEX[row.adjNoun]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${row.adjNoun}`}
+                  >
+                    {row.adjNoun}
+                  </Unit2AudioText>
+                </td>
+                <td style={tdStyle}>
+                  <Unit2AudioText
+                    src={unit2Audio("Page 19 - Exercise C", "Item_004_")}
+                    ariaLabel="Play that"
+                  >
+                    that
+                  </Unit2AudioText>
+                </td>
+                <td style={tdStyle}>
+                  <Unit2AudioText
+                    src={unit2Audio(
+                      "Page 19 - Exercise C",
+                      `Item_${String(TABLE_AUDIO_INDEX[row.clause]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${row.clause}`}
+                  >
+                    {row.clause}
+                  </Unit2AudioText>
+                </td>
               </tr>
             ))}
           </tbody>

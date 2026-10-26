@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 import { FaRedo } from "react-icons/fa";
 import ActionButtons from "../../Button";
 import trueIcon from "../../../assets/imgs/true.svg";
+import Unit2AudioText, { stopUnit2Audio, unit2Audio } from "./Unit2AudioText";
 const CHART_ROWS = [
   {
     person: "Sam",
@@ -64,17 +66,20 @@ const GrammarE = () => {
     setAnswers((prev) => prev.map((a, idx) => (idx === i ? val : a)));
   };
 
-  const handleReset = () => setAnswers(Array(LINES).fill(""));
+  const handleReset = () => {
+    stopUnit2Audio();
+    setAnswers(Array(LINES).fill(""));
+  };
 
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "10px" }}>
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="ex-A mr-2">E</span>
-          Read the chart, and then write a sentence about each person or group
-          of people.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Read the chart, and then write a sentence about each person or group of people."
+          subTitle="Work through the chart one row at a time and use the row and column headings as clues before checking your entries."
+        />
 
         {/* الجدول */}
         <table
@@ -100,7 +105,12 @@ const GrammarE = () => {
                     fontSize: "15px",
                   }}
                 >
-                  {h}
+                  {i === 0 ? h : (
+                    <Unit2AudioText
+                      src={unit2Audio("Page 15 - Exercise E", `Item_${String([4, 1, 5, 2, 3][i - 1]).padStart(3, "0")}_`)}
+                      ariaLabel={`Play ${h}`}
+                    >{h}</Unit2AudioText>
+                  )}
                 </th>
               ))}
             </tr>
@@ -117,7 +127,10 @@ const GrammarE = () => {
                     fontSize: "15px",
                   }}
                 >
-                  {row.person}
+                  <Unit2AudioText
+                    src={unit2Audio("Page 15 - Exercise E", `Item_${String(ri + 6).padStart(3, "0")}_`)}
+                    ariaLabel={`Play ${row.person}`}
+                  >{row.person}</Unit2AudioText>
                 </td>
                 {KEYS.map((key) => (
                   <td
@@ -134,7 +147,7 @@ const GrammarE = () => {
                   >
                     {row[key] ? (
                       <div className="flex justify-center">
-                      <img src={trueIcon} style={{ height: "25px" }} /></div>
+                      <img src={trueIcon} alt="" style={{ height: "25px" }} /></div>
                     ) : (
                       ""
                     )}
@@ -152,6 +165,9 @@ const GrammarE = () => {
               <span className="font-bold shrink-0">{i + 1}</span>
               <input
                 value={answers[i]}
+                placeholder="Type the sentence"
+                title="Type the sentence"
+                className="unit2-answer-input"
                 onChange={(e) => handleChange(i, e.target.value)}
                 style={{
                   flex: 1,

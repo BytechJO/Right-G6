@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import Unit2AudioText, { stopUnit2Audio, unit2Audio } from "../unit2/Unit2AudioText";
 
 const QUESTIONS = [
   {
@@ -137,6 +139,7 @@ const Review1_Page2_Q3 = () => {
 
   // 🔄 RESET
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(QUESTIONS.length).fill(""));
     setShowSuggested(false);
     setResult(Array(QUESTIONS.length).fill(null));
@@ -150,12 +153,11 @@ const Review1_Page2_Q3 = () => {
         style={{ gap: "40px" }}
       >
         {/* Title */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-2">E</span>
-          Change the positive sentences to negative
-          sentences and the negative sentences to
-          positive sentences.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="E"
+          title="Change the positive sentences to negative sentences and the negative sentences to positive sentences."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
         <div className="flex flex-col gap-7 text-[18px] mt-5">
           {QUESTIONS.map((q, i) => (
@@ -169,7 +171,10 @@ const Review1_Page2_Q3 = () => {
                   {i + 1}
                 </span>
 
-                <span>{q.question}</span>
+                <Unit2AudioText
+                  src={unit2Audio("Page 17 - Exercise E", `Item_${String(i + 1).padStart(3, "0")}_`)}
+                  ariaLabel={`Play sentence ${i + 1}`}
+                >{q.question}</Unit2AudioText>
               </div>
 
               {/* Answer Input */}
@@ -181,6 +186,9 @@ const Review1_Page2_Q3 = () => {
               >
                 <input
                   value={answers[i]}
+                  placeholder="Type the sentence"
+                  title="Type the changed sentence"
+                  className="review-unit2-answer-input"
                   onChange={(e) =>
                     handleChange(
                       i,

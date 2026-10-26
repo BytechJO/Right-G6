@@ -1,23 +1,38 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ActionButtons from "../../Button";
 import snowboardImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/10.svg"; // غير المسار
+import Unit2AudioText, {
+  stopUnit2Audio,
+  unit2Audio,
+} from "../unit2/Unit2AudioText";
 
 const LINES = [
-  { type: "fixed",  text: "Snowboards are out" },
-  { type: "input",  letter: "N" },
-  { type: "input",  letter: "O" },
-  { type: "fixed",  text: "Wheee! Down we go!" },
-  { type: "fixed",  text: "Be alert!" },
-  { type: "fixed",  text: "Out in the snow!" },
-  { type: "fixed",  text: "Act fast!" },
-  { type: "input",  letter: "R" },
-  { type: "input",  letter: "D" },
-  { type: "input",  letter: "I" },
-  { type: "input",  letter: "N" },
-  { type: "fixed",  text: "Geronimo! (a word that is said as a jump or big action is done)" },
+  { type: "fixed", text: "Snowboards are out" },
+  { type: "input", letter: "N" },
+  { type: "input", letter: "O" },
+  { type: "fixed", text: "Wheee! Down we go!" },
+  { type: "fixed", text: "Be alert!" },
+  { type: "fixed", text: "Out in the snow!" },
+  { type: "fixed", text: "Act fast!" },
+  { type: "input", letter: "R" },
+  { type: "input", letter: "D" },
+  { type: "input", letter: "I" },
+  { type: "input", letter: "N" },
+  {
+    type: "fixed",
+    text: "Geronimo! (a word that is said as a jump or big action is done)",
+  },
 ];
 
 const inputLines = LINES.filter((l) => l.type === "input");
+const FIXED_AUDIO_INDEX = {
+  "Snowboards are out": 1,
+  "Wheee! Down we go!": 2,
+  "Be alert!": 3,
+  "Out in the snow!": 4,
+  "Act fast!": 5,
+};
 
 const Review2_Page1_Q2 = () => {
   const [answers, setAnswers] = useState(Array(inputLines.length).fill(""));
@@ -34,43 +49,98 @@ const Review2_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(inputLines.length).fill(""));
   };
 
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall">
-
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-2">B</span>
-          Make a special type of poem called an{" "}
-          <span style={{ color: "#f79631", fontWeight: "bold"}}>acrostic poem</span>{" "}
-          by putting words that describe{" "}
-          <span style={{ color: "#f79631", fontWeight: "bold" }}>snowboarding</span>{" "}
-          next to each letter. Use at least three vocabulary words or expressions found on page 10.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title={
+            <>
+              Make an{" "}
+              <span style={{ color: "#f79631", fontWeight: "bold" }}>
+                acrostic poem
+              </span>{" "}
+              about{" "}
+              <span style={{ color: "#f79631", fontWeight: "bold" }}>
+                snowboarding
+              </span>{" "}
+              using vocabulary words and expressions.
+            </>
+          }
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Use the letters in SNOWBOARDING as the structure for the
+                poem.{" "}
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Choose vocabulary words or expressions that meaningfully
+                connect to snowboarding.
+              </span>
+            </>
+          }
+        />
 
         {/* المحتوى */}
         <div style={{ display: "flex", gap: "32px", alignItems: "flex-start" }}>
-
           {/* الأسطر */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "18px", fontSize: "18px" }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "18px",
+              fontSize: "18px",
+            }}
+          >
             {mappedLines.map((line, i) => {
               if (line.type === "fixed") {
                 return (
                   <div key={i} style={{ fontSize: "18px", color: "#333" }}>
-                    {line.text}
+                    <Unit2AudioText
+                      src={
+                        FIXED_AUDIO_INDEX[line.text]
+                          ? unit2Audio(
+                              "Page 18 - Exercise B",
+                              `Item_${String(FIXED_AUDIO_INDEX[line.text]).padStart(3, "0")}_`,
+                            )
+                          : null
+                      }
+                      ariaLabel={`Play ${line.text}`}
+                    >
+                      {line.text}
+                    </Unit2AudioText>
                   </div>
                 );
               }
               return (
-                <div key={i} style={{ display: "flex", alignItems: "flex-end", gap: "6px" }}>
-                  <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "16px" }}>
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: "6px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "18px",
+                      minWidth: "16px",
+                    }}
+                  >
                     {line.letter}
                   </span>
                   <input
                     value={answers[line.idx]}
+                    placeholder="Type a word or phrase"
+                    title={`Type a word or phrase beginning with ${line.letter}`}
+                    className="review-unit2-answer-input"
                     onChange={(e) => handleChange(line.idx, e.target.value)}
                     style={{
                       flex: 1,
@@ -92,7 +162,7 @@ const Review2_Page1_Q2 = () => {
           {/* الصورة */}
           <img
             src={snowboardImg}
-            alt="snowboarding"
+            alt="A snowboarder riding down a snowy slope"
             style={{
               width: "200px",
               height: "240px",
@@ -109,7 +179,6 @@ const Review2_Page1_Q2 = () => {
             Start Again ↻
           </button>
         </div>
-
       </div>
     </div>
   );

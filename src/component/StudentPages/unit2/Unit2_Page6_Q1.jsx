@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 import { FaRedo, FaEye } from "react-icons/fa";
 import ActionButtons from "../../Button";
+import Unit2AudioText, { stopUnit2Audio, unit2Audio } from "./Unit2AudioText";
 
 const QUESTIONS = [
   {
@@ -33,6 +35,7 @@ const Unit2_Page6_Q1 = () => {
   const handleShow = () => setShowSuggested(true);
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(QUESTIONS.length).fill(""));
     setShowSuggested(false);
   };
@@ -41,12 +44,17 @@ const Unit2_Page6_Q1 = () => {
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "40px" }}>
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="ex-A mr-2">D</span>
-          Answer each of the questions using{" "}
-          <strong className="text-orange-500">so</strong> or{" "}
-          <strong className="text-orange-500">such</strong>.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title={
+            <>
+              Answer each question using{" "}
+              <strong className="text-orange-500">so</strong> or{" "}
+              <strong className="text-orange-500">such</strong>.
+            </>
+          }
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         <div className="flex flex-col gap-7 text-[18px] mt-5">
           {QUESTIONS.map((q, i) => (
@@ -54,12 +62,23 @@ const Unit2_Page6_Q1 = () => {
               {/* السؤال */}
               <div className="flex items-start gap-2">
                 <span className="font-bold shrink-0">{i + 1}</span>
-                <span>{q.question}</span>
+                <Unit2AudioText
+                  src={unit2Audio(
+                    "Page 15 - Exercise D",
+                    `Item_${String(i + 1).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play question ${i + 1}`}
+                >
+                  {q.question}
+                </Unit2AudioText>
               </div>
 
               {/* سطر الإجابة */}
               <input
                 value={showSuggested ? q.suggested : answers[i]}
+                placeholder="Type the sentence"
+                title="Type the sentence"
+                className="unit2-answer-input"
                 onChange={(e) =>
                   !showSuggested && handleChange(i, e.target.value)
                 }
@@ -76,7 +95,6 @@ const Unit2_Page6_Q1 = () => {
                   marginLeft: "20px",
                 }}
               />
-            
             </div>
           ))}
         </div>

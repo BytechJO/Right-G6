@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 import sound from "../../../assets/audio/ClassBook/U2/P 14/CD10.Pg14_Instruction1_Adult Lady_Take 2.mp3";
+import Unit2AudioText, { unit2Audio } from "./Unit2AudioText";
 const QUESTIONS = [
   { label: "First", correct: ["I wouldn't dare", "I would not dare"] },
   {
@@ -124,20 +126,31 @@ const ListeningB = () => {
 
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{ gap: "30px" }}>
+      <div className="div-forall" style={{ gap: "15px" }}>
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="ex-A mr-2">B</span>
-          Listen to the story, and then write the expressions in the order they
-          come in the story.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Listen to the story, and then write the expressions in the order they come in the story."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                 Task 1: Listen once for the sequence of events.
+              </span>
+              <span style={{ display: "block" }}>
+                 Task 2: Replay as needed, then write the expressions in the
+                same order they occur in the story.
+              </span>
+            </>
+          }
+        />
         <QuestionAudioPlayer
           src={sound}
+          pageId="sb_unit2_page14_exercise_b"
           captions={captions}
           stopAtSecond={2.5}
         />
         {/* الأسطر */}
-        <div className="flex flex-col gap-10 text-[18px] mt-5">
+        <div className="flex flex-col gap-10 text-[18px] ">
           {QUESTIONS.map((q, i) => {
             const hasError = errors[i] === true;
             const isOk = errors[i] === false;
@@ -145,12 +158,24 @@ const ListeningB = () => {
             return (
               <div key={i} className="flex items-center gap-3">
                 {/* Label */}
-                <span className="font-bold shrink-0 w-[70px]">{q.label}:</span>
+                <Unit2AudioText
+                  className="font-bold shrink-0 w-[70px]"
+                  src={unit2Audio(
+                    "Page 14 - Exercise B",
+                    `Item_${String(i + 1).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play ${q.label}`}
+                >
+                  {q.label}:
+                </Unit2AudioText>
 
                 {/* Input */}
                 <div className="relative flex-1">
                   <input
                     value={answers[i]}
+                    placeholder="Type the expression"
+                    title="Type the expression"
+                    className="unit2-answer-input"
                     disabled={locked || isOk}
                     onChange={(e) => handleChange(i, e.target.value)}
                     style={{

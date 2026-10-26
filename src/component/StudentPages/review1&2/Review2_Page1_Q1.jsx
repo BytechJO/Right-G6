@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import Unit2AudioText, {
+  stopUnit2Audio,
+  unit2Audio,
+} from "../unit2/Unit2AudioText";
 
 const WORD_BANK = [
   "professional",
@@ -38,14 +43,6 @@ const Review2_Page1_Q1 = () => {
   const [locked, setLocked] = useState(false);
   // بعد الـ states الموجودة
   const usedAnswers = new Set(answers.map((a) => normalize(a)).filter(Boolean));
-
-  // mapping: QUESTIONS index → answers index (skip examples)
-  let inputIdx = -1;
-  const questionsWithIdx = QUESTIONS.map((q) => {
-    if (q.example) return { ...q, inputIdx: null };
-    inputIdx++;
-    return { ...q, inputIdx: inputIdx++ };
-  });
 
   // أبسط: نبني الـ mapping مرة وحدة
   let counter = -1;
@@ -94,6 +91,7 @@ const Review2_Page1_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(inputCount).fill(""));
     setErrors(Array(inputCount).fill(null));
     setLocked(false);
@@ -129,6 +127,9 @@ const Review2_Page1_Q1 = () => {
       >
         <input
           value={answers[i]}
+          placeholder="Type the word"
+          title="Type the synonym"
+          className="review-unit2-answer-input"
           disabled={locked || isOk}
           onChange={(e) => handleChange(i, e.target.value)}
           style={{
@@ -137,7 +138,7 @@ const Review2_Page1_Q1 = () => {
             outline: "none",
             background: "transparent",
             fontSize: "18px",
-            textAlign:"center",
+            textAlign: "center",
             fontWeight: 500,
             padding: "2px 0",
           }}
@@ -170,18 +171,15 @@ const Review2_Page1_Q1 = () => {
     );
   };
 
-  // نقسم الأسئلة لعمودين: فردي يسار، زوجي يمين
-  const leftQ = mapped.filter((_, i) => i % 2 === 0);
-  const rightQ = mapped.filter((_, i) => i % 2 === 1);
-
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{gap:"25px"}}>
+      <div className="div-forall" style={{ gap: "25px" }}>
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-3">A</span>
-          Write a vocabulary word that is a synonym for each word.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Write a vocabulary word that is a synonym for each word."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* Word Bank */}
         <div
@@ -200,10 +198,14 @@ const Review2_Page1_Q1 = () => {
         >
           {WORD_BANK.map((w, i) => {
             const isUsed = usedAnswers.has(normalize(w));
-            const isExample = w === "terrified";
             return (
-              <span
+              <Unit2AudioText
                 key={i}
+                src={unit2Audio(
+                  "Page 18 - Exercise A",
+                  `Item_${String(i + 1).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play ${w}`}
                 style={{
                   fontSize: "17px",
                   fontWeight: 500,
@@ -213,7 +215,7 @@ const Review2_Page1_Q1 = () => {
                 }}
               >
                 {w}
-              </span>
+              </Unit2AudioText>
             );
           })}
         </div>
@@ -239,7 +241,16 @@ const Review2_Page1_Q1 = () => {
               <span style={{ fontWeight: "bold", minWidth: "22px" }}>
                 {q.id}
               </span>
-              <span className="w-[90px]">{q.word}</span>
+              <Unit2AudioText
+                className="w-[90px]"
+                src={unit2Audio(
+                  "Page 18 - Exercise A",
+                  `Item_${String(q.id + 8).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play ${q.word}`}
+              >
+                {q.word}
+              </Unit2AudioText>
               {renderInput(q)}
             </div>
           ))}

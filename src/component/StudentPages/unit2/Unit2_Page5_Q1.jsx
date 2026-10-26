@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import Unit2AudioText, { stopUnit2Audio, unit2Audio } from "./Unit2AudioText";
 
 const WORD_BANK = [
   "snowboarding",
@@ -35,6 +37,12 @@ const COLUMNS = {
 };
 
 const ROWS = 5;
+const WORD_AUDIO_INDEX = {
+  snowboarding: 1, terrified: 2, faint: 3, adventure: 4,
+  professional: 5, courage: 6, nervous: 7, comfortable: 8,
+  experience: 9, thrilling: 10, slope: 11,
+};
+const HEADER_AUDIO_INDEX = { verb: 12, adjectives: 13, nouns: 14 };
 
 const normalize = (str) =>
   str
@@ -146,6 +154,7 @@ const VocabularyA = () => {
   };
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers({
       verb: Array(ROWS).fill(""),
       nouns: Array(ROWS).fill(""),
@@ -165,13 +174,11 @@ const VocabularyA = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "30px" }}>
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2">A</span>
-          Divide the vocabulary words into the groups below based on how they
-          are used in the story. A verb is an action word. A noun is a person,
-          place, thing, or idea, and an adjective tells what kind, which one, or
-          how many about a noun.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Divide the vocabulary words into verbs, nouns, and adjectives."
+          subTitle="Sort one item at a time using the category meaning, then recheck each group before submitting."
+        />
 
         {/* Word Bank */}
         <div
@@ -187,8 +194,10 @@ const VocabularyA = () => {
           }}
         >
           {WORD_BANK.map((w) => (
-            <span
+            <Unit2AudioText
               key={w}
+              src={unit2Audio("Page 14 - Exercise A", `Item_${String(WORD_AUDIO_INDEX[w]).padStart(3, "0")}_`)}
+              ariaLabel={`Play ${w}`}
               style={{
                 color: uw.has(w.toLowerCase()) ? "#aaa" : "#444",
                 textDecoration: uw.has(w.toLowerCase())
@@ -196,9 +205,7 @@ const VocabularyA = () => {
                   : "none",
                 fontWeight: 500,
               }}
-            >
-              {w}
-            </span>
+            >{w}</Unit2AudioText>
           ))}
         </div>
 
@@ -225,7 +232,10 @@ const VocabularyA = () => {
                     fontSize: "18px",
                   }}
                 >
-                  {COLUMNS[col].label}
+                  <Unit2AudioText
+                    src={unit2Audio("Page 14 - Exercise A", `Item_${String(HEADER_AUDIO_INDEX[col]).padStart(3, "0")}_`)}
+                    ariaLabel={`Play ${COLUMNS[col].label}`}
+                  >{COLUMNS[col].label}</Unit2AudioText>
                 </th>
               ))}
             </tr>
@@ -262,6 +272,9 @@ const VocabularyA = () => {
                     >
                       <input
                         value={answers[col][rowIdx]}
+                        placeholder="Type the word"
+                        title={`Type a ${COLUMNS[col].label.toLowerCase().replace(/s$/, "")}`}
+                        className="unit2-answer-input"
                         disabled={locked || isOk}
                         onChange={(e) =>
                           handleChange(col, rowIdx, e.target.value)

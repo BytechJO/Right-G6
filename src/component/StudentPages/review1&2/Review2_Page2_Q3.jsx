@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import Button from "../../Button";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 
 const Review2_Page2_Q3 = () => {
   const [answers, setAnswers] = useState(["", "", ""]);
@@ -72,9 +73,12 @@ const Review2_Page2_Q3 = () => {
   };
 
   const input = (i) => (
-    <span style={{position:"relative "}}>
+    <span style={{ position: "relative " }}>
       <input
         value={answers[i]}
+        placeholder="Type the sentence"
+        title="Type the sentence with a relative clause"
+        className="review-unit2-answer-input"
         onChange={(e) => handleChange(i, e.target.value)}
         disabled={result[i] === true}
         style={{
@@ -120,12 +124,10 @@ const Review2_Page2_Q3 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-20">
-          <span className="mr-2">F</span>
-          Make one sentence into a relative clause, and then rewrite the
-          sentence.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="F"
+          title="Make one sentence into a relative clause, and then rewrite the sentence."
+        />
 
         {/* QUESTIONS */}
         <div className="flex flex-col gap-15 text-[20px]">

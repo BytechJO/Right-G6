@@ -1,22 +1,25 @@
 import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/Page 10.png";
 import "./Unit2_Page1.css";
+
 import longAudio from "../../../assets/audio/ClassBook/U2/PG 10/conversation_p10.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
+
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U2/PG 10/vocab_U2.mp3";
 
 import CriticalThinking from "../../CriticalThinking";
+
 import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/1.svg";
 import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/2.svg";
 import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/3.svg";
 import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/4.svg";
+
 import wordJson from "../../../assets/json/conversation2_eng.json";
 import video from "../../../assets/videos/grade 6 unit 2 page 10.mp4";
 
 const Unit2_Page1 = ({ openPopup }) => {
-  // ==================== conversation data ==================== //
   const data = [
     {
       number: 1,
@@ -68,7 +71,7 @@ const Unit2_Page1 = ({ openPopup }) => {
       dialogues: [
         {
           speaker: "Harley",
-          text: "It looks so dangerous too! I don't feel comfortable watching.!",
+          text: "It looks so dangerous too! I don't feel comfortable watching.",
         },
         {
           speaker: "Tom",
@@ -84,7 +87,6 @@ const Unit2_Page1 = ({ openPopup }) => {
           speaker: "Snow -boarder",
           text: "Sure! It felt thrilling! I felt like I was so light and free. But you need to learn how to do it with a professional trainer first.",
         },
-
         {
           speaker: "Harley",
           text: "Thanks for sharing this with us.",
@@ -100,6 +102,7 @@ const Unit2_Page1 = ({ openPopup }) => {
       ],
     },
   ];
+
   const captionsExample = [
     {
       start: 0.259,
@@ -151,13 +154,11 @@ const Unit2_Page1 = ({ openPopup }) => {
       end: 40.959,
       text: "It looks so dangerous too! I don’t feel comfortable watching.",
     },
-
     {
       start: 40.959,
       end: 50.86,
       text: "Come along! Let’s ask the snowboarder about his experience.Excuse me, would you please tell us how it felt to snowboard?",
     },
-
     {
       start: 50.86,
       end: 59.779,
@@ -179,12 +180,13 @@ const Unit2_Page1 = ({ openPopup }) => {
       text: "Harley, let's go learn snowboarding",
     },
   ];
+
   const captionTimings = [
     [
       captionsExample[1],
       captionsExample[2],
       captionsExample[3],
-      captionsExample[4], // 🔥 هاي أضفها
+      captionsExample[4],
     ],
     [
       captionsExample[5],
@@ -200,6 +202,7 @@ const Unit2_Page1 = ({ openPopup }) => {
       captionsExample[14],
     ],
   ];
+
   const filteredSegments = wordJson.segments.slice(1);
 
   const Voc = [
@@ -224,97 +227,171 @@ const Unit2_Page1 = ({ openPopup }) => {
     ],
   ];
 
-  /////////////////VOCABULARY/////////////////
-
   const captionVoc = [
     {
       start: 0.359,
       end: 7.339,
       text: "Page 10, Unit 2, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
-
     { start: 7.839, end: 9.5, text: "1. snowboarding." },
     { start: 10.079, end: 11.679, text: "2. terrified." },
     { start: 12.3, end: 14.159, text: "3. courage." },
     { start: 14.819, end: 16.679, text: "4. nervous." },
-
     { start: 17.299, end: 19.039, text: "5. faint." },
     { start: 19.799, end: 21.379, text: "6. slope." },
     { start: 22.18, end: 23.859, text: "7. comfortable." },
     { start: 24.379, end: 26.399, text: "8. experience." },
-
     { start: 27.379, end: 29.239, text: "9. thrilling." },
     { start: 29.819, end: 31.739, text: "10. adventure." },
     { start: 32.459, end: 34.639, text: "11. professional." },
-
     {
       start: 35.479,
       end: 38.039,
       text: "12. where's your sense of adventure?",
     },
-
     {
       start: 38.719,
       end: 41.34,
       text: "13. I am still not sure.",
     },
-
     {
       start: 42.079,
       end: 44.399,
       text: "14. it looks so...",
     },
-
     {
       start: 45.219,
       end: 47.279,
       text: "15. come along.",
     },
   ];
+
   const wordTimingsVoc = [
     { start: 7.839, end: 9.5, text: "1. snowboarding." },
     { start: 10.079, end: 11.679, text: "2. terrified." },
     { start: 12.3, end: 14.159, text: "3. courage." },
     { start: 14.819, end: 16.679, text: "4. nervous." },
-
     { start: 17.299, end: 19.039, text: "5. faint." },
     { start: 19.799, end: 21.379, text: "6. slope." },
     { start: 22.18, end: 23.859, text: "7. comfortable." },
     { start: 24.379, end: 26.399, text: "8. experience." },
-
     { start: 27.379, end: 29.239, text: "9. thrilling." },
     { start: 29.819, end: 31.739, text: "10. adventure." },
     { start: 32.459, end: 34.639, text: "11. professional." },
-
     {
       start: 35.479,
       end: 38.039,
       text: "12. where's your sense of adventure?",
     },
-
     {
       start: 38.719,
       end: 41.34,
       text: "13. I am still not sure.",
     },
-
     {
       start: 42.079,
       end: 44.399,
       text: "14. it looks so...",
     },
-
     {
       start: 45.219,
       end: 47.279,
       text: "15. come along.",
     },
   ];
+
+  const handleKeyDown = (event, action) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        action();
+      }
+    }
+  };
+
+  const openConversation = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Conversation
+          title="Listen and read. Then say."
+          items={data}
+          sound={longAudio}
+          captions={captionsExample}
+          stopAtSecond={5.5}
+          pageId="sb_unit2_page10_conversation"
+          captionTimings={captionTimings}
+          wordTimings={Voc}
+          openPopup={openPopup}
+          video={video}
+          keyboardAccessible={true}
+        />
+      </div>,
+    );
+  };
+
+  const openVocabulary = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Vocabulary
+          title="VOCABULARY"
+          subtitle="Listen and repeat. Find the words and expressions in the conversation above."
+          sound={VocabularAudio}
+          captions={captionVoc}
+          stopAtSecond={7.3}
+          pageId="sb_unit2_page10_vocab"
+          wordTimings={wordTimingsVoc}
+          keyboardAccessible={true}
+          words={[
+            "snowboarding",
+            "terrified",
+            "courage",
+            "nervous",
+            "faint",
+            "slope",
+            "comfortable",
+            "experience",
+            "thrilling",
+            "adventure",
+            "professional",
+            "Where’s your sense of adventure?",
+            "I am still not sure ...",
+            "It looks so ...",
+            "Come along!",
+          ]}
+        />
+      </div>,
+    );
+  };
+
+  const openCriticalThinking = () => {
+    openPopup(
+      "html",
+      <CriticalThinking title="Do you think Harley would ever go snowboarding?" />,
+    );
+  };
+
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_1})` }}
     >
+      {/* Conversation */}
       <div
         className="headset-icon-CD-page4-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -323,31 +400,15 @@ const Unit2_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Conversation
-                  title="Listen and read. Then say."
-                  items={data}
-                  sound={longAudio}
-                  captions={captionsExample}
-                  stopAtSecond={5.8}
-                  captionTimings={captionTimings}
-                  wordTimings={Voc}
-                  openPopup={openPopup}
-                  video={video}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open conversation"
+          onClick={openConversation}
+          onKeyDown={(event) => handleKeyDown(event, openConversation)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -360,6 +421,8 @@ const Unit2_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Vocabulary */}
       <div
         className="headset-icon-CD-page4-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -368,46 +431,15 @@ const Unit2_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Vocabulary
-                  title="VOCABULARY"
-                  subtitle="Listen and repeat. Find the words and expressions in the conversation above."
-                  sound={VocabularAudio}
-                  captions={captionVoc}
-                  stopAtSecond={7.3}
-                  // sounds={sounds}
-                  wordTimings={wordTimingsVoc}
-                  words={[
-                    "snowboarding",
-                    "terrified",
-                    "courage",
-                    "nervous",
-                    "faint",
-                    "slope",
-                    "comfortable",
-                    "experience",
-                    "thrilling",
-                    "adventure",
-                    "professional",
-                    "Where’s your sense of adventure?",
-                    "I am still not sure ...",
-                    "It looks so ...",
-                    "Come along!",
-                  ]}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open vocabulary"
+          onClick={openVocabulary}
+          onKeyDown={(event) => handleKeyDown(event, openVocabulary)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -420,6 +452,8 @@ const Unit2_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Critical Thinking */}
       <div
         className="headset-icon-CD-page4-3 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -428,15 +462,15 @@ const Unit2_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <CriticalThinking
-                title={"Do you think Harley would ever go snowboarding?"}
-              />,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open critical thinking activity"
+          onClick={openCriticalThinking}
+          onKeyDown={(event) => handleKeyDown(event, openCriticalThinking)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
