@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import img from "../../../assets/imgs/pages/workbook/Right Int WB G6 U2 Folder/SVG/12-cropped.svg"
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit2WorkbookAudioText, {
+  stopWorkbookUnit2Audio,
+  workbookUnit2Audio,
+} from "./Unit2WorkbookAudioText";
+import img from "../../../assets/imgs/pages/workbook/Right Int WB G6 U2 Folder/SVG/12-cropped.svg";
 const questions = [
   {
     id: 1,
@@ -32,15 +37,27 @@ const questions = [
 const WB_Unit2_Page12_E = () => {
   const init = () => questions.map(() => "");
   const [answers, setAnswers] = useState(init);
-  const [result,  setResult]  = useState([]);
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState([]);
+  const [locked, setLocked] = useState(false);
 
-const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’'']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
-    setAnswers((prev) => { const a = [...prev]; a[i] = value; return a; });
-    setResult((prev)  => { const r = [...prev]; r[i] = undefined; return r; });
+    setAnswers((prev) => {
+      const a = [...prev];
+      a[i] = value;
+      return a;
+    });
+    setResult((prev) => {
+      const r = [...prev];
+      r[i] = undefined;
+      return r;
+    });
   };
 
   const checkAnswers = () => {
@@ -57,10 +74,13 @@ const normalize = (str) =>
     });
     setResult(nr);
     const total = questions.length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
@@ -70,39 +90,61 @@ const normalize = (str) =>
     setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(init()); setResult([]); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit2Audio();
+    setAnswers(init());
+    setResult([]);
+    setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
-          Unscramble and write.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Unscramble and write."
+          subTitle=" Say the correct sentence first, then reorder the words and check capitalization and punctuation."
+        />
 
         {/* Questions */}
         <div className="flex flex-col gap-8 ">
           {questions.map((q, i) => {
-            const isWrong   = result[i] === false;
+            const isWrong = result[i] === false;
             const isCorrect = result[i] === true;
             return (
               <div key={q.id} className="flex flex-col gap-2">
-
                 {/* Scrambled words */}
-                <div className="flex items-start gap-3" style={{ fontSize: "18px", color: "#444" }}>
-                  <span className="font-bold" style={{ minWidth: "20px" }}>{q.id}</span>
-                  <span>{q.scrambled}</span>
+                <div
+                  className="flex items-start gap-3"
+                  style={{ fontSize: "18px", color: "#444" }}
+                >
+                  <span className="font-bold" style={{ minWidth: "20px" }}>
+                    {q.id}
+                  </span>
+                  <Unit2WorkbookAudioText
+                    src={workbookUnit2Audio(
+                      "Page 12 - Exercise E",
+                      `Item_${String(i + 1).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play sentence ${q.id}`}
+                  >
+                    {q.scrambled}
+                  </Unit2WorkbookAudioText>
                 </div>
 
                 {/* Answer input */}
                 <div style={{ paddingLeft: "28px" }}>
-                  <span className="relative inline-block" style={{ width: "100%" }}>
+                  <span
+                    className="relative inline-block"
+                    style={{ width: "100%" }}
+                  >
                     <input
                       type="text"
                       value={answers[i]}
                       disabled={locked || isCorrect}
+                      placeholder="Unscramble and write the sentence"
+                      title="Write the words in the correct order"
+                      className="wb-unit2-answer-input"
                       onChange={(e) => handleChange(i, e.target.value)}
                       style={{
                         width: "100%",
@@ -116,40 +158,58 @@ const normalize = (str) =>
                       }}
                     />
                     {isWrong && (
-                      <span style={{
-                        position: "absolute", top: "-8px", right: "-8px",
-                        width: "18px", height: "18px", background: "#ef4444", color: "white",
-                        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-                        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                      }}>✕</span>
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: "-8px",
+                          width: "18px",
+                          height: "18px",
+                          background: "#ef4444",
+                          color: "white",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "11px",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                        }}
+                      >
+                        ✕
+                      </span>
                     )}
                   </span>
                 </div>
-
               </div>
             );
           })}
         </div>
-  {/* Image */}
+        {/* Image */}
         <img
           src={img}
-          alt="Spain coast"
+          alt="Decorative workbook illustration"
           style={{
             width: "60%",
-            height : "auto" ,
-            alignSelf : "center",
-            margin : "2em 0"
+            height: "auto",
+            alignSelf: "center",
+            margin: "2em 0",
           }}
         />
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

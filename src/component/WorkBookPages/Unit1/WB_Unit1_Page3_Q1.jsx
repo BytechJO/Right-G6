@@ -182,7 +182,7 @@ const WB_Unit1_Page3_VocabMatch = () => {
   ${isWrong ? "border-[#D1232A]" : "border-black"}
 `}
           style={{
-            width: subIndex !== null ? "80px" : q.id >= 7 ? "80px" : "160px",
+            width: subIndex !== null ? "120px" : q.id >= 7 ? "120px" : "160px",
             color: "#333",
           }}
         />
