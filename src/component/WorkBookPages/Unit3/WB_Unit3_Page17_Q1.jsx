@@ -1,13 +1,38 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3WorkbookAudioText, {
+  stopWorkbookUnit3Audio,
+  workbookUnit3Audio,
+} from "./Unit3WorkbookAudioText";
 
 const BORDER = "#84ad40";
 
-const speech = `\tExams are next week. As you know, this class did not do well on the last exams. I want to review with you some ideas on how you can improve your scores for these next exams.
-\tFirst of all, if you started studying earlier, you would do better. Last term you only studied a day or two before each exam. That's simply not acceptable! If you started studying now, you could study for a shorter amount of time each day, and you would be able to remember more of the information.
-\tSecondly, you should rewrite and organize your notes. If you grouped the things you were studying into categories, it would be much easier to learn the things you need to know. Last term you tried to study the notes you took in class, but you wrote them quickly, so they were missing information. This term, if you took the extra time now to rewrite your notes, you would save time overall.
-\tFinally, always check the study sheets carefully to be sure you are studying everything you need. Last term I found study sheets in the trash. This term, you should pay attention to the material you need for the test.
-\tWell, I hope this helps each of you. If you follow these simple tips, you can get better exam scores!`;
+const SPEECH_PARAGRAPHS = [
+  [
+    [1, "Exams are next week. As you know, this class did not do well on the last exams. I want to review with you some ideas on how you "],
+    [2, "can improve your scores for these next exams."],
+  ],
+  [
+    [3, "First of all, if you started studying earlier, you would do better. Last term you only studied a day or two before each exam. That's "],
+    [4, "simply not acceptable! If you started studying now, you could study for a shorter amount of time each day, and you would be able "],
+    [5, "to remember more of the information."],
+  ],
+  [
+    [6, "Secondly, you should rewrite and organize your notes. If you grouped the things you were studying into categories, it would be "],
+    [7, "much easier to learn the things you need to know. Last term you tried to study the notes you took in class, but you wrote them "],
+    [8, "quickly, so they were missing information. This term, if you took the extra time now to rewrite your notes, you would save time "],
+    [9, "overall."],
+  ],
+  [
+    [10, "Finally, always check the study sheets carefully to be sure you are studying everything you need. Last term I found study sheets in "],
+    [11, "the trash. This term, you should pay attention to the material you need for the test."],
+  ],
+  [
+    [12, "Well, I hope this helps each of you. If you follow these simple tips, you can get better exam scores!"],
+  ],
+];
 
 const ROWS = [
   {
@@ -59,6 +84,10 @@ const CellInput = ({ rowKey, value, locked, result, onChange }) => {
       <textarea
         value={value}
         disabled={locked || isCorrect}
+        placeholder="Write the main suggestion"
+        title="Write the main suggestion from the matching paragraph"
+        aria-label={`Chart answer ${rowKey}`}
+        className="wb-unit3-answer"
         onChange={(e) => onChange(rowKey, e.target.value)}
         rows={2}
         style={{
@@ -144,6 +173,7 @@ const WB_Unit_Speech_E = () => {
   };
 
   const handleReset = () => {
+    stopWorkbookUnit3Audio();
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
@@ -153,21 +183,44 @@ const WB_Unit_Speech_E = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
-          Read the speech, and then complete the chart below. Each ordered paragraph{" "}
-          <strong>(first, second, and finally)</strong> has one main suggestion for the students'
-          improvement. Write them on the chart as shown.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Read the speech and complete the chart with the main suggestion from each paragraph."
+          subTitle="Read one paragraph at a time and transfer only its main improvement suggestion into the matching chart row."
+        />
 
         <div style={{
           fontSize: "15px",
           lineHeight: "1.85",
           color: "#333",
           marginBottom: "28px",
-          whiteSpace: "pre-line",
         }}>
-          {speech}
+          {SPEECH_PARAGRAPHS.map((paragraph, paragraphIndex) => (
+            <p
+              key={paragraphIndex}
+              style={{
+                margin: 0,
+                padding: 0,
+                textIndent: 0,
+                textAlign: "left",
+                width: "100%",
+              }}
+            >
+              {paragraph.map(([audioIndex, text]) => (
+                <Unit3WorkbookAudioText
+                  key={audioIndex}
+                  src={workbookUnit3Audio(
+                    "Page 17 - Exercise E",
+                    `Item_${String(audioIndex).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play speech part ${audioIndex}`}
+                  flowText
+                >
+                  {text}
+                </Unit3WorkbookAudioText>
+              ))}
+            </p>
+          ))}
         </div>
 
         <div style={{
@@ -190,7 +243,12 @@ const WB_Unit_Speech_E = () => {
               borderRight: `1.5px solid ${BORDER}`,
               fontSize: "16px",
             }}>
-              Last Term
+              <Unit3WorkbookAudioText
+                src={workbookUnit3Audio("Page 17 - Exercise E", "Item_014_")}
+                ariaLabel="Play Last Term"
+              >
+                Last Term
+              </Unit3WorkbookAudioText>
             </div>
             <div style={{
               padding: "10px 16px",
@@ -198,7 +256,12 @@ const WB_Unit_Speech_E = () => {
               textAlign: "center",
               fontSize: "16px",
             }}>
-              This Term
+              <Unit3WorkbookAudioText
+                src={workbookUnit3Audio("Page 17 - Exercise E", "Item_013_")}
+                ariaLabel="Play This Term"
+              >
+                This Term
+              </Unit3WorkbookAudioText>
             </div>
           </div>
 

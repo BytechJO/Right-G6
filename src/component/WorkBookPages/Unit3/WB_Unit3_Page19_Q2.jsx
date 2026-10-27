@@ -1,5 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3WorkbookAudioText, {
+  stopWorkbookUnit3Audio,
+  workbookUnit3Audio,
+} from "./Unit3WorkbookAudioText";
 
 const WB_Unit1_Page4_Q3 = () => {
   const questions = [
@@ -25,7 +31,7 @@ const WB_Unit1_Page4_Q3 = () => {
     },
   ];
 
-  const [answers, setAnswers] = useState(["", "", "", ""]);
+  const [answers, setAnswers] = useState(["", "", "", "", ""]);
   const [result, setResult] = useState([]);
   const [locked, setLocked] = useState(false);
   const [Shans, setShans] = useState(false);
@@ -80,19 +86,22 @@ const normalize = (str) =>
   };
 
   const handleReset = () => {
-    setAnswers(["", "", "", ""]);
+    stopWorkbookUnit3Audio();
+    setAnswers(["", "", "", "", ""]);
     setResult([]);
     setLocked(false);
+    setShans(false);
   };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
         {/* Title */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>H</span>
-          Write a possible question for each answer.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="H"
+          title="Write a possible question for each answer."
+          subTitle="Use the answer to identify the missing question word and auxiliary, then build a complete question."
+        />
 
         {/* Questions */}
         <div className="flex flex-col gap-8 text-[18px]">
@@ -105,7 +114,15 @@ const normalize = (str) =>
                 {/* Original sentence */}
                 <div className="flex items-center gap-3">
                   <span className="font-bold text-[20px] min-w-[24px]">{i + 1}</span>
-                  <span>{q.sentence}</span>
+                  <Unit3WorkbookAudioText
+                    src={workbookUnit3Audio(
+                      "Page 19 - Exercise H",
+                      `Item_${String(i + 1).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play answer ${i + 1}`}
+                  >
+                    {q.sentence}
+                  </Unit3WorkbookAudioText>
                 </div>
 
                 {/* Input line */}
@@ -114,9 +131,12 @@ const normalize = (str) =>
                     type="text"
                     value={answers[i]}
                     disabled={locked || isCorrect}
+                    placeholder="Write a possible question"
+                    title="Write a question that could have this answer"
+                    aria-label={`Possible question ${i + 1}`}
                     onChange={(e) => handleChange(i, e.target.value)}
                     className={`
-                      w-full border-0 border-b outline-none bg-transparent
+                      wb-unit3-answer w-full border-0 border-b outline-none bg-transparent
                       text-[18px] font-semibold px-1
                       ${isWrong ? "border-[#D1232A]" : "border-black"}
                     `}

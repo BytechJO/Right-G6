@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3WorkbookAudioText, {
+  stopWorkbookUnit3Audio,
+  workbookUnit3Audio,
+} from "./Unit3WorkbookAudioText";
 
 // استبدل هذا الـ import بمسار صورة الجدول الفعلي عندك
 import itemsImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U3 Folder/SVG/2-cropped.svg";
@@ -33,7 +38,10 @@ const WB_Unit_Island_F = () => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleReset = () => setAnswers(initAnswers());
+  const handleReset = () => {
+    stopWorkbookUnit3Audio();
+    setAnswers(initAnswers());
+  };
 
   // Input مشترك بدون check (free answer)
   const FreeInput = ({ fieldKey, width = "180px", placeholder = "" }) => (
@@ -41,7 +49,10 @@ const WB_Unit_Island_F = () => {
       type="text"
       value={answers[fieldKey]}
       onChange={(e) => handleChange(fieldKey, e.target.value)}
-      placeholder={placeholder}
+      placeholder={placeholder || "your answer"}
+      title="Complete the second conditional sentence"
+      aria-label={`Answer field ${fieldKey}`}
+      className="wb-unit3-answer"
       style={{
         width,
         border: "none",
@@ -63,6 +74,10 @@ const WB_Unit_Island_F = () => {
         type="text"
         value={answers[fieldKey]}
         onChange={(e) => handleChange(fieldKey, e.target.value)}
+        placeholder="Continue your sentence"
+        title="Continue the second conditional sentence"
+        aria-label={`Continuation field ${fieldKey}`}
+        className="wb-unit3-answer"
         style={{
           width: "100%",
           border: "none",
@@ -83,18 +98,16 @@ const WB_Unit_Island_F = () => {
       <div className="div-forall">
 
         {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
-          If you knew you were going to be on a deserted island for a long time, what would you
-          take with you? Tell which items you would choose and what you would do with them.{" "}
-          You can only pick five.{" "}
-       
-        </h5>
+        <ExerciseHeader
+          sectionLetter="F"
+          title="Choose five items for a deserted island and write what you would do with them."
+          subTitle="Choose only five island items, then make each second-conditional sentence explain a realistic use for that item."
+        />
 
         {/* Items Image Grid */}
           <img
             src={itemsImg}
-            alt="Items to choose"
+            alt="A choice grid containing a fishing rod, soccer player and ball, television, pocket knife, tent, laptop, car, canoe, books, backpack, raincoat, and goat"
             style={{
               width: "100%",
               height : "auto",
@@ -113,9 +126,21 @@ const WB_Unit_Island_F = () => {
                 <span style={{ fontWeight: "bold", fontSize: "17px", minWidth: "20px" }}>
                   {s.id}
                 </span>
-                <span style={{ fontSize: "16px", whiteSpace: "nowrap" }}>If I had</span>
+                <Unit3WorkbookAudioText
+                  src={workbookUnit3Audio("Page 18 - Exercise F", "Item_002_")}
+                  ariaLabel="Play If I had"
+                  style={{ fontSize: "16px", whiteSpace: "nowrap" }}
+                >
+                  If I had
+                </Unit3WorkbookAudioText>
                 <FreeInput fieldKey={`${s.id}-a`} width="200px" />
-                <span style={{ fontSize: "16px", whiteSpace: "nowrap" }}>, I would</span>
+                <Unit3WorkbookAudioText
+                  src={workbookUnit3Audio("Page 18 - Exercise F", "Item_003_")}
+                  ariaLabel="Play I would"
+                  style={{ fontSize: "16px", whiteSpace: "nowrap" }}
+                >
+                  , I would
+                </Unit3WorkbookAudioText>
                 <FreeInput fieldKey={`${s.id}-b`} width="180px" />
               </div>
               <ExtraLine fieldKey={`${s.id}-c`} />

@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3WorkbookAudioText, {
+  stopWorkbookUnit3Audio,
+  workbookUnit3Audio,
+} from "./Unit3WorkbookAudioText";
 
 const BORDER = "#84ad40";
 
@@ -51,6 +57,12 @@ const BANK_ROW2 = [
   { word: "mind",     num: 15 },
   { word: "Let's",    num: 5  },
 ];
+
+const BANK_AUDIO = {
+  1: 2, 2: 5, 3: 8, 4: 3, 5: 18, 6: 10, 7: 12, 8: 11, 9: 14,
+  10: 2, 11: 9, 12: 15, 13: 2, 14: 16, 15: 17, 16: 6, 17: 13,
+  18: 7, 19: 4, 20: 1,
+};
 
 const SENTENCES = [
   {
@@ -126,6 +138,10 @@ const SlotInput = ({ slot, answer, locked, result, onChange }) => {
           type="text"
           value={answer}
           disabled={locked || isCorrect}
+          placeholder="word"
+          title={`Write word number ${slot.num}`}
+          aria-label={`Word number ${slot.num}`}
+          className="wb-unit3-answer"
           onChange={(e) => onChange(slot.num, e.target.value)}
           style={{
             width: "110px",
@@ -207,6 +223,7 @@ const WB_Unit_WordOrder_C = () => {
   };
 
   const handleReset = () => {
+    stopWorkbookUnit3Audio();
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
@@ -216,10 +233,11 @@ const WB_Unit_WordOrder_C = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
-          Write the words in order (numerical order) to make expressions.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Write the words in numerical order to make expressions."
+          subTitle="Use the number key to order the words, then read the finished expression aloud to check that it makes sense."
+        />
 
         <div style={{
           border: `2px solid ${BORDER}`,
@@ -248,7 +266,16 @@ const WB_Unit_WordOrder_C = () => {
                     gap: "4px",
                   }}
                 >
-                  <span style={{ fontWeight: "500" }}>{item.word}</span>
+                  <Unit3WorkbookAudioText
+                    src={workbookUnit3Audio(
+                      "Page 16 - Exercise C",
+                      `Item_${String(BANK_AUDIO[item.num]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${item.word}`}
+                    style={{ fontWeight: "500" }}
+                  >
+                    {item.word}
+                  </Unit3WorkbookAudioText>
                   <span style={{ fontSize: "13px", color: "#555" }}>{item.num}</span>
                 </div>
               ))}
