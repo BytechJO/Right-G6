@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ExerciseHeader from "../../ExerciseHeader";
+import TimedNarrationText from "../../TimedNarrationText";
 import Unit2WorkbookAudioText, {
   stopWorkbookUnit2Audio,
   workbookUnit2Audio,
 } from "./Unit2WorkbookAudioText";
+import readingTimings from "../../../assets/json/pg11-QD_eng.json";
+import fullStoryAudio from "../../../assets/audio/WorkBook/unit2/Page 11 - Exercise D/full.mp3";
+
+const STORY_TEXT = "We had such a noisy but delightful celebration on Independence Day! First, our town had such an exciting parade that everyone who saw it thought it was the best ever. So many groups entered the parade that the police had to block off twice as many streets as last year! The parade was in the morning. In the afternoon, everyone met at the town park for such a fun picnic and barbecue that no one wanted to leave. Finally when it got dark, we left the park. We drove to the stadium for a fireworks show. It was so beautiful that we wanted to remember it forever. By the time we got home that night, I was so tired but thankful for such a great day. I think Independence Day might be my favorite holiday!";
 
 const questions = [
   {
@@ -33,6 +38,7 @@ const WB_Unit2_Page11_D = () => {
   const [answers, setAnswers] = useState(init);
   const [result, setResult] = useState({});
   const [locked, setLocked] = useState(false);
+  const [narrationResetKey, setNarrationResetKey] = useState(0);
 
   const normalize = (str) =>
     str
@@ -84,6 +90,7 @@ const WB_Unit2_Page11_D = () => {
 
   const handleReset = () => {
     stopWorkbookUnit2Audio();
+    setNarrationResetKey((key) => key + 1);
     setAnswers(init());
     setResult({});
     setLocked(false);
@@ -151,7 +158,12 @@ const WB_Unit2_Page11_D = () => {
         />
 
         {/* Story */}
-        <div
+        <TimedNarrationText
+          key={narrationResetKey}
+          audioSrc={fullStoryAudio}
+          wordTimings={readingTimings}
+          ariaLabel="the complete Independence Day story"
+          onBeforePlay={stopWorkbookUnit2Audio}
           style={{
             fontSize: "16px",
             lineHeight: "1.9",
@@ -160,27 +172,8 @@ const WB_Unit2_Page11_D = () => {
             textIndent: "2em",
           }}
         >
-          {[
-            "We had such a noisy but delightful celebration on Independence Day! First, our town had such an exciting parade that",
-            "everyone who saw it thought it was the best ever. So many groups entered the parade that the police had to block off twice",
-            "as many streets as last year! The parade was in the morning. In the afternoon, everyone met at the town park for such a fun",
-            "picnic and barbecue that no one wanted to leave. Finally when it got dark, we left the park. We drove to the stadium for a",
-            "fireworks show. It was so beautiful that we wanted to remember it forever. By the time we got home that night, I was so tired",
-            "but thankful for such a great day. I think Independence Day might be my favorite holiday!",
-          ].map((part, index) => (
-            <Unit2WorkbookAudioText
-              key={part}
-              src={workbookUnit2Audio(
-                "Page 11 - Exercise D",
-                `Item_${String(index + 1).padStart(3, "0")}_`,
-              )}
-              ariaLabel={`Play story part ${index + 1}`}
-              style={{ textAlign: "left" }}
-            >
-              {part}&nbsp;
-            </Unit2WorkbookAudioText>
-          ))}
-        </div>
+          {STORY_TEXT}
+        </TimedNarrationText>
 
         {/* Questions */}
         <div className="flex flex-col gap-7 mb-12" style={{ fontSize: "17px" }}>

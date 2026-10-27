@@ -1,10 +1,25 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ExerciseHeader from "../../ExerciseHeader";
-import WBUnit1AudioText, {
-  stopUnit1Audio,
-  unit1Audio,
-} from "./WB_Unit1_AudioText";
+import TimedNarrationText from "../../TimedNarrationText";
+import { stopUnit1Audio } from "./WB_Unit1_AudioText";
+import readingTimings from "../../../assets/json/pg7-QF_eng.json";
+import fullStoryAudio from "../../../assets/audio/WorkBook/unit1/Page 7 - Exercise F/full.mp3";
+
+const STORY_ALIASES = [
+  {
+    printed: ["all", "of", "us."],
+    spoken: ["all", "ofI", "us."],
+  },
+  {
+    printed: ["I'm"],
+    spoken: ["Iam"],
+  },
+  {
+    printed: ["going", "to"],
+    spoken: ["gonna", ""],
+  },
+];
 
 const WB_Unit1_Page7_F = () => {
   const questions = [
@@ -37,21 +52,13 @@ const WB_Unit1_Page7_F = () => {
       inline: false,
     },
   ];
-  const storyAudioParts = [
-    `"You can say that again!" I agree with my younger brother, who just said it is hot today. We have been camping for a week,`,
-    `and we are getting our supplies packed because we have to leave. It is 8:00 a.m., but the sun is already hot, and so are all of`,
-    `us. It's no fun to pack when it's hot outside.`,
-    `"Can I count on you to fold up the tent?" asks my mom. The stove is packed by my dad, the campsite is cleaned by my`,
-    `sister, and the car is packed by my older brother, so that leaves me to do the tent.`,
+  const storyParagraphs = [
+    `"You can say that again!" I agree with my younger brother, who just said it is hot today. We have been camping for a week, and we are getting our supplies packed because we have to leave. It is 8:00 a.m., but the sun is already hot, and so are all of us. It's no fun to pack when it's hot outside.`,
+    `"Can I count on you to fold up the tent?" asks my mom. The stove is packed by my dad, the campsite is cleaned by my sister, and the car is packed by my older brother, so that leaves me to do the tent.`,
     `"Sure," I say, but without much excitement in my voice.`,
-    `"I'm sorry to hear that," I hear my dad say, and I look over to see him talking to the park ranger. "Do you have any idea of`,
-    `when it's likely to be opened again?" my dad asks.`,
-    `My dad comes to our campfire and calls to all of us to come over. "I have some news that's likely to surprise or upset you,"`,
-    `he says, "but don't worry, everything's going to work out well. The park ranger just told me that a set of big trucks were`,
-    `using the campground road late last night, and the road fell apart. So we have to stay another night."`,
-    `The reaction he got from us is probably different from what he expected.`,
-    `He was hugged by us, twirled around in circles by my brother, patted on the back by my sister, and stared at by my mother.`,
-    `We were all surprised and happy about staying for another day!`,
+    `"I'm sorry to hear that," I hear my dad say, and I look over to see him talking to the park ranger. "Do you have any idea of when it's likely to be opened again?" my dad asks.`,
+    `My dad comes to our campfire and calls to all of us to come over. "I have some news that's likely to surprise or upset you," he says, "but don't worry, everything's going to work out well. The park ranger just told me that a set of big trucks were using the campground road late last night, and the road fell apart. So we have to stay another night."`,
+    `The reaction he got from us is probably different from what he expected. He was hugged by us, twirled around in circles by my brother, patted on the back by my sister, and stared at by my mother. We were all surprised and happy about staying for another day!`,
   ];
 
   const initAnswers = () => ({
@@ -65,6 +72,7 @@ const WB_Unit1_Page7_F = () => {
   const [answers, setAnswers] = useState(initAnswers());
   const [result, setResult] = useState({});
   const [locked, setLocked] = useState(false);
+  const [narrationResetKey, setNarrationResetKey] = useState(0);
 
   const normalize = (str) =>
     str
@@ -131,6 +139,7 @@ const WB_Unit1_Page7_F = () => {
 
   const handleReset = () => {
     stopUnit1Audio();
+    setNarrationResetKey((key) => key + 1);
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
@@ -191,29 +200,33 @@ const WB_Unit1_Page7_F = () => {
         />
 
         {/* Story */}
-        <div
+        <TimedNarrationText
+          key={narrationResetKey}
+          audioSrc={fullStoryAudio}
+          wordTimings={readingTimings}
+          aliases={STORY_ALIASES}
+          ariaLabel="the complete camping story"
+          onBeforePlay={stopUnit1Audio}
           className="mb-8 text-[16px] leading-[1.9]"
-          style={{ whiteSpace: "pre-line", color: "#333" }}
+          style={{ color: "#333" }}
         >
-          {storyAudioParts.map((part, index) => (
-            <React.Fragment key={`${index}-${part.slice(0, 12)}`}>
-              <WBUnit1AudioText
-                src={
-                  index < 14
-                    ? unit1Audio(
-                        "Page 7 - Exercise F",
-                        `Item_${String(index + 1).padStart(3, "0")}_`,
-                      )
-                    : null
-                }
-                ariaLabel={`Play story part ${index + 1}`}
-                style={{ textAlign: "left" }}
+          {storyParagraphs.map((paragraph, index) => (
+            <React.Fragment key={index}>
+              <p
+                style={{
+                  margin: index === storyParagraphs.length - 1 ? 0 : "0 0 8px",
+                  padding: 0,
+                  textIndent: "1.25em",
+                  textAlign: "left",
+                  width: "100%",
+                }}
               >
-                {part}
-              </WBUnit1AudioText>{" "}
+                {paragraph}
+              </p>
+              {" "}
             </React.Fragment>
           ))}
-        </div>
+        </TimedNarrationText>
 
         {/* Questions */}
         <div className="flex flex-col gap-6 text-[17px] mb-15">

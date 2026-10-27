@@ -2,36 +2,73 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ExerciseHeader from "../../ExerciseHeader";
+import TimedNarrationText from "../../TimedNarrationText";
 import Unit3WorkbookAudioText, {
   stopWorkbookUnit3Audio,
   workbookUnit3Audio,
 } from "./Unit3WorkbookAudioText";
+import readingTimings from "../../../assets/json/pg17-QE_eng.json";
+import fullSpeechAudio from "../../../assets/audio/WorkBook/unit3/Page 17 - Exercise E/full.mp3";
 
 const BORDER = "#84ad40";
 
 const SPEECH_PARAGRAPHS = [
   [
-    [1, "Exams are next week. As you know, this class did not do well on the last exams. I want to review with you some ideas on how you "],
+    [
+      1,
+      "Exams are next week. As you know, this class did not do well on the last exams. I want to review with you some ideas on how you ",
+    ],
     [2, "can improve your scores for these next exams."],
   ],
   [
-    [3, "First of all, if you started studying earlier, you would do better. Last term you only studied a day or two before each exam. That's "],
-    [4, "simply not acceptable! If you started studying now, you could study for a shorter amount of time each day, and you would be able "],
+    [
+      3,
+      "First of all, if you started studying earlier, you would do better. Last term you only studied a day or two before each exam. That's ",
+    ],
+    [
+      4,
+      "simply not acceptable! If you started studying now, you could study for a shorter amount of time each day, and you would be able ",
+    ],
     [5, "to remember more of the information."],
   ],
   [
-    [6, "Secondly, you should rewrite and organize your notes. If you grouped the things you were studying into categories, it would be "],
-    [7, "much easier to learn the things you need to know. Last term you tried to study the notes you took in class, but you wrote them "],
-    [8, "quickly, so they were missing information. This term, if you took the extra time now to rewrite your notes, you would save time "],
+    [
+      6,
+      "Secondly, you should rewrite and organize your notes. If you grouped the things you were studying into categories, it would be ",
+    ],
+    [
+      7,
+      "much easier to learn the things you need to know. Last term you tried to study the notes you took in class, but you wrote them ",
+    ],
+    [
+      8,
+      "quickly, so they were missing information. This term, if you took the extra time now to rewrite your notes, you would save time ",
+    ],
     [9, "overall."],
   ],
   [
-    [10, "Finally, always check the study sheets carefully to be sure you are studying everything you need. Last term I found study sheets in "],
-    [11, "the trash. This term, you should pay attention to the material you need for the test."],
+    [
+      10,
+      "Finally, always check the study sheets carefully to be sure you are studying everything you need. Last term I found study sheets in ",
+    ],
+    [
+      11,
+      "the trash. This term, you should pay attention to the material you need for the test.",
+    ],
   ],
   [
-    [12, "Well, I hope this helps each of you. If you follow these simple tips, you can get better exam scores!"],
+    [
+      12,
+      "Well, I hope this helps each of you. If you follow these simple tips, you can get better exam scores!",
+    ],
   ],
+];
+
+const SPEECH_ALIASES = [
+  {
+    printed: ["grouped"],
+    spoken: ["group"],
+  },
 ];
 
 const ROWS = [
@@ -73,11 +110,15 @@ const initAnswers = () => {
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
+  str
+    .toLowerCase()
+    .replace(/[.?!,’'"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 // ✅ CellInput خارج الـ component الرئيسي
 const CellInput = ({ rowKey, value, locked, result, onChange }) => {
-  const isWrong   = result[rowKey] === false;
+  const isWrong = result[rowKey] === false;
   const isCorrect = result[rowKey] === true;
   return (
     <span style={{ position: "relative", display: "block", width: "100%" }}>
@@ -106,13 +147,27 @@ const CellInput = ({ rowKey, value, locked, result, onChange }) => {
         }}
       />
       {isWrong && (
-        <span style={{
-          position: "absolute", top: "-8px", right: "-8px",
-          width: "18px", height: "18px", background: "#ef4444", color: "white",
-          borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-        }}>✕</span>
+        <span
+          style={{
+            position: "absolute",
+            top: "-8px",
+            right: "-8px",
+            width: "18px",
+            height: "18px",
+            background: "#ef4444",
+            color: "white",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "11px",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+          }}
+        >
+          ✕
+        </span>
       )}
     </span>
   );
@@ -120,13 +175,14 @@ const CellInput = ({ rowKey, value, locked, result, onChange }) => {
 
 const WB_Unit_Speech_E = () => {
   const [answers, setAnswers] = useState(initAnswers);
-  const [result, setResult]   = useState({});
-  const [locked, setLocked]   = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
+  const [narrationResetKey, setNarrationResetKey] = useState(0);
 
   const handleChange = (key, value) => {
     if (locked || result[key] === true) return;
     setAnswers((prev) => ({ ...prev, [key]: value }));
-    setResult((prev)  => ({ ...prev, [key]: undefined }));
+    setResult((prev) => ({ ...prev, [key]: undefined }));
   };
 
   const checkAnswers = () => {
@@ -141,8 +197,10 @@ const WB_Unit_Speech_E = () => {
     let correct = 0;
     const nr = {};
     inputRows.forEach((r) => {
-      const okLast = normalize(answers[`${r.id}-last`]) === normalize(r.lastTerm);
-      const okThis = normalize(answers[`${r.id}-this`]) === normalize(r.thisTerm);
+      const okLast =
+        normalize(answers[`${r.id}-last`]) === normalize(r.lastTerm);
+      const okThis =
+        normalize(answers[`${r.id}-this`]) === normalize(r.thisTerm);
       if (okLast) correct++;
       if (okThis) correct++;
       nr[`${r.id}-last`] = okLast;
@@ -151,10 +209,13 @@ const WB_Unit_Speech_E = () => {
 
     setResult(nr);
     const total = inputRows.length * 2;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
@@ -174,6 +235,7 @@ const WB_Unit_Speech_E = () => {
 
   const handleReset = () => {
     stopWorkbookUnit3Audio();
+    setNarrationResetKey((key) => key + 1);
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
@@ -182,67 +244,70 @@ const WB_Unit_Speech_E = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
         <ExerciseHeader
           sectionLetter="E"
           title="Read the speech and complete the chart with the main suggestion from each paragraph."
           subTitle="Read one paragraph at a time and transfer only its main improvement suggestion into the matching chart row."
         />
 
-        <div style={{
-          fontSize: "15px",
-          lineHeight: "1.85",
-          color: "#333",
-          marginBottom: "28px",
-        }}>
+        <TimedNarrationText
+          key={narrationResetKey}
+          audioSrc={fullSpeechAudio}
+          wordTimings={readingTimings}
+          aliases={SPEECH_ALIASES}
+          ariaLabel="the complete exam study tips speech"
+          onBeforePlay={stopWorkbookUnit3Audio}
+          style={{
+            fontSize: "15px",
+            lineHeight: "1.85",
+            color: "#333",
+            marginBottom: "28px",
+          }}
+        >
           {SPEECH_PARAGRAPHS.map((paragraph, paragraphIndex) => (
-            <p
-              key={paragraphIndex}
+            <React.Fragment key={paragraphIndex}>
+              <p
+                style={{
+                  margin: 0,
+                  padding: 0,
+                  textIndent: 0,
+                  textAlign: "left",
+                  width: "100%",
+                }}
+              >
+                {paragraph.map(([, text]) => text).join("")}
+              </p>
+              {" "}
+            </React.Fragment>
+          ))}
+        </TimedNarrationText>
+
+        <div
+          style={{
+            border: `1.5px solid ${BORDER}`,
+            borderRadius: "6px",
+            overflow: "hidden",
+            marginBottom: "3em",
+            fontSize: "15px",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              background: "#f0f7e0",
+              borderBottom: `1.5px solid ${BORDER}`,
+            }}
+          >
+            <div
               style={{
-                margin: 0,
-                padding: 0,
-                textIndent: 0,
-                textAlign: "left",
-                width: "100%",
+                padding: "10px 16px",
+                fontWeight: "bold",
+                textAlign: "center",
+                borderRight: `1.5px solid ${BORDER}`,
+                fontSize: "16px",
               }}
             >
-              {paragraph.map(([audioIndex, text]) => (
-                <Unit3WorkbookAudioText
-                  key={audioIndex}
-                  src={workbookUnit3Audio(
-                    "Page 17 - Exercise E",
-                    `Item_${String(audioIndex).padStart(3, "0")}_`,
-                  )}
-                  ariaLabel={`Play speech part ${audioIndex}`}
-                  flowText
-                >
-                  {text}
-                </Unit3WorkbookAudioText>
-              ))}
-            </p>
-          ))}
-        </div>
-
-        <div style={{
-          border: `1.5px solid ${BORDER}`,
-          borderRadius: "6px",
-          overflow: "hidden",
-          marginBottom: "3em",
-          fontSize: "15px",
-        }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            background: "#f0f7e0",
-            borderBottom: `1.5px solid ${BORDER}`,
-          }}>
-            <div style={{
-              padding: "10px 16px",
-              fontWeight: "bold",
-              textAlign: "center",
-              borderRight: `1.5px solid ${BORDER}`,
-              fontSize: "16px",
-            }}>
               <Unit3WorkbookAudioText
                 src={workbookUnit3Audio("Page 17 - Exercise E", "Item_014_")}
                 ariaLabel="Play Last Term"
@@ -250,12 +315,14 @@ const WB_Unit_Speech_E = () => {
                 Last Term
               </Unit3WorkbookAudioText>
             </div>
-            <div style={{
-              padding: "10px 16px",
-              fontWeight: "bold",
-              textAlign: "center",
-              fontSize: "16px",
-            }}>
+            <div
+              style={{
+                padding: "10px 16px",
+                fontWeight: "bold",
+                textAlign: "center",
+                fontSize: "16px",
+              }}
+            >
               <Unit3WorkbookAudioText
                 src={workbookUnit3Audio("Page 17 - Exercise E", "Item_013_")}
                 ariaLabel="Play This Term"
@@ -271,18 +338,23 @@ const WB_Unit_Speech_E = () => {
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                borderBottom: i < ROWS.length - 1 ? `1.5px solid ${BORDER}` : "none",
+                borderBottom:
+                  i < ROWS.length - 1 ? `1.5px solid ${BORDER}` : "none",
                 minHeight: "60px",
               }}
             >
-              <div style={{
-                padding: "10px 14px",
-                borderRight: `1.5px solid ${BORDER}`,
-                display: "flex",
-                alignItems: "center",
-              }}>
+              <div
+                style={{
+                  padding: "10px 14px",
+                  borderRight: `1.5px solid ${BORDER}`,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 {row.prefilled ? (
-                  <span style={{ color: "#333", fontSize: "15px" }}>{row.lastTerm}</span>
+                  <span style={{ color: "#333", fontSize: "15px" }}>
+                    {row.lastTerm}
+                  </span>
                 ) : (
                   <CellInput
                     rowKey={`${row.id}-last`}
@@ -294,13 +366,17 @@ const WB_Unit_Speech_E = () => {
                 )}
               </div>
 
-              <div style={{
-                padding: "10px 14px",
-                display: "flex",
-                alignItems: "center",
-              }}>
+              <div
+                style={{
+                  padding: "10px 14px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 {row.prefilled ? (
-                  <span style={{ color: "#333", fontSize: "15px" }}>{row.thisTerm}</span>
+                  <span style={{ color: "#333", fontSize: "15px" }}>
+                    {row.thisTerm}
+                  </span>
                 ) : (
                   <CellInput
                     rowKey={`${row.id}-this`}
@@ -314,13 +390,18 @@ const WB_Unit_Speech_E = () => {
             </div>
           ))}
         </div>
-
       </div>
 
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

@@ -1,5 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit4WorkbookAudioText, { stopWorkbookUnit4Audio, workbookUnit4Audio } from "./Unit4WorkbookAudioText";
 
 // صورة الولد — بدّل المسار
 import boyImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U4 Folder/SVG/2.svg";
@@ -13,24 +16,28 @@ const QUESTIONS = [
     sentence: "Bruce sits in the chair.",
     answer: "simple present",
     prefilled: false,
+    audio: "Item_001_",
   },
   {
     id: 2,
     sentence: "The light is fixed by the electrician.",
     answer: "present simple passive",
     prefilled: false,
+    audio: "Item_002_",
   },
   {
     id: 3,
     sentence: "Natalie programs the computer.",
     answer: "simple present",
     prefilled: false,
+    audio: "Item_003_",
   },
   {
     id: 4,
     sentence: "The letter is written by my grandpa.",
     answer: "present simple passive",
     prefilled: false,
+    audio: "Item_004_",
   },
 ];
 
@@ -55,6 +62,9 @@ const InlineInput = ({ qId, value, onChange, isCorrect, isWrong, disabled, prefi
     <input
       type="text"
       value={value}
+      placeholder="Type the grammar form"
+      title={`Grammar form for sentence ${qId}`}
+      aria-label={`Grammar form for sentence ${qId}`}
       disabled={disabled}
       onChange={(e) => onChange(qId, e.target.value)}
       style={{
@@ -119,7 +129,7 @@ const WB_Unit4_SimplePassive_D = () => {
     });
     setResult(nr);
     const total = QUESTIONS.filter((q) => !q.prefilled).length;
-    const scored = Object.values(nr).filter(Boolean).length - 1; // -1 للـ prefilled
+    const scored = correct;
     const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
     if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
@@ -133,20 +143,17 @@ const WB_Unit4_SimplePassive_D = () => {
     setAnswers(a); setResult(r); setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => { stopWorkbookUnit4Audio(); setAnswers(initAnswers()); setResult({}); setLocked(false); };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>D</span>
-          Read each sentence. Write{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>simple present</span>{" "}
-          or{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>present simple passive</span>.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title={<>Read each sentence. Write <span style={{ color: "orange", fontWeight: "bold" }}>simple present</span> or <span style={{ color: "orange", fontWeight: "bold" }}>present simple passive</span>.</>}
+          subTitle="Read the whole sentence and decide whether the subject performs the action or receives it before choosing the form."
+        />
 
         {/* Questions + Image */}
         <div style={{
@@ -157,7 +164,7 @@ const WB_Unit4_SimplePassive_D = () => {
         }}>
           {/* Questions list */}
           <div style={{ display: "flex", flexDirection: "column", gap: "24px", flex: 1 }}>
-            {QUESTIONS.map(({ id, sentence, answer, prefilled }) => {
+            {QUESTIONS.map(({ id, sentence, prefilled, audio }) => {
               const isCorrect = result[id] === true;
               const isWrong   = result[id] === false;
               return (
@@ -169,7 +176,7 @@ const WB_Unit4_SimplePassive_D = () => {
                   flexWrap: "wrap",
                 }}>
                   <span style={{ fontWeight: "bold", minWidth: "20px" }}>{id}</span>
-                  <span>{sentence}</span>
+                  <Unit4WorkbookAudioText src={workbookUnit4Audio("Page 23 - Exercise D", audio)} ariaLabel={`Play sentence ${id}`} flowText>{sentence}</Unit4WorkbookAudioText>
                   <InlineInput
                     qId={id}
                     value={answers[id]}
@@ -188,7 +195,7 @@ const WB_Unit4_SimplePassive_D = () => {
           <div style={{ flexShrink: 0 }}>
             <img
               src={boyImg}
-              alt="boy sitting on chair"
+              alt="A boy sitting in an armchair with popcorn and a drink"
               style={{ width: "100%", height: "auto", objectFit: "contain" }}
             />
           </div>
