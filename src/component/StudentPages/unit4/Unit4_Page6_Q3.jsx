@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "./Unit4StudentAudioText";
 
 const Unit4_Page6_Q3 = () => {
   const questions = [
@@ -8,6 +13,7 @@ const Unit4_Page6_Q3 = () => {
       statement: "She is given a gift by us.",
       questionAnswer: "Is she given a gift by us?",
       negativeAnswer: "She isn’t given a gift by us..",
+      audio: "Item_001_",
       prefilled: false,
     },
     {
@@ -15,6 +21,7 @@ const Unit4_Page6_Q3 = () => {
       statement: "The computer is programmed by Jim.",
       questionAnswer: "Is the computer programmed by Jim?",
       negativeAnswer: "The computer isn't programmed by Jim.",
+      audio: "Item_002_",
       prefilled: false,
     },
     {
@@ -22,6 +29,7 @@ const Unit4_Page6_Q3 = () => {
       statement: "The bike is ridden by Dan.",
       questionAnswer: "Is the bike ridden by Dan?",
       negativeAnswer: "The bike isn't ridden by Dan.",
+      audio: "Item_003_",
       prefilled: false,
     },
   ];
@@ -132,6 +140,7 @@ const Unit4_Page6_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -183,13 +192,11 @@ const Unit4_Page6_Q3 = () => {
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall" style={{ gap: "50px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
-            E
-          </span>
-          Given the statement, write a question and the negative.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Given the statement, write a question and the negative."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         {/* QUESTIONS */}
         <div
@@ -222,7 +229,12 @@ const Unit4_Page6_Q3 = () => {
                 <span style={{ fontWeight: "bold", minWidth: "20px" }}>
                   {i + 1}
                 </span>
-                <span>{q.statement}</span>
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 33 - Exercise E", q.audio)}
+                  ariaLabel={`Play ${q.statement}`}
+                >
+                  {q.statement}
+                </Unit4StudentAudioText>
               </div>
 
               {/* RIGHT — question + negative inputs */}
@@ -259,6 +271,9 @@ const Unit4_Page6_Q3 = () => {
                       onChange={(e) =>
                         updateField(i, "question", e.target.value)
                       }
+                      placeholder="Write the question"
+                      title="Write the question form"
+                      aria-label={`Question form for sentence ${i + 1}`}
                       style={inputStyle(i, "question")}
                     />
                     {errors[i].question && <ErrorBadge />}
@@ -291,6 +306,9 @@ const Unit4_Page6_Q3 = () => {
                       onChange={(e) =>
                         updateField(i, "negative", e.target.value)
                       }
+                      placeholder="Write the negative form"
+                      title="Write the negative form"
+                      aria-label={`Negative form for sentence ${i + 1}`}
                       style={inputStyle(i, "negative")}
                     />
                     {errors[i].negative && <ErrorBadge />}

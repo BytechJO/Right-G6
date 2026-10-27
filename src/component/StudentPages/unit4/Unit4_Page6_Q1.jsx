@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "./Unit4StudentAudioText";
 
 const Unit4_Page6_Q1 = () => {
   const questions = [
@@ -7,18 +12,21 @@ const Unit4_Page6_Q1 = () => {
       id: 0,
       activeText: "We mail the letter.",
       answer: "The letter is mailed by us",
+      audio: "Item_001_",
       prefilled: false,
     },
     {
       id: 1,
       activeText: "The mechanics fixed the cars.",
       answer: "The cars are fixed by the mechanics",
+      audio: "Item_002_",
       prefilled: false,
     },
     {
       id: 2,
       activeText: "Bryan teaches the students.",
       answer: "The students are taught by Bryan",
+      audio: "Item_003_",
       prefilled: false,
     },
   ];
@@ -105,6 +113,7 @@ const Unit4_Page6_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -113,15 +122,12 @@ const Unit4_Page6_Q1 = () => {
 
   return (
     <div className="flex justify-center p-[30px]">
-      <div className="div-forall">
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-15">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
-            C
-          </span>
-          Change the active verb to a passive one for each sentence. Rewrite the
-          sentence.
-        </h5>
+      <div className="div-forall gap-5">
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Change the active verb to a passive one for each sentence. Rewrite the sentence."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
         {/* QUESTIONS */}
         <div className="flex flex-col gap-10 mt-6">
@@ -130,7 +136,13 @@ const Unit4_Page6_Q1 = () => {
               {/* Active sentence */}
               <div className="flex items-start gap-5 items-center">
                 <span className="font-bold text-[20px] w-5">{i + 1}</span>
-                <span className="text-[20px]">{q.activeText}</span>
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 33 - Exercise C", q.audio)}
+                  ariaLabel={`Play ${q.activeText}`}
+                  className="text-[20px]"
+                >
+                  {q.activeText}
+                </Unit4StudentAudioText>
               </div>
 
               {/* Input — passive rewrite */}
@@ -140,6 +152,9 @@ const Unit4_Page6_Q1 = () => {
                   value={answers[i]}
                   disabled={locked || correctLocked[i]}
                   onChange={(e) => handleChange(i, e.target.value)}
+                  placeholder="Write the passive sentence"
+                  title="Write the complete sentence in the passive voice"
+                  aria-label={`Passive sentence ${i + 1}`}
                   style={{
                     textDecoration: q.prefilled ? "underline" : "none",
                     textDecorationStyle: q.prefilled ? "solid" : undefined,

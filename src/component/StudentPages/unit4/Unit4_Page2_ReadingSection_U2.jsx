@@ -5,8 +5,12 @@ import imgReading from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 What
 import readingAudio from "../../../assets/audio/ClassBook/U4/PG 29/cd18pg29-reading.mp3";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
 import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
+import readingTimings from "../../../assets/json/cd18pg29-reading_eng.json";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import { useReadingHighlight } from "../../useReadingHighlight";
+import ExerciseHeader from "../../ExerciseHeader";
 const ReadingSection_U4 = () => {
+  const { highlight, onTimeUpdate } = useReadingHighlight(readingTimings);
   const captions = [
     {
       start: 0.439,
@@ -79,9 +83,16 @@ const ReadingSection_U4 = () => {
   return (
     <div className=" flex flex-col items-center">
       <div className="p-6 flex flex-col items-center gap-5">
+        <div className="w-[60%]">
+          <ExerciseHeader
+            title="Listen and read along: Eco-tecture."
+            subTitle="Press Play and follow the text as it is read; pause or replay any part you need to hear again."
+          />
+        </div>
         <div className="flex justify-start gap-1 mb-4 w-[60%]">
           <img
             src={ReadingBG}
+            alt=""
             style={{
               height: "60px",
               width: "auto",
@@ -89,8 +100,9 @@ const ReadingSection_U4 = () => {
           />
 
           <h2 className="font-bold text-[18px] text-black">
-            Have you ever reused something to make something new out of it? Can
-            you find new uses for old things in your room or house?
+            {highlight(
+              "Have you ever reused something to make something new out of it? Can you find new uses for old things in your room or house?",
+            )}
           </h2>
         </div>
         <div className="w-[60%] mx-auto">
@@ -98,6 +110,8 @@ const ReadingSection_U4 = () => {
             src={readingAudio}
             captions={captions}
             stopAtSecond={9.939}
+            pageId="sb_unit4_page29_reading"
+            onTimeUpdate={onTimeUpdate}
           />
         </div>
         <div className="relative w-[60%] mt-2">
@@ -105,13 +119,14 @@ const ReadingSection_U4 = () => {
             className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[20px] font-bold w-[200px]"
             style={{ borderRadius: "20px 20px 0px 0px " }}
           >
-            Eco-tecture
+            {highlight("Eco-tecture")}
           </div>
 
           <div className="border-2 border-[#84ad40] rounded-2xl p-4 pt-6 bg-white">
             <div className="flex gap-4">
               <img
                 src={imgReading}
+                alt="A modern eco-friendly building surrounded by greenery"
                 style={{ width: "auto", height: "250px", objectFit: "contain" }}
                 className="rounded-md flex-shrink-0"
               />
@@ -127,7 +142,7 @@ const ReadingSection_U4 = () => {
                   },
                 ].map((line, i) => (
                   <p key={i} className="mb-0.5">
-                    {line.text}
+                    {highlight(line.text)}
                   </p>
                 ))}
               </div>
@@ -143,20 +158,25 @@ const ReadingSection_U4 = () => {
                   text: "This type of architecture is named “green architecture” because it helps to keep the earth green and healthy. Solar or wind energy is used whenever possible, because it is renewable. How many buildings in your area can be called “green?”",
                 },
               ].map((line, i) => (
-                <p key={i}>{line.text}</p>
+                <p key={i}>{highlight(line.text)}</p>
               ))}
             </div>
           </div>
         </div>
 
         <div className="text-[15px] text-black text-left flex items-center justify-center">
-          <img src={question} style={{ height: "150px", width: "60%" }} />
+          <img
+            src={question}
+            alt=""
+            style={{ height: "150px", width: "60%" }}
+          />
         </div>
 
         <div className="w-[60%] mt-3 space-y-6">
           <div className="flex items-center gap-4">
             <img
               src={comprehesion}
+              alt=""
               style={{
                 height: "60px",
                 width: "auto",

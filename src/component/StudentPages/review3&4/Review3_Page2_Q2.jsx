@@ -1,18 +1,26 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 const Review3_Page2_Q2 = () => {
   const questions = [
     {
       id: 0,
       text: "What would you do if you went on a roller coaster?",
+      audio: "Item_001_",
     },
     {
       id: 1,
       text: "What would you order if you went to a fancy restaurant?",
+      audio: "Item_002_",
     },
     {
       id: 2,
       text: "What would you ask about if you met a famous scientist?",
+      audio: "Item_003_",
     },
   ];
 
@@ -28,29 +36,26 @@ const Review3_Page2_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setLocked(false);
   };
 
-  const handleDone = () => {
-    setLocked(true);
-  };
-
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall" style={{gap:"40px"}}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span style={{ marginRight: "10px" }}>E</span>
-          Answer the following questions with a second conditional sentence.
-        </h5>
+      <div className="div-forall" style={{ gap: "40px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="E"
+          title="Answer the following questions with a second conditional sentence."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         {/* QUESTIONS */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "90px",
+            gap: "40px",
             marginBottom: "60px",
           }}
         >
@@ -74,9 +79,13 @@ const Review3_Page2_Q2 = () => {
                 >
                   {i + 1}
                 </span>
-                <span style={{ fontSize: "18px" }}>
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 35 - Exercise E", q.audio)}
+                  ariaLabel={`Play ${q.text}`}
+                  style={{ fontSize: "18px" }}
+                >
                   {q.text}
-                </span>
+                </Unit4StudentAudioText>
               </div>
 
               {/* ANSWER LINE */}
@@ -85,6 +94,9 @@ const Review3_Page2_Q2 = () => {
                 value={answers[i]}
                 disabled={locked}
                 onChange={(e) => handleChange(i, e.target.value)}
+                placeholder="Write a second conditional sentence"
+                title="Write your second conditional answer"
+                aria-label={`Answer to question ${i + 1}`}
                 style={{
                   // width: "100%",
                   border: "none",

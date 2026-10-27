@@ -1,11 +1,13 @@
 import page24 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/Page 38.png";
 import React, { useEffect, useState } from "react";
 import "./Reading_Unit4_Page1.css";
+
 import sound1 from "../../../assets/audio/ClassBook/U4/PG 38/cd2pg38-story-adult-lady_NILS0ysY.mp3";
 import sound2 from "../../../assets/audio/ClassBook/U4/PG 38/Pg38_1.1_Adult Lady.mp3";
 import sound3 from "../../../assets/audio/ClassBook/U4/PG 38/Pg38_1.2_Adult Lady.mp3";
 import sound4 from "../../../assets/audio/ClassBook/U4/PG 38/Pg38_1.3_Adult Lady.mp3";
 import sound5 from "../../../assets/audio/ClassBook/U4/PG 38/Pg38_1.4_Adult Lady.mp3";
+
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
@@ -19,9 +21,11 @@ const Reading_Unit4_Page1 = ({
 }) => {
   const [hoveredAreaIndex, setHoveredAreaIndex] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
     setActiveAudio(null);
   }, [setActiveAudio]);
+
   const captionsExample = [
     {
       start: 0.66,
@@ -184,24 +188,34 @@ const Reading_Unit4_Page1 = ({
       text: "Everyone is ready for a great party",
     },
   ];
+
   const clickableAreas = [
     { x1: 15.26, y1: 35.78, x2: 53.75, y2: 50.47, sound: sound2 },
     { x1: 55.6, y1: 36.14, x2: 94.07, y2: 50.13, sound: sound3 },
     { x1: 15.32, y1: 81.95, x2: 53.75, y2: 96.09, sound: sound4 },
     { x1: 55.6, y1: 78.9, x2: 94.07, y2: 95.93, sound: sound5 },
   ];
+
   const handleImageClick = (e) => {
     const rect = e.target.getBoundingClientRect();
     const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
     const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+
     console.log("X%:", xPercent.toFixed(2), "Y%:", yPercent.toFixed(2));
   };
-  const playSound = (soundPath) => {
+
+  const playSound = (soundPath, index) => {
     if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+
       audioRef.current.src = soundPath;
-      audioRef.current.play();
+
+      setActiveAudio(`page1-${index}`);
       setIsPlaying(true);
-      setHoveredAreaIndex(null); // إزالة الهايلايت عند بدء الصوت
+      setHoveredAreaIndex(null);
+
+      audioRef.current.play();
 
       audioRef.current.onended = () => {
         setIsPlaying(false);
@@ -211,46 +225,88 @@ const Reading_Unit4_Page1 = ({
     }
   };
 
+  const openReadingAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    setActiveAudio(null);
+
+    openPopup(
+      "audio",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <AudioWithCaption
+          src={sound1}
+          captions={captionsExample}
+          pageId="sb_unit4_page38_reading"
+        />
+      </div>,
+    );
+  };
+
+  const openVideo = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    setActiveAudio(null);
+
+    openPopup(
+      "video",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <video
+          autoPlay
+          controls
+          style={{
+            width: "auto",
+            height: "80%",
+            objectFit: "fill",
+            borderRadius: "20px",
+          }}
+        >
+          <source src={video3} type="video/mp4" />
+        </video>
+      </div>,
+    );
+  };
+
+  const handleKeyDown = (event, action) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        action();
+      }
+    }
+  };
+
   return (
     <div
       className="page1-img-wrapper"
       onClick={handleImageClick}
       style={{ backgroundImage: `url(${page24})` }}
     >
-      {/* <img
-        src={page24}
-        style={{ display: "block" }}
-        onClick={handleImageClick}
-      /> */}
+      {/* Sentence Audio Areas */}
 
-      {clickableAreas.map((area, index) => (
-        <div
-          key={index}
-          className={`clickable-area ${
-            hoveredAreaIndex === index || activeAudio === `page1-${index}`
-              ? "highlight"
-              : ""
-          }`}
-          style={{
-            position: "absolute",
-            left: `${area.x1}%`,
-            top: `${area.y1}%`,
-            width: `${area.x2 - area.x1}%`,
-            height: `${area.y2 - area.y1}%`,
-          }}
-          onClick={() => {
-            setActiveAudio(`page1-${index}`);
-            playSound(area.sound);
-          }}
-          onMouseEnter={() => {
-            if (!isPlaying) setHoveredAreaIndex(index);
-          }}
-          onMouseLeave={() => {
-            if (!isPlaying) setHoveredAreaIndex(null);
-          }}
-        ></div>
-      ))}
-
+      {/* Main Reading Audio */}
       <div
         className="headset-icon-CD-unit2-page11-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -259,26 +315,15 @@ const Reading_Unit4_Page1 = ({
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => {
-            if (audioRef.current) {
-              audioRef.current.pause();
-              audioRef.current.currentTime = 0;
-            }
-            setActiveAudio(null);
-            openPopup(
-              "audio",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <AudioWithCaption src={sound1} captions={captionsExample} />
-              </div>,
-            );
+          role="button"
+          tabIndex={0}
+          aria-label="Open reading audio"
+          onClick={openReadingAudio}
+          onKeyDown={(event) => handleKeyDown(event, openReadingAudio)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
           }}
-          style={{ overflow: "visible" }}
         >
           <image
             className="svg-img"
@@ -291,6 +336,7 @@ const Reading_Unit4_Page1 = ({
         </svg>
       </div>
 
+      {/* Video */}
       <div
         className="pauseBtn-icon-CD-page21 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -299,40 +345,15 @@ const Reading_Unit4_Page1 = ({
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => {
-            if (audioRef.current) {
-              audioRef.current.pause();
-              audioRef.current.currentTime = 0;
-            }
-            setActiveAudio(null);
-            openPopup(
-              "video",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                  width: "100%",
-                }}
-              >
-                <video
-                  autoPlay
-                  controls
-                  style={{
-                    width: "auto",
-                    height: "80%",
-                    objectFit: "fill",
-                    borderRadius: "20px",
-                  }}
-                >
-                  <source src={video3} type="video/mp4" />
-                </video>
-              </div>,
-            );
+          role="button"
+          tabIndex={0}
+          aria-label="Open reading video"
+          onClick={openVideo}
+          onKeyDown={(event) => handleKeyDown(event, openVideo)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
           }}
-          style={{ overflow: "visible" }}
         >
           <image
             className="svg-img"
@@ -344,6 +365,64 @@ const Reading_Unit4_Page1 = ({
           />
         </svg>
       </div>
+      {clickableAreas.map((area, index) => {
+        const isActive = activeAudio === `page1-${index}`;
+
+        return (
+          <div
+            key={index}
+            role="button"
+            tabIndex={0}
+            aria-label={`Read story section ${index + 1}`}
+            aria-pressed={isActive}
+            className={`clickable-area ${
+              hoveredAreaIndex === index || isActive ? "highlight" : ""
+            }`}
+            style={{
+              position: "absolute",
+              left: `${area.x1}%`,
+              top: `${area.y1}%`,
+              width: `${area.x2 - area.x1}%`,
+              height: `${area.y2 - area.y1}%`,
+              cursor: "pointer",
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              playSound(area.sound, index);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (!event.repeat) {
+                  playSound(area.sound, index);
+                }
+              }
+            }}
+            onFocus={() => {
+              if (!isPlaying) {
+                setHoveredAreaIndex(index);
+              }
+            }}
+            onBlur={() => {
+              if (!isPlaying) {
+                setHoveredAreaIndex(null);
+              }
+            }}
+            onMouseEnter={() => {
+              if (!isPlaying) {
+                setHoveredAreaIndex(index);
+              }
+            }}
+            onMouseLeave={() => {
+              if (!isPlaying) {
+                setHoveredAreaIndex(null);
+              }
+            }}
+          />
+        );
+      })}
       <audio ref={audioRef} style={{ display: "none" }} />
     </div>
   );

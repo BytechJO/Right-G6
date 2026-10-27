@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "./Unit4StudentAudioText";
 
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 37.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 38.svg";
@@ -7,28 +12,20 @@ import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It L
 import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 40.svg";
 import img5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 41.svg";
 
-const captions = [
-  {
-    start: 0.0,
-    end: 20.0,
-    text: "Match each vocabulary word to its picture.",
-  },
-];
-
 const pictures = [
-  { num: 1, src: img1 },
-  { num: 2, src: img2 },
-  { num: 3, src: img3 },
-  { num: 4, src: img4 },
-  { num: 5, src: img5 },
+  { num: 1, src: img1, alt: "Souvenirs displayed in a market" },
+  { num: 2, src: img2, alt: "A collection of colorful buttons" },
+  { num: 3, src: img3, alt: "Antique objects displayed on a cabinet" },
+  { num: 4, src: img4, alt: "An archer aiming a bow and arrow" },
+  { num: 5, src: img5, alt: "An airplane traveling over a map" },
 ];
 
 const words = [
-  { id: "travels", answer: "5", prefilled: false },
-  { id: "archer", answer: "4", prefilled: false },
-  { id: "collection", answer: "2", prefilled: false },
-  { id: "souvenirs", answer: "1", prefilled: false },
-  { id: "antique", answer: "3", prefilled: false },
+  { id: "travels", answer: "5", prefilled: false, audio: "Item_001_" },
+  { id: "archer", answer: "4", prefilled: false, audio: "Item_002_" },
+  { id: "collection", answer: "2", prefilled: false, audio: "Item_003_" },
+  { id: "souvenirs", answer: "1", prefilled: false, audio: "Item_004_" },
+  { id: "antique", answer: "3", prefilled: false, audio: "Item_005_" },
 ];
 
 const Unit4_Page5_Q1 = () => {
@@ -129,6 +126,7 @@ const Unit4_Page5_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -153,13 +151,11 @@ const Unit4_Page5_Q1 = () => {
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-15">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
-            A
-          </span>
-          Match each vocabulary word to its picture.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Match each vocabulary word to its picture."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
 
         <div className="flex flex-col justify-center items-center w-full mb-10">
           {/* PICTURES GRID */}
@@ -182,7 +178,7 @@ const Unit4_Page5_Q1 = () => {
               >
                 <img
                   src={pic.src}
-                  alt={`picture ${pic.num}`}
+                  alt={pic.alt}
                   style={{
                     width: "auto",
                     height: "150px",
@@ -213,7 +209,7 @@ const Unit4_Page5_Q1 = () => {
               >
                 <img
                   src={pic.src}
-                  alt={`picture ${pic.num}`}
+                  alt={pic.alt}
                   style={{
                     width: "auto",
                     height: "150px",
@@ -251,6 +247,8 @@ const Unit4_Page5_Q1 = () => {
                 value={answers[w.id]}
                 disabled={locked || correctLocked[w.id]}
                 onChange={(e) => updateField(w.id, e.target.value)}
+                title={`Write the picture number for ${w.id}`}
+                aria-label={`Picture number for ${w.id}`}
                 style={inputStyle(w.id)}
               />{" "}
               {errors[w.id] && (
@@ -278,7 +276,13 @@ const Unit4_Page5_Q1 = () => {
                   ✕
                 </div>
               )}
-              <span style={{ fontSize: "18px", color: "#222" }}>{w.id}</span>
+              <Unit4StudentAudioText
+                src={unit4StudentAudio("Page 32 - Exercise A", w.audio)}
+                ariaLabel={`Play ${w.id}`}
+                style={{ fontSize: "18px", color: "#222" }}
+              >
+                {w.id}
+              </Unit4StudentAudioText>
             </div>
           ))}
         </div>

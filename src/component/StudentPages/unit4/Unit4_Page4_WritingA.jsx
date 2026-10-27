@@ -14,8 +14,8 @@ const WritingA = () => {
       {/* العنوان */}
       <h5 className="header-title-page8-read pb-2.5">
         <span className="ex-A-read mr-2">A</span>
-       Underline all the verbs that are in present simple passive in the paragraphs
-above. Two have been done for you.
+        Underline all the verbs that are in present simple passive in the
+        paragraphs above. Two have been done for you.
       </h5>
 
       {/* textarea */}
@@ -29,11 +29,23 @@ above. Two have been done for you.
       {/* 🔄 Reset Button */}
       <div className="flex justify-center mt-4">
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Reset activity"
           onClick={handleReset}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+
+              if (!e.repeat) {
+                handleReset();
+              }
+            }
+          }}
           className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
         >
-          <div className="bg-white p-3 rounded-full shadow">
-            <FaRedo size={14} className="text-gray-700" />
+          <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+            <FaRedo size={14} className="text-gray-700" aria-hidden="true" />
           </div>
         </div>
       </div>

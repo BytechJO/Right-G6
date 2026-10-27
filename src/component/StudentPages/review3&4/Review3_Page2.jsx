@@ -3,6 +3,16 @@ import "./Review3_Page2.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 // import Unit4_Page6_Q2 from "./Unit4_Page6_Q2";
 const Review3_Page2 = ({ openPopup }) => {
+  const openExercise = (startIndex) =>
+    openPopup("exercise", { startIndex });
+
+  const handleKeyDown = (event, startIndex) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (!event.repeat) openExercise(startIndex);
+  };
+
   return (
     <div
       className="page1-img-wrapper"
@@ -19,8 +29,12 @@ const Review3_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 35 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 3 exercise D"
+          onClick={() => openExercise(35)}
+          onKeyDown={(event) => handleKeyDown(event, 35)}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"
@@ -41,8 +55,12 @@ const Review3_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 36 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 3 exercise E"
+          onClick={() => openExercise(36)}
+          onKeyDown={(event) => handleKeyDown(event, 36)}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"
@@ -62,8 +80,12 @@ const Review3_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 37 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 3 exercise F"
+          onClick={() => openExercise(37)}
+          onKeyDown={(event) => handleKeyDown(event, 37)}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"

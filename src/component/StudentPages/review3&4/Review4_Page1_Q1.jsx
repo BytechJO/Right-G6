@@ -1,29 +1,54 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 const Review4_Page1_Q1 = () => {
   const questions = [
     {
       id: 0,
-      words: ["gear", "rag", "ran", "near"],
+      words: [
+        { text: "gear", audio: "Item_001_" },
+        { text: "rag", audio: "Item_002_" },
+        { text: "ran", audio: "Item_003_" },
+        { text: "near", audio: "Item_004_" },
+      ],
       answer: "range",
       prefilled: false,
     },
     {
       id: 1,
-      words: ["sieve", "vein", "ruin", "sour"],
+      words: [
+        { text: "sieve", audio: "Item_005_" },
+        { text: "vein", audio: "Item_006_" },
+        { text: "ruin", audio: "Item_007_" },
+        { text: "sour", audio: "Item_008_" },
+      ],
       answer: "souvenirs",
       prefilled: false,
     },
     {
       id: 2,
-      words: ["tile", "once", "tell", "collect"],
+      words: [
+        { text: "tile", audio: "Item_009_" },
+        { text: "once", audio: "Item_012_" },
+        { text: "tell", audio: "Item_010_" },
+        { text: "collect", audio: "Item_011_" },
+      ],
       answer: "collection",
       prefilled: false,
     },
     {
       id: 3,
-      words: ["cherry", "err", "arch", "hear"],
+      words: [
+        { text: "cherry", audio: "Item_013_" },
+        { text: "err", audio: "Item_016_" },
+        { text: "arch", audio: "Item_014_" },
+        { text: "hear", audio: "Item_015_" },
+      ],
       answer: "archery",
       prefilled: false,
     },
@@ -104,6 +129,7 @@ const Review4_Page1_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -129,14 +155,12 @@ const Review4_Page1_Q1 = () => {
 
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall">
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span style={{ marginRight: "20px" }}>
-            A
-          </span>
-         The sets of words below are made from taking the letters of the vocabulary words and making other words. After looking at the letters in each set, write the word they come from.
-        </h5>
+      <div className="div-forall gap-12">
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Use the letter sets to identify the vocabulary words they come from."
+          subTitle="Use the visible word parts and clues systematically, then check the completed word or expression before submitting."
+        />
 
         {/* QUESTIONS */}
         <div
@@ -167,17 +191,23 @@ const Review4_Page1_Q1 = () => {
               <div
                 style={{
                   display: "flex",
-                  width:"80%",
+                  width: "80%",
                   // gap: "45px",
-                  justifyContent:"space-between",
+                  justifyContent: "space-between",
                   flexWrap: "wrap",
                   alignItems: "center",
                   fontSize: "20px",
                   // color: "#333",
                 }}
               >
-                {q.words.map((w, wi) => (
-                  <span key={wi}>{w}</span>
+                {q.words.map((word, wi) => (
+                  <Unit4StudentAudioText
+                    key={wi}
+                    src={unit4StudentAudio("Page 36 - Exercise A", word.audio)}
+                    ariaLabel={`Play ${word.text}`}
+                  >
+                    {word.text}
+                  </Unit4StudentAudioText>
                 ))}
               </div>
 
@@ -188,6 +218,9 @@ const Review4_Page1_Q1 = () => {
                   value={answers[i]}
                   disabled={locked || correctLocked[i]}
                   onChange={(e) => handleChange(i, e.target.value)}
+                  placeholder="word"
+                  title="Write the vocabulary word"
+                  aria-label={`Vocabulary word for set ${i + 1}`}
                   style={inputStyle(i)}
                 />
                 {errors[i] && (
@@ -197,18 +230,19 @@ const Review4_Page1_Q1 = () => {
                       top: "-8px",
                       right: "-10px",
                       transform: "translateY(-50%)",
-                         width: "22px",
-              height: "22px",
-              background: "red",
-              color: "white",
-              borderRadius: "50%",
-              fontSize: "12px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              border: "2px solid white",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.2)", }}
+                      width: "22px",
+                      height: "22px",
+                      background: "red",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontSize: "12px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                    }}
                   >
                     ✕
                   </span>

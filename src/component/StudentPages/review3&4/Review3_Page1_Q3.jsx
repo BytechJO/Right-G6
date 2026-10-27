@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 import skyImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 59.svg";
 
 const Review3_Page1_Q3 = () => {
@@ -10,45 +15,57 @@ const Review3_Page1_Q3 = () => {
       speaker1: {
         name: "Kristina",
         text: "Do you think it will be sunny today?",
+        audio: "Item_001_",
       },
-      speaker2: { name: "Larry", inputId: "0_0", answer: "I don’t think so." },
+      speaker2: {
+        name: "Larry",
+        inputId: "0_0",
+        answer: "I don’t think so.",
+        audio: "Item_002_",
+      },
     },
     {
       id: 1,
       parts: [
         { type: "input", id: "1_0", answer: "If I were you", width: "220px" },
-        { type: "text", value: ", I would at least try out for the team." },
+        {
+          type: "text",
+          value: ", I would at least try out for the team.",
+          audio: "Item_003_",
+        },
       ],
     },
     {
       id: 2,
       parts: [
         { type: "input", id: "2_0", answer: "take a look", width: "200px" },
-        { type: "text", value: " at the pictures?" },
+        { type: "text", value: " at the pictures?", audio: "Item_004_" },
       ],
     },
     {
       id: 3,
       parts: [
-        { type: "text", value: "I think " },
+        { type: "text", value: "I think ", audio: "Item_009_" },
         {
           type: "input",
           id: "3_0",
           answer: "it's too late",
           width: "220px",
         },
-        { type: "text", value: " to go shopping." },
+        { type: "text", value: " to go shopping.", audio: "Item_005_" },
       ],
       extra: "Most of the stores closed at 9:00.",
+      extraAudio: "Item_006_",
     },
     {
       id: 4,
       parts: [
-        { type: "text", value: "No, " },
+        { type: "text", value: "No, ", audio: "Item_007_" },
         { type: "input", id: "4_0", answer: "I wouldn't mind", width: "220px" },
         {
           type: "text",
           value: " if you came over. It would be great to see you!",
+          audio: "Item_008_",
         },
       ],
     },
@@ -172,6 +189,7 @@ const Review3_Page1_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers({ ...allIds });
     setErrors(Object.keys(allIds).reduce((a, k) => ({ ...a, [k]: false }), {}));
     setCorrectLocked(
@@ -189,7 +207,7 @@ const Review3_Page1_Q3 = () => {
         : "1.5px solid black",
     outline: "none",
     fontSize: "18px",
-    textAlign:"center",
+    textAlign: "center",
     // color: errors[id] ? "#dc2626" : correctLocked[id] ? "#16a34a" : "#6D2980",
     fontWeight: 600,
     background: "transparent",
@@ -229,6 +247,9 @@ const Review3_Page1_Q3 = () => {
         value={answers[id] || ""}
         disabled={locked || correctLocked[id]}
         onChange={(e) => updateField(id, e.target.value)}
+        placeholder="Write the expression"
+        title="Write the expression from Exercise B"
+        aria-label={`Expression ${id.replace("_", "-")}`}
         style={inputStyle(id, width)}
       />
       {errors[id] && <ErrorBadge />}
@@ -238,9 +259,18 @@ const Review3_Page1_Q3 = () => {
   const renderParts = (parts) =>
     parts.map((part, pi) =>
       part.type === "text" ? (
-        <span key={pi} style={{ fontSize: "18px" }}>
+        <Unit4StudentAudioText
+          key={pi}
+          src={
+            part.audio
+              ? unit4StudentAudio("Page 34 - Exercise C", part.audio)
+              : null
+          }
+          ariaLabel={`Play ${part.value.trim()}`}
+          style={{ fontSize: "18px" }}
+        >
           {part.value}
-        </span>
+        </Unit4StudentAudioText>
       ) : (
         <span key={pi}>{renderInput(part.id, part.width)}</span>
       ),
@@ -248,12 +278,12 @@ const Review3_Page1_Q3 = () => {
 
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall">
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-20">
-          <span style={{ marginRight: "10px" }}>C</span>
-          Now write in the expressions from Exercise B in the blanks.
-        </h5>
+      <div className="div-forall gap-10">
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Now write in the expressions from Exercise B in the blanks."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* CONTENT — questions left, image right */}
         <div style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
@@ -297,10 +327,18 @@ const Review3_Page1_Q3 = () => {
                     >
                       {/* Speaker 1 */}
                       <div style={{ fontSize: "18px" }}>
-                        <span style={{ color: "#f79631", fontWeight: 700 }}>
-                          {q.speaker1.name}:
-                        </span>{" "}
-                        {q.speaker1.text}
+                        <Unit4StudentAudioText
+                          src={unit4StudentAudio(
+                            "Page 34 - Exercise C",
+                            q.speaker1.audio,
+                          )}
+                          ariaLabel={`Play ${q.speaker1.name}: ${q.speaker1.text}`}
+                        >
+                          <span style={{ color: "#f79631", fontWeight: 700 }}>
+                            {q.speaker1.name}:
+                          </span>{" "}
+                          {q.speaker1.text}
+                        </Unit4StudentAudioText>
                       </div>
                       {/* Speaker 2 */}
                       <div
@@ -318,7 +356,15 @@ const Review3_Page1_Q3 = () => {
                             fontSize: "18px",
                           }}
                         >
-                          {q.speaker2.name}:
+                          <Unit4StudentAudioText
+                            src={unit4StudentAudio(
+                              "Page 34 - Exercise C",
+                              q.speaker2.audio,
+                            )}
+                            ariaLabel={`Play ${q.speaker2.name}`}
+                          >
+                            {q.speaker2.name}:
+                          </Unit4StudentAudioText>
                         </span>
                         {renderInput(q.speaker2.inputId, "280px")}
                       </div>
@@ -348,7 +394,15 @@ const Review3_Page1_Q3 = () => {
                       // color: "#333",
                     }}
                   >
-                    {q.extra}
+                    <Unit4StudentAudioText
+                      src={unit4StudentAudio(
+                        "Page 34 - Exercise C",
+                        q.extraAudio,
+                      )}
+                      ariaLabel={`Play ${q.extra}`}
+                    >
+                      {q.extra}
+                    </Unit4StudentAudioText>
                   </div>
                 )}
               </div>
@@ -358,7 +412,7 @@ const Review3_Page1_Q3 = () => {
           {/* SKY IMAGE */}
           <img
             src={skyImg}
-            alt="sky"
+            alt="Clouds viewed from above under a blue sky"
             style={{
               height: "350px",
               borderRadius: "12px",

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 const Review3_Page2_Q1 = () => {
   const questions = [
@@ -8,30 +13,35 @@ const Review3_Page2_Q1 = () => {
       prefilled: false,
       inputAnswer: "If she knew we were home",
       suffix: ", she would come over to our house.",
+      audio: "Item_002_",
     },
     {
       id: 1,
       prefilled: false,
       inputAnswer: "If she came over to our house",
       suffix: ", she would have some tea and biscuits with us.",
+      audio: "Item_003_",
     },
     {
       id: 2,
       prefilled: false,
       inputAnswer: "If she had some tea and biscuits with us",
       suffix: ", she would stay and talk for a while.",
+      audio: "Item_004_",
     },
     {
       id: 3,
       prefilled: false,
       inputAnswer: "If she stayed and talked for a while",
       suffix: ", we would have lots of fun.",
+      audio: "Item_005_",
     },
     {
       id: 4,
       prefilled: false,
       inputAnswer: "If we had lots of fun",
       suffix: ", we'd all be very happy!",
+      audio: "Item_006_",
     },
   ];
 
@@ -111,6 +121,7 @@ const Review3_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -137,16 +148,25 @@ const Review3_Page2_Q1 = () => {
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall" style={{ gap: "40px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span style={{ marginRight: "10px" }}>D</span>
-          Continue the story by adding more information using{" "}
-          <span style={{ color: "#f79631", fontStyle: "italic" }}>if</span>.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title={
+            <>
+              Continue the story by adding more information using{" "}
+              <span style={{ color: "#f79631", fontStyle: "italic" }}>if</span>.
+            </>
+          }
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         {/* OPENING LINE */}
         <p style={{ fontSize: "18px" }}>
-          If Rose called, she would know we are home.
+          <Unit4StudentAudioText
+            src={unit4StudentAudio("Page 35 - Exercise D", "Item_001_")}
+            ariaLabel="Play If Rose called, she would know we are home"
+          >
+            If Rose called, she would know we are home.
+          </Unit4StudentAudioText>
         </p>
 
         {/* QUESTIONS */}
@@ -175,6 +195,9 @@ const Review3_Page2_Q1 = () => {
                   value={answers[i]}
                   disabled={locked || correctLocked[i]}
                   onChange={(e) => handleChange(i, e.target.value)}
+                  placeholder="Continue the story with if"
+                  title="Write the next if clause"
+                  aria-label={`If clause ${i + 1}`}
                   style={inputStyle(i)}
                 />
                 {errors[i] && (
@@ -204,9 +227,13 @@ const Review3_Page2_Q1 = () => {
               </span>
 
               {/* SUFFIX */}
-              <span style={{ fontSize: "18px" }}>
+              <Unit4StudentAudioText
+                src={unit4StudentAudio("Page 35 - Exercise D", q.audio)}
+                ariaLabel={`Play ${q.suffix}`}
+                style={{ fontSize: "18px" }}
+              >
                 {q.suffix}
-              </span>
+              </Unit4StudentAudioText>
             </div>
           ))}
         </div>

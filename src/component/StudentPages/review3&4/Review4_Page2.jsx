@@ -4,6 +4,15 @@ import "./Review4_Page2.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 // import Unit4_Page6_Q2 from "./Unit4_Page6_Q2";
 const Review4_Page2 = ({ openPopup }) => {
+  const openExercise = () => openPopup("exercise", { startIndex: 40 });
+
+  const handleKeyDown = (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (!event.repeat) openExercise();
+  };
+
   return (
     <div
       className="page1-img-wrapper"
@@ -20,8 +29,12 @@ const Review4_Page2 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 40 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 4 exercise C"
+          onClick={openExercise}
+          onKeyDown={handleKeyDown}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"

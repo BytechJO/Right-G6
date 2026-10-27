@@ -80,6 +80,7 @@ const buildCellMap = () => {
   return map;
 };
 const CELL_MAP = buildCellMap();
+const FIRST_ACTIVE_CELL = Object.keys(CELL_MAP)[0];
 
 // Sum-box positions (just after last letter)
 const SUM_BOXES = WORDS.map(({ id, word, dir, row, col }) => ({
@@ -113,6 +114,7 @@ const WB_Unit2_Page9_A_Crossword = () => {
   };
   const [answers, setAnswers] = useState(init);
   const [result, setResult] = useState({});
+  const [cellResult, setCellResult] = useState({});
   const [locked, setLocked] = useState(false);
   const refs = useRef({});
 
@@ -134,12 +136,18 @@ const WB_Unit2_Page9_A_Crossword = () => {
   };
 
   const handleChange = (cellEntries, value) => {
+    const currentCellKey = cellKeyFor(
+      cellEntries[0].wordId,
+      cellEntries[0].idx,
+    );
+    if (locked || cellResult[currentCellKey] === true) return;
     const ch = value
       .slice(-1)
       .toLowerCase()
       .replace(/[^a-z]/, "");
     // update all words sharing this cell
     cellEntries.forEach(({ wordId, idx }) => setLetter(wordId, idx, ch));
+    setCellResult((prev) => ({ ...prev, [currentCellKey]: undefined }));
     // auto-advance in the primary word (first entry)
     if (ch) {
       const { wordId, idx } = cellEntries[0];
@@ -152,7 +160,36 @@ const WB_Unit2_Page9_A_Crossword = () => {
     }
   };
 
-  const handleKeyDown = (cellEntries, e) => {
+  const handleKeyDown = (cellEntries, row, col, e) => {
+    const directions = {
+      ArrowUp: [-1, 0],
+      ArrowDown: [1, 0],
+      ArrowLeft: [0, -1],
+      ArrowRight: [0, 1],
+    };
+    const movement = directions[e.key];
+    if (movement) {
+      e.preventDefault();
+      let nextRow = row + movement[0];
+      let nextCol = col + movement[1];
+      while (
+        nextRow >= 0 &&
+        nextRow <= maxR &&
+        nextCol >= 0 &&
+        nextCol <= maxC
+      ) {
+        const nextInput = refs.current[`${nextRow},${nextCol}`];
+        if (nextInput) {
+          nextInput.focus();
+          nextInput.select();
+          return;
+        }
+        nextRow += movement[0];
+        nextCol += movement[1];
+      }
+      return;
+    }
+
     if (e.key === "Backspace") {
       const { wordId, idx } = cellEntries[0];
       if (!answers[wordId][idx] && idx > 0) {
@@ -180,6 +217,13 @@ const WB_Unit2_Page9_A_Crossword = () => {
       nr[id] = ok;
     });
     setResult(nr);
+    const nextCellResult = {};
+    Object.entries(CELL_MAP).forEach(([key, entries]) => {
+      const { wordId, idx } = entries[0];
+      const word = WORDS.find((item) => item.id === wordId);
+      nextCellResult[key] = answers[wordId][idx] === word.word[idx];
+    });
+    setCellResult(nextCellResult);
     const total = WORDS.length;
     const color =
       correct === total ? "green" : correct === 0 ? "red" : "orange";
@@ -200,12 +244,16 @@ const WB_Unit2_Page9_A_Crossword = () => {
     });
     setAnswers(a);
     setResult(r);
+    setCellResult(
+      Object.fromEntries(Object.keys(CELL_MAP).map((key) => [key, true])),
+    );
     setLocked(true);
   };
 
   const handleReset = () => {
     setAnswers(init());
     setResult({});
+    setCellResult({});
     setLocked(false);
   };
 
@@ -244,8 +292,8 @@ const WB_Unit2_Page9_A_Crossword = () => {
         } else if (entries) {
           const primary = entries[0];
           const { wordId, idx } = primary;
-          const isWrong = result[wordId] === false;
-          const isCorrect = result[wordId] === true;
+          const isWrong = cellResult[k] === false;
+          const isCorrect = cellResult[k] === true;
           const val = answers[wordId]?.[idx] || "";
 
           cells.push(
@@ -256,13 +304,15 @@ const WB_Unit2_Page9_A_Crossword = () => {
                   type="text"
                   maxLength={2}
                   value={val.toUpperCase()}
-                  disabled={locked || isCorrect}
-                  tabIndex={locked || isCorrect ? -1 : 0}
+                  readOnly={locked || isCorrect}
+                  aria-readonly={locked || isCorrect}
+                  tabIndex={k === FIRST_ACTIVE_CELL ? 0 : -1}
                   title={`Enter a letter for ${wordId}`}
+                  aria-label={`Crossword cell row ${r + 1}, column ${c + 1}`}
                   className="wb-unit2-answer-input"
                   onFocus={(e) => e.target.select()}
                   onChange={(e) => handleChange(entries, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(entries, e)}
+                  onKeyDown={(e) => handleKeyDown(entries, r, c, e)}
                   style={{
                     position: "absolute",
                     inset: 0,
@@ -279,6 +329,7 @@ const WB_Unit2_Page9_A_Crossword = () => {
                     fontWeight: "600",
                     color: isCorrect ? "#2d6a0f" : isWrong ? "#D1232A" : "#333",
                     outline: "none",
+                    cursor: locked || isCorrect ? "default" : "text",
                     borderRadius: 2,
                     textTransform: "uppercase",
                   }}

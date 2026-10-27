@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "./Unit4StudentAudioText";
 
 import johnImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 43.svg";
 import wandaImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 44.svg";
@@ -9,26 +14,66 @@ import vaseImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats I
 
 const Unit4_Page6_Q2 = () => {
   const clues = [
-    "The vase is broken by the person who picks the flowers.",
-    "The person who is taught by John finds the broken vase.",
-    "The person who breaks the vase is seen by the person who has a cat.",
+    {
+      text: "The vase is broken by the person who picks the flowers.",
+      audio: "Item_002_",
+    },
+    {
+      text: "The person who is taught by John finds the broken vase.",
+      audio: "Item_003_",
+    },
+    {
+      text: "The person who breaks the vase is seen by the person who has a cat.",
+      audio: "Item_004_",
+    },
   ];
 
   const people = [
-    { name: "John", img: johnImg },
-    { name: "Wanda", img: wandaImg },
-    { name: "Jessica", img: jessicaImg },
-    { name: "Mark", img: markImg },
+    {
+      name: "John",
+      img: johnImg,
+      audio: "Item_006_",
+      alt: "John teaching at a board",
+    },
+    {
+      name: "Wanda",
+      img: wandaImg,
+      audio: "Item_007_",
+      alt: "Wanda holding a cat",
+    },
+    {
+      name: "Jessica",
+      img: jessicaImg,
+      audio: "Item_005_",
+      alt: "Jessica picking flowers",
+    },
+    { name: "Mark", img: markImg, audio: "Item_001_", alt: "Mark fishing" },
   ];
 
   const questions = [
-    { id: 0, text: "Who saw the one who broke the vase?", answer: "Wanda" },
-    { id: 1, text: "Who is John's student?", answer: "Mark" },
-    { id: 2, text: "Who breaks the vase?", answer: "Jessica" },
+    {
+      id: 0,
+      text: "Who saw the one who broke the vase?",
+      answer: "Wanda",
+      audio: "Item_008_",
+    },
+    {
+      id: 1,
+      text: "Who is John's student?",
+      answer: "Mark",
+      audio: "Item_009_",
+    },
+    {
+      id: 2,
+      text: "Who breaks the vase?",
+      answer: "Jessica",
+      audio: "Item_010_",
+    },
     {
       id: 3,
       text: "Who finds the vase after it has been broken?",
       answer: "John",
+      audio: "Item_011_",
     },
   ];
 
@@ -108,6 +153,7 @@ const Unit4_Page6_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -132,14 +178,21 @@ const Unit4_Page6_Q2 = () => {
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall">
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
-            D
-          </span>
-          Who was it? Read the clues and look at the pictures to decide whom it
-          was who did each action. One name may be used more than once.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title="Who was it? Read the clues and use the pictures to decide who did each action."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Read the clues and identify the person connected to each
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Answer each question using the passive form shown in the
+                lesson.
+              </span>
+            </>
+          }
+        />
 
         {/* CLUES + VASE IMAGE */}
         <div
@@ -184,7 +237,12 @@ const Unit4_Page6_Q2 = () => {
                     marginTop: "6px",
                   }}
                 />
-                {clue}
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 33 - Exercise D", clue.audio)}
+                  ariaLabel={`Play clue ${i + 1}`}
+                >
+                  {clue.text}
+                </Unit4StudentAudioText>
               </li>
             ))}
           </ul>
@@ -192,7 +250,7 @@ const Unit4_Page6_Q2 = () => {
           {/* VASE IMAGE */}
           <img
             src={vaseImg}
-            alt="vase"
+            alt="A broken vase"
             style={{
               width: "200px",
               height: "130px",
@@ -222,15 +280,21 @@ const Unit4_Page6_Q2 = () => {
                 gap: "6px",
               }}
             >
-              <img
-                src={p.img}
-                alt={p.name}
-                style={{
-                  height: "150px",
-                  aspectRatio: "1",
-                  objectFit: "contain",
-                }}
-              />
+              <Unit4StudentAudioText
+                src={unit4StudentAudio("Page 33 - Exercise D", p.audio)}
+                ariaLabel={`Play ${p.name}`}
+                style={{ padding: 0 }}
+              >
+                <img
+                  src={p.img}
+                  alt={p.alt}
+                  style={{
+                    height: "150px",
+                    aspectRatio: "1",
+                    objectFit: "contain",
+                  }}
+                />
+              </Unit4StudentAudioText>
             </div>
           ))}
         </div>
@@ -261,9 +325,13 @@ const Unit4_Page6_Q2 = () => {
               </span>
 
               {/* QUESTION TEXT */}
-              <span style={{ fontSize: "18px", whiteSpace: "nowrap" }}>
+              <Unit4StudentAudioText
+                src={unit4StudentAudio("Page 33 - Exercise D", q.audio)}
+                ariaLabel={`Play ${q.text}`}
+                style={{ fontSize: "18px", whiteSpace: "nowrap" }}
+              >
                 {q.text}
-              </span>
+              </Unit4StudentAudioText>
 
               {/* INPUT */}
               <div style={{ position: "relative", flex: 1 }}>
@@ -272,6 +340,9 @@ const Unit4_Page6_Q2 = () => {
                   value={answers[i]}
                   disabled={locked || correctLocked[i]}
                   onChange={(e) => handleChange(i, e.target.value)}
+                  placeholder="Write the name"
+                  title="Write the name that answers the question"
+                  aria-label={`Answer to question ${i + 1}`}
                   style={inputStyle(i)}
                 />
                 {errors[i] && (
