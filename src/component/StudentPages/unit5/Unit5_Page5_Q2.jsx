@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit5StudentAudioText, {
+  stopUnit5StudentAudio,
+  unit5StudentAudio,
+} from "./Unit5StudentAudioText";
 
 const Unit5_Page5_Q2 = () => {
+  const audioFolder = "Page 44 - Exercise B";
   const questions = [
     {
       before: "We could reach for the stars",
@@ -10,6 +15,8 @@ const Unit5_Page5_Q2 = () => {
       second: "Or we could reach the colorful rainbow.",
       correct: ["if you say so"],
       inputPosition: "inline", // blank at end of first line
+      beforeAudio: "Item_001_",
+      secondAudio: "Item_002_",
     },
     {
       before: "You will find food if",
@@ -17,6 +24,8 @@ const Unit5_Page5_Q2 = () => {
       second: "But please don't let anything go to waste.",
       correct: ["it suits your taste"],
       inputPosition: "inline",
+      beforeAudio: "Item_003_",
+      secondAudio: "Item_004_",
     },
     {
       before: "I will see you in",
@@ -24,6 +33,8 @@ const Unit5_Page5_Q2 = () => {
       second: "Seeing you makes me smile.",
       correct: ["a while"],
       inputPosition: "inline",
+      beforeAudio: "Item_005_",
+      secondAudio: "Item_006_",
     },
     {
       before: "If you don't want to go with us, you don't have to.",
@@ -31,12 +42,16 @@ const Unit5_Page5_Q2 = () => {
       second: ", we'll go without you.",
       correct: ["Suit yourself"],
       inputPosition: "second-start", // blank at start of second line
+      beforeAudio: "Item_007_",
+      secondAudio: "Item_008_",
     },
   ];
 
   const [answers, setAnswers] = useState(["", "", "", ""]);
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState([]);
+
+  useEffect(() => () => stopUnit5StudentAudio(), []);
 
   const handleChange = (i, val) => {
     if (locked || result[i] === true) return;
@@ -83,12 +98,13 @@ const Unit5_Page5_Q2 = () => {
   };
 
   const reset = () => {
+    stopUnit5StudentAudio();
     setAnswers(["", "", "", ""]);
     setResult([]);
     setLocked(false);
   };
 
-  const inputEl = (i, width = 220) => (
+  const inputEl = (i) => (
     <span
       style={{
         position: "relative",
@@ -98,7 +114,11 @@ const Unit5_Page5_Q2 = () => {
       }}
     >
       <input
+        className="unit5-student-input"
         value={answers[i]}
+        placeholder="Enter the missing expression"
+        title="Enter the missing expression"
+        aria-label={`Missing expression ${i + 1}`}
         onChange={(e) => handleChange(i, e.target.value)}
         disabled={locked || result[i] === true}
         style={{
@@ -161,11 +181,11 @@ const Unit5_Page5_Q2 = () => {
       }}
     >
       <div className="div-forall" style={{ gap: "30px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A mr-2">B</span>
-          Use the poem clues to find the expressions.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Use the poem clues to find the expressions."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* QUESTIONS */}
         <div
@@ -199,20 +219,27 @@ const Unit5_Page5_Q2 = () => {
                       // flexWrap: "wrap",
                     }}
                   >
-                    <span
+                    <Unit5StudentAudioText
+                      src={unit5StudentAudio(audioFolder, q.beforeAudio)}
+                      ariaLabel={`Play first line of item ${i + 1}`}
                       style={{
                         width: `fit-content`,
                       }}
                     >
                       {q.before}
-                    </span>
+                    </Unit5StudentAudioText>
                     {inputEl(i, 220)}
                     <span>{q.after}</span>
                   </div>
                 )}
                 {q.inputPosition === "second-start" && (
                   <div style={{ lineHeight: "1.8" }}>
-                    <span>{q.before}</span>
+                    <Unit5StudentAudioText
+                      src={unit5StudentAudio(audioFolder, q.beforeAudio)}
+                      ariaLabel={`Play first line of item ${i + 1}`}
+                    >
+                      {q.before}
+                    </Unit5StudentAudioText>
                   </div>
                 )}
 
@@ -229,10 +256,22 @@ const Unit5_Page5_Q2 = () => {
                   {q.inputPosition === "second-start" && (
                     <>
                       {inputEl(i, 240)}
-                      <span>{q.second}</span>
+                      <Unit5StudentAudioText
+                        src={unit5StudentAudio(audioFolder, q.secondAudio)}
+                        ariaLabel={`Play second line of item ${i + 1}`}
+                      >
+                        {q.second}
+                      </Unit5StudentAudioText>
                     </>
                   )}
-                  {q.inputPosition === "inline" && <span>{q.second}</span>}
+                  {q.inputPosition === "inline" && (
+                    <Unit5StudentAudioText
+                      src={unit5StudentAudio(audioFolder, q.secondAudio)}
+                      ariaLabel={`Play second line of item ${i + 1}`}
+                    >
+                      {q.second}
+                    </Unit5StudentAudioText>
+                  )}
                 </div>
               </div>
             </div>

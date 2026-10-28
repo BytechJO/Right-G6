@@ -1,31 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit5StudentAudioText, {
+  stopUnit5StudentAudio,
+  unit5StudentAudio,
+} from "./Unit5StudentAudioText";
 
 const Unit5_Page5_Q1 = () => {
-  const wordBank = ["boss", "suppose", "bookworm", "active", "imagination"];
+  const audioFolder = "Page 44 - Exercise A";
+  const wordBank = [
+    { text: "boss", audio: "Item_001_" },
+    { text: "suppose", audio: "Item_005_" },
+    { text: "bookworm", audio: "Item_002_" },
+    { text: "active", audio: "Item_003_" },
+    { text: "imagination", audio: "Item_004_" },
+  ];
 
   const questions = [
     {
       definition: "the ability to think of new things",
       correct: "imagination",
+      audio: ["Item_006_"],
     },
-    { definition: "to believe something to be possible", correct: "suppose" },
-    { definition: "someone who reads a lot", correct: "bookworm" },
+    {
+      definition: "to believe something to be possible",
+      correct: "suppose",
+      audio: ["Item_007_"],
+    },
+    {
+      definition: "someone who reads a lot",
+      correct: "bookworm",
+      audio: ["Item_008_"],
+    },
     {
       definition:
         "the person who has more power or control; the person whose job is to tell others what to do",
       correct: "boss",
+      audio: ["Item_009_", "Item_010_"],
     },
     {
       definition: "full of action or life; marked by regular use",
       correct: "active",
+      audio: ["Item_011_"],
     },
   ];
 
   const [answers, setAnswers] = useState(["", "", "", "", ""]);
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState([]);
+
+  useEffect(() => () => stopUnit5StudentAudio(), []);
 
   const handleChange = (i, val) => {
     if (locked || result[i] === true) return;
@@ -70,6 +94,7 @@ const Unit5_Page5_Q1 = () => {
   };
 
   const reset = () => {
+    stopUnit5StudentAudio();
     setAnswers(["", "", "", "", ""]);
     setResult([]);
     setLocked(false);
@@ -84,12 +109,12 @@ const Unit5_Page5_Q1 = () => {
         padding: "30px",
       }}
     >
-      <div className="div-forall" style={{gap:"40px"}}>
-        {/* HEADER */}
-        <h5 className="header-title-page8">
-          <span className="ex-A mr-2">A</span>
-          Write the correct word that matches the definition.
-        </h5>
+      <div className="div-forall" style={{ gap: "20px" }}>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Write the correct word that matches the definition."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* WORD BANK */}
         <div
@@ -101,13 +126,15 @@ const Unit5_Page5_Q1 = () => {
             // border: "1.5px solid #b8dfa0",
             borderRadius: "8px",
             padding: "10px 20px",
-            marginBottom: "28px",
+            marginBottom: "15px",
             justifyContent: "space-around",
           }}
         >
-          {wordBank.map((w, i) => (
-            <span
-              key={i}
+          {wordBank.map((word) => (
+            <Unit5StudentAudioText
+              key={word.text}
+              src={unit5StudentAudio(audioFolder, word.audio)}
+              ariaLabel={`Play ${word.text}`}
               style={{
                 fontSize: "16px",
                 fontWeight: "600",
@@ -115,8 +142,8 @@ const Unit5_Page5_Q1 = () => {
                 padding: "2px 10px",
               }}
             >
-              {w}
-            </span>
+              {word.text}
+            </Unit5StudentAudioText>
           ))}
         </div>
 
@@ -130,6 +157,8 @@ const Unit5_Page5_Q1 = () => {
                 alignItems: "flex-start",
                 gap: "20px",
                 fontSize: "18px",
+                width: "100%",
+                textAlign: "left",
               }}
             >
               {/* Number */}
@@ -146,7 +175,11 @@ const Unit5_Page5_Q1 = () => {
               {/* Input */}
               <div style={{ position: "relative", minWidth: "200px" }}>
                 <input
+                  className="unit5-student-input"
                   value={answers[i]}
+                  placeholder="Enter the matching word"
+                  title="Enter the matching word"
+                  aria-label={`Answer ${i + 1}: ${q.definition}`}
                   onChange={(e) => handleChange(i, e.target.value)}
                   disabled={locked || result[i] === true}
                   style={{
@@ -198,20 +231,46 @@ const Unit5_Page5_Q1 = () => {
               </div>
 
               {/* Equals + Definition */}
-              <span
-                style={{ marginTop: "2px", color: "#333", lineHeight: "1.5" }}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "8px",
+                  flex: 1,
+                  minWidth: 0,
+                  marginTop: "2px",
+                  textAlign: "left",
+                }}
               >
                 <span
                   style={{
                     fontWeight: "700",
                     fontSize: "18px",
-                    marginRight: "8px",
+                    flexShrink: 0,
                   }}
                 >
                   =
                 </span>
-                {q.definition}
-              </span>
+
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    textAlign: "left",
+                    lineHeight: "1.5",
+                    overflowWrap: "break-word",
+                  }}
+                >
+                  <Unit5StudentAudioText
+                    src={q.audio.map((prefix) =>
+                      unit5StudentAudio(audioFolder, prefix),
+                    )}
+                    ariaLabel={`Play definition ${i + 1}`}
+                  >
+                    {q.definition}
+                  </Unit5StudentAudioText>
+                </div>
+              </div>
             </div>
           ))}
         </div>

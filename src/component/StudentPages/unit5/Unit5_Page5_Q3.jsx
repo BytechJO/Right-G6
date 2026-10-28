@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import ExerciseHeader from "../../ExerciseHeader";
 
 const normalize = (str) =>
   str
@@ -77,13 +78,17 @@ const Unit5_Page5_Q3 = () => {
     setLocked(false);
   };
 
-  const InputBox = ({ index }) => {
+  const renderInputBox = (index) => {
     const isOk = errors[index] === true;
     const isWrong = errors[index] === false;
     return (
       <span style={{ position: "relative", display: "inline-block" }}>
         <input
+          className="unit5-student-input"
           value={answers[index]}
+          placeholder="e.g. a"
+          title="Enter the matching letter"
+          aria-label={`Matching letter for statement ${index + 1}`}
           disabled={locked || isOk}
           onChange={(e) => handleChange(index, e.target.value)}
           style={{
@@ -128,10 +133,10 @@ const Unit5_Page5_Q3 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "50px" }}>
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2">C</span>
-          Match each question tag to its statement.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Match each question tag to its statement."
+        />
 
         <div
           style={{
@@ -150,7 +155,7 @@ const Unit5_Page5_Q3 = () => {
                 key={i}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                <InputBox index={i} />
+                {renderInputBox(i)}
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {item.num}
                 </span>
@@ -178,13 +183,12 @@ const Unit5_Page5_Q3 = () => {
         </div>
       </div>
       {/* Buttons */}
-      
-        <ActionButtons
-          handleShowAnswer={showAnswers}
-          handleStartAgain={reset}
-          checkAnswers={checkAnswers}
-        />
-    
+
+      <ActionButtons
+        handleShowAnswer={showAnswers}
+        handleStartAgain={reset}
+        checkAnswers={checkAnswers}
+      />
     </div>
   );
 };

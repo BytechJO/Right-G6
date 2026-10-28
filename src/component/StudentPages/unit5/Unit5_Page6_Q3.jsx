@@ -1,31 +1,42 @@
-import React, { useState } from "react";
-import { FaRedo } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit5StudentAudioText, {
+  stopUnit5StudentAudio,
+  unit5StudentAudio,
+} from "./Unit5StudentAudioText";
 
 const Unit5_Page6_F = () => {
+  const audioFolder = "Page 45 - Exercise F";
   const questions = [
     {
       starter: "You are",
+      starterAudio: "Item_002_",
       blanks: 1,
       suffix: ", aren't you?",
+      suffixAudio: "Item_001_",
       wide: true, // single wide blank
     },
     {
       starter: "You can",
+      starterAudio: "Item_003_",
       blanks: 2,
       suffix: "?",
     },
     {
       starter: "You have",
+      starterAudio: "Item_004_",
       blanks: 2,
       suffix: "?",
     },
     {
       starter: "You will",
+      starterAudio: "Item_005_",
       blanks: 2,
       suffix: "?",
     },
     {
       starter: "You don't",
+      starterAudio: "Item_006_",
       blanks: 2,
       suffix: "?",
     },
@@ -36,6 +47,8 @@ const Unit5_Page6_F = () => {
 
   const [answers, setAnswers] = useState(buildInitial());
 
+  useEffect(() => () => stopUnit5StudentAudio(), []);
+
   const handleChange = (qi, bi, val) => {
     setAnswers((prev) => {
       const copy = prev.map((row) => [...row]);
@@ -44,7 +57,10 @@ const Unit5_Page6_F = () => {
     });
   };
 
-  const reset = () => setAnswers(buildInitial());
+  const reset = () => {
+    stopUnit5StudentAudio();
+    setAnswers(buildInitial());
+  };
 
   const inputStyle = (wide) => ({
     borderBottom: "1.5px solid #555",
@@ -65,22 +81,17 @@ const Unit5_Page6_F = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A mr-2">F</span>
-          Imagine you are interviewing one of your favorite teachers or an adult
-          at your school. Write six questions you could ask the person, each one
-          using a question tag. You could ask about their interests, how they
-          became trained to do their job, what they like best about their work,
-          etc.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="F"
+          title="Imagine you are interviewing one of your favorite teachers or an adult at your school. Write six questions you could ask the person, each one using a question tag. You could ask about their interests, how they became trained to do their job, what they like best about their work, etc."
+        />
 
         {/* QUESTIONS */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "50px",
+            gap: "40px",
             fontSize: "18px",
           }}
         >
@@ -95,18 +106,34 @@ const Unit5_Page6_F = () => {
               }}
             >
               {/* Number */}
-              <span style={{ fontWeight: "bold",fontSize: "20px", minWidth: "18px" }}>
+              <span
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  minWidth: "18px",
+                }}
+              >
                 {qi + 1}
               </span>
 
               {/* Starter */}
-              <span style={{ fontWeight: "500" }}>{q.starter}</span>
+              <Unit5StudentAudioText
+                src={unit5StudentAudio(audioFolder, q.starterAudio)}
+                ariaLabel={`Play ${q.starter}`}
+                style={{ fontWeight: "500" }}
+              >
+                {q.starter}
+              </Unit5StudentAudioText>
 
               {/* Blanks */}
               {q.wide ? (
                 // Single wide blank
                 <input
+                  className="unit5-student-input"
                   value={answers[qi][0]}
+                  placeholder="Complete the question"
+                  title="Complete the question tag sentence"
+                  aria-label={`Question ${qi + 1}`}
                   onChange={(e) => handleChange(qi, 0, e.target.value)}
                   style={inputStyle(true)}
                 />
@@ -114,13 +141,21 @@ const Unit5_Page6_F = () => {
                 // Two blanks separated by comma
                 <>
                   <input
+                    className="unit5-student-input"
                     value={answers[qi][0]}
+                    placeholder="Complete the sentence"
+                    title="Complete the sentence"
+                    aria-label={`Question ${qi + 1}, first blank`}
                     onChange={(e) => handleChange(qi, 0, e.target.value)}
                     style={inputStyle(false)}
                   />
                   <span>,</span>
                   <input
+                    className="unit5-student-input"
                     value={answers[qi][1]}
+                    placeholder="Add the question tag"
+                    title="Add the question tag"
+                    aria-label={`Question ${qi + 1}, question tag`}
                     onChange={(e) => handleChange(qi, 1, e.target.value)}
                     style={inputStyle(false)}
                   />
@@ -128,7 +163,17 @@ const Unit5_Page6_F = () => {
               )}
 
               {/* Suffix */}
-              <span style={{ fontWeight: "500" }}>{q.suffix}</span>
+              {q.suffixAudio ? (
+                <Unit5StudentAudioText
+                  src={unit5StudentAudio(audioFolder, q.suffixAudio)}
+                  ariaLabel="Play aren't you"
+                  style={{ fontWeight: "500" }}
+                >
+                  {q.suffix}
+                </Unit5StudentAudioText>
+              ) : (
+                <span style={{ fontWeight: "500" }}>{q.suffix}</span>
+              )}
             </div>
           ))}
         </div>

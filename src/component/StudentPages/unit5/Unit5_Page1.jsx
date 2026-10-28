@@ -221,7 +221,6 @@ const Unit5_Page1 = ({ openPopup }) => {
       captionsExample[14],
       captionsExample[15],
       captionsExample[16],
-    
     ],
   ];
   const filteredSegments = wordJson.segments.slice(1);
@@ -241,7 +240,12 @@ const Unit5_Page1 = ({ openPopup }) => {
       filteredSegments[7]?.words || [],
     ],
 
-    [filteredSegments[8]?.words || [], filteredSegments[9]?.words || [], filteredSegments[10]?.words || [], filteredSegments[11]?.words || []],
+    [
+      filteredSegments[8]?.words || [],
+      filteredSegments[9]?.words || [],
+      filteredSegments[10]?.words || [],
+      filteredSegments[11]?.words || [],
+    ],
 
     [
       filteredSegments[12]?.words || [],
@@ -421,12 +425,99 @@ const Unit5_Page1 = ({ openPopup }) => {
       text: "16, suit yourself.",
     },
   ];
+  const handleKeyDown = (event, action) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
 
+      if (!event.repeat) {
+        action();
+      }
+    }
+  };
+
+  const openConversation = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Conversation
+          title="Conversation"
+          items={data}
+          sound={longAudio}
+          pageId="sb_unit5_page40_conversation"
+          captions={captionsExample}
+          stopAtSecond={4.299}
+          captionTimings={captionTimings}
+          wordTimings={Voc}
+          openPopup={openPopup}
+          video={video}
+          imageWidth="270px"
+          keyboardAccessible={true}
+        />
+      </div>,
+    );
+  };
+
+  const openVocabulary = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Vocabulary
+          title="VOCABULARY"
+          subtitle="Listen and repeat. Find the words and expressions in the conversation above."
+          sound={VocabularAudio}
+          captions={captionVoc}
+          pageId="sb_unit5_page40_vocab"
+          stopAtSecond={8.2}
+          wordTimings={wordTimingsVoc}
+          keyboardAccessible={true}
+          words={[
+            "bookworm",
+            "science fiction",
+            "suppose",
+            "boss",
+            "comedy",
+            "active",
+            "imagination",
+            "persuade",
+            "intended",
+            "opinion",
+            "a while",
+            "I guess",
+            "after all",
+            "It suits your taste.",
+            "If you say so.",
+            "Suit yourself.",
+          ]}
+        />
+      </div>,
+    );
+  };
+
+  const openCriticalThinking = () => {
+    openPopup(
+      "html",
+      <CriticalThinking title="How does Tom encourage Harley to find a good book?" />,
+    );
+  };
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_1})` }}
     >
+      {/* Conversation */}
       <div
         className="headset-icon-CD-page4-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -435,32 +526,15 @@ const Unit5_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Conversation
-                  title="Conversation"
-                  items={data}
-                  sound={longAudio}
-                  captions={captionsExample}
-                  stopAtSecond={4.299}
-                  captionTimings={captionTimings}
-                  wordTimings={Voc}
-                  openPopup={openPopup}
-                  video={video}
-                  imageWidth="270px"
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open conversation"
+          onClick={openConversation}
+          onKeyDown={(event) => handleKeyDown(event, openConversation)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -473,6 +547,8 @@ const Unit5_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Vocabulary */}
       <div
         className="headset-icon-CD-page4-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -481,47 +557,15 @@ const Unit5_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Vocabulary
-                  title="VOCABULARY"
-                  subtitle="Listen and repeat. Find the words and expressions in the conversation above."
-                  sound={VocabularAudio}
-                  captions={captionVoc}
-                  stopAtSecond={8.679}
-                  // sounds={sounds}
-                  wordTimings={wordTimingsVoc}
-                  words={[
-                    "bookworm",
-                    "science fiction",
-                    "suppose",
-                    "boss",
-                    "comedy",
-                    "active",
-                    "imagination",
-                    "persuade",
-                    "intended",
-                    "opinion",
-                    "a while",
-                    "I guess",
-                    "after all",
-                    "It suits your taste.",
-                    "If you say so.",
-                    "Suit yourself.",
-                  ]}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open vocabulary"
+          onClick={openVocabulary}
+          onKeyDown={(event) => handleKeyDown(event, openVocabulary)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -534,6 +578,8 @@ const Unit5_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Critical Thinking */}
       <div
         className="headset-icon-CD-page4-3 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -542,15 +588,15 @@ const Unit5_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <CriticalThinking
-                title={"How does Tom encourage Harley to find a good book?"}
-              />,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open critical thinking activity"
+          onClick={openCriticalThinking}
+          onKeyDown={(event) => handleKeyDown(event, openCriticalThinking)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
