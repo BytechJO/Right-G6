@@ -42,6 +42,12 @@ const TimedNarrationText = ({
       if (["p", "li", "blockquote"].includes(node.type)) {
         return React.cloneElement(node, {}, highlight(node.props.children));
       }
+
+      return React.cloneElement(
+        node,
+        {},
+        highlightContent(node.props.children),
+      );
     }
 
     return highlight(node);

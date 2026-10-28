@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit5AudioText, {
+  stopWorkbookUnit5Audio,
+  workbookUnit5Audio,
+} from "./WorkbookUnit5AudioText";
 
 const BORDER = "#84ad40";
 
@@ -9,6 +15,7 @@ const QUESTIONS = [
     sentence: "Janice ice skates at the pond, didn't she?",
     answer: "wrong",
     correction: "doesn't she?",
+    audio: "Item_001_",
     prefilled: false,
   },
   {
@@ -16,6 +23,7 @@ const QUESTIONS = [
     sentence: "The basketball players can jump high, wouldn't they?",
     answer: "wrong",
     correction: "can't they",
+    audio: "Item_003_",
     prefilled: false,
   },
   {
@@ -23,6 +31,7 @@ const QUESTIONS = [
     sentence: "Aaron likes to lift weights, doesn't he?",
     answer: "correct",
     correction: "",
+    audio: "Item_004_",
     prefilled: false,
   },
   {
@@ -30,6 +39,7 @@ const QUESTIONS = [
     sentence: "Clara and Susan are twins, havent' they?",
     answer: "wrong",
     correction: "aren't they?",
+    audio: "Item_005_",
     prefilled: false,
   },
   {
@@ -37,6 +47,7 @@ const QUESTIONS = [
     sentence: "The glasses are on the table, aren't they?",
     answer: "correct",
     correction: "",
+    audio: "Item_006_",
     prefilled: false,
   },
   {
@@ -44,27 +55,51 @@ const QUESTIONS = [
     sentence: "Kevin will ride bikes with me, can't he?",
     answer: "wrong",
     correction: "wouldn't you?",
+    audio: "Item_007_",
     prefilled: false,
   },
 ];
 
 const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+  str
+    .toLowerCase()
+    .replace(/[.?!,’'']/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const initState = () => {
   const choices = {};
   const corrections = {};
   QUESTIONS.forEach(({ id, answer, correction, prefilled }) => {
-    choices[id]     = prefilled ? answer : null;
+    choices[id] = prefilled ? answer : null;
     corrections[id] = prefilled ? correction : "";
   });
   return { choices, corrections };
 };
 
 // ── ChoiceBox — OUTSIDE parent ──
-const ChoiceBox = ({ qId, value, symbol, selected, isWrong, isDisabled, onSelect }) => (
+const ChoiceBox = ({
+  qId,
+  value,
+  symbol,
+  selected,
+  isWrong,
+  isDisabled,
+  onSelect,
+}) => (
   <span
+    className="wb-unit5-choice"
+    role="radio"
+    tabIndex={isDisabled ? -1 : 0}
+    aria-checked={selected}
+    aria-disabled={isDisabled}
+    aria-label={`${symbol === "✓" ? "Correct" : "Wrong"} for sentence ${qId}`}
     onClick={() => !isDisabled && onSelect(qId, value)}
+    onKeyDown={(event) => {
+      if (isDisabled || (event.key !== "Enter" && event.key !== " ")) return;
+      event.preventDefault();
+      onSelect(qId, value);
+    }}
     style={{
       position: "relative",
       display: "inline-flex",
@@ -86,25 +121,53 @@ const ChoiceBox = ({ qId, value, symbol, selected, isWrong, isDisabled, onSelect
   >
     {selected ? symbol : ""}
     {isWrong && (
-      <span style={{
-        position: "absolute", top: -6, right: -6,
-        width: 14, height: 14, background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: 9, fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,.25)", pointerEvents: "none",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: -6,
+          right: -6,
+          width: 14,
+          height: 14,
+          background: "#ef4444",
+          color: "white",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 9,
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,.25)",
+          pointerEvents: "none",
+        }}
+      >
+        ✕
+      </span>
     )}
   </span>
 );
 
 // ── CorrectionInput — OUTSIDE parent ──
-const CorrectionInput = ({ qId, value, onChange, isCorrect, isWrong, disabled }) => (
-  <span style={{ position: "relative", display: "inline-block", minWidth: "130px" }}>
+const CorrectionInput = ({
+  qId,
+  value,
+  onChange,
+  isCorrect,
+  isWrong,
+  disabled,
+}) => (
+  <span
+    style={{ position: "relative", display: "inline-block", minWidth: "130px" }}
+  >
     <input
+      className="wb-unit5-input"
       type="text"
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(qId, e.target.value)}
+      placeholder={!disabled ? "Correct tag" : ""}
+      title="Write the corrected question tag"
+      aria-label={`Corrected question tag ${qId}`}
       style={{
         width: "100%",
         border: "none",
@@ -121,24 +184,39 @@ const CorrectionInput = ({ qId, value, onChange, isCorrect, isWrong, disabled })
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-8px",
-        width: "16px", height: "16px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "10px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "-8px",
+          right: "-8px",
+          width: "16px",
+          height: "16px",
+          background: "#ef4444",
+          color: "white",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "10px",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </span>
 );
 
 // ── MAIN COMPONENT ──
 const WB_Unit5_CheckOrX_E = () => {
+  const audioFolder = "Page 29 - Exercise E";
   const init = initState();
-  const [choices,     setChoices]     = useState(init.choices);
+  const [choices, setChoices] = useState(init.choices);
   const [corrections, setCorrections] = useState(init.corrections);
-  const [result,      setResult]      = useState({});
-  const [locked,      setLocked]      = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleSelect = (id, value) => {
     if (locked || result[id] === true) return;
@@ -159,48 +237,69 @@ const WB_Unit5_CheckOrX_E = () => {
   const checkAnswers = () => {
     if (locked) return;
     // تحقق من أن كل جملة فيها اختيار
-    const noChoice = QUESTIONS.filter((q) => !q.prefilled)
-      .some(({ id }) => choices[id] === null);
-    if (noChoice) { ValidationAlert.info("Please complete all answers."); return; }
+    const noChoice = QUESTIONS.filter((q) => !q.prefilled).some(
+      ({ id }) => choices[id] === null,
+    );
+    if (noChoice) {
+      ValidationAlert.info("Please complete all answers.");
+      return;
+    }
 
     // تحقق من أن الـ wrong لها correction
-    const noCorrection = QUESTIONS.filter((q) => !q.prefilled)
-      .some(({ id, answer }) => choices[id] === "wrong" && !corrections[id].trim());
-    if (noCorrection) { ValidationAlert.info("Please write the correction for wrong sentences."); return; }
+    const noCorrection = QUESTIONS.filter((q) => !q.prefilled).some(
+      ({ id }) => choices[id] === "wrong" && !corrections[id].trim(),
+    );
+    if (noCorrection) {
+      ValidationAlert.info("Please write the correction for wrong sentences.");
+      return;
+    }
 
     let correct = 0;
     const nr = {};
     QUESTIONS.forEach(({ id, answer, correction, prefilled }) => {
-      if (prefilled) { nr[id] = true; correct++; return; }
+      if (prefilled) {
+        nr[id] = true;
+        correct++;
+        return;
+      }
       const choiceOk = choices[id] === answer;
-      const corrOk   = answer === "correct"
-        ? true
-        : normalize(corrections[id]) === normalize(correction);
+      const corrOk =
+        answer === "correct"
+          ? true
+          : normalize(corrections[id]) === normalize(correction);
       const ok = choiceOk && corrOk;
       if (ok) correct++;
       nr[id] = ok;
     });
     setResult(nr);
     const total = QUESTIONS.filter((q) => !q.prefilled).length;
-    const scored = correct - 1; // -1 للـ prefilled
+    const scored = correct;
     const color = scored === total ? "green" : scored === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${scored} / ${total}</span></div>`;
-    if (scored === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (scored === 0) ValidationAlert.error(msg);
+    if (scored === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (scored === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    const ch = {}; const co = {}; const r = {};
+    const ch = {};
+    const co = {};
+    const r = {};
     QUESTIONS.forEach(({ id, answer, correction }) => {
       ch[id] = answer;
       co[id] = correction;
-      r[id]  = true;
+      r[id] = true;
     });
-    setChoices(ch); setCorrections(co); setResult(r); setLocked(true);
+    setChoices(ch);
+    setCorrections(co);
+    setResult(r);
+    setLocked(true);
   };
 
   const handleReset = () => {
+    stopWorkbookUnit5Audio();
     const init = initState();
     setChoices(init.choices);
     setCorrections(init.corrections);
@@ -210,33 +309,49 @@ const WB_Unit5_CheckOrX_E = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8" style={ { whiteSpace :"nowrap"}}>
-          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
-          Write <strong style={{ color: "#D1232A" }}>✓</strong> or{" "}
-          <strong style={{ color: "#D1232A" }}>✕</strong> for each sentence. Correct the{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>question tag</span>{" "}
-          for sentences with <strong style={{ color: "#D1232A" }}>✕</strong>.
-        </h5>
+      <div className="div-forall gap-10">
+        <ExerciseHeader
+          sectionLetter="E"
+          title={
+            <>
+              Write <strong style={{ color: "#D1232A" }}>✓</strong> or{" "}
+              <strong style={{ color: "#D1232A" }}>X</strong> for each sentence
+              and correct the{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                question tag
+              </span>{" "}
+              when it is wrong.
+            </>
+          }
+          subTitle="Decide ✓ or X first; if the item is wrong, correct only the part requested."
+        />
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "45px", marginBottom: "3em" }}>
-          {QUESTIONS.map(({ id, sentence, answer, prefilled }) => {
-            const isCorrect  = result[id] === true;
-            const isWrong    = result[id] === false;
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "30px",
+            marginBottom: "3em",
+          }}
+        >
+          {QUESTIONS.map(({ id, sentence, audio, prefilled }) => {
+            const isCorrect = result[id] === true;
+            const isWrong = result[id] === false;
             const isDisabled = locked || isCorrect || prefilled;
-            const needsCorr  = choices[id] === "wrong";
+            const needsCorr = choices[id] === "wrong";
 
             return (
-              <div key={id} style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                fontSize: "17px",
-                flexWrap: "wrap",
-              }}>
+              <div
+                key={id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  fontSize: "17px",
+                  flexWrap: "wrap",
+                }}
+              >
                 {/* ✓ box */}
                 <ChoiceBox
                   qId={id}
@@ -260,10 +375,18 @@ const WB_Unit5_CheckOrX_E = () => {
                 />
 
                 {/* Number */}
-                <span style={{ fontWeight: "bold", minWidth: "22px" }}>{id}</span>
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>
+                  {id}
+                </span>
 
                 {/* Sentence */}
-                <span style={{ flex: 1 }}>{sentence}</span>
+                <WorkbookUnit5AudioText
+                  src={workbookUnit5Audio(audioFolder, audio)}
+                  ariaLabel={`Play sentence ${id}`}
+                  style={{ flex: 1 }}
+                >
+                  {sentence}
+                </WorkbookUnit5AudioText>
 
                 {/* Correction input */}
                 <CorrectionInput
@@ -278,14 +401,19 @@ const WB_Unit5_CheckOrX_E = () => {
             );
           })}
         </div>
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );
