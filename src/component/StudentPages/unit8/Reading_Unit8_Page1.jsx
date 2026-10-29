@@ -9,7 +9,7 @@ import sound5 from "../../../assets/audio/ClassBook/U8/PG 74/Pg74_1.4_Adult Lady
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video3 from "../../../assets/videos/grade 6 unit 8 page 64.mp4";
+import video3 from "../../../assets/videos/reading/grade 6 unit 8 reading page 74-75.mp4";
 
 const Reading_Unit8_Page1 = ({
   openPopup,

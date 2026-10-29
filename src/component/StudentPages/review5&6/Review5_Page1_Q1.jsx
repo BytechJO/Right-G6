@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 
 const wordBank = [
-  "bookworm",
-  "science fiction",
-  "suppose",
-  "boss",
-  "comedy",
-  "active",
-  "imagination",
-  "persuade",
-  "intended",
-  "opinion",
+  { text: "bookworm", audio: "Item_001_" },
+  { text: "science fiction", audio: "Item_002_" },
+  { text: "boss", audio: "Item_003_" },
+  { text: "comedy", audio: "Item_004_" },
+  { text: "suppose", audio: "Item_005_" },
+  { text: "active", audio: "Item_006_" },
+  { text: "imagination", audio: "Item_007_" },
+  { text: "persuade", audio: "Item_008_" },
+  { text: "intended", audio: "Item_009_" },
+  { text: "opinion", audio: "Item_010_" },
 ];
 
 // sorted alphabetically with syllable counts
@@ -41,7 +46,11 @@ const Review5_Page1_Q1 = () => {
   const [locked, setLocked] = useState(false);
 
   const normalize = (text) =>
-    text.trim().toLowerCase().replace(/\s+/g, " ").replace(/[?.""'',!]/g, "");
+    text
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/[?.""'',!]/g, "");
 
   const updateWord = (index, value) => {
     if (locked || correctLocked[index]) return;
@@ -119,6 +128,7 @@ const Review5_Page1_Q1 = () => {
   };
 
   const reset = () => {
+    stopUnit6StudentAudio();
     setAnswers(emptyAnswers());
     setWordErrors(Array(10).fill(false));
     setSyllableErrors(Array(10).fill(false));
@@ -156,12 +166,15 @@ const Review5_Page1_Q1 = () => {
             value={ans.word}
             disabled={lck}
             onChange={(e) => updateWord(index, e.target.value)}
+            placeholder="Vocabulary word"
+            title="Enter the vocabulary word"
+            aria-label={`Vocabulary word ${index + 1}`}
             style={{
               width: "100%",
               border: "none",
               borderBottom: wErr ? "2px solid #ef4444" : "1px solid black",
               outline: "none",
-              textAlign:"center",
+              textAlign: "center",
               background: "transparent",
               fontSize: "18px",
               // fontWeight: "600",
@@ -202,6 +215,9 @@ const Review5_Page1_Q1 = () => {
             value={ans.syllables}
             disabled={lck}
             onChange={(e) => updateSyllables(index, e.target.value)}
+            placeholder="e.g. 2"
+            title="Enter the number of syllables"
+            aria-label={`Syllable count ${index + 1}`}
             style={{
               width: "100%",
               border: "none",
@@ -247,12 +263,20 @@ const Review5_Page1_Q1 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "30px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="mr-2">A</span>
-          Put the vocabulary words into alphabetical order. How many syllables
-          does each one have?
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Put the vocabulary words in alphabetical order and write how many syllables each word has."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Put all vocabulary words in alphabetical order first.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Then count and record the syllables for each word.
+              </span>
+            </>
+          }
+        />
 
         {/* WORD BANK */}
         <div
@@ -271,8 +295,14 @@ const Review5_Page1_Q1 = () => {
             color: "#333",
           }}
         >
-          {wordBank.map((w) => (
-            <span key={w}>{w}</span>
+          {wordBank.map((word) => (
+            <Unit6StudentAudioText
+              key={word.text}
+              src={unit6StudentAudio("Page 52 - Exercise A", word.audio)}
+              ariaLabel={`Play ${word.text}`}
+            >
+              {word.text}
+            </Unit6StudentAudioText>
           ))}
         </div>
 

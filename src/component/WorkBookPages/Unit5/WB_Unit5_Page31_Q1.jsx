@@ -92,7 +92,13 @@ const AnswerInput = ({
   disabled,
   prefilled,
 }) => (
-  <span style={{ position: "relative", display: "block" }}>
+  <span
+    style={{
+      position: "relative",
+      display: "block",
+      width: "100%",
+    }}
+  >
     <input
       className="wb-unit5-input"
       type="text"
@@ -122,24 +128,28 @@ const AnswerInput = ({
         textDecoration: prefilled ? "underline" : "none",
       }}
     />
+
     {isWrong && (
       <span
+        aria-hidden="true"
         style={{
           position: "absolute",
           top: "-8px",
-          right: "-8px",
-          width: "16px",
-          height: "16px",
+          right: "0px",
+          width: "18px",
+          height: "18px",
           background: "#ef4444",
           color: "white",
           borderRadius: "50%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: "10px",
+          fontSize: "12px",
           fontWeight: "bold",
           border: "2px solid white",
           boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+          pointerEvents: "none",
+          zIndex: 3,
         }}
       >
         ✕

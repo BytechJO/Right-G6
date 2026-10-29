@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 
 const questions = [
   {
@@ -102,6 +107,7 @@ const Review5_Page2_Q1 = () => {
   };
 
   const reset = () => {
+    stopUnit6StudentAudio();
     setAnswers(Array(questions.length).fill(""));
     setErrors(Array(questions.length).fill(false));
     setCorrectLocked(Array(questions.length).fill(false));
@@ -111,11 +117,11 @@ const Review5_Page2_Q1 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "30px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="mr-2">C</span>
-          The question tags are incorrect. Rewrite each question tag correctly.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Rewrite each incorrect question tag correctly."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
         {/* QUESTIONS */}
         <div className="space-y-15 text-[18px]">
@@ -136,19 +142,17 @@ const Review5_Page2_Q1 = () => {
                 {q.id}
               </span>
 
-              {/* Sentence text */}
-              <span style={{ fontSize: "18px", flexShrink: 0 }}>{q.text}</span>
-
-              {/* Wrong tag (underlined) */}
-              <span
-                style={{
-                  fontSize: "18px",
-                  textDecoration: "underline",
-                  flexShrink: 0,
-                }}
+              <Unit6StudentAudioText
+                src={unit6StudentAudio(
+                  "Page 53 - Exercise C",
+                  `Item_${String(q.id).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play ${q.text} ${q.wrongTag}`}
+                style={{ fontSize: "18px", flexShrink: 0 }}
               >
-                {q.wrongTag}
-              </span>
+                {q.text}{" "}
+                <span style={{ textDecoration: "underline" }}>{q.wrongTag}</span>
+              </Unit6StudentAudioText>
 
               {/* Answer input */}
               <div style={{ flex: 1, minWidth: "140px", position: "relative" }}>
@@ -157,6 +161,9 @@ const Review5_Page2_Q1 = () => {
                   value={answers[index]}
                   disabled={locked || correctLocked[index]}
                   onChange={(e) => updateAnswer(index, e.target.value)}
+                  placeholder="Write the correct question tag"
+                  title="Write the correct question tag"
+                  aria-label={`Correct question tag ${q.id}`}
                   style={{
                     width: "100%",
                     border: "none",

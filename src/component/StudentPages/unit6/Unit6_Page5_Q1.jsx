@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "./Unit6StudentAudioText";
 
 const wordBank = [
-  "entertaining",
-  "summer school",
-  "talented",
-  "proud",
-  "success",
-  "celebration",
-  "perfectly",
-  "lessons",
-  "flawless",
-  "familiar",
+  { text: "entertaining", audio: "Item_001_" },
+  { text: "summer school", audio: "Item_002_" },
+  { text: "talented", audio: "Item_003_" },
+  { text: "proud", audio: "Item_004_" },
+  { text: "success", audio: "Item_005_" },
+  { text: "familiar", audio: "Item_006_" },
+  { text: "celebration", audio: "Item_007_" },
+  { text: "perfectly", audio: "Item_008_" },
+  { text: "lessons", audio: "Item_009_" },
+  { text: "flawless", audio: "Item_010_" },
 ];
+
+const columnAudio = {
+  Nouns: "Item_013_",
+  Adjectives: "Item_011_",
+  Adverb: "Item_012_",
+};
 
 const correctAnswers = {
   Nouns: ["summer school", "success", "celebration", "lessons"],
@@ -111,6 +122,7 @@ const Unit6_Page5_Q1 = () => {
   };
 
   const reset = () => {
+    stopUnit6StudentAudio();
     setTable(emptyTable());
     setCellStatus(null);
     setLocked(false);
@@ -126,14 +138,11 @@ const Unit6_Page5_Q1 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-4">
-          <span className="ex-A mr-2">A</span>
-          Divide the vocabulary words into the groups below. A noun is a person,
-          place, thing, or idea; an adjective tells what kind, which one, or how
-          many about a noun; and an adverb is a word that describes the verb or
-          adjective.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Divide the vocabulary words into nouns, adjectives, and adverbs."
+          subTitle="Sort one item at a time using the category meaning, then recheck each group before submitting."
+        />
 
         {/* WORD BANK */}
         <div
@@ -153,7 +162,13 @@ const Unit6_Page5_Q1 = () => {
           }}
         >
           {wordBank.map((word) => (
-            <span key={word}>{word}</span>
+            <Unit6StudentAudioText
+              key={word.text}
+              src={unit6StudentAudio("Page 50 - Exercise A", word.audio)}
+              ariaLabel={`Play ${word.text}`}
+            >
+              {word.text}
+            </Unit6StudentAudioText>
           ))}
         </div>
 
@@ -187,7 +202,15 @@ const Unit6_Page5_Q1 = () => {
                           : "25%",
                   }}
                 >
-                  {col}
+                  <Unit6StudentAudioText
+                    src={unit6StudentAudio(
+                      "Page 50 - Exercise A",
+                      columnAudio[col],
+                    )}
+                    ariaLabel={`Play ${col}`}
+                  >
+                    {col}
+                  </Unit6StudentAudioText>
                 </th>
               ))}
             </tr>
@@ -237,6 +260,9 @@ const Unit6_Page5_Q1 = () => {
                       value={table[col][rowIdx]}
                       disabled={locked}
                       onChange={(e) => updateCell(col, rowIdx, e.target.value)}
+                      placeholder="Type a word"
+                      title={`Enter a ${col.toLowerCase()} word`}
+                      aria-label={`${col}, row ${rowIdx + 1}`}
                       style={{
                         width: "100%",
                         height: "100%",

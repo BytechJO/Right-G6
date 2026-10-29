@@ -13,8 +13,6 @@ import fullPassageAudio from "../../../assets/audio/WorkBook/unit5/Page 30 - Exe
 // بدّل المسار للصورة الفعلية
 import singerImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U5 Folder/SVG/3.svg";
 
-
-
 const QUESTIONS = [
   {
     id: 1,
@@ -109,8 +107,8 @@ const InlineInput = ({
           position: "absolute",
           top: "-8px",
           right: "-8px",
-          width: "15px",
-          height: "15px",
+          width: "18px",
+          height: "18px",
           background: "#ef4444",
           color: "white",
           borderRadius: "50%",

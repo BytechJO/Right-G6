@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "./Unit6StudentAudioText";
 
 const questions = [
-  { id: 1, text: "That sure is nothing." },
-  { id: 2, text: "to my loving" },
-  { id: 3, text: "from the way" },
-  { id: 4, text: "talking of" },
-  { id: 5, text: "go behind" },
+  { id: 1, text: "That sure is nothing.", audio: "Item_001_" },
+  { id: 2, text: "to my loving", audio: "Item_002_" },
+  { id: 3, text: "from the way", audio: "Item_003_" },
+  { id: 4, text: "talking of", audio: "Item_004_" },
+  { id: 5, text: "go behind", audio: "Item_005_" },
 ];
 
 const correctAnswers = [
@@ -87,6 +92,7 @@ const Unit6_Page5_Q2 = () => {
   };
 
   const reset = () => {
+    stopUnit6StudentAudio();
     setAnswers(Array(questions.length).fill(""));
     setErrors(Array(questions.length).fill(false));
     setCorrectLocked(Array(questions.length).fill(false));
@@ -96,11 +102,11 @@ const Unit6_Page5_Q2 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-4">
-          <span className="ex-A mr-2">B</span>
-          Read and change each expression to make it correct. Rewrite it.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Read and change each expression to make it correct. Rewrite it."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
         {/* QUESTIONS */}
         <div className="space-y-15 text-[18px] mt-10">
@@ -110,7 +116,13 @@ const Unit6_Page5_Q2 = () => {
               <span className="font-bold shrink-0">{q.id}</span>
 
               {/* Original text */}
-              <span className="shrink-0">{q.text}</span>
+              <Unit6StudentAudioText
+                src={unit6StudentAudio("Page 50 - Exercise B", q.audio)}
+                ariaLabel={`Play ${q.text}`}
+                className="shrink-0"
+              >
+                {q.text}
+              </Unit6StudentAudioText>
 
               {/* Dashed line + input */}
               <div className="relative flex-1 flex items-center">
@@ -121,6 +133,9 @@ const Unit6_Page5_Q2 = () => {
                   value={answers[index]}
                   disabled={locked || correctLocked[index]}
                   onChange={(e) => updateAnswer(index, e.target.value)}
+                  placeholder="Write the corrected expression"
+                  title="Write the corrected expression"
+                  aria-label={`Correct expression ${q.id}`}
                   style={{
                     flex: 1,
                     border: "none",

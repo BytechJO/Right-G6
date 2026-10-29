@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 24.svg";
 
 const Review6_Page1_Q1 = () => {
@@ -10,27 +15,42 @@ const Review6_Page1_Q1 = () => {
       before: "She is a",
       after: "singer. I think her concert will sell many tickets.",
       correct: "talented",
+      beforeAudio: "Item_006_",
+      afterAudio: "Item_007_",
+      fullAudio: "full1",
     },
     {
       before: "The goalie was",
       after:
         "of his trophy that he received for stopping the most goals in the tournament.",
       correct: "proud",
+      beforeAudio: "Item_008_",
+      afterAudio: "Item_009_",
+      fullAudio: "full2",
     },
     {
       before: "That movie was very",
       after: "I'd like to watch it again sometime.",
       correct: "entertaining",
+      beforeAudio: "Item_010_",
+      afterAudio: "Item_011_",
+      fullAudio: "full3",
     },
     {
       before: "That woman looks",
       after: ". Did she use to work at our school?",
       correct: "familiar",
+      beforeAudio: "Item_012_",
+      afterAudio: "Item_013_",
+      fullAudio: "full4",
     },
     {
       before: "I get to take some karate",
       after: "this summer.",
       correct: "lessons",
+      beforeAudio: "Item_014_",
+      afterAudio: "Item_015_",
+      fullAudio: "full5",
     },
   ];
 
@@ -91,6 +111,7 @@ const Review6_Page1_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit6StudentAudio();
     setSelected(["", "", "", "", ""]);
     setResult([]);
     setLocked(false);
@@ -113,6 +134,9 @@ const Review6_Page1_Q1 = () => {
           value={selected[i]}
           onChange={(e) => handleChange(i, e.target.value)}
           disabled={locked || isCorrect}
+          placeholder="Vocabulary word"
+          title="Enter the vocabulary word"
+          aria-label={`Vocabulary answer ${i + 1}`}
           style={{
             width: "155px",
             border: "none",
@@ -158,12 +182,12 @@ const Review6_Page1_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall" style={{ gap: "25px" }}>
-        {/* TITLE */}
-        <h5 className="header-title-page8">
-          <span style={{ marginRight: "10px" }}>A</span>
-          Complete each sentence with the correct vocabulary word.
-        </h5>
+      <div className="div-forall mb-10" style={{ gap: "25px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Complete each sentence with the correct vocabulary word."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* WORD BANK */}
         <div
@@ -181,8 +205,13 @@ const Review6_Page1_Q1 = () => {
           }}
         >
           {wordBank.map((word, idx) => (
-            <span
+            <Unit6StudentAudioText
               key={idx}
+              src={unit6StudentAudio(
+                "Page 54 - Exercise A",
+                `Item_${String(idx + 1).padStart(3, "0")}_`,
+              )}
+              ariaLabel={`Play ${word}`}
               style={{
                 fontSize: "16px",
                 padding: "2px 10px",
@@ -191,7 +220,7 @@ const Review6_Page1_Q1 = () => {
               }}
             >
               {word}
-            </span>
+            </Unit6StudentAudioText>
           ))}
         </div>
 
@@ -203,13 +232,14 @@ const Review6_Page1_Q1 = () => {
               flex: 1,
               display: "flex",
               flexDirection: "column",
-              gap: "40px",
+              gap: "30px",
             }}
           >
             {questions.map((q, i) => (
               <div
                 key={i}
                 style={{
+                  position: "relative",
                   display: "flex",
                   flexWrap: "wrap",
                   alignItems: "baseline",
@@ -218,12 +248,44 @@ const Review6_Page1_Q1 = () => {
                   lineHeight: "2.2",
                 }}
               >
+                {result[i] === true && (
+                  <Unit6StudentAudioText
+                    src={unit6StudentAudio("Page 54 - Exercise A", q.fullAudio)}
+                    ariaLabel={`Play the complete correct sentence ${i + 1}`}
+                    className="full-audio"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                      zIndex: 3,
+                    }}
+                  >
+                    <span className="sr-only">
+                      {q.before} {q.correct} {q.after}
+                    </span>
+                  </Unit6StudentAudioText>
+                )}
                 <span style={{ fontWeight: "bold", minWidth: "18px" }}>
                   {i + 1}
                 </span>
-                <span>{q.before}</span>
+                <Unit6StudentAudioText
+                  src={unit6StudentAudio("Page 54 - Exercise A", q.beforeAudio)}
+                  ariaLabel={`Play ${q.before}`}
+                  disabled={result[i] === true}
+                  focusable={result[i] !== true}
+                >
+                  {q.before}
+                </Unit6StudentAudioText>
                 {renderBlank(i)}
-                <span>{q.after}</span>
+                <Unit6StudentAudioText
+                  src={unit6StudentAudio("Page 54 - Exercise A", q.afterAudio)}
+                  ariaLabel={`Play ${q.after}`}
+                  disabled={result[i] === true}
+                  focusable={result[i] !== true}
+                >
+                  {q.after}
+                </Unit6StudentAudioText>
               </div>
             ))}
           </div>
@@ -238,7 +300,7 @@ const Review6_Page1_Q1 = () => {
           >
             <img
               src={img1}
-              alt="karate"
+              alt="A student practicing karate"
               style={{ width: "auto", height: "200px", display: "block" }}
             />
           </div>

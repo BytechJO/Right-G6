@@ -8,7 +8,7 @@ import sound4 from "../../../assets/audio/ClassBook/U10/PG 92/Pg92_1.3_Adult Lad
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video3 from "../../../assets/videos/grade 6 unit 10 page 82.mp4";
+import video3 from "../../../assets/videos/reading/grade 6 unit 10 reading page 92-93.mp4";
 
 const Reading_Unit10_Page1 = ({
   openPopup,

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 18.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 19.svg";
 import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 20.svg";
@@ -9,24 +10,28 @@ const questions = [
   {
     id: 1,
     image: img1,
+    alt: "A person taking a photograph",
     isCheck: false, // ✗ = doesn't do it often
     starter: "He never used to ",
   },
   {
     id: 2,
     image: img2,
+    alt: "A person riding a bicycle",
     isCheck: true, // ✓ = does it often
     starter: "She used to ",
   },
   {
     id: 3,
     image: img3,
+    alt: "Another person riding a bicycle",
     isCheck: false,
     starter: "He never used to ",
   },
   {
     id: 4,
     image: img4,
+    alt: "A person cooking food",
     isCheck: true,
     starter: "She used to ",
   },
@@ -111,16 +116,18 @@ const Unit6_Page6_Q2 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A mr-2">E</span>
-          What does each person do often? Look at the pictures and the{" "}
-          <span style={{ color: "#f79631", fontWeight: "bold" }}>
-            ✓
-          </span> or{" "}
-          <span style={{ color: "#f79631", fontWeight: "bold" }}>✗</span>, then
-          write a sentence to tell about it.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title={
+            <>
+              Look at the pictures and the{" "}
+              <span className="text-[#D1252B]">✓</span> or{" "}
+              <span className="text-[#D1252B]">✗</span>, then write a sentence
+              telling what each person does often.
+            </>
+          }
+          subTitle="Use the ✓ or ✗ cue to decide whether the pictured action is something the person does often. Then write a complete sentence that matches the cue and picture."
+        />
 
         {/* IMAGES ROW */}
         <div
@@ -151,7 +158,7 @@ const Unit6_Page6_Q2 = () => {
 
               <img
                 src={q.image}
-                alt={`person ${q.id}`}
+                alt={q.alt}
                 style={{
                   width: "auto",
                   height: "130px",
@@ -181,6 +188,9 @@ const Unit6_Page6_Q2 = () => {
                   value={answers[index]}
                   disabled={locked || correctLocked[index]}
                   onChange={(e) => updateAnswer(index, e.target.value)}
+                  placeholder="Write a complete sentence"
+                  title="Write a sentence that matches the picture and cue"
+                  aria-label={`Sentence for picture ${q.id}: ${q.alt}`}
                   style={{
                     width: "100%",
                     border: "none",

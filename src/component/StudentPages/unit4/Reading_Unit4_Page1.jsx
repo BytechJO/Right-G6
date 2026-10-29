@@ -11,7 +11,7 @@ import sound5 from "../../../assets/audio/ClassBook/U4/PG 38/Pg38_1.4_Adult Lady
 import AudioWithCaption from "../../AudioWithCaption";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import pauseBtn from "../../../assets/Page 01/Right Video Button.svg";
-import video3 from "../../../assets/videos/grade 6 unit 4 page 28.mp4";
+import video3 from "../../../assets/videos/reading/grade 6 unit 4 reading page 38-39.mp4";
 
 const Reading_Unit4_Page1 = ({
   openPopup,

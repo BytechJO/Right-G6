@@ -81,13 +81,42 @@ const InlineInput = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: "10px",
+          fontSize: "14px",
           fontWeight: "bold",
+          fontFamily: "Arial, sans-serif",
+          lineHeight: 1,
           border: "2px solid white",
           boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+          boxSizing: "border-box",
+          pointerEvents: "none",
+          zIndex: 5,
         }}
+        aria-hidden="true"
       >
-        ✕
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "9px",
+            height: "2px",
+            borderRadius: "2px",
+            backgroundColor: "white",
+            transform: "translate(-50%, -50%) rotate(45deg)",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "9px",
+            height: "2px",
+            borderRadius: "2px",
+            backgroundColor: "white",
+            transform: "translate(-50%, -50%) rotate(-45deg)",
+          }}
+        />
       </span>
     )}
   </span>

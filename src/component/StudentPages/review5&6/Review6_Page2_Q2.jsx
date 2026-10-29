@@ -1,4 +1,9 @@
 import React, { useState, useRef } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 
 const Review6_Page2_Q2 = () => {
   const [youngerImg, setYoungerImg] = useState(null);
@@ -20,6 +25,7 @@ const Review6_Page2_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit6StudentAudio();
     setYoungerImg(null);
     setNowImg(null);
     setLine1a("");
@@ -42,14 +48,23 @@ const Review6_Page2_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall" style={{ gap: "25px" }}>
-        {/* TITLE */}
-        <h5 className="header-title-page8">
-          <span style={{ marginRight: "10px" }}>D</span>
-          How have they changed? Paste two pictures of yourself, or of someone
-          famous, when younger and now. Write sentences describing how you, or
-          they, used to be and are now.
-        </h5>
+      <div className="div-forall mb-10" style={{ gap: "25px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title="Upload or paste younger and current pictures, then write sentences describing how the person used to be and is now."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Choose clear younger and current images of the same
+                person.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Use the images to write accurate used-to and now
+                sentences that describe the change.
+              </span>
+            </>
+          }
+        />
 
         {/* IMAGE BOX */}
         <div
@@ -81,7 +96,12 @@ const Review6_Page2_Q2 = () => {
                 borderBottom: "1.5px solid #a5c96a",
               }}
             >
-              Younger
+              <Unit6StudentAudioText
+                src={unit6StudentAudio("Page 55 - Exercise D", "Item_001_")}
+                ariaLabel="Play Younger"
+              >
+                Younger
+              </Unit6StudentAudioText>
             </div>
             <div
               style={{
@@ -93,12 +113,24 @@ const Review6_Page2_Q2 = () => {
                 cursor: "pointer",
                 padding: "10px",
               }}
-              onClick={() => youngerRef.current.click()}
+              onClick={(event) => {
+                if (event.target.closest(".unit6-student-audio-text")) return;
+                youngerRef.current.click();
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  youngerRef.current.click();
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="Upload a younger photo"
             >
               {youngerImg ? (
                 <img
                   src={youngerImg}
-                  alt="younger"
+                  alt="Uploaded younger photo"
                   style={{
                     maxHeight: "170px",
                     maxWidth: "100%",
@@ -118,7 +150,13 @@ const Review6_Page2_Q2 = () => {
                     userSelect: "none",
                   }}
                 >
-                  + Upload Photo
+                  <Unit6StudentAudioText
+                    src={unit6StudentAudio("Page 55 - Exercise D", "Item_003_")}
+                    ariaLabel="Play Upload Photo"
+                    focusable={false}
+                  >
+                    + Upload Photo
+                  </Unit6StudentAudioText>
                 </div>
               )}
               <input
@@ -149,7 +187,12 @@ const Review6_Page2_Q2 = () => {
                 borderBottom: "1.5px solid #a5c96a",
               }}
             >
-              Now
+              <Unit6StudentAudioText
+                src={unit6StudentAudio("Page 55 - Exercise D", "Item_002_")}
+                ariaLabel="Play Now"
+              >
+                Now
+              </Unit6StudentAudioText>
             </div>
             <div
               style={{
@@ -161,12 +204,24 @@ const Review6_Page2_Q2 = () => {
                 cursor: "pointer",
                 padding: "10px",
               }}
-              onClick={() => nowRef.current.click()}
+              onClick={(event) => {
+                if (event.target.closest(".unit6-student-audio-text")) return;
+                nowRef.current.click();
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  nowRef.current.click();
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="Upload a current photo"
             >
               {nowImg ? (
                 <img
                   src={nowImg}
-                  alt="now"
+                  alt="Uploaded current photo"
                   style={{
                     maxHeight: "170px",
                     maxWidth: "100%",
@@ -186,7 +241,13 @@ const Review6_Page2_Q2 = () => {
                     userSelect: "none",
                   }}
                 >
-                  + Upload Photo
+                  <Unit6StudentAudioText
+                    src={unit6StudentAudio("Page 55 - Exercise D", "Item_003_")}
+                    ariaLabel="Play Upload Photo"
+                    focusable={false}
+                  >
+                    + Upload Photo
+                  </Unit6StudentAudioText>
                 </div>
               )}
               <input
@@ -222,13 +283,25 @@ const Review6_Page2_Q2 = () => {
               type="text"
               value={line1a}
               onChange={(e) => setLine1a(e.target.value)}
+              placeholder="Name"
+              title="Enter the person's name"
+              aria-label="Person's name"
               style={{ ...inputLineStyle, width: "120px", flex: "none" }}
             />
-            <span style={{ whiteSpace: "nowrap" }}>used to be</span>
+            <Unit6StudentAudioText
+              src={unit6StudentAudio("Page 55 - Exercise D", "Item_004_")}
+              ariaLabel="Play used to be"
+              style={{ whiteSpace: "nowrap" }}
+            >
+              used to be
+            </Unit6StudentAudioText>
             <input
               type="text"
               value={line1b}
               onChange={(e) => setLine1b(e.target.value)}
+              placeholder="Describe the person when younger"
+              title="Describe how the person used to be"
+              aria-label="Description of the person when younger"
               style={inputLineStyle}
             />
           </div>
@@ -246,6 +319,9 @@ const Review6_Page2_Q2 = () => {
               type="text"
               value={line2}
               onChange={(e) => setLine2(e.target.value)}
+              placeholder="Continue the younger description"
+              title="Continue the younger description"
+              aria-label="Additional younger description"
               style={inputLineStyle}
             />
           </div>
@@ -264,6 +340,9 @@ const Review6_Page2_Q2 = () => {
               type="text"
               value={line3a}
               onChange={(e) => setLine3a(e.target.value)}
+              placeholder="Describe the person now"
+              title="Describe the person now"
+              aria-label="Current description"
               style={inputLineStyle}
             />
           </div>
@@ -281,6 +360,9 @@ const Review6_Page2_Q2 = () => {
               type="text"
               value={line3b}
               onChange={(e) => setLine3b(e.target.value)}
+              placeholder="Continue the current description"
+              title="Continue the current description"
+              aria-label="Additional current description"
               style={inputLineStyle}
             />
           </div>

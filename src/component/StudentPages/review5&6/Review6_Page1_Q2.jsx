@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 
 const Review6_Page1_Q2 = () => {
   const questions = [
@@ -7,43 +12,49 @@ const Review6_Page1_Q2 = () => {
       num: 1,
       definition: "said to show that you are surprised or impressed",
       correct: "c",
+      audio: ["Item_001_"],
     },
     {
       num: 2,
       definition: "means it happened a long time ago",
       correct: "f",
+      audio: ["Item_003_"],
     },
     {
       num: 3,
       definition:
         "put into a sentence to mean you are bringing something up without planning it",
       correct: "a",
+      audio: ["Item_005_", "Item_007_"],
     },
     {
       num: 4,
       definition: "means that it is done the way you like it",
       correct: "b",
+      audio: ["Item_009_"],
     },
     {
       num: 5,
       definition: "to give someone permission to begin an activity",
       correct: "d",
+      audio: ["Item_011_"],
     },
     {
       num: 6,
       definition:
         "used when someone has started talking about a subject, and you want to continue talking about it",
       correct: "e",
+      audio: ["Item_012_", "Item_014_"],
     },
   ];
 
   const matches = [
-    { letter: "a", text: "By the way ..." },
-    { letter: "b", text: "to my liking" },
-    { letter: "c", text: "That sure is something!" },
-    { letter: "d", text: "go ahead" },
-    { letter: "e", text: "Speaking of ..." },
-    { letter: "f", text: "years ago" },
+    { letter: "a", text: "By the way ...", audio: "Item_002_" },
+    { letter: "b", text: "to my liking", audio: "Item_004_" },
+    { letter: "c", text: "That sure is something!", audio: "Item_006_" },
+    { letter: "d", text: "go ahead", audio: "Item_008_" },
+    { letter: "e", text: "Speaking of ...", audio: "Item_010_" },
+    { letter: "f", text: "years ago", audio: "Item_013_" },
   ];
 
   const [selected, setSelected] = useState(Array(questions.length).fill(""));
@@ -102,6 +113,7 @@ const Review6_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit6StudentAudio();
     setSelected(Array(questions.length).fill(""));
     setResult([]);
     setLocked(false);
@@ -118,8 +130,11 @@ const Review6_Page1_Q2 = () => {
           onChange={(e) => handleChange(i, e.target.value)}
           maxLength={1}
           disabled={locked || isCorrect}
+          placeholder="e.g. a"
+          title="Enter the matching letter"
+          aria-label={`Matching letter ${i + 1}`}
           style={{
-            width: "36px",
+            width: "50px",
             border: "none",
             borderBottom: `1px solid ${isWrong ? "#D1232A" : "#222"}`,
             outline: "none",
@@ -163,11 +178,11 @@ const Review6_Page1_Q2 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall" style={{ gap: "50px" }}>
-        {/* TITLE */}
-        <h5 className="header-title-page8">
-          <span style={{ marginRight: "10px" }}>B</span>
-          Match each expression to its definition or description.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title="Match each expression to its definition or description."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
 
         {/* MATCHING LAYOUT */}
         <div style={{ display: "flex", gap: "32px", alignItems: "flex-start" }}>
@@ -177,7 +192,7 @@ const Review6_Page1_Q2 = () => {
               flex: 1,
               display: "flex",
               flexDirection: "column",
-              gap: "30px",
+              gap: "20px",
             }}
           >
             {questions.map((q, i) => (
@@ -197,7 +212,15 @@ const Review6_Page1_Q2 = () => {
                   {q.num}
                 </span>
                 {/* definition text */}
-                <span style={{ flex: 1 }}>{q.definition}</span>
+                <Unit6StudentAudioText
+                  src={q.audio.map((prefix) =>
+                    unit6StudentAudio("Page 54 - Exercise B", prefix),
+                  )}
+                  ariaLabel={`Play ${q.definition}`}
+                  style={{ flex: 1 }}
+                >
+                  {q.definition}
+                </Unit6StudentAudioText>
               </div>
             ))}
           </div>
@@ -207,7 +230,7 @@ const Review6_Page1_Q2 = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "30px",
+              gap: "20px",
               minWidth: "160px",
             }}
           >
@@ -225,10 +248,13 @@ const Review6_Page1_Q2 = () => {
               >
                 {/* input */}
                 {renderInput(idx)}
-                <span style={{ fontWeight: "bold" }}>
-                  {m.letter}
-                </span>
-                <span>{m.text}</span>
+                <span style={{ fontWeight: "bold" }}>{m.letter}</span>
+                <Unit6StudentAudioText
+                  src={unit6StudentAudio("Page 54 - Exercise B", m.audio)}
+                  ariaLabel={`Play ${m.text}`}
+                >
+                  {m.text}
+                </Unit6StudentAudioText>
               </div>
             ))}
           </div>

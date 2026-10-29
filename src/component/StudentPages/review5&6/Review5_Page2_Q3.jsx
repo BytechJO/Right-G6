@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 const Review5_Page2_Q3 = () => {
   const questions = [
     { id: 1, sentence: "Shannon won’t be home for dinner, will she?" },
@@ -12,7 +16,10 @@ const Review5_Page2_Q3 = () => {
   const correctAnswers = [
     ["Shannon will be home for dinner, won't she?"],
     ["The bear can smell us from here, can't it?"],
-    ["The dress fits well, doesn't it?", "The dress does fit well, doesn't it?"],
+    [
+      "The dress fits well, doesn't it?",
+      "The dress does fit well, doesn't it?",
+    ],
     ["Tom would come this far, wouldn't he?"],
   ];
 
@@ -39,6 +46,7 @@ const Review5_Page2_Q3 = () => {
       .replace(/\s+/g, " ");
 
   const updateAnswer = (index, value) => {
+    if (locked || correctLocked[index]) return;
     const updated = [...answers];
     updated[index] = value;
     setAnswers(updated);
@@ -58,14 +66,14 @@ const Review5_Page2_Q3 = () => {
     }
 
     let score = 0;
-const newErrors = answers.map((ans, i) => {
-  const isCorrect = correctAnswers[i].some(
-    (correct) => normalize(ans) === normalize(correct)
-  );
+    const newErrors = answers.map((ans, i) => {
+      const isCorrect = correctAnswers[i].some(
+        (correct) => normalize(ans) === normalize(correct),
+      );
 
-  if (isCorrect) score++;
-  return !isCorrect;
-});
+      if (isCorrect) score++;
+      return !isCorrect;
+    });
 
     setErrors(newErrors);
     setCorrectLocked(newErrors.map((e) => !e));
@@ -91,13 +99,16 @@ const newErrors = answers.map((ans, i) => {
   };
 
   const handleShow = () => {
-    setAnswers([...correctAnswers]);
+    setAnswers(
+      correctAnswers.map((answersForQuestion) => answersForQuestion[0]),
+    );
     setErrors(Array(questions.length).fill(false));
     setCorrectLocked(Array(questions.length).fill(true));
     setLocked(true);
   };
 
   const handleReset = () => {
+    stopUnit6StudentAudio();
     setAnswers(Array(questions.length).fill(""));
     setErrors(Array(questions.length).fill(false));
     setCorrectLocked(Array(questions.length).fill(false));
@@ -106,22 +117,29 @@ const newErrors = answers.map((ans, i) => {
 
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-4">
-          <span className="mr-4">E</span>
-          Change the question tag from negative to positive or from positive to
-          negative. Make other necessary changes.
-        </h5>
+      <div className="div-forall" style={{ gap: "25px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="E"
+          title="Change each question tag from negative to positive or from positive to negative. Make other necessary changes."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
         {/* QUESTIONS */}
-        <div className="space-y-15 text-[18px]">
+        <div className="space-y-10 text-[18px]">
           {questions.map((q, index) => (
             <div key={q.id} className="flex flex-col gap-1">
               {/* Question row */}
               <div className="flex items-center gap-3">
                 <span className="font-bold">{q.id}</span>
-                <span>{q.sentence}</span>
+                <Unit6StudentAudioText
+                  src={unit6StudentAudio(
+                    "Page 53 - Exercise E",
+                    `Item_${String(q.id).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play ${q.sentence}`}
+                >
+                  {q.sentence}
+                </Unit6StudentAudioText>
               </div>
 
               {/* Answer input row */}
@@ -131,6 +149,9 @@ const newErrors = answers.map((ans, i) => {
                   value={answers[index]}
                   disabled={locked || correctLocked[index]}
                   onChange={(e) => updateAnswer(index, e.target.value)}
+                  placeholder="Rewrite the complete sentence"
+                  title="Rewrite the complete sentence"
+                  aria-label={`Rewritten sentence ${q.id}`}
                   className={`border-b outline-none w-full font-semibold px-2 bg-transparent
                   ${errors[index] ? "border-red-500" : "border-black"}
                 `}

@@ -5,8 +5,29 @@ import imgReading from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Us
 import readingAudio from "../../../assets/audio/ClassBook/U6/PG 47/cd28pg47-reading.mp3";
 import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
 import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
+import readingTimings from "../../../assets/json/cd28pg47-reading_eng.json";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import { useReadingHighlight } from "../../useReadingHighlight";
+import ExerciseHeader from "../../ExerciseHeader";
 const ReadingSection_U4 = () => {
+  const { highlight, onTimeUpdate } = useReadingHighlight(
+    readingTimings,
+    [
+      {
+        printed: ["a", "nearby"],
+        spoken: ["the", "nearby"],
+      },
+      {
+        printed: ["from", "countless"],
+        spoken: ["from the", "countless"],
+      },
+      {
+        printed: ["sun", "to", "in"],
+        spoken: ["sun", "", "in"],
+      },
+    ],
+    true,
+  );
   const captions = [
     {
       start: 0.319,
@@ -77,18 +98,26 @@ const ReadingSection_U4 = () => {
   return (
     <div className=" flex flex-col items-center">
       <div className="p-6 flex flex-col items-center gap-5">
+        <div className="w-[60%]">
+          <ExerciseHeader
+            title="Listen and read along: An Ancient City."
+            subTitle="Press Play and follow the text as it is read; pause or replay any part you need to hear again."
+          />
+        </div>
         <div className="flex justify-start gap-1 mb-4 w-[60%]">
           <img
             src={ReadingBG}
+            alt="Reading section"
             style={{
               height: "60px",
               width: "auto",
             }}
           />
 
-          <h2 className="font-bold text-[18px] text-black">
-         Have you ever visited an old city? What were the things
-that you saw there?
+          <h2 className="font-bold text-[18px] text-black">ءق
+            {highlight(
+              "Have you ever visited an old city? What were the things that you saw there?",
+            )}
           </h2>
         </div>
         <div className="w-[60%] mx-auto">
@@ -96,6 +125,8 @@ that you saw there?
             src={readingAudio}
             captions={captions}
             stopAtSecond={6.0}
+            pageId="sb_unit6_page47_reading"
+            onTimeUpdate={onTimeUpdate}
           />
         </div>
         <div className="relative w-[60%] mt-2">
@@ -103,7 +134,7 @@ that you saw there?
             className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[20px] font-bold w-[300px]"
             style={{ borderRadius: "20px 20px 0px 0px " }}
           >
-            An Ancient City
+            {highlight("An Ancient City")}
           </div>
 
           <div className="border-2 border-[#84ad40] rounded-2xl p-4 pt-6 bg-white">
@@ -115,13 +146,14 @@ that you saw there?
                 },
               ].map((line, i) => (
                 <p key={i} style={{ color: line.color }}>
-                  {line.text}
+                  {highlight(line.text)}
                 </p>
               ))}
             </div>
             <div className="flex gap-4">
               <img
                 src={imgReading}
+                alt="Machu Picchu in the Andes Mountains"
                 style={{ width: "auto", height: "250px", objectFit: "contain" }}
                 className="rounded-md flex-shrink-0"
               />
@@ -135,7 +167,7 @@ that you saw there?
                   },
                 ].map((line, i) => (
                   <p key={i} style={{ color: line.color }} className="mb-0.5">
-                    {line.text}
+                    {highlight(line.text)}
                   </p>
                 ))}
               </div>
@@ -149,7 +181,7 @@ that you saw there?
                 },
               ].map((line, i) => (
                 <p key={i} style={{ color: line.color }}>
-                  {line.text}
+                  {highlight(line.text)}
                 </p>
               ))}
             </div>
@@ -157,13 +189,18 @@ that you saw there?
         </div>
 
         <div className="text-[15px] text-black text-left flex items-center justify-center">
-          <img src={question} style={{ height: "150px", width: "60%" }} />
+          <img
+            src={question}
+            alt="Think about the reading questions"
+            style={{ height: "150px", width: "60%" }}
+          />
         </div>
 
         <div className="w-[60%] mt-3 space-y-6">
           <div className="flex items-center gap-4">
             <img
               src={comprehesion}
+              alt="Comprehension section"
               style={{
                 height: "60px",
                 width: "auto",
