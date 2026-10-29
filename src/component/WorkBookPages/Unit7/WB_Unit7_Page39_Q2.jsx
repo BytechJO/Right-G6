@@ -1,5 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit7AudioText, {
+  stopWorkbookUnit7Audio,
+  workbookUnit7Audio,
+  workbookUnit7AudioSequence,
+} from "./WorkbookUnit7AudioText";
 
 import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U7 Folder/SVG/1.svg";
 import img2 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U7 Folder/SVG/2.svg";
@@ -24,6 +31,16 @@ const CELLS = [
   { id: 7, img: img7, answer: "ability",      prefilled: false },
 ];
 
+const IMAGE_ALTS = {
+  1: "A colorful painted background for a picture",
+  2: "Hands using stencils to make a design",
+  3: "A paintbrush making green strokes",
+  4: "The numbers one and two combined",
+  5: "A child making a silly face",
+  6: "Friends giving someone a compliment",
+  7: "A climber saying that she can do it",
+};
+
 const normalize = (str) =>
     str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
 
@@ -37,10 +54,14 @@ const initAnswers = () => {
 const PicInput = ({ cellId, value, onChange, isCorrect, isWrong, disabled, prefilled }) => (
   <span style={{ position: "relative", display: "block" }}>
     <input
+      className="wb-unit7-input"
       type="text"
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(cellId, e.target.value)}
+      placeholder="Type the word"
+      title="Type the vocabulary word shown by the picture"
+      aria-label={`Vocabulary word for picture ${cellId}`}
       style={{
         width: "100%",
         border: "none",
@@ -57,10 +78,10 @@ const PicInput = ({ cellId, value, onChange, isCorrect, isWrong, disabled, prefi
     />
     {isWrong && (
       <span style={{
-        position: "absolute", top: "-8px", right: "-8px",
-        width: "14px", height: "14px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
+        position: "absolute", top: "50%", right: "-8px", transform: "translateY(-50%)",
+        width: "20px", height: "20px", background: "red", color: "white",
+        borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center",
+        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
         boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
       }}>✕</span>
     )}
@@ -69,6 +90,7 @@ const PicInput = ({ cellId, value, onChange, isCorrect, isWrong, disabled, prefi
 
 // ── MAIN COMPONENT ──
 const WB_Unit7_VocabPictures_B = () => {
+  const audioFolder = "Page 39 - Exercise B";
   const [answers, setAnswers] = useState(initAnswers);
   const [result,  setResult]  = useState({});
   const [locked,  setLocked]  = useState(false);
@@ -106,7 +128,10 @@ const WB_Unit7_VocabPictures_B = () => {
     setAnswers(a); setResult(r); setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit7Audio();
+    setAnswers(initAnswers()); setResult({}); setLocked(false);
+  };
 
   // صفين: [1,2,3,4] و [5,6,7]
   const row1 = CELLS.slice(0, 4);
@@ -130,7 +155,7 @@ const WB_Unit7_VocabPictures_B = () => {
         {/* Image */}
         <img
           src={img}
-          alt={`pic ${id}`}
+          alt={IMAGE_ALTS[id]}
           style={{
             width: "100%",
             height: "auto",
@@ -143,7 +168,12 @@ const WB_Unit7_VocabPictures_B = () => {
         {/* Cell 1: special label with student input */}
         {specialLabel && (
           <div style={{ textAlign: "center", fontSize: "15px", color: "#333", width: "100%", lineHeight: "1.8" }}>
-            <div>This would be the</div>
+            <WorkbookUnit7AudioText
+              src={workbookUnit7Audio(audioFolder, "Item_001_")}
+              ariaLabel="Play This would be the"
+            >
+              This would be the
+            </WorkbookUnit7AudioText>
             <PicInput
               cellId={id}
               value={answers[id]}
@@ -153,7 +183,12 @@ const WB_Unit7_VocabPictures_B = () => {
               disabled={locked || isCorrect}
               prefilled={false}
             />
-            <div>for a picture.</div>
+            <WorkbookUnit7AudioText
+              src={workbookUnit7Audio(audioFolder, "Item_002_")}
+              ariaLabel="Play for a picture"
+            >
+              for a picture.
+            </WorkbookUnit7AudioText>
           </div>
         )}
 
@@ -178,6 +213,15 @@ const WB_Unit7_VocabPictures_B = () => {
             />
           </div>
         )}
+        {id === 5 && (
+          <WorkbookUnit7AudioText
+            src={workbookUnit7Audio(audioFolder, "Item_003_")}
+            ariaLabel="Play You're so nice"
+            style={{ fontSize: "14px" }}
+          >
+            Play the picture text
+          </WorkbookUnit7AudioText>
+        )}
       </div>
     );
   };
@@ -186,11 +230,11 @@ const WB_Unit7_VocabPictures_B = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>B</span>
-          Write the vocabulary word for each picture.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Write the vocabulary word for each picture."
+          subTitle="Name the picture first, then type the exact unit vocabulary word and check the spelling."
+        />
 
         {/* Grid */}
         <div style={{
@@ -236,7 +280,7 @@ const WB_Unit7_VocabPictures_B = () => {
                 }}>
                   <img
                     src={img}
-                    alt={`pic ${id}`}
+                    alt={IMAGE_ALTS[id]}
                     style={{
                       width: "60%",
                       height: "auto",
@@ -261,6 +305,13 @@ const WB_Unit7_VocabPictures_B = () => {
                       />
                     </div>
                   )}
+                  <WorkbookUnit7AudioText
+                    src={workbookUnit7AudioSequence(audioFolder, ["Item_004_", "Item_005_"])}
+                    ariaLabel="Play the compliments in this picture"
+                    style={{ fontSize: "14px" }}
+                  >
+                    Play the picture text
+                  </WorkbookUnit7AudioText>
                 </div>
               );
             })()}

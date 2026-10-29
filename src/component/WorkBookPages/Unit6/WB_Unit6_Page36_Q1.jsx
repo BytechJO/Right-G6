@@ -15,7 +15,11 @@ const ITEMS = [
     parts: [
       { type: "text", value: "I " },
       { type: "input", key: "1a" },
-      { type: "text", value: " run two kilometers each week but now ", audio: "Item_001_" },
+      {
+        type: "text",
+        value: " run two kilometers each week but now ",
+        audio: "Item_001_",
+      },
       { type: "input", key: "1b" },
       { type: "text", value: " one ", audio: "Item_002_" },
       { type: "text", value: "kilometer.", audio: "Item_003_" },
@@ -24,7 +28,11 @@ const ITEMS = [
   {
     id: 2,
     parts: [
-      { type: "text", value: "Peter used to eat one apple a day ", audio: "Item_004_" },
+      {
+        type: "text",
+        value: "Peter used to eat one apple a day ",
+        audio: "Item_004_",
+      },
       { type: "input", key: "2a" },
       { type: "text", value: " he eats ", audio: "Item_005_" },
       { type: "input", key: "2b" },
@@ -124,7 +132,8 @@ export default function WB_CompleteUsedTo_H() {
           title={
             <>
               Complete the sentences. The sentences should include{" "}
-              <span style={{ color: "#e67e22", fontWeight: 700 }}>used to</span>.
+              <span style={{ color: "#e67e22", fontWeight: 700 }}>used to</span>
+              .
             </>
           }
           subTitle="Use the subject and time clue to choose the correct verb form, then reread the whole sentence."
@@ -140,7 +149,11 @@ export default function WB_CompleteUsedTo_H() {
                   part.type === "text" ? (
                     <WorkbookUnit6AudioText
                       key={i}
-                      src={part.audio ? workbookUnit6Audio(audioFolder, part.audio) : null}
+                      src={
+                        part.audio
+                          ? workbookUnit6Audio(audioFolder, part.audio)
+                          : null
+                      }
                       ariaLabel={`Play sentence ${item.id} phrase`}
                       flowText
                     >
@@ -157,7 +170,7 @@ export default function WB_CompleteUsedTo_H() {
                       title="Complete the missing part of the sentence"
                       aria-label={`Missing sentence part ${part.key}`}
                     />
-                  )
+                  ),
                 )}
               </span>
             </div>

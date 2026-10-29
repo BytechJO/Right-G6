@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit7AudioText, {
+  stopWorkbookUnit7Audio,
+  workbookUnit7Audio,
+} from "./WorkbookUnit7AudioText";
 
 const BORDER = "#84ad40";
 
@@ -35,10 +41,14 @@ const normalize = (str) =>
 const CellInput = ({ cellKey, value, onChange, isCorrect, isWrong, disabled }) => (
   <div style={{ position: "relative" }}>
     <input
+      className="wb-unit7-input"
       type="text"
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(cellKey, e.target.value)}
+      placeholder="Type a word"
+      title="Type the vocabulary word for this group"
+      aria-label={`Vocabulary answer for ${cellKey.replace("-", " row ")}`}
       style={{
         width: "100%",
         border: "none",
@@ -54,10 +64,10 @@ const CellInput = ({ cellKey, value, onChange, isCorrect, isWrong, disabled }) =
     />
     {isWrong && (
       <span style={{
-        position: "absolute", top: "-6px", right: "-6px",
-        width: "14px", height: "14px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
+        position: "absolute", top: "50%", right: "-8px", transform: "translateY(-50%)",
+        width: "20px", height: "20px", background: "red", color: "white",
+        borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center",
+        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
         boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
       }}>✕</span>
     )}
@@ -66,6 +76,7 @@ const CellInput = ({ cellKey, value, onChange, isCorrect, isWrong, disabled }) =
 
 // ── MAIN COMPONENT ──
 const WB_Unit7_WordGroups_A = () => {
+  const audioFolder = "Page 39 - Exercise A";
   const [answers, setAnswers] = useState(initAnswers);
   const [result,  setResult]  = useState({});
   const [locked,  setLocked]  = useState(false);
@@ -112,30 +123,39 @@ const checkAnswers = () => {
 };
 const showAnswers = () => {
   const a = {}; const r = {};
-  QUESTIONS.forEach(({ id, answer1 }) => {
-    a[`${id}-1`] = answer1;
-    r[`${id}-1`] = true;
+  COLS.forEach((col) => {
+    CORRECT[col].forEach((answer, ri) => {
+      a[`${col}-${ri}`] = answer;
+      r[`${col}-${ri}`] = true;
+    });
   });
   setAnswers(a); setResult(r); setLocked(true);
 };
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit7Audio();
+    setAnswers(initAnswers()); setResult({}); setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
-          Put the words in the correct groups.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Put the words in the correct groups."
+          subTitle="Decide the category for one item at a time, then review the whole group before checking."
+        />
 
         {/* Word Bank — 2 rows of pills */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
           {[WORD_BANK.slice(0, 5), WORD_BANK.slice(5)].map((row, ri) => (
             <div key={ri} style={{ display: "flex", gap: "10px", justifyContent: "space-around" }}>
-              {row.map((w) => (
-                <span key={w} style={{
+              {row.map((w, wi) => (
+                <WorkbookUnit7AudioText
+                  key={w}
+                  src={workbookUnit7Audio(audioFolder, `Item_${String(ri * 5 + wi + 1).padStart(3, "0")}_`)}
+                  ariaLabel={`Play ${w}`}
+                  style={{
                   width : "120px",
                   border: "2px solid #b6d584ff",
                   borderRadius: "10px",
@@ -145,7 +165,10 @@ const showAnswers = () => {
                   background: "#fff",
                   whiteSpace: "nowrap",
                   alignSelf :"center"
-                }}>{w}</span>
+                  }}
+                >
+                  {w}
+                </WorkbookUnit7AudioText>
               ))}
             </div>
           ))}

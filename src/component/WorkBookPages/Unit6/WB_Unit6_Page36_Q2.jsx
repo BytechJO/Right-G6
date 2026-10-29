@@ -7,7 +7,7 @@ import tableImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Fol
 const BORDER = "#84ad40";
 
 const ITEMS = [
-  { id: 1, prefilled: false,   },
+  { id: 1, prefilled: false },
   { id: 2, prefilled: false },
   { id: 3, prefilled: false },
   { id: 4, prefilled: false },
@@ -63,13 +63,16 @@ const WB_Unit_UsedToChart_I = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
         <ExerciseHeader
           sectionLetter="I"
           title={
             <>
-              Read the chart and write a sentence about each person using at least{" "}
-              <span style={{ color: "orange", fontWeight: "bold" }}>three items</span>.
+              Read the chart and write a sentence about each person using at
+              least{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                three items
+              </span>
+              .
             </>
           }
           subTitle="Read the whole chart before writing; each sentence should combine at least three checked activities for the same person."
@@ -80,28 +83,52 @@ const WB_Unit_UsedToChart_I = () => {
           <img
             src={tableImg}
             alt="Activity chart showing which sports Greg, Randy, Victoria, and Elena are used to doing"
-            style={{ width: "100%", height: "auto", objectFit: "contain", display: "block" }}
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+              display: "block",
+            }}
           />
         </div>
 
         {/* Sentences */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "28px", marginBottom: "3em" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "28px",
+            marginBottom: "3em",
+          }}
+        >
           {ITEMS.map((item) => (
-            <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-
+            <div
+              key={item.id}
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
               {/* Line 1 */}
-              <div style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}>
-                <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>
+              <div
+                style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}
+              >
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    minWidth: "20px",
+                  }}
+                >
                   {item.id}
                 </span>
                 {item.prefilled ? (
-                  <div style={{
-                    flex: 1,
-                    borderBottom: "1.5px solid #555",
-                    fontSize: "16px",
-                    color: "#333",
-                    paddingBottom: "2px",
-                  }}>
+                  <div
+                    style={{
+                      flex: 1,
+                      borderBottom: "1.5px solid #555",
+                      fontSize: "16px",
+                      color: "#333",
+                      paddingBottom: "2px",
+                    }}
+                  >
                     {item.answer}
                   </div>
                 ) : (
@@ -121,11 +148,9 @@ const WB_Unit_UsedToChart_I = () => {
                   />
                 </div>
               )}
-
             </div>
           ))}
         </div>
-
       </div>
 
       <div className="action-buttons-container">
