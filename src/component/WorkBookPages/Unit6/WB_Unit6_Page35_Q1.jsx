@@ -1,42 +1,56 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit6AudioText, {
+  stopWorkbookUnit6Audio,
+  workbookUnit6Audio,
+} from "./WorkbookUnit6AudioText";
 
 const QUESTIONS = [
   {
     id: 1,
     scrambled: " Mary/walk/two kilometers/to school",
     answer1: "Mary used to walk two kilometers to school.",
+    audio: null,
     prefilled: false,
   },
   {
     id: 2,
     scrambled: "The soccer players/practice/every day",
     answer1: "The soccer players used to practice every day.",
+    audio: "Item_001_",
     prefilled: false,
   },
   {
     id: 3,
     scrambled: "My grandma/sew/all her clothes",
     answer1: "My grandma used to sew all her own clothes.",
+    audio: "Item_002_",
     prefilled: false,
   },
   {
     id: 4,
     scrambled: "Steven/ride/a horse/to town",
     answer1: "Steven used to ride a horse to town.",
+    audio: "Item_003_",
     prefilled: false,
   },
   {
     id: 5,
     scrambled: "Fran/have/a puppy/named/Spot",
     answer1: "Fran used to have a puppy named Spot.",
+    audio: "Item_004_",
     prefilled: false,
   },
-
 ];
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,'''’]/g, "").replace(/\s+/g, " ").trim();
+  str
+    .toLowerCase()
+    .replace(/[.?!,'''’]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const initAnswers = () => {
   const a = {};
@@ -48,13 +62,25 @@ const initAnswers = () => {
 };
 
 // ── AnswerInput — OUTSIDE parent ──
-const AnswerInput = ({ fKey, value, onChange, isCorrect, isWrong, disabled, prefilled }) => (
+const AnswerInput = ({
+  fKey,
+  value,
+  onChange,
+  isCorrect,
+  isWrong,
+  disabled,
+  prefilled,
+}) => (
   <span style={{ position: "relative", display: "block" }}>
     <input
+      className="wb-unit6-input"
       type="text"
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(fKey, e.target.value)}
+      placeholder="Write the complete sentence"
+      title="Arrange the sentence parts using used to"
+      aria-label={`Completed sentence ${fKey}`}
       style={{
         width: "100%",
         border: "none",
@@ -70,88 +96,151 @@ const AnswerInput = ({ fKey, value, onChange, isCorrect, isWrong, disabled, pref
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-8px",
-        width: "16px", height: "16px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "10px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "-8px",
+          right: "-8px",
+          transform: "translateY(-50%)",
+          width: "20px",
+          height: "20px",
+          background: "red",
+          color: "white",
+          borderRadius: "50%",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "11px",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </span>
 );
 
 // ── MAIN COMPONENT ──
 const WB_Unit5_Unscramble_I = () => {
+  const audioFolder = "Page 35 - Exercise F";
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleChange = (key, value) => {
     if (locked || result[key] === true) return;
     setAnswers((prev) => ({ ...prev, [key]: value }));
-    setResult((prev)  => ({ ...prev, [key]: undefined }));
+    setResult((prev) => ({ ...prev, [key]: undefined }));
   };
 
-const checkAnswers = () => {
-  if (locked) return;
-  const inputQs = QUESTIONS.filter((q) => !q.prefilled);
-  const hasEmpty = inputQs.some(({ id }) => !answers[`${id}-1`].trim()); // ✅ شيلنا -2
-  if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
-
-  let correct = 0;
-  const nr = {};
-  QUESTIONS.forEach(({ id, answer1, prefilled }) => {
-    if (prefilled) {
-      nr[`${id}-1`] = true;
-      correct++; return;
+  const checkAnswers = () => {
+    if (locked) return;
+    const inputQs = QUESTIONS.filter((q) => !q.prefilled);
+    const hasEmpty = inputQs.some(({ id }) => !answers[`${id}-1`].trim()); // ✅ شيلنا -2
+    if (hasEmpty) {
+      ValidationAlert.info("Please complete all answers.");
+      return;
     }
-    const ok1 = normalize(answers[`${id}-1`]) === normalize(answer1);
-    if (ok1) correct++;
-    nr[`${id}-1`] = ok1;
-  });
 
-  setResult(nr);
-  const total = QUESTIONS.filter((q) => !q.prefilled).length; // ✅ بس الأسئلة غير prefilled
-  const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
-  const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-  if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-  else if (correct === 0) ValidationAlert.error(msg);
-  else ValidationAlert.warning(msg);
-};
-  const showAnswers = () => {
-    const a = {}; const r = {};
-    QUESTIONS.forEach(({ id, answer1, answer2 }) => {
-      a[`${id}-1`] = answer1; a[`${id}-2`] = answer2;
-      r[`${id}-1`] = true;   r[`${id}-2`] = true;
+    let correct = 0;
+    const nr = {};
+    QUESTIONS.forEach(({ id, answer1, prefilled }) => {
+      if (prefilled) {
+        nr[`${id}-1`] = true;
+        correct++;
+        return;
+      }
+      const ok1 = normalize(answers[`${id}-1`]) === normalize(answer1);
+      if (ok1) correct++;
+      nr[`${id}-1`] = ok1;
     });
-    setAnswers(a); setResult(r); setLocked(true);
+
+    setResult(nr);
+    const total = QUESTIONS.filter((q) => !q.prefilled).length; // ✅ بس الأسئلة غير prefilled
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
+    else ValidationAlert.warning(msg);
+  };
+  const showAnswers = () => {
+    const a = {};
+    const r = {};
+    QUESTIONS.forEach(({ id, answer1, answer2 }) => {
+      a[`${id}-1`] = answer1;
+      a[`${id}-2`] = answer2;
+      r[`${id}-1`] = true;
+      r[`${id}-2`] = true;
+    });
+    setAnswers(a);
+    setResult(r);
+    setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit6Audio();
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8" style={{ whiteSpace : "nowrap"}}>
-          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
-Use the following sentence parts to make a sentence with <span style={ { color : "orange"}}>used to</span>.
-        </h5>
+      <div className="div-forall gap-7">
+        <ExerciseHeader
+          sectionLetter="F"
+          title={
+            <>
+              Use the sentence parts to make a sentence with{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                used to
+              </span>
+              .
+            </>
+          }
+          subTitle="Arrange the sentence parts around used to, then reread the result for subject-verb meaning and word order."
+        />
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px", marginBottom: "3em" }}>
-          {QUESTIONS.map(({ id, scrambled, prefilled }) => {
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "30px",
+            marginBottom: "3em",
+          }}
+        >
+          {QUESTIONS.map(({ id, scrambled, prefilled, audio }) => {
             const k1 = `${id}-1`;
-            const k2 = `${id}-2`;
             return (
-              <div key={id} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-
+              <div
+                key={id}
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
                 {/* Scrambled words */}
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "16px" }}>
-                  <span style={{ fontWeight: "bold", minWidth: "20px" }}>{id}</span>
-                  <span style={{ color: "#444", letterSpacing: "0.3px" }}>{scrambled}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    fontSize: "16px",
+                  }}
+                >
+                  <span style={{ fontWeight: "bold", minWidth: "20px" }}>
+                    {id}
+                  </span>
+                  <WorkbookUnit6AudioText
+                    src={audio ? workbookUnit6Audio(audioFolder, audio) : null}
+                    ariaLabel={`Play sentence parts ${id}`}
+                    style={{ color: "#444", letterSpacing: "0.3px" }}
+                  >
+                    {scrambled}
+                  </WorkbookUnit6AudioText>
                 </div>
 
                 {/* Answer 1 */}
@@ -165,20 +254,23 @@ Use the following sentence parts to make a sentence with <span style={ { color :
                     disabled={locked || result[k1] === true || prefilled}
                   />
                 </div>
-
-
               </div>
             );
           })}
         </div>
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

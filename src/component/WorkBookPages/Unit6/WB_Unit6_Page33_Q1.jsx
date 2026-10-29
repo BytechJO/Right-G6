@@ -1,5 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
 
 // بدّل المسار للصورة الفعلية
 import blocksImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/1.svg";
@@ -38,7 +40,11 @@ const EQUATIONS = [
 ];
 
 const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+  str
+    .toLowerCase()
+    .replace(/[.?!,’'']/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const initAnswers = () => {
   const a = {};
@@ -49,13 +55,27 @@ const initAnswers = () => {
 };
 
 // ── AnswerInput — OUTSIDE parent ──
-const AnswerInput = ({ eId, value, onChange, isCorrect, isWrong, disabled, prefilled }) => (
-  <span style={{ position: "relative", display: "inline-block", minWidth: "160px" }}>
+const AnswerInput = ({
+  eId,
+  value,
+  onChange,
+  isCorrect,
+  isWrong,
+  disabled,
+  prefilled,
+}) => (
+  <span
+    style={{ position: "relative", display: "inline-block", minWidth: "160px" }}
+  >
     <input
+      className="wb-unit6-input"
       type="text"
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(eId, e.target.value)}
+      placeholder="Vocabulary word"
+      title="Write the resulting vocabulary word"
+      aria-label={`Resulting vocabulary word ${eId}`}
       style={{
         width: "100%",
         border: "none",
@@ -63,7 +83,13 @@ const AnswerInput = ({ eId, value, onChange, isCorrect, isWrong, disabled, prefi
         outline: "none",
         background: "transparent",
         fontSize: "18px",
-        color: prefilled ? "#333" : isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        color: prefilled
+          ? "#333"
+          : isCorrect
+            ? "#c0392b"
+            : isWrong
+              ? "#D1232A"
+              : "#333",
         fontWeight: isCorrect || prefilled ? "600" : "400",
         paddingBottom: "2px",
         fontFamily: "inherit",
@@ -72,13 +98,28 @@ const AnswerInput = ({ eId, value, onChange, isCorrect, isWrong, disabled, prefi
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-8px",
-        width: "16px", height: "16px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "10px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "-8px",
+          right: "-8px",
+          transform: "translateY(-50%)",
+          width: "20px",
+          height: "20px",
+          background: "red",
+          color: "white",
+          borderRadius: "50%",
+          fontSize: "11px",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </span>
 );
@@ -86,96 +127,134 @@ const AnswerInput = ({ eId, value, onChange, isCorrect, isWrong, disabled, prefi
 // ── MAIN COMPONENT ──
 const WB_Unit6_WordMath_A = () => {
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleChange = (id, value) => {
     if (locked || result[id] === true) return;
     setAnswers((prev) => ({ ...prev, [id]: value }));
-    setResult((prev)  => ({ ...prev, [id]: undefined }));
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
-    const hasEmpty = EQUATIONS.filter((e) => !e.prefilled)
-      .some(({ id }) => !answers[id].trim());
-    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+    const hasEmpty = EQUATIONS.filter((e) => !e.prefilled).some(
+      ({ id }) => !answers[id].trim(),
+    );
+    if (hasEmpty) {
+      ValidationAlert.info("Please complete all answers.");
+      return;
+    }
 
     let correct = 0;
     const nr = {};
     EQUATIONS.forEach(({ id, answer, prefilled }) => {
-      if (prefilled) { nr[id] = true; return; }
+      if (prefilled) {
+        nr[id] = true;
+        return;
+      }
       const ok = normalize(answers[id]) === normalize(answer);
       if (ok) correct++;
       nr[id] = ok;
     });
     setResult(nr);
     const total = EQUATIONS.filter((e) => !e.prefilled).length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
-    EQUATIONS.forEach(({ id, answer }) => { a[id] = answer; r[id] = true; });
-    setAnswers(a); setResult(r); setLocked(true);
+    const a = {};
+    const r = {};
+    EQUATIONS.forEach(({ id, answer }) => {
+      a[id] = answer;
+      r[id] = true;
+    });
+    setAnswers(a);
+    setResult(r);
+    setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
-          Word math! Start with the words given. By adding or subtracting letters, make another vocabulary word.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Word math: add or subtract letters from the given words to make new vocabulary words."
+          subTitle="Work through the letter operations in order and verify that each result is a real vocabulary word before moving on."
+        />
 
         {/* Body: image + equations */}
-        <div style={{
-          display: "flex",
-          gap: "32px",
-          alignItems: "center",
-          margin: "3.5em 0",
-          flexWrap: "wrap",
-        }}>
-
+        <div
+          style={{
+            display: "flex",
+            gap: "32px",
+            alignItems: "center",
+            margin: "3.5em 0",
+            flexWrap: "wrap",
+          }}
+        >
           {/* Blocks Image */}
           <div style={{ flexShrink: 0 }}>
             <img
               src={blocksImg}
-              alt="math blocks"
-              style={{ width: "180px", height: "auto", objectFit: "contain", borderRadius: "8px" }}
+              alt="Wooden plus and minus blocks beside the word equations"
+              style={{
+                width: "180px",
+                height: "auto",
+                objectFit: "contain",
+                borderRadius: "8px",
+              }}
             />
           </div>
 
           {/* Equations */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "20px", minWidth: "300px" }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              minWidth: "300px",
+            }}
+          >
             {EQUATIONS.map(({ id, equation, prefilled }) => {
               const isCorrect = result[id] === true;
-              const isWrong   = result[id] === false;
+              const isWrong = result[id] === false;
               return (
-                <div key={id} style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  fontSize: "17px",
-                  flexWrap: "wrap",
-                }}>
+                <div
+                  key={id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    fontSize: "17px",
+                    flexWrap: "wrap",
+                  }}
+                >
                   {/* Equation */}
-                  <span style={{
-                    fontFamily: "monospace",
-                    fontSize: "16px",
-                    color: "#333",
-                    letterSpacing: "1px",
-                    flex: 1,
-                    minWidth: "260px",
-                  }}>
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "16px",
+                      color: "#333",
+                      letterSpacing: "1px",
+                      flex: 1,
+                      minWidth: "260px",
+                    }}
+                  >
                     {equation}
                   </span>
 
@@ -193,16 +272,20 @@ const WB_Unit6_WordMath_A = () => {
               );
             })}
           </div>
-
         </div>
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

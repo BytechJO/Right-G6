@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 
 import tableImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U6 Folder/SVG/Asset 21 (2).svg";
 
@@ -26,9 +28,13 @@ const initAnswers = () => {
 
 const LineInput = ({ value, onChange }) => (
   <input
+    className="wb-unit6-input"
     type="text"
     value={value}
     onChange={(e) => onChange(e.target.value)}
+    placeholder="Write about this person"
+    title="Write a sentence using at least three checked activities"
+    aria-label="Sentence about the person in the chart"
     style={{
       width: "100%",
       border: "none",
@@ -58,19 +64,22 @@ const WB_Unit_UsedToChart_I = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>I</span>
-          Read the chart below, and then write a sentence about each person. Use at least{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>three items</span> from the chart
-          for each person.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="I"
+          title={
+            <>
+              Read the chart and write a sentence about each person using at least{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>three items</span>.
+            </>
+          }
+          subTitle="Read the whole chart before writing; each sentence should combine at least three checked activities for the same person."
+        />
 
         {/* Chart image */}
         <div style={{ marginBottom: "28px" }}>
           <img
             src={tableImg}
-            alt="chart"
+            alt="Activity chart showing which sports Greg, Randy, Victoria, and Elena are used to doing"
             style={{ width: "100%", height: "auto", objectFit: "contain", display: "block" }}
           />
         </div>

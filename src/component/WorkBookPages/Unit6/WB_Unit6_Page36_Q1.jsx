@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import Button from "../../Button";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit6AudioText, {
+  stopWorkbookUnit6Audio,
+  workbookUnit6Audio,
+} from "./WorkbookUnit6AudioText";
 
 // ─────────────────────────────────────────────
 //  📝  EXERCISE DATA
@@ -10,19 +15,21 @@ const ITEMS = [
     parts: [
       { type: "text", value: "I " },
       { type: "input", key: "1a" },
-      { type: "text", value: " run two kilometers each week but now " },
+      { type: "text", value: " run two kilometers each week but now ", audio: "Item_001_" },
       { type: "input", key: "1b" },
-      { type: "text", value: " one kilometer." },
+      { type: "text", value: " one ", audio: "Item_002_" },
+      { type: "text", value: "kilometer.", audio: "Item_003_" },
     ],
   },
   {
     id: 2,
     parts: [
-      { type: "text", value: "Peter used to eat one apple a day " },
+      { type: "text", value: "Peter used to eat one apple a day ", audio: "Item_004_" },
       { type: "input", key: "2a" },
-      { type: "text", value: " he eats " },
+      { type: "text", value: " he eats ", audio: "Item_005_" },
       { type: "input", key: "2b" },
-      { type: "text", value: " apples a day." },
+      { type: "text", value: " apples", audio: "Item_006_" },
+      { type: "text", value: " a day." },
     ],
   },
 ];
@@ -31,6 +38,7 @@ const ITEMS = [
 //  COMPONENT
 // ─────────────────────────────────────────────
 export default function WB_CompleteUsedTo_H() {
+  const audioFolder = "Page 36 - Exercise H";
   const [answers, setAnswers] = useState({});
 
   const handleChange = (key, value) => {
@@ -38,6 +46,7 @@ export default function WB_CompleteUsedTo_H() {
   };
 
   const handleReset = () => {
+    stopWorkbookUnit6Audio();
     setAnswers({});
   };
 
@@ -110,12 +119,16 @@ export default function WB_CompleteUsedTo_H() {
           margin: "0 auto",
         }}
       >
-        {/* ── Header ── */}
-      <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>H</span>
-          Complete the following sentences. The sentences should include{" "}
-          <span style={{ color: "#e67e22", fontWeight: 700 }}>used to</span>.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="H"
+          title={
+            <>
+              Complete the sentences. The sentences should include{" "}
+              <span style={{ color: "#e67e22", fontWeight: 700 }}>used to</span>.
+            </>
+          }
+          subTitle="Use the subject and time clue to choose the correct verb form, then reread the whole sentence."
+        />
 
         {/* ── Items ── */}
         <div className="cut-list">
@@ -125,14 +138,24 @@ export default function WB_CompleteUsedTo_H() {
               <span className="cut-sentence">
                 {item.parts.map((part, i) =>
                   part.type === "text" ? (
-                    <span key={i}>{part.value}</span>
+                    <WorkbookUnit6AudioText
+                      key={i}
+                      src={part.audio ? workbookUnit6Audio(audioFolder, part.audio) : null}
+                      ariaLabel={`Play sentence ${item.id} phrase`}
+                      flowText
+                    >
+                      {part.value}
+                    </WorkbookUnit6AudioText>
                   ) : (
                     <input
                       key={i}
-                      className="cut-input"
+                      className="cut-input wb-unit6-input"
                       type="text"
                       value={answers[part.key] || ""}
                       onChange={(e) => handleChange(part.key, e.target.value)}
+                      placeholder="e.g. used to"
+                      title="Complete the missing part of the sentence"
+                      aria-label={`Missing sentence part ${part.key}`}
                     />
                   )
                 )}

@@ -86,3 +86,14 @@ position: absolute;
     top: 84%;
     left: 84.5%;
 }
+
+.wb-unit6-input::placeholder {
+  color: #9ca3af;
+  font-size: 0.78em;
+}
+
+
+
+.wb-unit6-selectable-sentence {
+  border-radius: 4px;
+}
