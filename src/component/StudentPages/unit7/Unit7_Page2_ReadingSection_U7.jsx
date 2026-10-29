@@ -98,6 +98,7 @@ const ReadingSection_U7 = () => {
             src={readingAudio}
             captions={captions}
             stopAtSecond={11.659}
+            pageId="sb_unit7_page59_reading"
           />
         </div>
         <div className="relative w-[60%] mt-2">

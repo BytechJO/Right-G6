@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 5.svg";
 import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 6.svg";
 import img5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 7 If All the Raindrops Were Lemon Folder/SVG/Asset 7.svg";
@@ -162,7 +163,6 @@ const Unit7_Page6_Q1 = () => {
     }
   };
 
-
   const showAnswers = () => {
     setAnswers(correctAnswers);
 
@@ -186,6 +186,7 @@ const Unit7_Page6_Q1 = () => {
   const inputField = (questionIndex, inputIndex, width = "240px") => (
     <span className="relative inline-block">
       <input
+        className="unit7-exercise-input border-0 border-b outline-none bg-transparent text-[18px] text-black font-semibold px-1"
         ref={inputRefs.current[questionIndex][inputIndex]}
         type="text"
         value={answers[questionIndex][inputIndex]}
@@ -194,21 +195,17 @@ const Unit7_Page6_Q1 = () => {
         onChange={(e) =>
           handleChange(questionIndex, inputIndex, e.target.value)
         }
-        className={`
-          border-0
-          border-b
-          outline-none
-          bg-transparent
-          text-[18px]
-          text-black
-          font-semibold
-          px-1
-
-          ${result[questionIndex] === false ? "border-[#D1232A]" : ""}
-        `}
+        placeholder={
+          inputIndex === 0 || inputIndex === 3 ? "Write the sentence" : "Continue the sentence"
+        }
+        title="Write a third conditional sentence matching the pictures"
+        aria-label={`Picture sentence ${questionIndex + 1}, line ${inputIndex + 1}`}
         style={{
           width,
-          borderBottomWidth: "1px",
+          borderBottom:
+            result[questionIndex] === false
+              ? "1px solid #D1232A"
+              : "1px solid #000",
         }}
       />
 
@@ -218,18 +215,19 @@ const Unit7_Page6_Q1 = () => {
             position: "absolute",
             top: "-30px",
             right: "8px",
+            transform: "translateY(-50%)",
             width: "20px",
             height: "20px",
-            background: "#ef4444",
+            background: "red",
             color: "white",
             borderRadius: "50%",
-            display: "flex",
+            display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: "11px",
             fontWeight: "bold",
             border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
           }}
         >
           ✕
@@ -238,7 +236,14 @@ const Unit7_Page6_Q1 = () => {
     </span>
   );
 
-  const questionRow = (questionIndex, number, leftImage, rightImage) => (
+  const questionRow = (
+    questionIndex,
+    number,
+    leftImage,
+    rightImage,
+    leftAlt,
+    rightAlt,
+  ) => (
     <div
       className="grid grid-cols-[40px_90px_1fr_90px_1fr] gap-4 items-center py-4"
       style={{
@@ -249,7 +254,7 @@ const Unit7_Page6_Q1 = () => {
 
       <img
         src={leftImage}
-        alt=""
+        alt={leftAlt}
         style={{
           width: "80px",
           height: "auto",
@@ -265,7 +270,7 @@ const Unit7_Page6_Q1 = () => {
 
       <img
         src={rightImage}
-        alt=""
+        alt={rightAlt}
         style={{
           width: "90px",
           height: "auto",
@@ -284,18 +289,13 @@ const Unit7_Page6_Q1 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall w-full text-[18px]">
-        <h5 className="header-title-page8 mb-6">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            D
-          </span>
-          Make up a third conditional sentence to match each picture. Be
-          creative!
-        </h5>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <ExerciseHeader
+            sectionLetter="D"
+            title="Make up a third conditional sentence to match each picture."
+            subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+          />
+        </div>
 
         <div
           className="rounded-[14px] overflow-hidden"
@@ -303,11 +303,32 @@ const Unit7_Page6_Q1 = () => {
             border: "2px solid #9CCB5B",
           }}
         >
-          {questionRow(0, 1, img1, img2)}
+          {questionRow(
+            0,
+            1,
+            img1,
+            img2,
+            "A group of friends visiting a museum",
+            "A picnic basket filled with lunch",
+          )}
 
-          {questionRow(1, 2, img3, img4)}
+          {questionRow(
+            1,
+            2,
+            img3,
+            img4,
+            "A meteor falling toward Earth",
+            "Trees in a forest",
+          )}
 
-          {questionRow(2, 3, img5, img6)}
+          {questionRow(
+            2,
+            3,
+            img5,
+            img6,
+            "A glowing magic lamp",
+            "A beautiful tropical island beach",
+          )}
         </div>
       </div>
 
