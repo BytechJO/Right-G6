@@ -1,8 +1,13 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit8AudioText, {
+  workbookUnit8Audio,
+  stopWorkbookUnit8Audio,
+} from "./WorkbookUnit8AudioText";
 
 const BORDER = "#84ad40";
-const CELL = 36;
+const audioFolder = "Exercise_081";
 
 const GRID = [
   ["g","p","i","k","y","f","o","e","p","a","h","s","e","h","t","n","i","s","p","x"],
@@ -67,9 +72,12 @@ const WB_Unit8_WordSearch_J = () => {
   const [foundWords,  setFoundWords]  = useState([]);
   const [wrongFlash,  setWrongFlash]  = useState(false);
   const [answerShown, setAnswerShown] = useState(false);
+  const [keyboardStart, setKeyboardStart] = useState(null);
   const gridRef = useRef(null);
+  const cellRefs = useRef({});
+  const foundAudioRef = useRef(null);
 
-  const foundNames = new Set(foundWords.map(f=>f.word));
+  const foundNames = useMemo(() => new Set(foundWords.map((found) => found.word)), [foundWords]);
 
   const foundCellMap = {};
   foundWords.forEach(({cells,color})=>{
@@ -83,6 +91,38 @@ const WB_Unit8_WordSearch_J = () => {
   const selCells = getCellsBetween(startCell, hoveredCell);
   const selKeys  = new Set(selCells.map(([r,c])=>cellKey(r,c)));
 
+  const playFoundWord = useCallback((word) => {
+    const prefix = `Item_00${WORD_LIST.indexOf(word) + 1}_`;
+    const src = workbookUnit8Audio(audioFolder, prefix);
+    if (!src) return;
+
+    stopWorkbookUnit8Audio({ resetPageMedia: false });
+    foundAudioRef.current?.pause();
+    foundAudioRef.current?.remove();
+
+    const audio = new Audio(src);
+    foundAudioRef.current = audio;
+    audio.style.display = "none";
+    document.body.appendChild(audio);
+
+    const cleanup = () => {
+      audio.remove();
+      if (foundAudioRef.current === audio) foundAudioRef.current = null;
+    };
+    audio.addEventListener("ended", cleanup, { once: true });
+    audio.addEventListener("error", cleanup, { once: true });
+    audio.play().catch(cleanup);
+  }, []);
+
+  useEffect(
+    () => () => {
+      foundAudioRef.current?.pause();
+      foundAudioRef.current?.remove();
+      foundAudioRef.current = null;
+    },
+    [],
+  );
+
   const getCellFromPoint = useCallback((cx,cy)=>{
     if(!gridRef.current) return null;
     const rect=gridRef.current.getBoundingClientRect();
@@ -95,18 +135,19 @@ const WB_Unit8_WordSearch_J = () => {
 
   const finishSelection = useCallback(()=>{
     setSelecting(false);
-    if(selCells.length>1){
+    if(selCells.length>0){
       const match=checkSelection(selCells,foundNames);
       if(match){
         const color=FOUND_COLORS[foundWords.length%FOUND_COLORS.length];
         setFoundWords(prev=>[...prev,{word:match.word,cells:match.cells,color}]);
+        playFoundWord(match.word);
       } else {
         setWrongFlash(true);
         setTimeout(()=>setWrongFlash(false),400);
       }
     }
     setStartCell(null); setHoveredCell(null);
-  },[selCells,foundNames,foundWords]);
+  },[selCells,foundNames,foundWords,playFoundWord]);
 
   const handleMouseDown  = (r,c)=>{ setSelecting(true); setStartCell([r,c]); setHoveredCell([r,c]); };
   const handleMouseEnter = (r,c)=>{ if(selecting) setHoveredCell([r,c]); };
@@ -130,7 +171,7 @@ const WB_Unit8_WordSearch_J = () => {
 
   const handleTouchEnd = useCallback((e)=>{ e.preventDefault(); if(!selecting) return; finishSelection(); },[selecting,finishSelection]);
 
-  const handleReset = ()=>{ setFoundWords([]); setStartCell(null); setHoveredCell(null); setSelecting(false); setWrongFlash(false); setAnswerShown(false); };
+  const handleReset = ()=>{ stopWorkbookUnit8Audio(); foundAudioRef.current?.remove(); foundAudioRef.current=null; setFoundWords([]); setStartCell(null); setHoveredCell(null); setKeyboardStart(null); setSelecting(false); setWrongFlash(false); setAnswerShown(false); };
 
   const handleShowAnswer = ()=>{
     setAnswerShown(true);
@@ -141,6 +182,43 @@ const WB_Unit8_WordSearch_J = () => {
     if(answerShown) return;
     if(foundNames.size<WORD_DEFS.length){ ValidationAlert.info("Please find all expressions first."); return; }
     ValidationAlert.success(`<div style="font-size:18px;text-align:center;"><span style="color:green;font-weight:bold;">Score: ${WORD_DEFS.length} / ${WORD_DEFS.length}</span></div>`);
+  };
+
+  const handleCellKeyDown = (event, row, col) => {
+    const moves = {
+      ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1],
+    };
+    if (moves[event.key]) {
+      event.preventDefault();
+      const [dr, dc] = moves[event.key];
+      const nextRow = Math.max(0, Math.min(ROWS - 1, row + dr));
+      const nextCol = Math.max(0, Math.min(COLS - 1, col + dc));
+      cellRefs.current[cellKey(nextRow, nextCol)]?.focus();
+      if (keyboardStart) setHoveredCell([nextRow, nextCol]);
+      return;
+    }
+    if (event.key === "Escape" && keyboardStart) {
+      event.preventDefault();
+      setKeyboardStart(null); setStartCell(null); setHoveredCell(null);
+      return;
+    }
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    if (!keyboardStart) {
+      setKeyboardStart([row, col]); setStartCell([row, col]); setHoveredCell([row, col]);
+      return;
+    }
+    const cells = getCellsBetween(keyboardStart, [row, col]);
+    const match = checkSelection(cells, foundNames);
+    if (match) {
+      const color = FOUND_COLORS[foundWords.length % FOUND_COLORS.length];
+      setFoundWords((prev) => [...prev, { word: match.word, cells: match.cells, color }]);
+      playFoundWord(match.word);
+    } else {
+      setWrongFlash(true);
+      setTimeout(() => setWrongFlash(false), 400);
+    }
+    setKeyboardStart(null); setStartCell(null); setHoveredCell(null);
   };
 
   const getCellStyle = (key,isSel,isWrong)=>{
@@ -158,14 +236,26 @@ const WB_Unit8_WordSearch_J = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight:"10px" }}>J</span>
-          Find and circle the expressions.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="J"
+          title="Find and circle the expressions."
+          subTitle="Scan one row or line at a time and select only the complete target word or expression."
+        />
 
         {/* Grid */}
+        <style>{`
+          @keyframes shake-unit8-page50-q1 {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-9px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(4px); }
+          }
+        `}</style>
         <div
           ref={gridRef}
+          role="grid"
+          aria-label="Word search grid. Press Enter or Space on the first letter, move with the arrow keys, then press Enter or Space on the last letter."
           onMouseUp={handleMouseUp}
           onMouseLeave={()=>{ if(selecting) handleMouseUp(); }}
           onTouchStart={handleTouchStart}
@@ -181,7 +271,9 @@ const WB_Unit8_WordSearch_J = () => {
             userSelect:"none",
             WebkitUserSelect:"none",
             touchAction:"none",
-            marginBottom:"20px",
+            width:"min(100%, 720px)",
+            margin:"0 auto 20px",
+            animation:wrongFlash ? "shake-unit8-page50-q1 0.42s ease-in-out" : "none",
           }}
         >
           {GRID.map((row,r)=>row.map((letter,c)=>{
@@ -194,12 +286,18 @@ const WB_Unit8_WordSearch_J = () => {
             return (
               <div
                 key={key}
+                className="wb-unit8-word-cell"
+                ref={(element) => { cellRefs.current[key] = element; }}
+                role="gridcell"
+                tabIndex={r === 0 && c === 0 ? 0 : -1}
+                aria-label={`Row ${r + 1}, column ${c + 1}, letter ${letter}`}
                 onMouseDown={()=>handleMouseDown(r,c)}
                 onMouseEnter={()=>handleMouseEnter(r,c)}
+                onKeyDown={(event) => handleCellKeyDown(event, r, c)}
                 style={{
                   aspectRatio:"1",
                   display:"flex", alignItems:"center", justifyContent:"center",
-                  fontSize:"clamp(9px,1.1vw,15px)", fontWeight:"600",
+                  fontSize:"clamp(9px,0.95vw,14px)", fontWeight:"600",
                   borderRight:c<COLS-1?`1px solid ${BORDER}`:"none",
                   borderBottom:r<ROWS-1?`1px solid ${BORDER}`:"none",
                   transition:"background 0.1s",
@@ -225,21 +323,21 @@ const WB_Unit8_WordSearch_J = () => {
           {/* Row 1: in ages | Here you are! | show up */}
           <div style={{ display:"flex", gap:"40px" }}>
             {["in ages","Here you are!","show up"].map((w)=>(
-              <span key={w} style={{
+              <WorkbookUnit8AudioText key={w} src={workbookUnit8Audio(audioFolder, `Item_00${WORD_LIST.indexOf(w) + 1}_`)} ariaLabel={`Play ${w}`} style={{
                 color: foundNames.has(w) ? "#aaa" : "#333",
                 textDecoration: foundNames.has(w) ? "line-through" : "none",
                 fontWeight:"500", transition:"all .25s", flex:1,
-              }}>{w}</span>
+              }}>{w}</WorkbookUnit8AudioText>
             ))}
           </div>
           {/* Row 2: come in handy | a great idea */}
           <div style={{ display:"flex", gap:"40px" }}>
             {["come in handy","a great idea"].map((w)=>(
-              <span key={w} style={{
+              <WorkbookUnit8AudioText key={w} src={workbookUnit8Audio(audioFolder, `Item_00${WORD_LIST.indexOf(w) + 1}_`)} ariaLabel={`Play ${w}`} style={{
                 color: foundNames.has(w) ? "#aaa" : "#333",
                 textDecoration: foundNames.has(w) ? "line-through" : "none",
                 fontWeight:"500", transition:"all .25s", flex:1,
-              }}>{w}</span>
+              }}>{w}</WorkbookUnit8AudioText>
             ))}
             <span style={{ flex:1 }} />
           </div>

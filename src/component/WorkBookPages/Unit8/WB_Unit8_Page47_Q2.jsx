@@ -1,5 +1,13 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit8AudioText, {
+  workbookUnit8Audio,
+  stopWorkbookUnit8Audio,
+} from "./WorkbookUnit8AudioText";
+
+const audioFolder = "Page 47 - Exercise F";
 
 const QUESTIONS = [
   {
@@ -28,10 +36,12 @@ const QUESTIONS = [
   },
 ];
 
-
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
-
+  str
+    .toLowerCase()
+    .replace(/[.?!,’'"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const initAnswers = () => {
   const a = {};
@@ -42,13 +52,24 @@ const initAnswers = () => {
 };
 
 // ── AnswerInput — OUTSIDE parent ──
-const AnswerInput = ({ qId, value, onChange, isCorrect, isWrong, disabled, prefilled }) => (
+const AnswerInput = ({
+  qId,
+  value,
+  onChange,
+  isCorrect,
+  isWrong,
+  disabled,
+  prefilled,
+}) => (
   <div style={{ position: "relative" }}>
     <input
       type="text"
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(qId, e.target.value)}
+      placeholder="Write the direct sentence"
+      title="Change the sentence to direct speech"
+      aria-label={`Sentence ${qId}: change it to direct speech`}
       style={{
         width: "100%",
         border: "none",
@@ -56,7 +77,13 @@ const AnswerInput = ({ qId, value, onChange, isCorrect, isWrong, disabled, prefi
         outline: "none",
         background: "transparent",
         fontSize: "18px",
-        color: prefilled ? "#333" : isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
+        color: prefilled
+          ? "#333"
+          : isCorrect
+            ? "#c0392b"
+            : isWrong
+              ? "#D1232A"
+              : "#333",
         fontWeight: isCorrect || prefilled ? "500" : "400",
         paddingBottom: "3px",
         fontFamily: "inherit",
@@ -64,13 +91,27 @@ const AnswerInput = ({ qId, value, onChange, isCorrect, isWrong, disabled, prefi
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-8px",
-        width: "18px", height: "18px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "-8px",
+          right: "-8px",
+          width: "20px",
+          height: "20px",
+          background: "#ef4444",
+          color: "white",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "11px",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </div>
 );
@@ -78,70 +119,131 @@ const AnswerInput = ({ qId, value, onChange, isCorrect, isWrong, disabled, prefi
 // ── MAIN COMPONENT ──
 const WB_Unit8_ReportedToDirectSpeech_F = () => {
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleChange = (id, value) => {
     if (locked || result[id] === true) return;
     setAnswers((prev) => ({ ...prev, [id]: value }));
-    setResult((prev)  => ({ ...prev, [id]: undefined }));
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
-    const hasEmpty = QUESTIONS.filter((q) => !q.prefilled)
-      .some(({ id }) => !answers[id].trim());
-    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+    const hasEmpty = QUESTIONS.filter((q) => !q.prefilled).some(
+      ({ id }) => !answers[id].trim(),
+    );
+    if (hasEmpty) {
+      ValidationAlert.info("Please complete all answers.");
+      return;
+    }
 
     let correct = 0;
     const nr = {};
     QUESTIONS.forEach(({ id, answer, prefilled }) => {
-      if (prefilled) { nr[id] = true; return; }
+      if (prefilled) {
+        nr[id] = true;
+        return;
+      }
       const ok = normalize(answers[id]) === normalize(answer);
       if (ok) correct++;
       nr[id] = ok;
     });
     setResult(nr);
     const total = QUESTIONS.filter((q) => !q.prefilled).length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
-    QUESTIONS.forEach(({ id, answer }) => { a[id] = answer; r[id] = true; });
-    setAnswers(a); setResult(r); setLocked(true);
+    const a = {};
+    const r = {};
+    QUESTIONS.forEach(({ id, answer }) => {
+      a[id] = answer;
+      r[id] = true;
+    });
+    setAnswers(a);
+    setResult(r);
+    setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit8Audio();
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
-          Change each{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>reported speech</span>{" "}
-          given below to a{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>direct speech</span>.
-        </h5>
+      <div className="div-forall gap-5">
+        <ExerciseHeader
+          sectionLetter="F"
+          title={
+            <>
+              Change each{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                reported speech
+              </span>{" "}
+              sentence to{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                direct speech
+              </span>
+              .
+            </>
+          }
+          subTitle="Keep the original meaning while changing pronouns, tense, and time references required by reported speech."
+        />
 
         {/* Questions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "55px", marginBottom: "3em" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "45px",
+            marginBottom: "3em",
+          }}
+        >
           {QUESTIONS.map(({ id, sentence, prefilled }) => {
             const isCorrect = result[id] === true;
-            const isWrong   = result[id] === false;
+            const isWrong = result[id] === false;
             return (
-              <div key={id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div
+                key={id}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
                 {/* Original sentence */}
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "19px" }}>
-                  <span style={{ fontWeight: "bold", minWidth: "22px" }}>{id}</span>
-                  <span>{sentence}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    fontSize: "19px",
+                  }}
+                >
+                  <span style={{ fontWeight: "bold", minWidth: "22px" }}>
+                    {id}
+                  </span>
+                  <WorkbookUnit8AudioText
+                    src={
+                      id > 1
+                        ? workbookUnit8Audio(audioFolder, `Item_00${id - 1}_`)
+                        : null
+                    }
+                    ariaLabel={`Play reported speech sentence ${id}`}
+                  >
+                    {sentence}
+                  </WorkbookUnit8AudioText>
                 </div>
                 {/* Answer input */}
                 <div style={{ paddingLeft: "32px" }}>
@@ -159,14 +261,19 @@ const WB_Unit8_ReportedToDirectSpeech_F = () => {
             );
           })}
         </div>
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

@@ -1,9 +1,20 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit8AudioText, {
+  workbookUnit8Audio,
+  stopWorkbookUnit8Audio,
+} from "./WorkbookUnit8AudioText";
 
 import helicopterImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 17.svg";
 
-const WORD_BANK = ["peculiar", "glows", "remote control", "helicopter", "timer", "tablet", "skills"];
+const audioFolder = "Page 45 - Exercise B";
+const WORD_BANK = [
+  ["peculiar", "Item_001_"], ["glows", "Item_002_"],
+  ["remote control", "Item_003_"], ["helicopter", "Item_004_"],
+  ["timer", "Item_007_"], ["tablet", "Item_005_"], ["skills", "Item_006_"],
+];
 
 const BLANKS = {
   1: { answer: "timer",      width: "160px" },
@@ -25,6 +36,9 @@ const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(bId, e.target.value)}
+      placeholder="Type the word"
+      title="Type the word that completes the rhyme"
+      aria-label={`Blank ${bId}: type the word that completes the rhyme`}
       style={{
         width,
         border: "none",
@@ -42,10 +56,10 @@ const InlineInput = ({ bId, value, onChange, isCorrect, isWrong, disabled, width
     {isWrong && (
       <span style={{
         position: "absolute", top: "-8px", right: "-8px",
-        width: "16px", height: "16px", background: "#ef4444", color: "white",
+        width: "20px", height: "20px", background: "#ef4444", color: "white",
         borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "10px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
       }}>✕</span>
     )}
   </span>
@@ -90,7 +104,7 @@ const WB_Unit8_Rhyme_B = () => {
     setAnswers(a); setResult(r); setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => { stopWorkbookUnit8Audio(); setAnswers(initAnswers()); setResult({}); setLocked(false); };
 
   const B = (id) => (
     <InlineInput
@@ -111,11 +125,11 @@ const WB_Unit8_Rhyme_B = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>B</span>
-          Put the correct word in the blank to finish the rhyme.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Put the correct word in the blank to finish the rhyme."
+          subTitle="Read the full sentence first, then choose the word or expression that fits both the meaning and grammar."
+        />
 
         {/* Word Bank */}
         <div style={{
@@ -132,7 +146,11 @@ const WB_Unit8_Rhyme_B = () => {
           color: "#333",
           justifyContent :"space-around"
         }}>
-          {WORD_BANK.map((w) => <span key={w}>{w}</span>)}
+          {WORD_BANK.map(([word, audio]) => (
+            <WorkbookUnit8AudioText key={word} src={workbookUnit8Audio(audioFolder, audio)} ariaLabel={`Play ${word}`}>
+              {word}
+            </WorkbookUnit8AudioText>
+          ))}
         </div>
 
         {/* Body: rhymes + image */}
@@ -142,56 +160,78 @@ const WB_Unit8_Rhyme_B = () => {
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "24px" }}>
 
             {/* Rhyme 1 */}
-            <div style={{ display: "flex", gap: "8px" }}>
+            <WorkbookUnit8AudioText
+              src={result[1] === true ? workbookUnit8Audio(audioFolder, "full1") : null}
+              ariaLabel="Play the complete first rhyme"
+              fullAudio
+              style={{ display: "flex", gap: "8px", width: "fit-content", padding: "6px", borderRadius: "8px" }}
+            >
               <span style={numStyle}>1</span>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <div style={lineStyle}>
-                  I'll put on the {B(1)} so we can hear.
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_008_")} disabled={result[1] === true} flowText>I'll put on the </WorkbookUnit8AudioText>{B(1)}
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_009_")} disabled={result[1] === true} flowText> so we can hear.</WorkbookUnit8AudioText>
                 </div>
                 <div style={lineStyle}>
-                  That in one more hour will come my aunt so dear!
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_010_")} disabled={result[1] === true} flowText>That in one more hour will come my aunt so dear!</WorkbookUnit8AudioText>
                 </div>
               </div>
-            </div>
+            </WorkbookUnit8AudioText>
 
             {/* Rhyme 2 */}
-            <div style={{ display: "flex", gap: "8px" }}>
+            <WorkbookUnit8AudioText
+              src={result[2] === true ? workbookUnit8Audio(audioFolder, "full2") : null}
+              ariaLabel="Play the complete second rhyme"
+              fullAudio
+              style={{ display: "flex", gap: "8px", width: "fit-content", padding: "6px", borderRadius: "8px" }}
+            >
               <span style={numStyle}>2</span>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <div style={lineStyle}>
-                  I can hear the {B(2)} flying overhead,
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_011_")} disabled={result[2] === true} flowText>I can hear the </WorkbookUnit8AudioText>{B(2)}
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_012_")} disabled={result[2] === true} flowText> flying overhead,</WorkbookUnit8AudioText>
                 </div>
                 <div style={lineStyle}>
-                  "I think it's going to the air show," my dad said.
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_013_")} disabled={result[2] === true} flowText>"I think it's going to the air show," my dad said.</WorkbookUnit8AudioText>
                 </div>
               </div>
-            </div>
+            </WorkbookUnit8AudioText>
 
             {/* Rhyme 3 */}
-            <div style={{ display: "flex", gap: "8px" }}>
+            <WorkbookUnit8AudioText
+              src={result[3] === true ? workbookUnit8Audio(audioFolder, "full3") : null}
+              ariaLabel="Play the complete third rhyme"
+              fullAudio
+              style={{ display: "flex", gap: "8px", width: "fit-content", padding: "6px", borderRadius: "8px" }}
+            >
               <span style={numStyle}>3</span>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <div style={lineStyle}>
-                  As a soccer player I need lots of {B(3)}.
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_014_")} disabled={result[3] === true} flowText>As a soccer player I need lots of </WorkbookUnit8AudioText>{B(3)}.
                 </div>
                 <div style={lineStyle}>
-                  It takes lots of hard work, but then the goals are the thrills!
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_015_")} disabled={result[3] === true} flowText>It takes lots of hard work, but then the goals are the thrills!</WorkbookUnit8AudioText>
                 </div>
               </div>
-            </div>
+            </WorkbookUnit8AudioText>
 
             {/* Rhyme 4 */}
-            <div style={{ display: "flex", gap: "8px" }}>
+            <WorkbookUnit8AudioText
+              src={result[4] === true ? workbookUnit8Audio(audioFolder, "full4") : null}
+              ariaLabel="Play the complete fourth rhyme"
+              fullAudio
+              style={{ display: "flex", gap: "8px", width: "fit-content", padding: "6px", borderRadius: "8px" }}
+            >
               <span style={numStyle}>4</span>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <div style={lineStyle}>
-                  To school he brought a pencil, tablet, and ruler,
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_016_")} disabled={result[4] === true} flowText>To school he brought a pencil, tablet, and ruler,</WorkbookUnit8AudioText>
                 </div>
                 <div style={lineStyle}>
-                  But he also brought a turtle and that was {B(4)}.
+                  <WorkbookUnit8AudioText src={workbookUnit8Audio(audioFolder, "Item_017_")} disabled={result[4] === true} flowText>But he also brought a turtle and that was </WorkbookUnit8AudioText>{B(4)}.
                 </div>
               </div>
-            </div>
+            </WorkbookUnit8AudioText>
 
           </div>
 
@@ -199,7 +239,7 @@ const WB_Unit8_Rhyme_B = () => {
           <div style={{ flexShrink: 0 }}>
             <img
               src={helicopterImg}
-              alt="helicopter"
+              alt="A helicopter flying in the sky"
               style={{
                 width: "100%",
                 height: "auto",
