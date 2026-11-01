@@ -4,11 +4,26 @@ import "./WB_unit5.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
 const WB_Unit1_Page8 = ({ openPopup }) => {
+  const openExercise = (startIndex) => {
+    openPopup("exercise", { startIndex });
+  };
+
+  const handleKeyDown = (event, startIndex) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openExercise(startIndex);
+      }
+    }
+  };
+
   return (
-    <div className="page1-img-wrapper"
-            
-              style={{ backgroundImage: `url(${page_3})` }}>
-      {/* <img src={page_3} /> */}
+    <div
+      className="page1-img-wrapper"
+      style={{ backgroundImage: `url(${page_3})` }}
+    >
       <div
         className="q12-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -17,11 +32,18 @@ const WB_Unit1_Page8 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 6 })}
-          // className="click-icon-page8-1 hover:scale-110 transition"
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 1"
+          onClick={() => openExercise(6)}
+          onKeyDown={(event) => handleKeyDown(event, 6)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
-          <image className="svg-img"
+          <image
+            className="svg-img"
             href={arrowBtn}
             x="0"
             y="0"
@@ -40,11 +62,18 @@ const WB_Unit1_Page8 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 7 })}
-          // className="click-icon-page8-1 hover:scale-110 transition"
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 2"
+          onClick={() => openExercise(7)}
+          onKeyDown={(event) => handleKeyDown(event, 7)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
-          <image className="svg-img"
+          <image
+            className="svg-img"
             href={arrowBtn}
             x="0"
             y="0"

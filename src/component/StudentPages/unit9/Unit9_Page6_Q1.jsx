@@ -2,6 +2,23 @@ import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 9 How Long Have You Been Folder/SVG/Asset 8.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit9StudentAudioText, {
+  stopUnit9StudentAudio,
+  unit9StudentAudioSequence,
+} from "./Unit9StudentAudioText";
+
+const audioFolder = "Page 81 - Exercise D";
+const inputLabels = [
+  "Question about riding",
+  "Answer about riding",
+  "Question about building",
+  "Answer about building",
+  "Question about watching TV",
+  "Answer about watching TV",
+  "Question about saving",
+  "Answer about saving",
+];
 
 const Unit9_Page6_Q1 = () => {
   const questions = [
@@ -117,6 +134,7 @@ const Unit9_Page6_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit9StudentAudio();
     setAnswers(["", "", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -131,7 +149,10 @@ const Unit9_Page6_Q1 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
-        className={`
+        placeholder={i % 2 === 0 ? "Write the question" : "Write the answer"}
+        title={inputLabels[i]}
+        aria-label={inputLabels[i]}
+        className={`unit9-input
           w-full
           border-0
           border-b
@@ -178,30 +199,61 @@ const Unit9_Page6_Q1 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall w-full text-[18px]">
-        <div className="header-title-page8 mb-8">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            D
-          </span>
-          Read the chart, and then make questions and answers about each
-          picture.
-        </div>
+        <ExerciseHeader
+          sectionLetter="D"
+          title="Read the chart, and then make questions and answers about each picture."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Use the activity and for/since clue under each picture.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Write both the present-perfect-progressive question and
+                the matching answer.
+              </span>
+            </>
+          }
+        />
 
         {/* ONE BIG IMAGE */}
         <div className="flex justify-center mb-12">
-          <img
-            src={img}
-            alt="chart"
-            style={{
-              width: "700px",
-              height: "auto",
-              objectFit: "contain",
-            }}
-          />
+          <div
+            style={{ position: "relative", width: "700px", maxWidth: "100%" }}
+          >
+            <img
+              src={img}
+              alt="Four activity cards: ride for three years, build since last year, watch for one hour, and save since January."
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "contain",
+              }}
+            />
+            {[
+              { prefixes: ["007", "005"], label: "Play ride for three years" },
+              { prefixes: ["001", "003"], label: "Play build since last year" },
+              { prefixes: ["002", "004"], label: "Play watch for one hour" },
+              { prefixes: ["008", "006"], label: "Play since January" },
+            ].map((item, index) => (
+              <Unit9StudentAudioText
+                key={item.label}
+                src={unit9StudentAudioSequence(audioFolder, item.prefixes)}
+                ariaLabel={item.label}
+                className="unit9-audio-hotspot"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: `${index * 25}%`,
+                  width: "25%",
+                  borderRadius: 12,
+                  background: "transparent",
+                }}
+              >
+                <span className="sr-only">{item.label}</span>
+              </Unit9StudentAudioText>
+            ))}
+          </div>
         </div>
 
         {/* 1 */}

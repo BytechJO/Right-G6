@@ -4,6 +4,13 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 
 import trueImg from "../../../assets/imgs/true.svg";
 import falseImg from "../../../assets/imgs/false.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit9StudentAudioText, {
+  stopUnit9StudentAudio,
+  unit9StudentAudio,
+} from "./Unit9StudentAudioText";
+
+const audioFolder = "Page 80 - Exercise B";
 
 const Unit9_Page5_Q2 = () => {
   const questions = [
@@ -217,6 +224,7 @@ const Unit9_Page5_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit9StudentAudio();
     setMarks(["", "", "", "", ""]);
 
     setAnswers(["", "", "", "", ""]);
@@ -294,10 +302,12 @@ const Unit9_Page5_Q2 = () => {
       <input
         type="text"
         value={answers[i]}
-        placeholder={marks[i] === "false" ? "Write the correct expression" : ""}
+        placeholder="Correct expression"
+        title="Write the correct expression when the statement is false"
+        aria-label={`Statement ${i + 1}: corrected expression`}
         disabled={locked || result[i]?.row === true || marks[i] === "true"}
         onChange={(e) => handleChange(i, e.target.value)}
-        className={`
+        className={`unit9-input
           w-full
           border-0
           border-b
@@ -348,14 +358,19 @@ const Unit9_Page5_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <div className="header-title-page8 mb-[10vh]">
-          <span className="ex-A mr-2">B</span>
-          Read the expressions and write{" "}
-          <span className="text-[#D1252B]">✓</span> or{" "}
-          <span className="text-[#D1252B]">✗</span>. Correct the expressions
-          that are incorrect.
-        </div>
+      <div className="div-forall text-[18px] w-full gap-10">
+        <ExerciseHeader
+          sectionLetter="B"
+          title={
+            <>
+              Read the expressions and write{" "}
+              <span className="text-[#D1252B]">✓</span> or{" "}
+              <span className="text-[#D1252B]">✗</span>. Correct the expressions
+              that are incorrect.
+            </>
+          }
+          subTitle="Check the key detail in each statement before choosing ✓/✗ or true/false; correct the wording when the task requires it."
+        />
 
         <div className="flex flex-col gap-10">
           {sentences.map((sentence, index) => (
@@ -369,7 +384,17 @@ const Unit9_Page5_Q2 = () => {
                   {markBox(index, "false", falseImg)}
                 </div>
 
-                <div className="min-w-[260px]">{sentence}</div>
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(
+                    audioFolder,
+                    String(index + 1).padStart(3, "0"),
+                  )}
+                  ariaLabel={`Play statement ${index + 1}`}
+                  flowText
+                  style={{ minWidth: "260px" }}
+                >
+                  {sentence}
+                </Unit9StudentAudioText>
 
                 <div className="flex-1">{inputField(index)}</div>
               </div>

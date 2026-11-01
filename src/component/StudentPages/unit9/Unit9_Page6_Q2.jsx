@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit9StudentAudioText, {
+  stopUnit9StudentAudio,
+  unit9StudentAudio,
+} from "./Unit9StudentAudioText";
+
+const audioFolder = "Page 81 - Exercise E";
+const columnLabels = ["Subject", "Present Progressive Verb", "For or Since"];
 
 const Unit9_Page6_Q2 = () => {
   const [answers, setAnswers] = useState([
@@ -25,6 +33,7 @@ const Unit9_Page6_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit9StudentAudio();
     setAnswers(["", "", "", "", "", "", "", "", "", "", "", ""]);
   };
 
@@ -33,7 +42,10 @@ const Unit9_Page6_Q2 = () => {
       type="text"
       value={answers[index]}
       onChange={(e) => handleChange(index, e.target.value)}
-      className="
+      placeholder={columnLabels[index % 3]}
+      title={`Row ${Math.floor(index / 3) + 1}: ${columnLabels[index % 3]}`}
+      aria-label={`Row ${Math.floor(index / 3) + 1}: ${columnLabels[index % 3]}`}
+      className="unit9-input
         w-full
         h-full
         border-0
@@ -50,20 +62,22 @@ const Unit9_Page6_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-[10vh]">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            E
-          </span>
-          Name some of the activities you have been doing and how long you have
-          been doing each one.
-        </h5>
+      <div className="div-forall w-full text-[18px] gap-5">
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Name some of the activities you have been doing and how long you have been doing each one."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Choose a real activity you have been doing.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Complete each row with the subject,
+                present-perfect-progressive verb, and correct for/since phrase.
+              </span>
+            </>
+          }
+        />
 
         {/* TABLE */}
         <table
@@ -82,21 +96,36 @@ const Unit9_Page6_Q2 = () => {
                 className="border border-[#9CCB5B] p-4 text-[#83AC40]"
                 style={{ width: "20%" }}
               >
-                Subject
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "001")}
+                  flowText
+                >
+                  Subject
+                </Unit9StudentAudioText>
               </th>
 
               <th
                 className="border border-[#9CCB5B] p-4 text-[#83AC40]"
                 style={{ width: "45%" }}
               >
-                Present Progressive Verb
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "002")}
+                  flowText
+                >
+                  Present Progressive Verb
+                </Unit9StudentAudioText>
               </th>
 
               <th
                 className="border border-[#9CCB5B] p-4 text-[#83AC40]"
                 style={{ width: "35%" }}
               >
-                For/Since
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "003")}
+                  flowText
+                >
+                  For/Since
+                </Unit9StudentAudioText>
               </th>
             </tr>
           </thead>

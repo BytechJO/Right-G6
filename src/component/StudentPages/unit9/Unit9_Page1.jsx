@@ -386,12 +386,98 @@ const Unit9_Page1 = ({ openPopup }) => {
       text: "15. What are your plans ...?",
     },
   ];
+  const openConversation = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Conversation
+          title="Conversation"
+          items={data}
+          sound={longAudio}
+          pageId="sb_unit9_page76_conversation"
+          captions={captionsExample}
+          stopAtSecond={5}
+          captionTimings={captionTimings}
+          wordTimings={Voc}
+          openPopup={openPopup}
+          video={video}
+          imageWidth="300px"
+          keyboardAccessible={true}
+        />
+      </div>,
+    );
+  };
 
+  const openVocabulary = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Vocabulary
+          title="VOCABULARY"
+          subtitle="Listen and repeat. Find the words and expressions in the conversation above."
+          pageId="sb_unit9_page76_vocabulary"
+          sound={VocabularAudio}
+          captions={captionVoc}
+          stopAtSecond={7.5}
+          wordTimings={wordTimingsVoc}
+          keyboardAccessible={true}
+          words={[
+            "novel",
+            "assigned",
+            "chapter",
+            "main",
+            "characters",
+            "perhaps",
+            "discuss",
+            "classmates",
+            "distract",
+            "deal",
+            "... in no time",
+            "You only have (number) more to go.",
+            "I have been dying to ...",
+            "Too bad!",
+            "What are your plans ...?",
+          ]}
+        />
+      </div>,
+    );
+  };
+
+  const openCriticalThinking = () => {
+    openPopup(
+      "html",
+      <CriticalThinking title="What is Harley’s favorite part of the novel?" />,
+    );
+  };
+
+  const handleKeyDown = (event, action) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        action();
+      }
+    }
+  };
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_1})` }}
     >
+      {/* Conversation */}
       <div
         className="headset-icon-CD-page4-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -400,32 +486,15 @@ const Unit9_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Conversation
-                  title="Conversation"
-                  items={data}
-                  sound={longAudio}
-                  captions={captionsExample}
-                  stopAtSecond={5}
-                  captionTimings={captionTimings}
-                  wordTimings={Voc}
-                  openPopup={openPopup}
-                  video={video}
-                  imageWidth="300px"
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open conversation"
+          onClick={openConversation}
+          onKeyDown={(event) => handleKeyDown(event, openConversation)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -438,6 +507,8 @@ const Unit9_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Vocabulary */}
       <div
         className="headset-icon-CD-page4-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -446,46 +517,15 @@ const Unit9_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Vocabulary
-                  title="VOCABULARY"
-                  subtitle="Listen and repeat. Find the words and expressions in the conversation above."
-                  sound={VocabularAudio}
-                  captions={captionVoc}
-                  stopAtSecond={9}
-                  // sounds={sounds}
-                  wordTimings={wordTimingsVoc}
-                  words={[
-                    "novel",
-                    "assigned",
-                    "chapter",
-                    "main",
-                    "characters",
-                    "perhaps",
-                    "discuss",
-                    "classmates",
-                    "distract",
-                    "deal",
-                    "... in no time",
-                    "You only have (number) more to go.",
-                    "I have been dying to ...",
-                    "Too bad!",
-                    "What are your plans ...?",
-                  ]}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open vocabulary"
+          onClick={openVocabulary}
+          onKeyDown={(event) => handleKeyDown(event, openVocabulary)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -498,6 +538,8 @@ const Unit9_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Critical Thinking */}
       <div
         className="headset-icon-CD-page4-3 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -506,15 +548,15 @@ const Unit9_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <CriticalThinking
-                title={"What is Harley’s favorite part of the novel?"}
-              />,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open critical thinking question"
+          onClick={openCriticalThinking}
+          onKeyDown={(event) => handleKeyDown(event, openCriticalThinking)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

@@ -43,6 +43,17 @@
   transform: scale(1.28);
 }
 
+.unit9-input::placeholder {
+  color: #9ca3af;
+  font-size: 0.78em;
+  font-weight: 400;
+}
+
+.unit9-input:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px;
+}
+
 .click-icon-unit9-page5-1 {
   position: absolute;
   padding: 5px;

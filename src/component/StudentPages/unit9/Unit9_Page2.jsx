@@ -4,7 +4,23 @@ import "./Unit9_Page2.css";
 
 import ReadingSection_U9 from "./Unit9_Page2_ReadingSection_U9.jsx";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
+
 const Unit9_Page2 = ({ openPopup }) => {
+  const openReading = () => {
+    openPopup("html", <ReadingSection_U9 />);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openReading();
+      }
+    }
+  };
+
   return (
     <>
       <div
@@ -19,8 +35,15 @@ const Unit9_Page2 = ({ openPopup }) => {
             width="22"
             height="22"
             viewBox="0 0 90 90"
-            onClick={() => openPopup("html", <ReadingSection_U9 />)}
-            style={{ overflow: "visible" }}
+            role="button"
+            tabIndex={0}
+            aria-label="Open reading section"
+            onClick={openReading}
+            onKeyDown={handleKeyDown}
+            style={{
+              overflow: "visible",
+              cursor: "pointer",
+            }}
           >
             <image
               className="svg-img"

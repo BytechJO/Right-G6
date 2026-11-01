@@ -4,6 +4,37 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 import sound from "../../../assets/audio/ClassBook/U9/PG 80/CD45Pg80_Instruction_Adult Lady.mp3";
 
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit9StudentAudioText, {
+  stopUnit9StudentAudio,
+  unit9StudentAudio,
+} from "./Unit9StudentAudioText";
+
+const audioFolder = "Page 80 - Exercise C";
+const inputLabels = [
+  "Alice activity",
+  "Alice length of time",
+  "Person staying with her grandmother",
+  "Length of time staying with her grandmother",
+  "Jim activity",
+  "Jim starting time",
+  "My sisters activity",
+  "My sisters length of time",
+  "Person collecting rocks",
+  "Length of time collecting rocks",
+];
+const captions = [
+  {
+    start: 0.159,
+    end: 4.0,
+    text: "Page 80, right activity. Exercise C",
+  },
+  {
+    start: 4.099,
+    end: 11.539,
+    text: "Listen to the passage and finish the chart.",
+  },
+];
 const Unit9_Page5_Q3 = () => {
   const questions = [
     "has been practicing archery",
@@ -16,37 +47,6 @@ const Unit9_Page5_Q3 = () => {
     "since last year",
     "my brother",
     "for several years",
-  ];
-  const captions = [
-    {
-      start: 0.199,
-      end: 4.099,
-      text: "Page 84. Grammar. Using gerunds.",
-    },
-
-    {
-      start: 5.099,
-      end: 6.92,
-      text: "Stella likes climbing on rocks.",
-    },
-
-    {
-      start: 7.859,
-      end: 9.86,
-      text: "Does Stella like climbing on rocks?",
-    },
-
-    {
-      start: 10.659,
-      end: 13.879,
-      text: "Your brothers prefer riding dirt bikes.",
-    },
-
-    {
-      start: 13.92,
-      end: 16.5,
-      text: "Do your brothers prefer riding dirt bikes?",
-    },
   ];
   const [answers, setAnswers] = useState([
     "",
@@ -157,6 +157,7 @@ const Unit9_Page5_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit9StudentAudio();
     setAnswers(["", "", "", "", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -169,10 +170,12 @@ const Unit9_Page5_Q3 = () => {
       <input
         type="text"
         value={answers[i]}
-        placeholder="type here..."
+        placeholder="Type here"
+        title={inputLabels[i]}
+        aria-label={inputLabels[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
-        className={`
+        className={`unit9-input
           w-full
           h-full
           border-0
@@ -216,22 +219,16 @@ const Unit9_Page5_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-8">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            C
-          </span>
-          Listen to the passage and finish the chart.
-        </h5>
+      <div className="div-forall mb-10">
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Listen to the passage and finish the chart."
+          subTitle="Task 1: Listen for the person, activity, and duration as three separate details. Task 2: Replay the relevant part and complete each row of the chart before checking."
+        />
         <QuestionAudioPlayer
           src={sound}
+          pageId="Unit9_Page5_Q3"
           captions={captions}
-          stopAtSecond={2.5}
         />
         <table
           className="w-full border-collapse text-[18px]"
@@ -249,46 +246,90 @@ const Unit9_Page5_Q3 = () => {
                 className="border border-[#9CCB5B] p-3 text-[#83AC40]"
                 style={{ width: "22%" }}
               >
-                Who
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "001")}
+                  flowText
+                >
+                  Who
+                </Unit9StudentAudioText>
               </th>
 
               <th
                 className="border border-[#9CCB5B] p-3 text-[#83AC40]"
                 style={{ width: "50%" }}
               >
-                Activity
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "002")}
+                  flowText
+                >
+                  Activity
+                </Unit9StudentAudioText>
               </th>
 
               <th
                 className="border border-[#9CCB5B] p-3 text-[#83AC40]"
                 style={{ width: "28%" }}
               >
-                Length of Time
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "003")}
+                  flowText
+                >
+                  Length of Time
+                </Unit9StudentAudioText>
               </th>
             </tr>
           </thead>
 
           <tbody>
             <tr>
-              <td className="border border-[#9CCB5B] p-3 text-center">Mark</td>
-
               <td className="border border-[#9CCB5B] p-3 text-center">
-                has been playing the guitar
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "004")}
+                  flowText
+                >
+                  Mark
+                </Unit9StudentAudioText>
               </td>
 
               <td className="border border-[#9CCB5B] p-3 text-center">
-                since last year
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "005")}
+                  flowText
+                >
+                  has been playing the guitar
+                </Unit9StudentAudioText>
+              </td>
+
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "006")}
+                  flowText
+                >
+                  since last year
+                </Unit9StudentAudioText>
               </td>
             </tr>
 
             <tr>
-              <td className="border border-[#9CCB5B] p-3 text-center">Alice</td>
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "007")}
+                  flowText
+                >
+                  Alice
+                </Unit9StudentAudioText>
+              </td>
 
               <td className="border border-[#9CCB5B] p-3">{inputField(0)}</td>
 
               <td className="border border-[#9CCB5B] p-3">
                 <div className="flex items-center gap-2">
-                  <span>for</span>
+                  <Unit9StudentAudioText
+                    src={unit9StudentAudio(audioFolder, "008")}
+                    flowText
+                  >
+                    for
+                  </Unit9StudentAudioText>
                   <div className="flex-1">{inputField(1)}</div>
                 </div>
               </td>
@@ -298,25 +339,50 @@ const Unit9_Page5_Q3 = () => {
               <td className="border border-[#9CCB5B] p-3">{inputField(2)}</td>
 
               <td className="border border-[#9CCB5B] p-3 text-center">
-                has been staying with her grandmother
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "009")}
+                  flowText
+                >
+                  has been staying with her grandmother
+                </Unit9StudentAudioText>
               </td>
 
               <td className="border border-[#9CCB5B] p-3">
                 <div className="flex items-center gap-2">
-                  <span>for</span>
+                  <span>
+                    {" "}
+                    <Unit9StudentAudioText
+                      src={unit9StudentAudio(audioFolder, "008")}
+                      flowText
+                    >
+                      for
+                    </Unit9StudentAudioText>
+                  </span>
                   <div className="flex-1">{inputField(3)}</div>
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td className="border border-[#9CCB5B] p-3 text-center">Jim</td>
+              <td className="border border-[#9CCB5B] p-3 text-center">
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "010")}
+                  flowText
+                >
+                  Jim
+                </Unit9StudentAudioText>
+              </td>
 
               <td className="border border-[#9CCB5B] p-3">{inputField(4)}</td>
 
               <td className="border border-[#9CCB5B] p-3">
                 <div className="flex items-center gap-2">
-                  <span>since</span>
+                  <Unit9StudentAudioText
+                    src={unit9StudentAudio(audioFolder, "011")}
+                    flowText
+                  >
+                    since
+                  </Unit9StudentAudioText>
                   <div className="flex-1">{inputField(5)}</div>
                 </div>
               </td>
@@ -324,7 +390,12 @@ const Unit9_Page5_Q3 = () => {
 
             <tr>
               <td className="border border-[#9CCB5B] p-3 text-center">
-                My sisters
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "012")}
+                  flowText
+                >
+                  My sisters
+                </Unit9StudentAudioText>
               </td>
 
               <td className="border border-[#9CCB5B] p-3">{inputField(6)}</td>
@@ -336,7 +407,12 @@ const Unit9_Page5_Q3 = () => {
               <td className="border border-[#9CCB5B] p-3">{inputField(8)}</td>
 
               <td className="border border-[#9CCB5B] p-3 text-center">
-                has been collecting rocks
+                <Unit9StudentAudioText
+                  src={unit9StudentAudio(audioFolder, "013")}
+                  flowText
+                >
+                  has been collecting rocks
+                </Unit9StudentAudioText>
               </td>
 
               <td className="border border-[#9CCB5B] p-3">{inputField(9)}</td>

@@ -3,23 +3,44 @@ import page_1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folde
 import "./WB_unit8.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
-const WB_Unit7_Page43 = ({ openPopup }) => {
+const WB_Unit8_Page45 = ({ openPopup }) => {
+  const openExercise = (startIndex) => {
+    openPopup("exercise", { startIndex });
+  };
+
+  const handleKeyDown = (event, startIndex) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openExercise(startIndex);
+      }
+    }
+  };
+
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_1})` }}
     >
       <div
-        className="q1-8 hover:scale-110 transition "
+        className="q1-8 hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
         <svg
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 71 })}
-          style={{ overflow: "visible" }}
-          // className="click-icon-page8-2 hover:scale-110 transition"
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 1"
+          onClick={() => openExercise(71)}
+          onKeyDown={(event) => handleKeyDown(event, 71)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -34,16 +55,22 @@ const WB_Unit7_Page43 = ({ openPopup }) => {
       </div>
 
       <div
-        className="q2-8 hover:scale-110 transition "
+        className="q2-8 hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
         <svg
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 72 })}
-          style={{ overflow: "visible" }}
-          // className="click-icon-page8-2 hover:scale-110 transition"
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 2"
+          onClick={() => openExercise(72)}
+          onKeyDown={(event) => handleKeyDown(event, 72)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -60,4 +87,4 @@ const WB_Unit7_Page43 = ({ openPopup }) => {
   );
 };
 
-export default WB_Unit7_Page43;
+export default WB_Unit8_Page45;

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit9StudentAudioText, {
+  stopUnit9StudentAudio,
+  unit9StudentAudio,
+} from "./Unit9StudentAudioText";
+
+const audioFolder = "Page 80 - Exercise A";
 
 const Unit9_Page5_Q1 = () => {
   const questions = [
@@ -99,6 +106,7 @@ const Unit9_Page5_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit9StudentAudio();
     setAnswers(["", "", "", "", "", ""]);
 
     setResult([]);
@@ -113,7 +121,10 @@ const Unit9_Page5_Q1 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
-        className={`
+        placeholder={`Answer ${i + 1}`}
+        title={`Answer ${i + 1}: enter the missing word`}
+        aria-label={`Answer ${i + 1}: enter the missing word`}
+        className={`unit9-input
           ${width}
           border-0
           border-b
@@ -160,27 +171,38 @@ const Unit9_Page5_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[8vh]">
-          <span className="ex-A mr-2">A</span>
-          Fill in the blanks with the correct word.
-        </div>
+      <div className="div-forall w-full gap-5 text-[18px]">
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Fill in the blanks with the correct word."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* WORD BANK */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-5">
           <div
             className="rounded-2xl px-10 py-4 flex gap-16 text-[18px]"
             style={{
               background: "#DDE3C8",
             }}
           >
-            <span>deal</span>
-            <span>novel</span>
-            <span>perhaps</span>
-            <span>chapters</span>
-            <span>main</span>
-            <span>characters</span>
+            {[
+              ["deal", "001"],
+              ["novel", "002"],
+              ["perhaps", "003"],
+              ["chapters", "004"],
+              ["main", "005"],
+              ["characters", "006"],
+            ].map(([word, prefix]) => (
+              <Unit9StudentAudioText
+                key={word}
+                src={unit9StudentAudio(audioFolder, prefix)}
+                ariaLabel={`Play ${word}`}
+                flowText
+              >
+                {word}
+              </Unit9StudentAudioText>
+            ))}
           </div>
         </div>
 
@@ -189,37 +211,72 @@ const Unit9_Page5_Q1 = () => {
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold w-5">1</span>
 
-            <span>How many</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "008")}
+              flowText
+            >
+              How many
+            </Unit9StudentAudioText>
 
             {inputField(0)}
 
-            <span>in this story are doctors?</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "007")}
+              flowText
+            >
+              in this story are doctors?
+            </Unit9StudentAudioText>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold w-5">2</span>
 
-            <span>I live on the</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "009")}
+              flowText
+            >
+              I live on the
+            </Unit9StudentAudioText>
 
             {inputField(1)}
 
-            <span>road next to the farm.</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "010")}
+              flowText
+            >
+              road next to the farm.
+            </Unit9StudentAudioText>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold w-5">3</span>
 
-            <span>I’m hungry;</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "011")}
+              flowText
+            >
+              I’m hungry;
+            </Unit9StudentAudioText>
 
             {inputField(2)}
 
-            <span>we can go to the restaurant over there.</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "012")}
+              flowText
+            >
+              we can go to the restaurant over there.
+            </Unit9StudentAudioText>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold w-5">4</span>
 
-            <span>This book has 10</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "013")}
+              flowText
+            >
+              This book has 10
+            </Unit9StudentAudioText>
 
             {inputField(3)}
 
@@ -229,17 +286,32 @@ const Unit9_Page5_Q1 = () => {
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold w-5">5</span>
 
-            <span>Let’s make a</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "015")}
+              flowText
+            >
+              Let’s make a
+            </Unit9StudentAudioText>
 
             {inputField(4)}
 
-            <span>. You can take my apple if you give me your jello.</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "014")}
+              flowText
+            >
+              . You can take my apple if you give me your jello.
+            </Unit9StudentAudioText>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold w-5">6</span>
 
-            <span>I am reading a science fiction</span>
+            <Unit9StudentAudioText
+              src={unit9StudentAudio(audioFolder, "016")}
+              flowText
+            >
+              I am reading a science fiction
+            </Unit9StudentAudioText>
 
             {inputField(5)}
 

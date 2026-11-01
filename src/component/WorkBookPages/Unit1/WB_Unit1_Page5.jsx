@@ -4,12 +4,26 @@ import "./WB_unit5.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
 const WB_Unit1_Page5 = ({ openPopup }) => {
+  const openExercise = () => {
+    openPopup("exercise", { startIndex: 3 });
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openExercise();
+      }
+    }
+  };
+
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page})` }}
     >
-      {/* <img src={page} /> */}
       <div
         className="q5-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -18,9 +32,15 @@ const WB_Unit1_Page5 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 3 })}
-          // className="click-icon-page8-1 hover:scale-110 transition"
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise"
+          onClick={openExercise}
+          onKeyDown={handleKeyDown}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -33,7 +53,6 @@ const WB_Unit1_Page5 = ({ openPopup }) => {
           />
         </svg>
       </div>
-  
     </div>
   );
 };

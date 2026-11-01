@@ -150,11 +150,12 @@ const Unit8_Page2_ReadingSection_U8 = () => {
                 <p>
                   {highlight(
                     <>
-                      Gibran wrote both poetry and prose. He wrote first in Arabic
-                      and later began writing in English, quickly becoming popular
-                      internationally. His best-read book is <i>The Prophet</i>,
-                      which has been translated into forty languages and never gone
-                      out of print since its first printing in 1923.
+                      Gibran wrote both poetry and prose. He wrote first in
+                      Arabic and later began writing in English, quickly
+                      becoming popular internationally. His best-read book is{" "}
+                      <i>The Prophet</i>, which has been translated into forty
+                      languages and never gone out of print since its first
+                      printing in 1923.
                     </>,
                   )}
                 </p>
