@@ -1,6 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "./Unit8StudentAudioText";
+
+const wordAudioPrefix = {
+  in: "Item_001_",
+  deal: "Item_002_",
+  Here: "Item_003_",
+  great: "Item_004_",
+  are: "Item_005_",
+  you: "Item_006_",
+  come: "Item_007_",
+  handy: "Item_008_",
+  show: "Item_009_",
+  ages: "Item_010_",
+  up: "Item_011_",
+  a: "Item_012_",
+};
 
 const Unit8_Page5_Q2 = () => {
   const threeWordExpressions = [
@@ -37,6 +57,8 @@ const Unit8_Page5_Q2 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) => str.toLowerCase().trim();
 
@@ -148,6 +170,7 @@ const Unit8_Page5_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", "", "", "", "", "", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -161,6 +184,9 @@ const Unit8_Page5_Q2 = () => {
         type="text"
         value={answers[answerIndex]}
         disabled={locked || result[rowIndex] === true}
+        placeholder="word"
+        title="Type one word"
+        aria-label={`Word ${answerIndex + 1}`}
         onChange={(e) => handleChange(answerIndex, e.target.value)}
         className="
           w-[140px]
@@ -186,21 +212,15 @@ const Unit8_Page5_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <h5 className="header-title-page8 mb-8">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            B
-          </span>
-          Put the words together to make expressions.
-        </h5>
+      <div className="div-forall gap-5 text-[18px] w-full">
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Put the words together to make expressions."
+          subTitle="Use the visible word parts and clues systematically, then check the completed word or expression before submitting."
+        />
 
         {/* WORD BANK */}
-        <div className="flex justify-center mb-10">
+        <div className="flex justify-center mb-7">
           <div
             className="rounded-[18px] px-8 py-4"
             style={{
@@ -208,22 +228,35 @@ const Unit8_Page5_Q2 = () => {
             }}
           >
             <div className="flex gap-16 mb-3 ">
-              <span>are</span>
-              <span>great</span>
-              <span>in</span>
-              <span>you</span>
-              <span>deal</span>
-              <span>come</span>
-              <span>Here</span>
+              {["are", "great", "in", "you", "deal", "come", "Here"].map(
+                (word) => (
+                  <Unit8StudentAudioText
+                    key={word}
+                    src={unit8StudentAudio(
+                      "Page 68 - Exercise B",
+                      wordAudioPrefix[word],
+                    )}
+                    ariaLabel={`Play ${word}`}
+                  >
+                    {word}
+                  </Unit8StudentAudioText>
+                ),
+              )}
             </div>
 
             <div className="flex gap-16">
-              <span>ages</span>
-              <span>handy</span>
-              <span>in</span>
-              <span>up</span>
-              <span>a</span>
-              <span>show</span>
+              {["ages", "handy", "in", "up", "a", "show"].map((word, index) => (
+                <Unit8StudentAudioText
+                  key={`${word}-${index}`}
+                  src={unit8StudentAudio(
+                    "Page 68 - Exercise B",
+                    wordAudioPrefix[word],
+                  )}
+                  ariaLabel={`Play ${word}`}
+                >
+                  {word}
+                </Unit8StudentAudioText>
+              ))}
             </div>
           </div>
         </div>

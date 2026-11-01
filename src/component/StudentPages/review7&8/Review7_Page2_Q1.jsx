@@ -1,7 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+  unit8StudentAudioSequence,
+} from "../unit8/Unit8StudentAudioText";
 const Review7_Page2_Q1 = () => {
   const [selectedImg, setSelectedImg] = useState(null);
+  const [selectedSentence, setSelectedSentence] = useState(null);
+  const [previewTarget, setPreviewTarget] = useState(null);
+  const [keyboardPreview, setKeyboardPreview] = useState(false);
   const [matches, setMatches] = useState({});
   const [showResult, setShowResult] = useState(false);
   const [locked, setLocked] = useState(false);
@@ -10,6 +19,8 @@ const Review7_Page2_Q1 = () => {
   const imageRefs = useRef([]);
   const sentenceRefs = useRef([]);
   const containerRef = useRef(null);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const questions = [
     { id: 0, text: "If we had more rain this year," },
@@ -32,10 +43,106 @@ const Review7_Page2_Q1 = () => {
     3: 2,
   };
 
+  const isLeftLocked = (id) => validatedMatches[id] === correct[id];
+  const isRightLocked = (id) =>
+    Object.entries(validatedMatches).some(
+      ([leftId, rightId]) =>
+        Number(rightId) === id && correct[leftId] === Number(rightId),
+    );
+
+  const focusFirstUnlocked = (side) => {
+    const refs = side === "left" ? imageRefs.current : sentenceRefs.current;
+    const index = questions.findIndex((_, itemIndex) =>
+      side === "left" ? !isLeftLocked(itemIndex) : !isRightLocked(itemIndex),
+    );
+    if (index >= 0) refs[index]?.parentElement?.focus();
+  };
+
+  const handleChoiceKeyDown = (side, id, event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (event.repeat) return;
+      setKeyboardPreview(true);
+      const audioTarget = event.currentTarget.querySelector(
+        ".unit8-student-audio-text",
+      );
+      if (audioTarget) {
+        audioTarget.click();
+      } else if (side === "left") {
+        selectImage(id);
+      } else {
+        selectSentence(id);
+      }
+      return;
+    }
+    const shouldTrap =
+      event.key === "Tab" &&
+      ((selectedImg !== null && side === "right") ||
+        (selectedSentence !== null && side === "left"));
+    if (!shouldTrap) return;
+    event.preventDefault();
+    setKeyboardPreview(true);
+    const available = questions
+      .map((_, itemIndex) => itemIndex)
+      .filter((itemIndex) =>
+        side === "left" ? !isLeftLocked(itemIndex) : !isRightLocked(itemIndex),
+      );
+    const current = available.indexOf(id);
+    const offset = event.shiftKey ? -1 : 1;
+    const next =
+      available[(current + offset + available.length) % available.length];
+    const refs = side === "left" ? imageRefs.current : sentenceRefs.current;
+    refs[next]?.parentElement?.focus();
+  };
+
+  const commitMatch = (questionId, sentenceId) => {
+    if (locked || validatedMatches[questionId] === correct[questionId]) return;
+    const targetLocked = Object.entries(validatedMatches).some(
+      ([leftId, rightId]) =>
+        Number(rightId) === sentenceId && correct[leftId] === Number(rightId),
+    );
+    if (targetLocked) return;
+
+    setMatches((prev) => {
+      const updated = { ...prev };
+      Object.keys(updated).forEach((key) => {
+        if (
+          updated[key] === sentenceId &&
+          validatedMatches[key] !== correct[key]
+        ) {
+          delete updated[key];
+        }
+      });
+      updated[questionId] = sentenceId;
+      return updated;
+    });
+    setValidatedMatches((prev) => {
+      const updated = { ...prev };
+      delete updated[questionId];
+      return updated;
+    });
+    setSelectedImg(null);
+    setSelectedSentence(null);
+    setPreviewTarget(null);
+    requestAnimationFrame(() => {
+      const next = questions.findIndex(
+        (_, index) =>
+          index !== questionId && validatedMatches[index] !== correct[index],
+      );
+      if (next >= 0) imageRefs.current[next]?.parentElement?.focus();
+    });
+  };
+
   const selectImage = (id) => {
     if (showResult && validatedMatches[id] === correct[id]) return;
 
+    if (selectedSentence !== null) {
+      commitMatch(id, selectedSentence);
+      return;
+    }
+
     setSelectedImg(id);
+    setSelectedSentence(null);
 
     // أول ما يبدأ يعدل شيل التقييم القديم
     setValidatedMatches((prev) => {
@@ -43,10 +150,17 @@ const Review7_Page2_Q1 = () => {
       delete updated[id];
       return updated;
     });
+    requestAnimationFrame(() => focusFirstUnlocked("right"));
   };
 
   const selectSentence = (id) => {
-    if (selectedImg === null) return;
+    if (isRightLocked(id)) return;
+    if (selectedImg === null) {
+      setSelectedSentence(id);
+      setSelectedImg(null);
+      requestAnimationFrame(() => focusFirstUnlocked("left"));
+      return;
+    }
     if (locked) {
       return;
     }
@@ -68,29 +182,7 @@ const Review7_Page2_Q1 = () => {
       return;
     }
 
-    setMatches((prev) => {
-      const updated = { ...prev };
-
-      // احذف الربط القديم لنفس الكلمة
-      Object.keys(updated).forEach((imgKey) => {
-        // إذا الكلمة مستخدمة بصورة ثانية
-        if (updated[imgKey] === id) {
-          // إذا الصورة مثبتة صح لا تحذفها
-          if (showResult && validatedMatches[imgKey] === correct[imgKey]) {
-            return;
-          }
-
-          // غير هيك احذف الربط القديم
-          delete updated[imgKey];
-        }
-      });
-
-      updated[selectedImg] = id;
-
-      return updated;
-    });
-
-    setSelectedImg(null);
+    commitMatch(selectedImg, id);
   };
   const checkAnswers = () => {
     if (locked) return;
@@ -128,14 +220,51 @@ const Review7_Page2_Q1 = () => {
     setMatches(correct);
     setLocked(true);
     setShowResult(true);
+    setSelectedImg(null);
+    setSelectedSentence(null);
+    setPreviewTarget(null);
+    setKeyboardPreview(false);
   };
 
   const reset = () => {
+    stopUnit8StudentAudio();
     setValidatedMatches({});
     setSelectedImg(null);
+    setSelectedSentence(null);
+    setPreviewTarget(null);
+    setKeyboardPreview(false);
     setMatches({});
     setShowResult(false);
     setLocked(false);
+  };
+
+  const renderPreviewLine = () => {
+    if (!keyboardPreview || !containerRef.current) return null;
+    let leftId = selectedImg;
+    let rightId = previewTarget?.side === "right" ? previewTarget.id : null;
+    if (selectedSentence !== null) {
+      leftId = previewTarget?.side === "left" ? previewTarget.id : null;
+      rightId = selectedSentence;
+    }
+    if (leftId === null || rightId === null) return null;
+    const leftDot = imageRefs.current[leftId];
+    const rightDot = sentenceRefs.current[rightId];
+    if (!leftDot || !rightDot) return null;
+    const leftRect = leftDot.getBoundingClientRect();
+    const rightRect = rightDot.getBoundingClientRect();
+    const containerRect = containerRef.current.getBoundingClientRect();
+    return (
+      <line
+        x1={leftRect.left + leftRect.width / 2 - containerRect.left}
+        y1={leftRect.top + leftRect.height / 2 - containerRect.top}
+        x2={rightRect.left + rightRect.width / 2 - containerRect.left}
+        y2={rightRect.top + rightRect.height / 2 - containerRect.top}
+        stroke="#f79631"
+        strokeWidth="2"
+        strokeDasharray="6 5"
+        strokeLinecap="round"
+      />
+    );
   };
 
   return (
@@ -149,12 +278,12 @@ const Review7_Page2_Q1 = () => {
         position: "relative",
       }}
     >
-      <div className="div-forall">
-        <h5 className="header-title-page8  mb-[8vh]">
-          <span className=" mr-4">D</span>
-          Match the first part of the sentence with its second part to make a
-          third conditional sentence.
-        </h5>{" "}
+      <div className="div-forall gap-7">
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title="Match the first part of each sentence with its second part to make a third conditional sentence."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
         {/* 🔥 الصور فوق */}
         <div className="w-full max-w-6xl mx-auto flex flex-col gap-y-12">
           {questions.map((item, i) => (
@@ -165,6 +294,15 @@ const Review7_Page2_Q1 = () => {
               {/* Question */}
               <div
                 onClick={() => selectImage(i)}
+                onPointerDown={() => {
+                  setKeyboardPreview(false);
+                  setPreviewTarget(null);
+                }}
+                onKeyDown={(event) => handleChoiceKeyDown("left", i, event)}
+                onFocus={() => setPreviewTarget({ side: "left", id: i })}
+                role="button"
+                tabIndex={isLeftLocked(i) ? -1 : 0}
+                aria-pressed={selectedImg === i}
                 className="relative flex items-center cursor-pointer min-h-[50px]"
                 style={{
                   backgroundColor:
@@ -182,7 +320,20 @@ const Review7_Page2_Q1 = () => {
                   {i + 1}
                 </span>
 
-                <span className="text-[18px]">{item.text}</span>
+                <Unit8StudentAudioText
+                  src={unit8StudentAudio(
+                    "Page 71 - Exercise D",
+                    i === 3
+                      ? "Item_008_"
+                      : `Item_${String(i * 2 + 1).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play sentence beginning ${i + 1}`}
+                  flowText
+                  focusable={false}
+                  className="text-[18px]"
+                >
+                  {item.text}
+                </Unit8StudentAudioText>
 
                 <div
                   ref={(el) => (imageRefs.current[i] = el)}
@@ -193,7 +344,11 @@ const Review7_Page2_Q1 = () => {
                     transform: "translateY(-50%)",
                     width: "12px",
                     height: "12px",
-                    backgroundColor: "#F59E0B",
+                    backgroundColor: selectedImg === i ? "#2563eb" : "#F59E0B",
+                    boxShadow:
+                      selectedImg === i
+                        ? "0 0 0 4px rgba(37,99,235,.2)"
+                        : "none",
                     borderRadius: "50%",
                   }}
                 />
@@ -226,7 +381,26 @@ const Review7_Page2_Q1 = () => {
               {/* Answer */}
               <div
                 onClick={() => selectSentence(i)}
+                onPointerDown={() => {
+                  setKeyboardPreview(false);
+                  setPreviewTarget(null);
+                }}
+                onKeyDown={(event) => handleChoiceKeyDown("right", i, event)}
+                onFocus={() => setPreviewTarget({ side: "right", id: i })}
+                role="button"
+                tabIndex={isRightLocked(i) ? -1 : 0}
+                aria-pressed={selectedSentence === i}
                 className="relative flex items-center cursor-pointer min-h-[50px]"
+                style={{
+                  backgroundColor:
+                    selectedSentence === i ? "#fff5e8ff" : "transparent",
+                  border:
+                    selectedSentence === i
+                      ? "1px solid #f79631"
+                      : "1px solid transparent",
+                  borderRadius: "10px",
+                  padding: "8px 12px",
+                }}
               >
                 <div
                   ref={(el) => (sentenceRefs.current[i] = el)}
@@ -237,7 +411,12 @@ const Review7_Page2_Q1 = () => {
                     transform: "translateY(-50%)",
                     width: "12px",
                     height: "12px",
-                    backgroundColor: "#F59E0B",
+                    backgroundColor:
+                      selectedSentence === i ? "#2563eb" : "#F59E0B",
+                    boxShadow:
+                      selectedSentence === i
+                        ? "0 0 0 4px rgba(37,99,235,.2)"
+                        : "none",
                     borderRadius: "50%",
                   }}
                 />
@@ -246,7 +425,25 @@ const Review7_Page2_Q1 = () => {
                   {String.fromCharCode(97 + i)}
                 </span>
 
-                <span className="text-[18px]">{sentences[i].text}</span>
+                <Unit8StudentAudioText
+                  src={
+                    i === 3
+                      ? unit8StudentAudioSequence("Page 71 - Exercise D", [
+                          "Item_007_",
+                          "Item_009_",
+                        ])
+                      : unit8StudentAudio(
+                          "Page 71 - Exercise D",
+                          `Item_${String(i * 2 + 2).padStart(3, "0")}_`,
+                        )
+                  }
+                  ariaLabel={`Play sentence ending ${String.fromCharCode(97 + i)}`}
+                  flowText
+                  focusable={false}
+                  className="text-[18px]"
+                >
+                  {sentences[i].text}
+                </Unit8StudentAudioText>
               </div>
             </div>
           ))}
@@ -254,6 +451,7 @@ const Review7_Page2_Q1 = () => {
       </div>
 
       <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        {renderPreviewLine()}
         {Object.entries(matches).map(([imgId, sentId], i) => {
           const imgDot = imageRefs.current[imgId];
           const sentDot = sentenceRefs.current[sentId];

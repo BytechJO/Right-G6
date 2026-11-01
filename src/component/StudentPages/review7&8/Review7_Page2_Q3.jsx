@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const Review7_Page2_Q3 = () => {
   const correctAnswers = [
@@ -20,6 +25,8 @@ const Review7_Page2_Q3 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -110,6 +117,7 @@ const Review7_Page2_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers([
       ["", ""],
       ["", ""],
@@ -128,6 +136,9 @@ const Review7_Page2_Q3 = () => {
         type="text"
         value={answers[questionIndex][blankIndex]}
         disabled={locked || result?.[questionIndex]?.[blankIndex] === true}
+        placeholder="e.g. had"
+        title="Type have, has, had, or hadn't"
+        aria-label={`Sentence ${questionIndex + 1}, blank ${blankIndex + 1}`}
         onChange={(e) =>
           handleChange(questionIndex, blankIndex, e.target.value)
         }
@@ -181,52 +192,134 @@ const Review7_Page2_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <h5 className="header-title-page8 mb-[11vh]">
-          <span
-            style={{
-              marginRight: "20px",
-            }}
-          >
-            F
-          </span>
-          Put in <span className="text-[#F79530]">have</span>,{" "}
-          <span className="text-[#F79530]">has</span>,{" "}
-          <span className="text-[#F79530]">had</span>, or{" "}
-          <span className="text-[#F79530]">hadn’t</span>.
-        </h5>
+      <div className="div-forall gap-7 text-[18px] w-full">
+        <ExerciseHeaderReview
+          sectionLetter="F"
+          title={
+            <>
+              Put in <span className="text-[#F79530]">have</span>,{" "}
+              <span className="text-[#F79530]">has</span>,{" "}
+              <span className="text-[#F79530]">had</span>, or{" "}
+              <span className="text-[#F79530]">hadn’t</span>.
+            </>
+          }
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         <div className="flex flex-col gap-[8vh]">
           {/* 1 */}
           <div>
             <span className="font-bold mr-4">1</span>
-            If Jenny {inputField(0, 0)} known there was a quiz in math class,
-            she would
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_001_")}
+              ariaLabel="Play sentence 1 beginning"
+              flowText
+            >
+              If Jenny
+            </Unit8StudentAudioText>{" "}
+            {inputField(0, 0)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_002_")}
+              ariaLabel="Play sentence 1 middle"
+              flowText
+            >
+              known there was a quiz in math class, she would
+            </Unit8StudentAudioText>
           </div>
 
           <div className="ml-[35px] mt-2">
-            {inputField(0, 1)} studied last night.
+            {inputField(0, 1)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_003_")}
+              ariaLabel="Play sentence 1 ending"
+              flowText
+            >
+              studied last night.
+            </Unit8StudentAudioText>
           </div>
 
           {/* 2 */}
           <div>
             <span className="font-bold mr-4">2</span>
-            He would {inputField(1, 0)} slept last night if the cat{" "}
-            {inputField(1, 1)} been so noisy.
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_004_")}
+              ariaLabel="Play sentence 2 beginning"
+              flowText
+            >
+              He would
+            </Unit8StudentAudioText>{" "}
+            {inputField(1, 0)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_005_")}
+              ariaLabel="Play sentence 2 middle"
+              flowText
+            >
+              slept last night if the cat
+            </Unit8StudentAudioText>{" "}
+            {inputField(1, 1)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_006_")}
+              ariaLabel="Play sentence 2 ending"
+              flowText
+            >
+              been so noisy.
+            </Unit8StudentAudioText>
           </div>
 
           {/* 3 */}
           <div>
             <span className="font-bold mr-4">3</span>
-            If we {inputField(2, 0)} come earlier, we wouldn’t{" "}
-            {inputField(2, 1)} missed the train ride.
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_007_")}
+              ariaLabel="Play sentence 3 beginning"
+              flowText
+            >
+              If we
+            </Unit8StudentAudioText>{" "}
+            {inputField(2, 0)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_008_")}
+              ariaLabel="Play sentence 3 middle"
+              flowText
+            >
+              come earlier, we wouldn’t
+            </Unit8StudentAudioText>{" "}
+            {inputField(2, 1)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_009_")}
+              ariaLabel="Play sentence 3 ending"
+              flowText
+            >
+              missed the train ride.
+            </Unit8StudentAudioText>
           </div>
 
           {/* 4 */}
           <div>
             <span className="font-bold mr-4">4</span>
-            If he {inputField(3, 0)} been so sick, he would {inputField(3, 1)}{" "}
-            come to school today.
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_010_")}
+              ariaLabel="Play sentence 4 beginning"
+              flowText
+            >
+              If he
+            </Unit8StudentAudioText>{" "}
+            {inputField(3, 0)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_011_")}
+              ariaLabel="Play sentence 4 middle"
+              flowText
+            >
+              been so sick, he would
+            </Unit8StudentAudioText>{" "}
+            {inputField(3, 1)}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 71 - Exercise F", "Item_012_")}
+              ariaLabel="Play sentence 4 ending"
+              flowText
+            >
+              come to school today.
+            </Unit8StudentAudioText>
           </div>
         </div>
       </div>

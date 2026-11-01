@@ -1,10 +1,74 @@
-import React from "react";
+import React, { useState } from "react";
 import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
 
+const activationKeys = {
+  onKeyDown: (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (!event.repeat) event.currentTarget.click();
+  },
+  onKeyUp: (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  },
+};
+
+const questions = [
+  {
+    before: "My friends told me that",
+    initial: "they wanted to go on a hike",
+    after: ".",
+    options: [
+      "a carnival was coming to town",
+      "it was time to go",
+      "they would come over tomorrow",
+    ],
+  },
+  {
+    before: "My friends said,",
+    initial: "“We want to go on a hike.”",
+    after: "",
+    options: [
+      "“There’s a carnival coming to town.”",
+      "“It’s time to go.”",
+      "“We’ll come over tomorrow.”",
+    ],
+  },
+];
+
 const GrammarA = () => {
+  const [selectedOptions, setSelectedOptions] = useState(
+    questions.map((question) => question.initial),
+  );
+  const [announcement, setAnnouncement] = useState("");
+
+  const chooseOption = (questionIndex, option) => {
+    setSelectedOptions((previous) =>
+      previous.map((value, index) =>
+        index === questionIndex ? option : value,
+      ),
+    );
+    const question = questions[questionIndex];
+    setAnnouncement(`${question.before} ${option}${question.after}`);
+  };
+
   return (
-    <div>
-      {/* العنوان */}
+    <div data-unit8-scope="grammar-a">
+      <style>{`
+        [data-unit8-scope="grammar-a"] [data-choice]:focus-visible {
+          outline: 4px solid #2563eb;
+          outline-offset: 3px;
+          border-radius: 6px;
+        }
+      `}</style>
+
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </div>
+
       <div className="flex items-center gap-2 mb-5 mt-5">
         <h5 className="header-title-page8-read pb-2.5">
           <span className="ex-A-read" style={{ marginRight: "10px" }}>
@@ -15,66 +79,48 @@ const GrammarA = () => {
         </h5>
       </div>
 
-      {/* السؤال 1 */}
-      <div className="mb-12">
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
-          <div>
-            <p className="text-[18px]">
-              My friends told me that{" "}
-              <span className="text-[#f79631] font-medium">
-                they wanted to go on a hike
-              </span>
-              .
-            </p>
-            <div className="grid grid-cols-2 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
-              <span>
-                <b>1</b> a carnival was coming to town
-              </span>
-              <span>
-                <b>2</b> it was time to go
-              </span>
-              <span>
-                <b>3</b> they would come over tomorrow
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="space-y-12">
+        {questions.map((question, questionIndex) => {
+          const selected = selectedOptions[questionIndex];
 
-      {/* السؤال 2 */}
-      <div>
-        <div className="flex items-start gap-5 mt-7">
-          <img
-            src={img}
-            alt=""
-            style={{ width: "40px", height: "40px", marginTop: -6 }}
-          />
-          <div>
-            <p className="text-[18px]">
-              My friends said,
-              <span className="text-[#f79631] font-medium">
-                {" "}
-                “We want to go on a hike.”
-              </span>
-            </p>
-            <div className="grid grid-cols-2 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
-              <span>
-                <b>1</b> “There’s a carnival coming to town.”
-              </span>
-              <span>
-                <b>2</b> It’s time to go.”
-              </span>
-              <span>
-                <b>3</b> “We’ll come over tomorrow.”
-              </span>
+          return (
+            <div key={question.before} className="flex items-start gap-5 mt-7">
+              <img
+                src={img}
+                alt=""
+                style={{ width: "40px", height: "40px", marginTop: -6 }}
+              />
+
+              <div>
+                <p className="text-[18px]">
+                  {question.before}{" "}
+                  <span className="text-[#f79631] font-medium">
+                    {selected}
+                  </span>
+                  {question.after}
+                </p>
+
+                <div className="grid grid-cols-2 gap-y-10 gap-x-20 mt-5 text-[17px] w-[650px]">
+                  {question.options.map((option, optionIndex) => (
+                    <span
+                      key={option}
+                      role="button"
+                      tabIndex={0}
+                      data-choice
+                      aria-label={`Use ${option} in example ${questionIndex + 1}`}
+                      aria-pressed={selected === option}
+                      {...activationKeys}
+                      onClick={() => chooseOption(questionIndex, option)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <b>{optionIndex + 1}</b> {option}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

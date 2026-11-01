@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 import trueImg from "../../../assets/imgs/true.svg";
 import falseImg from "../../../assets/imgs/false.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "./Unit8StudentAudioText";
 
 const Unit8_Page5_Q2 = () => {
   const questions = ["true", "false", "true", "false", "false", "true"];
@@ -42,6 +47,8 @@ const Unit8_Page5_Q2 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const handleMark = (i, value) => {
     if (locked || result[i] === true) return;
@@ -117,6 +124,7 @@ const Unit8_Page5_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setMarks(["", "", "", "", "", ""]);
 
     setResult([]);
@@ -190,22 +198,20 @@ const Unit8_Page5_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <div className="header-title-page8 mb-[7vh]">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            A
-          </span>
-          Read and write <span className="text-[#D1252B]">✓</span> or{" "}
-          <span className="text-[#D1252B]">✕</span> to show if the underlined
-          word is used correctly or not.
-        </div>
+      <div className="div-forall gap-7 text-[18px] w-full">
+        <ExerciseHeader
+          sectionLetter="A"
+          title={
+            <>
+              Read and write <span className="text-[#D1252B]">✓</span> or{" "}
+              <span className="text-[#D1252B]">✗</span> to show whether the
+              underlined word is used correctly.
+            </>
+          }
+          subTitle="Check the key detail in each statement before choosing ✓/✗ or true/false; correct the wording when the task requires it."
+        />
 
-        <div className="flex flex-col gap-[6vh]">
+        <div className="flex flex-col gap-[5vh]">
           {sentences.map((sentence, index) => (
             <div key={index} className="flex items-center gap-5">
               <div className="flex items-center gap-2 ">
@@ -216,11 +222,18 @@ const Unit8_Page5_Q2 = () => {
 
               <span className="font-bold w-5">{index + 1}</span>
 
-              <div>
+              <Unit8StudentAudioText
+                src={unit8StudentAudio(
+                  "Page 68 - Exercise A",
+                  `Item_${String(index + 1).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play sentence ${index + 1}`}
+                flowText
+              >
                 {sentence.before}
                 <u>{sentence.underlined}</u>
                 {sentence.after}
-              </div>
+              </Unit8StudentAudioText>
             </div>
           ))}
         </div>

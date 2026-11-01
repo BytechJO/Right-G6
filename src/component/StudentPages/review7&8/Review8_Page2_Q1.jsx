@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const Review8_Page2_Q1 = () => {
   const correctAnswers = [
@@ -15,6 +20,8 @@ const Review8_Page2_Q1 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -42,6 +49,7 @@ const Review8_Page2_Q1 = () => {
   };
 
   const checkAnswers = () => {
+    if (locked) return;
     const hasEmpty = answers.some((item) => !item.trim());
 
     if (hasEmpty) {
@@ -100,6 +108,7 @@ const Review8_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", "", ""]);
 
     setResult([]);
@@ -113,6 +122,9 @@ const Review8_Page2_Q1 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="Write the reported sentence"
+        title="Change the quote to reported speech"
+        aria-label={`Reported sentence ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
           w-full
@@ -159,24 +171,25 @@ const Review8_Page2_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <h5 className="header-title-page8 mb-[10vh]">
-          <span
-            style={{
-              marginRight: "20px",
-            }}
-          >
-            D
-          </span>
-          Change each quote to reported speech.
-        </h5>
+      <div className="div-forall gap-7 text-[18px] w-full">
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title="Change each quote to reported speech."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
-        <div className="flex flex-col gap-[6vh]">
+        <div className="flex flex-col gap-[5vh]">
           {/* 1 */}
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">1</span>
-              Mom said, “You will be late for school!”
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 73 - Exercise D", "Item_001_")}
+                ariaLabel="Play quote 1"
+                flowText
+              >
+                Mom said, “You will be late for school!”
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(0)}
@@ -186,7 +199,13 @@ const Review8_Page2_Q1 = () => {
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">2</span>
-              My sister said, “I want to eat a piece of this apple pie.”
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 73 - Exercise D", "Item_002_")}
+                ariaLabel="Play quote 2"
+                flowText
+              >
+                My sister said, “I want to eat a piece of this apple pie.”
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(1)}
@@ -196,7 +215,13 @@ const Review8_Page2_Q1 = () => {
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">3</span>
-              Ben said, “Let’s go to the theater and watch a movie together.”
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 73 - Exercise D", "Item_003_")}
+                ariaLabel="Play quote 3"
+                flowText
+              >
+                Ben said, “Let’s go to the theater and watch a movie together.”
+              </Unit8StudentAudioText>
             </div>
             {inputField(2)}
           </div>
@@ -205,8 +230,14 @@ const Review8_Page2_Q1 = () => {
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">4</span>
-              Grandma said, “You can do great in the test if you study hard
-              enough.”
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 73 - Exercise D", "Item_004_")}
+                ariaLabel="Play quote 4"
+                flowText
+              >
+                Grandma said, “You can do great in the test if you study hard
+                enough.”
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(3)}

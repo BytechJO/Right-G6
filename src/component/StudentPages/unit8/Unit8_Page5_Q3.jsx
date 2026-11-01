@@ -3,37 +3,18 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import sound from "../../../assets/audio/ClassBook/U8/PG 68/CD40.Pg68_Instructions_Adult Lady.mp3";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import ExerciseHeader from "../../ExerciseHeader";
 const Unit8_Page5_Q3 = () => {
   const captions = [
     {
       start: 0.159,
-      end: 1.759,
-      text: "Page 66, grammar.",
+      end: 4.0,
+      text: "Page 68, right activity. Exercise C",
     },
     {
-      start: 2.099,
-      end: 4.539,
-      text: "Reported speech versus direct speech.",
-    },
-    {
-      start: 5.159,
-      end: 8.26,
-      text: "Chris told me that he had gone to the mountains for vacation.",
-    },
-    {
-      start: 8.699,
-      end: 10.939,
-      text: "Julie said that she likes to ride bikes a lot.",
-    },
-    {
-      start: 11.239,
-      end: 14.139,
-      text: "You told us that you didn't want to go to the movies today.",
-    },
-    {
-      start: 14.759,
-      end: 16.94,
-      text: "I said that I had gone to the concert yesterday.",
+      start: 4.099,
+      end: 11.539,
+      text: "Tell it like it is. Listen to the passage and circle the reported speech or direct quote that correctly tells what was said.",
     },
   ];
   const correctAnswers = ["a", "b", "a", "a"];
@@ -133,6 +114,16 @@ const Unit8_Page5_Q3 = () => {
     return (
       <div
         onClick={() => handleSelect(questionIndex, option)}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          handleSelect(questionIndex, option);
+        }}
+        role="button"
+        tabIndex={locked || result[questionIndex] === true ? -1 : 0}
+        aria-disabled={locked || result[questionIndex] === true}
+        aria-pressed={selected}
+        aria-label={`Option ${option}: ${text}`}
         className="relative cursor-pointer"
         style={{
           padding: "6px 12px",
@@ -179,22 +170,14 @@ const Unit8_Page5_Q3 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall text-[18px] w-full">
-        <div className="header-title-page8 mb-10">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            C
-          </span>
-          Tell it like it is. Listen to the passage and circle the reported
-          speech or direct quote that correctly tells what was said.
-        </div>
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Tell it like it is. Listen to the passage and circle the reported speech or direct quote that correctly tells what was said."
+        />
         <QuestionAudioPlayer
+          pageId="Unit8_Page5_Q3"
           src={sound}
           captions={captions}
-          stopAtSecond={4.5}
         />
         <div className="flex flex-col gap-6">
           {/* 1 */}
