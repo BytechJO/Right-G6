@@ -127,3 +127,13 @@
     top: 11.5%;
     left: 26.2%;
 }
+.poster-wrapper svg[role="button"] {
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.poster-wrapper svg[role="button"]:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 4px;
+}
+

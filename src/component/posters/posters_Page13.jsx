@@ -231,6 +231,45 @@ const Posters_Page25 = ({ openPopup }) => {
     },
   ];
 
+  const openConversation = () => {
+    openPopup(
+    "html",
+    <div
+    style={{
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+    }}
+    >
+    <Conversation
+    keyboardAccessible={true}
+    pageId="poster_page_13_conversation"
+    title="Conversation"
+    items={data}
+    sound={longAudio}
+    captions={captionsExample}
+    stopAtSecond={5.8}
+    captionTimings={captionTimings}
+    wordTimings={Voc}
+    openPopup={openPopup}
+    video={video}
+    imageWidth="300px"
+    />
+    </div>,
+    );
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openConversation();
+      }
+    }
+  };
+
   return (
     <div
       className="poster-wrapper"
@@ -241,35 +280,15 @@ const Posters_Page25 = ({ openPopup }) => {
         style={{ overflow: "visible" }}
       >
         <svg
+          role="button"
+          tabIndex={0}
+          aria-label="Open conversation"
+          onKeyDown={handleKeyDown}
           width="30"
           height="30"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Conversation
-                  title="Conversation"
-                  items={data}
-                  sound={longAudio}
-                  captions={captionsExample}
-                  stopAtSecond={5.8}
-                  captionTimings={captionTimings}
-                  wordTimings={Voc}
-                  openPopup={openPopup}
-                  video={video}
-                  imageWidth="300px"
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          onClick={openConversation}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"

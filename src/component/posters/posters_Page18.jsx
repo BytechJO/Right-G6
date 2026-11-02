@@ -47,6 +47,58 @@ const Posters_Page18 = ({ openPopup }) => {
     { start: 45.619, end: 48.0 },
   ];
 
+  const openVocabulary = () => {
+    openPopup(
+    "html",
+    <div
+    style={{
+    display: "flex",
+    justifyContent: "center",
+    alignContent: "center",
+    }}
+    >
+    <Vocabulary
+    keyboardAccessible={true}
+    pageId="poster_page_18_vocabulary"
+    title="VOCABULARY"
+    subtitle="Listen and repeat. Find the words and expressions in the conversation above."
+    sound={VocabularAudio}
+    captions={captionVoc}
+    stopAtSecond={9}
+    wordTimings={wordTimingsVoc}
+    words={[
+    "novel",
+    "assigned",
+    "chapter",
+    "main",
+    "characters",
+    "perhaps",
+    "discuss",
+    "classmates",
+    "distract",
+    "deal",
+    "... in no time",
+    "You only have (number) more to go.",
+    "I have been dying to ...",
+    "Too bad!",
+    "What are your plans ...?",
+    ]}
+    />
+    </div>,
+    );
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openVocabulary();
+      }
+    }
+  };
+
   return (
     <div
       className="poster-wrapper"
@@ -57,48 +109,15 @@ const Posters_Page18 = ({ openPopup }) => {
         style={{ overflow: "visible" }}
       >
         <svg
+          role="button"
+          tabIndex={0}
+          aria-label="Open vocabulary"
+          onKeyDown={handleKeyDown}
           width="30"
           height="30"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Vocabulary
-                  title="VOCABULARY"
-                  subtitle="Listen and repeat. Find the words and expressions in the conversation above."
-                  sound={VocabularAudio}
-                  captions={captionVoc}
-                  stopAtSecond={9}
-                  wordTimings={wordTimingsVoc}
-                  words={[
-                    "novel",
-                    "assigned",
-                    "chapter",
-                    "main",
-                    "characters",
-                    "perhaps",
-                    "discuss",
-                    "classmates",
-                    "distract",
-                    "deal",
-                    "... in no time",
-                    "You only have (number) more to go.",
-                    "I have been dying to ...",
-                    "Too bad!",
-                    "What are your plans ...?",
-                  ]}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          onClick={openVocabulary}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"
