@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 
 const BORDER = "#84ad40";
@@ -7,6 +8,12 @@ import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/
 import img2 from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 4.svg";
 import img3 from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 6.svg";
 import img4 from  "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 5.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+
+const imageDescriptions = [
+  "Workers moving furniture", "Melissa organizing a closet",
+  "Greg practicing basketball", "Doctors studying medicine",
+];
 
 const ROWS = [
   { id: 1, img: img1, prefilled: null },
@@ -28,6 +35,10 @@ const RowInput = ({ rowId, value, onChange, disabled }) => (
     value={value}
     disabled={disabled}
     onChange={(e) => onChange(rowId, e.target.value)}
+    placeholder="Write a present perfect progressive sentence"
+    title={`Picture ${rowId}: write a present perfect progressive sentence`}
+    aria-label={`Picture ${rowId}: present perfect progressive sentence`}
+    className="workbook-unit9-input"
     style={{
       width: "100%",
       border: "none",
@@ -57,13 +68,11 @@ const WB_Unit9_PresentPerfectProg_D = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>D</span>
-          Write sentences in the{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>present perfect progressive</span>{" "}
-          about each picture.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title={<>Write sentences in the <span style={{ color: "orange", fontWeight: "bold" }}>present perfect progressive</span> about each picture.</>}
+          subTitle="Use has/have been + verb-ing and make the duration or continuing action clear in the sentence."
+        />
 
         {/* Picture-sentence grid */}
         <div style={{
@@ -85,7 +94,7 @@ const WB_Unit9_PresentPerfectProg_D = () => {
               {/* Image */}
               <img
                 src={img}
-                alt={`picture ${id}`}
+                alt={imageDescriptions[id - 1]}
                 style={{
                   width: "10%",
                   height: "auto",
