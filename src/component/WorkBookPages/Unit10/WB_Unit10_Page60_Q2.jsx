@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-import { height } from "@fortawesome/free-solid-svg-icons/fa0";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit10AudioText, {
+  workbookUnit10Audio,
+  workbookUnit10AudioSequence,
+} from "./WorkbookUnit10AudioText";
 import girlImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U10 Folder/SVG/Asset 6.svg";
 
 const BORDER = "#333";
@@ -21,7 +25,7 @@ const QUESTIONS = [
     text: "Are you doing your homework?",
     answer: "b",
   },
-    {
+  {
     id: 4,
     text: "What kinds of books do you like?",
     answer: "c",
@@ -41,14 +45,13 @@ const RESPONSES = [
     label: "c",
     text: "I prefer reading comedy books. I dislike reading scince fiction books, even though my brother enjoys reading them very much. ",
   },
-    {
+  {
     label: "c",
     text: "I prefer playing in the backyard on the weekend.",
   },
 ];
 
-const normalize = (str) =>
-  str.toLowerCase().replace(/\s+/g, " ").trim();
+const normalize = (str) => str.toLowerCase().replace(/\s+/g, " ").trim();
 
 const initAnswers = () => ({ 1: "", 2: "", 3: "" });
 
@@ -76,41 +79,77 @@ const MatchInput = ({ qId, value, onChange, isCorrect, isWrong, disabled }) => (
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-6px",
-        width: "15px", height: "15px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "-8px",
+          right: "-6px",
+          width: "18px",
+          height: "18px",
+          background: "#ef4444",
+          color: "white",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "9px",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </span>
 );
 
 // SVG arrow decoration (matches book style)
 const ArrowDeco = () => (
-  <svg width="60" height="24" viewBox="0 0 60 24" style={{ display: "block", margin: "0 auto" }}>
-    <line x1="0" y1="4" x2="28" y2="20" stroke="#555" strokeWidth="1.5" strokeLinecap="round"/>
-    <line x1="60" y1="4" x2="32" y2="20" stroke="#555" strokeWidth="1.5" strokeLinecap="round"/>
+  <svg
+    width="60"
+    height="24"
+    viewBox="0 0 60 24"
+    style={{ display: "block", margin: "0 auto" }}
+  >
+    <line
+      x1="0"
+      y1="4"
+      x2="28"
+      y2="20"
+      stroke="#555"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="60"
+      y1="4"
+      x2="32"
+      y2="20"
+      stroke="#555"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 // ── MAIN COMPONENT ──
 const WB_Unit7_Match_I = () => {
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleChange = (id, value) => {
     if (locked || result[id] === true) return;
     setAnswers((prev) => ({ ...prev, [id]: value }));
-    setResult((prev)  => ({ ...prev, [id]: undefined }));
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
     if (Object.values(answers).some((v) => !v.trim())) {
-      ValidationAlert.info("Please complete all answers."); return;
+      ValidationAlert.info("Please complete all answers.");
+      return;
     }
     let correct = 0;
     const nr = {};
@@ -121,20 +160,33 @@ const WB_Unit7_Match_I = () => {
     });
     setResult(nr);
     const total = QUESTIONS.length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
-    QUESTIONS.forEach(({ id, answer }) => { a[id] = answer; r[id] = true; });
-    setAnswers(a); setResult(r); setLocked(true);
+    const a = {};
+    const r = {};
+    QUESTIONS.forEach(({ id, answer }) => {
+      a[id] = answer;
+      r[id] = true;
+    });
+    setAnswers(a);
+    setResult(r);
+    setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
+  };
 
   const cardStyle = {
     border: `1.5px solid ${BORDER}`,
@@ -151,31 +203,57 @@ const WB_Unit7_Match_I = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>I</span>
-          Match each question to its correct answer.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="I"
+          title="Match each question with its correct answer."
+          subTitle="Match each question to the response that directly answers it; check meaning before considering grammar."
+        />
 
         {/* Grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "40px 16px",
-          margin: "2em 0",
-        }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "40px 16px",
+            margin: "2em 0",
+          }}
+        >
           {QUESTIONS.map(({ id, text }, qi) => {
             const resp = RESPONSES[qi];
             const isCorrect = result[id] === true;
-            const isWrong   = result[id] === false;
+            const isWrong = result[id] === false;
             return (
               <React.Fragment key={id}>
                 {/* Left: question card */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>{id}</span>
-                    <div style={{ ...cardStyle, flex: 1, display: "flex", alignItems: "flex-start", gap: "4px" }}>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "18px",
+                        minWidth: "20px",
+                      }}
+                    >
+                      {id}
+                    </span>
+                    <div
+                      style={{
+                        ...cardStyle,
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "4px",
+                      }}
+                    >
                       {/* Input at start */}
                       <MatchInput
                         qId={id}
@@ -185,7 +263,18 @@ const WB_Unit7_Match_I = () => {
                         isWrong={isWrong}
                         disabled={locked || isCorrect}
                       />
-                      <span>{text}</span>
+                      <WorkbookUnit10AudioText
+                        src={workbookUnit10Audio(
+                          "Page 60 - Exercise I",
+                          { 1: "Item_001_", 2: "Item_004_", 3: "Item_009_" }[
+                            id
+                          ],
+                        )}
+                        ariaLabel={`Play question ${id}`}
+                        flowText
+                      >
+                        {text}
+                      </WorkbookUnit10AudioText>
                     </div>
                   </div>
                   {/* Spacer between rows */}
@@ -193,10 +282,47 @@ const WB_Unit7_Match_I = () => {
                 </div>
 
                 {/* Right: response card */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                  <div style={{ ...cardStyle, display: "flex", gap: "8px", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: "bold", fontSize: "16px", minWidth: "18px" }}>{resp.label}</span>
-                    <span>{resp.text}</span>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                >
+                  <div
+                    style={{
+                      ...cardStyle,
+                      display: "flex",
+                      gap: "8px",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        minWidth: "18px",
+                      }}
+                    >
+                      {resp.label}
+                    </span>
+                    <WorkbookUnit10AudioText
+                      src={workbookUnit10AudioSequence(
+                        "Page 60 - Exercise I",
+                        qi === 0
+                          ? ["Item_002_", "Item_003_"]
+                          : qi === 1
+                            ? [
+                                "Item_005_",
+                                "Item_006_",
+                                "Item_007_",
+                                "Item_008_",
+                              ]
+                            : qi === 2
+                              ? ["Item_010_", "Item_011_", "Item_012_"]
+                              : [],
+                      )}
+                      ariaLabel={`Play answer ${resp.label}`}
+                      flowText
+                    >
+                      {resp.text}
+                    </WorkbookUnit10AudioText>
                   </div>
                   <div style={{ height: "12px" }} />
                 </div>
@@ -204,14 +330,31 @@ const WB_Unit7_Match_I = () => {
             );
           })}
         </div>
-<img src={girlImg} alt="img" style={{ width: "20%",  height: "auto", objectFit: "contain", borderRadius: "8px" , alignSelf: "center", margin : "  -3em -27em 4em 6em" }} />
+        <img
+          src={girlImg}
+          alt="img"
+          style={{
+            width: "20%",
+            height: "auto",
+            objectFit: "contain",
+            borderRadius: "8px",
+            alignSelf: "center",
+            margin: "  -3em -27em 4em 6em",
+          }}
+        />
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

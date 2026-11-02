@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit10AudioText, { workbookUnit10Audio } from "./WorkbookUnit10AudioText";
 
 const QUESTIONS = [
   { id: 1, sentence: "They are walking to the park." },
@@ -43,15 +45,7 @@ const WB_Unit10_GerundRewrite_C = () => {
       <div className="div-forall">
 
         {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
-          For each sentence, change the{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>present progressive</span>{" "}
-          verb into a{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>gerund</span>{" "}
-          by adding a stative verb. Rewrite the new sentence.{" "}
-    
-        </h5>
+        <ExerciseHeader sectionLetter="C" title="Rewrite each sentence by changing the present progressive verb into a gerund after a stative verb." subTitle="Identify the stative verb first, then change the activity to a gerund without changing the original meaning." />
 
         {/* Questions */}
         <div style={{ display: "flex", flexDirection: "column", gap: "60px", margin: "2em 0" }}>
@@ -60,7 +54,7 @@ const WB_Unit10_GerundRewrite_C = () => {
               {/* Original sentence */}
               <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "19px" }}>
                 <span style={{ fontWeight: "bold", minWidth: "22px" }}>{id}</span>
-                <span>{sentence}</span>
+                <WorkbookUnit10AudioText src={workbookUnit10Audio("Page 58 - Exercise C", `Item_${String(id).padStart(3, "0")}_`)} ariaLabel={`Play sentence ${id}`} flowText>{sentence}</WorkbookUnit10AudioText>
               </div>
               {/* Answer line */}
               <div style={{ paddingLeft: "32px" }}>

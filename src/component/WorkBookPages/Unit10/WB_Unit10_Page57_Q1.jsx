@@ -1,342 +1,499 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useCallback, useRef, useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import WorkbookUnit10AudioText, {
+  workbookUnit10Audio,
+  workbookUnit10AudioSequence,
+  stopWorkbookUnit10Audio,
+} from "./WorkbookUnit10AudioText";
 
 const BORDER = "#84ad40";
+const ROWS = 15;
+const COLS = 14;
 
-// ── Word definitions (row, col are 0-indexed absolute) ──
-const WORD_DEFS = [
-  { id:"1D", word:"sandcastles", r:0,  c:13, dir:"D", clueNum:1 },
-  { id:"2D", word:"dozens",       r:3,  c:7,  dir:"D", clueNum:2 },
-  { id:"3D", word:"surfboard",   r:3,  c:10, dir:"D", clueNum:3 },
-  { id:"4A", word:"occupied",    r:4,  c:6,  dir:"A", clueNum:4 },
-  { id:"5A", word:"sunscreen",   r:6,  c:0,  dir:"A", clueNum:5 },
-  { id:"5D", word:"seashells",   r:6,  c:0,  dir:"D", clueNum:5 },
-  { id:"6D", word:"sunburn",     r:8, c:3,  dir:"D", clueNum:6 },
-  { id:"7A", word:"necessary",   r:10, c:3,  dir:"A", clueNum:7 },
+const WORDS = [
+  { id: "1D", word: "sandcastles", row: 0, col: 13, direction: "D", number: 1 },
+  { id: "2D", word: "dozens", row: 3, col: 7, direction: "D", number: 2 },
+  { id: "3D", word: "surfboard", row: 3, col: 10, direction: "D", number: 3 },
+  { id: "4A", word: "occupied", row: 4, col: 6, direction: "A", number: 4 },
+  { id: "5A", word: "sunscreen", row: 6, col: 0, direction: "A", number: 5 },
+  { id: "5D", word: "seashells", row: 6, col: 0, direction: "D", number: 5 },
+  { id: "6D", word: "sunburn", row: 8, col: 3, direction: "D", number: 6 },
+  { id: "7A", word: "necessary", row: 10, col: 3, direction: "A", number: 7 },
 ];
 
 const CLUES = {
-  down: [
-    { num:1, text:"small models of castles or buildings made with sand" },
-    { num:2, text:"large number of people or things" },
-    { num:3, text:"a long and light board used for surfing" },
-    { num:5, text:"the hard, empty shells of small sea creatures" },
-    { num:6, text:"a state in which your body becomes red and sore from too much sunlight" },
+  Down: [
+    [
+      "1D",
+      1,
+      "small models of castles or buildings made with sand",
+      ["Item_002_"],
+    ],
+    ["2D", 2, "large number of people or things", ["Item_003_"]],
+    ["3D", 3, "a long and light board used for surfing", ["Item_004_"]],
+    ["5D", 5, "the hard, empty shells of small sea creatures", ["Item_005_"]],
+    [
+      "6D",
+      6,
+      "a state in which your body becomes red and sore from too much sunlight",
+      ["Item_006_", "Item_007_"],
+    ],
   ],
-  across: [
-    { num:4, text:"full; in use" },
-    { num:5, text:"something that you put on your skin to protect it from the sun" },
-    { num:7, text:"so important that you must do it or have it" },
+  Across: [
+    ["4A", 4, "full; in use", ["Item_009_"]],
+    [
+      "5A",
+      5,
+      "something that you put on your skin to protect it from the sun",
+      ["Item_010_", "Item_011_"],
+    ],
+    ["7A", 7, "so important that you must do it or have it", ["Item_012_"]],
   ],
 };
 
-// ── Build cell map ──
-const buildCells = () => {
-  const map = {};
-  WORD_DEFS.forEach(({ id, word, r, c, dir, clueNum }) => {
-    for (let i = 0; i < word.length; i++) {
-      const row = dir === "D" ? r + i : r;
-      const col = dir === "A" ? c + i : c;
-      const key = `${row},${col}`;
-      if (!map[key]) map[key] = { letter: word[i], wordIds: [], clueNum: null };
-      map[key].wordIds.push(id);
-      if (i === 0 && !map[key].clueNum) map[key].clueNum = clueNum;
-    }
+const buildGrid = () => {
+  const cells = {};
+  const wordCells = {};
+  WORDS.forEach(({ id, word, row, col, direction, number }) => {
+    wordCells[id] = [];
+    [...word].forEach((letter, index) => {
+      const r = direction === "D" ? row + index : row;
+      const c = direction === "A" ? col + index : col;
+      const key = `${r},${c}`;
+      wordCells[id].push(key);
+      if (!cells[key]) cells[key] = { letter, wordIds: [], number: null };
+      cells[key].wordIds.push(id);
+      if (index === 0 && !cells[key].number) cells[key].number = number;
+    });
   });
-  return map;
+  return { cells, wordCells };
 };
 
-const CELL_MAP = buildCells();
-
-// Grid bounds
-const allR = Object.keys(CELL_MAP).map(k => +k.split(",")[0]);
-const allC = Object.keys(CELL_MAP).map(k => +k.split(",")[1]);
-const MIN_R = Math.min(...allR), MAX_R = Math.max(...allR);
-const MIN_C = Math.min(...allC), MAX_C = Math.max(...allC);
-const GRID_ROWS = MAX_R - MIN_R + 1;
-const GRID_COLS = MAX_C - MIN_C + 1;
-const absKey = (r, c) => `${r + MIN_R},${c + MIN_C}`;
-
-// For each word, build ordered list of cell keys
-const WORD_CELLS = {};
-WORD_DEFS.forEach(({ id, word, r, c, dir }) => {
-  WORD_CELLS[id] = Array.from({ length: word.length }, (_, i) => {
-    const row = dir === "D" ? r + i : r;
-    const col = dir === "A" ? c + i : c;
-    return `${row},${col}`;
-  });
+const { cells: CELL_MAP, wordCells: WORD_CELLS } = buildGrid();
+const CELL_KEYS = Object.keys(CELL_MAP).sort((a, b) => {
+  const [ar, ac] = a.split(",").map(Number);
+  const [br, bc] = b.split(",").map(Number);
+  return ar - br || ac - bc;
 });
+const initialAnswers = () =>
+  Object.fromEntries(CELL_KEYS.map((key) => [key, ""]));
 
-// ── State init ──
-const initAnswers = () => {
-  const a = {};
-  Object.keys(CELL_MAP).forEach(k => { a[k] = ""; });
-  return a;
+const CrosswordInput = ({
+  cellKey,
+  cell,
+  value,
+  result,
+  locked,
+  active,
+  tabIndex,
+  inputRef,
+  onFocus,
+  onClick,
+  onChange,
+  onKeyDown,
+}) => {
+  const correct = result === true;
+  const wrong = result === false;
+  return (
+    <div
+      onClick={onClick}
+      style={{
+        position: "relative",
+        width: "var(--wb-u10-cell)",
+        height: "var(--wb-u10-cell)",
+        boxSizing: "border-box",
+        border: `1px solid ${BORDER}`,
+        background: correct ? "#dff1c8" : active ? "#f1f8e8" : "#fff",
+      }}
+    >
+      {cell.number && (
+        <span
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: 1,
+            left: 2,
+            zIndex: 2,
+            fontSize: "clamp(6px,.65vw,9px)",
+            fontWeight: 700,
+            lineHeight: 1,
+            pointerEvents: "none",
+          }}
+        >
+          {cell.number}
+        </span>
+      )}
+      <input
+        ref={inputRef}
+        className="wb-unit10-crossword-input"
+        value={value.toUpperCase()}
+        maxLength={1}
+        readOnly={locked || correct}
+        tabIndex={tabIndex}
+        aria-label={`Crossword row ${Number(cellKey.split(",")[0]) + 1}, column ${Number(cellKey.split(",")[1]) + 1}`}
+        aria-invalid={wrong || undefined}
+        aria-readonly={locked || correct}
+        title={correct ? "Correct letter" : "Type one letter"}
+        onFocus={onFocus}
+        onChange={(event) => onChange(cellKey, event.target.value)}
+        onKeyDown={(event) => onKeyDown(cellKey, event)}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          border: 0,
+          outline: 0,
+          background: "transparent",
+          padding: 0,
+          textAlign: "center",
+          textTransform: "uppercase",
+          fontFamily: "inherit",
+          fontSize: "clamp(11px,1.2vw,16px)",
+          fontWeight: 700,
+          color: wrong ? "#D1232A" : "#263238",
+          caretColor: locked || correct ? "transparent" : "auto",
+        }}
+      />
+      {wrong && (
+        <span
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: "0%",
+            right: "0px",
+            transform: "translateY(-50%)",
+            width: "16px",
+            height: "16px",
+            background: "red",
+            color: "white",
+            borderRadius: "50%",
+            fontSize: "11px",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            border: "2px solid white",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+            pointerEvents: "none",
+            zIndex: 4,
+          }}
+        >
+          ✕
+        </span>
+      )}
+    </div>
+  );
 };
 
-// ── CellInput — OUTSIDE parent ──
-const CellInput = ({ cellKey, value, onChange, onKeyDown, inputRef, isWrong, disabled }) => (
-  <input
-    ref={inputRef}
-    type="text"
-    maxLength={2}
-    value={value ? value.toUpperCase() : ""}
-    disabled={disabled}
-    onChange={e => onChange(cellKey, e.target.value)}
-    onKeyDown={e => onKeyDown(cellKey, e)}
-    onFocus={e => e.target.select()}
-    style={{
-      position: "absolute", inset: 0,
-      border: "none", outline: "none",
-      background: "transparent",
-      textAlign: "center",
-      fontSize: "clamp(8px,1.2vw,15px)",
-      fontWeight: "700",
-      color: isWrong ? "#D1232A" : "#333",
-      fontFamily: "inherit",
-      padding: 0,
-      textTransform: "uppercase",
-      caretColor: "transparent",
-    }}
-  />
-);
-
-// ── MAIN COMPONENT ──
 const WB_Unit10_Crossword_A = () => {
-  const [answers,  setAnswers]  = useState(initAnswers);
-  const [result,   setResult]   = useState({});
-  const [locked,   setLocked]   = useState(false);
-  const [activeWord, setActiveWord] = useState(null); // highlighted word id
+  const [answers, setAnswers] = useState(initialAnswers);
+  const [results, setResults] = useState({});
+  const [locked, setLocked] = useState(false);
+  const [correctWords, setCorrectWords] = useState([]);
+  const [activeWord, setActiveWord] = useState(WORDS[0].id);
+  const [focusKey, setFocusKey] = useState(CELL_KEYS[0]);
   const refs = useRef({});
 
-  // Find the next cell in a word after current
-  const getNextInWord = useCallback((wordId, currentKey) => {
-    const cells = WORD_CELLS[wordId];
-    if (!cells) return null;
-    const idx = cells.indexOf(currentKey);
-    return idx >= 0 && idx < cells.length - 1 ? cells[idx + 1] : null;
+  const focusCell = useCallback((key) => {
+    if (!refs.current[key]) return;
+    setFocusKey(key);
+    refs.current[key].focus();
+    refs.current[key].select();
   }, []);
 
-  const getPrevInWord = useCallback((wordId, currentKey) => {
-    const cells = WORD_CELLS[wordId];
-    if (!cells) return null;
-    const idx = cells.indexOf(currentKey);
-    return idx > 0 ? cells[idx - 1] : null;
-  }, []);
-
-  const focusCell = (key) => {
-    if (refs.current[key]) { refs.current[key].focus(); refs.current[key].select(); }
-  };
-
-  const handleCellClick = (key) => {
-    const cell = CELL_MAP[key];
-    if (!cell) return;
-    if (cell.wordIds.length === 1) {
-      setActiveWord(cell.wordIds[0]);
-    } else {
-      // Toggle between words on repeated click
-      setActiveWord(prev => {
-        if (cell.wordIds.includes(prev)) {
-          const idx = cell.wordIds.indexOf(prev);
-          return cell.wordIds[(idx + 1) % cell.wordIds.length];
-        }
-        return cell.wordIds[0];
+  const switchWordAtIntersection = (key) => {
+    const ids = CELL_MAP[key].wordIds;
+    if (ids.length === 1) setActiveWord(ids[0]);
+    else {
+      setActiveWord((current) => {
+        const index = ids.indexOf(current);
+        return ids[(index + 1 + ids.length) % ids.length];
       });
     }
   };
 
-  const handleChange = (key, val) => {
-    if (locked || result[key] === true) return;
-    const ch = val.slice(-1).toLowerCase().replace(/[^a-z]/, "");
-    setAnswers(prev => ({ ...prev, [key]: ch }));
-    setResult(prev  => ({ ...prev, [key]: undefined }));
-    // Auto-advance in active word
-    if (ch && activeWord) {
-      const next = getNextInWord(activeWord, key);
-      if (next) { setTimeout(() => focusCell(next), 0); }
+  const nextEditable = (wordId, key, step) => {
+    const path = WORD_CELLS[wordId] || [];
+    let index = path.indexOf(key) + step;
+    while (index >= 0 && index < path.length) {
+      if (results[path[index]] !== true) return path[index];
+      index += step;
     }
+    return null;
   };
 
-  const handleKeyDown = (key, e) => {
-    if (e.key === "Backspace" && !answers[key]) {
-      if (activeWord) {
-        const prev = getPrevInWord(activeWord, key);
-        if (prev) { setTimeout(() => focusCell(prev), 0); }
+  const handleChange = (key, rawValue) => {
+    if (locked || results[key] === true) return;
+    const value = rawValue
+      .slice(-1)
+      .toLowerCase()
+      .replace(/[^a-z]/g, "");
+    setAnswers((current) => ({ ...current, [key]: value }));
+    setResults((current) => ({ ...current, [key]: undefined }));
+    if (!value) return;
+    const wordId = CELL_MAP[key].wordIds.includes(activeWord)
+      ? activeWord
+      : CELL_MAP[key].wordIds[0];
+    const next = nextEditable(wordId, key, 1);
+    if (next) setTimeout(() => focusCell(next), 0);
+  };
+
+  const handleKeyDown = (key, event) => {
+    const directions = {
+      ArrowUp: [-1, 0, "D"],
+      ArrowDown: [1, 0, "D"],
+      ArrowLeft: [0, -1, "A"],
+      ArrowRight: [0, 1, "A"],
+    };
+    if (directions[event.key]) {
+      event.preventDefault();
+      const [row, col] = key.split(",").map(Number);
+      const [dr, dc, direction] = directions[event.key];
+      let nextRow = row + dr;
+      let nextCol = col + dc;
+      let next = null;
+
+      while (nextRow >= 0 && nextRow < ROWS && nextCol >= 0 && nextCol < COLS) {
+        const candidate = `${nextRow},${nextCol}`;
+        if (CELL_MAP[candidate]) {
+          next = candidate;
+          break;
+        }
+        nextRow += dr;
+        nextCol += dc;
       }
+
+      if (!next) return;
+      const wordId =
+        CELL_MAP[next].wordIds.find((id) => id.endsWith(direction)) ||
+        CELL_MAP[next].wordIds[0];
+      setActiveWord(wordId);
+      focusCell(next);
+      return;
     }
-    if (e.key === "Tab") {
-      e.preventDefault();
-      // Move to next word
-      const ids = WORD_DEFS.map(w => w.id);
-      const idx = ids.indexOf(activeWord);
-      const nextWord = ids[(idx + 1) % ids.length];
-      setActiveWord(nextWord);
-      focusCell(WORD_CELLS[nextWord][0]);
+
+    if (event.key === "Backspace" && !answers[key]) {
+      const wordId = CELL_MAP[key].wordIds.includes(activeWord)
+        ? activeWord
+        : CELL_MAP[key].wordIds[0];
+      const previous = nextEditable(wordId, key, -1);
+      if (previous) {
+        event.preventDefault();
+        focusCell(previous);
+      }
     }
   };
 
   const checkAnswers = () => {
     if (locked) return;
-    if (Object.entries(CELL_MAP).some(([k]) => !answers[k])) {
-      ValidationAlert.info("Please complete the puzzle first."); return;
+    if (CELL_KEYS.some((key) => !answers[key])) {
+      ValidationAlert.info("Please complete the puzzle first.");
+      return;
     }
-    let correct = 0;
-    const nr = {};
-    Object.entries(CELL_MAP).forEach(([k, cell]) => {
-      const ok = answers[k] === cell.letter;
-      if (ok) correct++;
-      nr[k] = ok;
+    const nextCorrectWords = WORDS.filter(({ id }) =>
+      WORD_CELLS[id].every((key) => answers[key] === CELL_MAP[key].letter),
+    ).map(({ id }) => id);
+    const nextResults = {};
+    CELL_KEYS.forEach((key) => {
+      nextResults[key] = answers[key] === CELL_MAP[key].letter;
     });
-    setResult(nr);
-    const total = Object.keys(CELL_MAP).length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
+    setResults(nextResults);
+    setCorrectWords(nextCorrectWords);
+    const correct = nextCorrectWords.length;
+    const total = WORDS.length;
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const message = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(message);
+    } else if (correct === 0) ValidationAlert.error(message);
+    else ValidationAlert.warning(message);
   };
 
   const showAnswers = () => {
-    const a = {}, r = {};
-    Object.entries(CELL_MAP).forEach(([k, cell]) => { a[k] = cell.letter; r[k] = true; });
-    setAnswers(a); setResult(r); setLocked(true);
+    setAnswers(
+      Object.fromEntries(CELL_KEYS.map((key) => [key, CELL_MAP[key].letter])),
+    );
+    setResults(Object.fromEntries(CELL_KEYS.map((key) => [key, true])));
+    setCorrectWords(WORDS.map(({ id }) => id));
+    setLocked(true);
   };
 
-  const handleReset = () => {
-    setAnswers(initAnswers()); setResult({}); setLocked(false); setActiveWord(null);
+  const reset = () => {
+    stopWorkbookUnit10Audio();
+    setAnswers(initialAnswers());
+    setResults({});
+    setLocked(false);
+    setCorrectWords([]);
+    setActiveWord(WORDS[0].id);
+    setFocusKey(CELL_KEYS[0]);
   };
 
-  // Highlight active word cells
-  const activeWordCells = activeWord ? new Set(WORD_CELLS[activeWord]) : new Set();
-
-  const CS = "clamp(22px,2.6vw,34px)";
+  const activeCells = new Set(WORD_CELLS[activeWord] || []);
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
+        <style>{`
+          .wb-unit10-crossword-input:focus-visible {
+            outline: 3px solid #2563eb !important;
+            outline-offset: -2px;
+            border-radius: 2px;
+          }
+        `}</style>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Complete the puzzle. Use the vocabulary words."
+          subTitle="Solve the clearest clues first, then use crossing letters to confirm the remaining vocabulary."
+        />
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight:"10px" }}>A</span>
-          Complete the puzzle. Use the vocabulary words.
-        </h5>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: "24px",
+            flexWrap: "wrap",
+            marginTop: "18px",
+            marginBottom: "2em",
+            "--wb-u10-cell": "clamp(23px,2.45vw,31px)",
+          }}
+        >
+          <div
+            role="group"
+            aria-label="Vocabulary crossword. Tab enters the puzzle and arrow keys move between cells."
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${COLS}, var(--wb-u10-cell))`,
+              gridTemplateRows: `repeat(${ROWS}, var(--wb-u10-cell))`,
+              padding: "12px",
+              flex: "0 0 auto",
+            }}
+          >
+            {Array.from({ length: ROWS }, (_, row) =>
+              Array.from({ length: COLS }, (_, col) => {
+                const key = `${row},${col}`;
+                const cell = CELL_MAP[key];
+                if (!cell) return <div key={key} aria-hidden="true" />;
+                return (
+                  <CrosswordInput
+                    key={key}
+                    cellKey={key}
+                    cell={cell}
+                    value={answers[key]}
+                    result={results[key]}
+                    locked={locked}
+                    active={activeCells.has(key)}
+                    tabIndex={focusKey === key ? 0 : -1}
+                    inputRef={(element) => {
+                      refs.current[key] = element;
+                    }}
+                    onFocus={() => {
+                      setFocusKey(key);
+                      if (!cell.wordIds.includes(activeWord))
+                        setActiveWord(cell.wordIds[0]);
+                    }}
+                    onClick={() => {
+                      switchWordAtIntersection(key);
+                      focusCell(key);
+                    }}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                  />
+                );
+              }),
+            )}
+          </div>
 
-        <div style={{ display:"flex", gap:"20px", alignItems:"flex-start", flexWrap:"wrap" }}>
-
-          {/* ── Grid ── */}
-          <div style={{ flex:"0 0 auto", overflowX:"auto" }}>
-            <div style={{
-              display:"grid",
-              gridTemplateColumns:`repeat(${GRID_COLS}, ${CS})`,
-              gridTemplateRows:`repeat(${GRID_ROWS}, ${CS})`,
-              borderRadius:"6px",
-              overflow:"hidden",
-             padding: "10px",
-            }}>
-              {Array.from({ length: GRID_ROWS }, (_, ri) =>
-                Array.from({ length: GRID_COLS }, (_, ci) => {
-                  const key = absKey(ri, ci);
-                  const cell = CELL_MAP[key];
-                  const isActive = activeWordCells.has(key);
-                  const isCorrect = result[key] === true;
-                  const isWrong   = result[key] === false;
-
-                  if (!cell) {
-                    return (
-                      <div key={`${ri}-${ci}`} style={{
-                        width: CS, height: CS,
-                        background: "transparent",
-                
-                      }} />
-                    );
-                  }
-
+          <div
+            style={{
+              flex: "1 1 265px",
+              maxWidth: "330px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "18px",
+            }}
+          >
+            {Object.entries(CLUES).map(([heading, clues]) => (
+              <section
+                key={heading}
+                aria-label={`${heading} clues`}
+                style={{
+                  border: `1.5px solid ${BORDER}`,
+                  borderRadius: "10px",
+                  padding: "12px 16px",
+                  background: "#fff",
+                }}
+              >
+                <h6
+                  style={{
+                    margin: "0 0 8px",
+                    textAlign: "center",
+                    fontSize: "16px",
+                    fontWeight: 700,
+                  }}
+                >
+                  <WorkbookUnit10AudioText
+                    src={workbookUnit10Audio(
+                      "Page 57 - Exercise A",
+                      heading === "Down" ? "Item_001_" : "Item_008_",
+                    )}
+                    ariaLabel={`Play ${heading}`}
+                  >
+                    {heading}
+                  </WorkbookUnit10AudioText>
+                </h6>
+                {clues.map(([wordId, number, text, audioPrefixes]) => {
+                  const isCorrect = correctWords.includes(wordId);
                   return (
                     <div
-                      key={key}
-                      onClick={() => handleCellClick(key)}
+                      key={wordId}
                       style={{
-                        position: "relative",
-                        width: CS, height: CS,
-                        background: isCorrect ? "#c8e6c9" : isActive ? "#e8f5d0" : "#fff",
-                        borderRight: `1px solid ${BORDER}`,
-                        borderBottom: `1px solid ${BORDER}`,
-                        borderTop: `1px solid ${BORDER}`,
-                        borderLeft:  `1px solid ${BORDER}`,
-
-
-                        cursor: "text",
-                        boxSizing: "border-box",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "9px",
+                        marginBottom: "7px",
+                        fontSize: "14px",
+                        lineHeight: 1.35,
+                        textAlign: "left",
+                        color: isCorrect ? "#6b7280" : "inherit",
+                        textDecoration: isCorrect ? "line-through" : "none",
+                        textDecorationThickness: isCorrect ? "2px" : undefined,
                       }}
                     >
-                      {cell.clueNum && (
-                        <span style={{
-                          position:"absolute", top:"1px", left:"2px",
-                          fontSize:"clamp(5px,0.65vw,8px)",
-                          fontWeight:"700", color:"#555", lineHeight:1, zIndex:2,
-                          pointerEvents:"none",
-                        }}>{cell.clueNum}</span>
-                      )}
-                      <CellInput
-                        cellKey={key}
-                        value={answers[key]}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        inputRef={el => refs.current[key] = el}
-                        isWrong={isWrong && !isCorrect}
-                        disabled={locked || isCorrect}
-                      />
-                      {/* Wrong badge only */}
-                      {isWrong && !isCorrect && (
-                        <span style={{
-                          position:"absolute", top:"-5px", right:"-5px",
-                          width:"12px", height:"12px",
-                          background:"#ef4444", color:"white",
-                          borderRadius:"50%",
-                          display:"flex", alignItems:"center", justifyContent:"center",
-                          fontSize:"8px", fontWeight:"bold",
-                          border:"1.5px solid white",
-                          boxShadow:"0 1px 3px rgba(0,0,0,0.3)",
-                          pointerEvents:"none", zIndex:3,
-                        }}>✕</span>
-                      )}
+                      <strong style={{ minWidth: "16px" }}>{number}</strong>
+                      <WorkbookUnit10AudioText
+                        src={workbookUnit10AudioSequence(
+                          "Page 57 - Exercise A",
+                          audioPrefixes,
+                        )}
+                        ariaLabel={`Play ${heading.toLowerCase()} clue ${number}`}
+                        flowText
+                      >
+                        {text}
+                      </WorkbookUnit10AudioText>
                     </div>
                   );
-                })
-              )}
-            </div>
+                })}
+              </section>
+            ))}
           </div>
-
-          {/* ── Clues ── */}
-          <div style={{ flex:1, minWidth:"190px", display:"flex", flexDirection:"column", gap:"12px" }}>
-            <div style={{ border:`1.5px solid ${BORDER}`, borderRadius:"8px", padding:"12px 14px" }}>
-              <div style={{ fontWeight:"bold", fontSize:"16px", marginBottom:"8px", textAlign:"center" }}>Down</div>
-              {CLUES.down.map(({ num, text }) => (
-                <div key={num} style={{ display:"flex", gap:"8px", marginBottom:"8px", fontSize:"13px", lineHeight:"1.45" }}>
-                  <span style={{ fontWeight:"bold", minWidth:"14px" }}>{num}</span>
-                  <span>{text}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ border:`1.5px solid ${BORDER}`, borderRadius:"8px", padding:"12px 14px" }}>
-              <div style={{ fontWeight:"bold", fontSize:"16px", marginBottom:"8px", textAlign:"center" }}>Across</div>
-              {CLUES.across.map(({ num, text }) => (
-                <div key={num} style={{ display:"flex", gap:"8px", marginBottom:"8px", fontSize:"13px", lineHeight:"1.45" }}>
-                  <span style={{ fontWeight:"bold", minWidth:"14px" }}>{num}</span>
-                  <span>{text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
-        <div style={{ height:"2em" }} />
       </div>
 
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={reset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );
