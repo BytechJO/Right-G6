@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 const Review3_Page1_Q2 = () => {
   const questions = [
@@ -7,7 +12,7 @@ const Review3_Page1_Q2 = () => {
       id: 0,
       parts: [
         { type: "input", id: "0_0", answer: "I", width: "80px" },
-        { type: "text", value: " don't think " },
+        { type: "text", value: " don't think ", audio: "Item_001_" },
         { type: "input", id: "0_1", answer: "so", width: "80px" },
         { type: "text", value: "." },
       ],
@@ -15,7 +20,7 @@ const Review3_Page1_Q2 = () => {
     {
       id: 1,
       parts: [
-        { type: "text", value: "Let's take a " },
+        { type: "text", value: "Let's take a ", audio: "Item_002_" },
         { type: "input", id: "1_0", answer: "look", width: "100px" },
         { type: "text", value: "." },
       ],
@@ -33,7 +38,7 @@ const Review3_Page1_Q2 = () => {
       id: 3,
       parts: [
         { type: "input", id: "3_0", answer: "I", width: "60px" },
-        { type: "text", value: " wouldn't " },
+        { type: "text", value: " wouldn't ", audio: "Item_003_" },
         { type: "input", id: "3_1", answer: "mind", width: "80px" },
         { type: "text", value: "…" },
       ],
@@ -41,15 +46,15 @@ const Review3_Page1_Q2 = () => {
     {
       id: 4,
       parts: [
-        { type: "text", value: "It's " },
+        { type: "text", value: "It's ", audio: "Item_006_" },
         { type: "input", id: "4_0", answer: "too", width: "100px" },
-        { type: "text", value: " late." },
+        { type: "text", value: " late.", audio: "Item_004_" },
       ],
     },
     {
       id: 5,
       parts: [
-        { type: "text", value: "I'll " },
+        { type: "text", value: "I'll ", audio: "Item_005_" },
         { type: "input", id: "5_0", answer: "pass", width: "80px" },
         { type: "text", value: "." },
       ],
@@ -150,6 +155,7 @@ const Review3_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(allInputs);
     setErrors(
       Object.keys(allInputs).reduce((a, k) => ({ ...a, [k]: false }), {}),
@@ -178,9 +184,18 @@ const Review3_Page1_Q2 = () => {
   const renderPart = (part, qi) => {
     if (part.type === "text") {
       return (
-        <span key={part.value + qi} style={{ fontSize: "20px" }}>
+        <Unit4StudentAudioText
+          key={part.value + qi}
+          src={
+            part.audio
+              ? unit4StudentAudio("Page 34 - Exercise B", part.audio)
+              : null
+          }
+          ariaLabel={`Play ${part.value.trim()}`}
+          style={{ fontSize: "20px" }}
+        >
           {part.value}
-        </span>
+        </Unit4StudentAudioText>
       );
     }
     return (
@@ -193,6 +208,9 @@ const Review3_Page1_Q2 = () => {
           value={answers[part.id] || ""}
           disabled={locked || correctLocked[part.id]}
           onChange={(e) => updateField(part.id, e.target.value)}
+          placeholder="word"
+          title="Write the missing word"
+          aria-label={`Missing word ${part.id.replace("_", "-")}`}
           style={{ ...inputStyle(part.id), width: part.width }}
         />
         {errors[part.id] && (
@@ -223,20 +241,14 @@ const Review3_Page1_Q2 = () => {
     );
   };
 
-  // split into 2 columns: [0,2,4] left — [1,3,5] right
-  const leftCol = questions.filter((_, i) => i % 2 === 0);
-  const rightCol = questions.filter((_, i) => i % 2 !== 0);
-
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall" style={{gap:"50px"}}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span style={{ marginRight: "10px" }}>
-            B
-          </span>
-          Put in the missing words for each expression.
-        </h5>
+      <div className="div-forall" style={{ gap: "50px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title="Put in the missing words for each expression."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* QUESTIONS GRID — 2 columns */}
         <div

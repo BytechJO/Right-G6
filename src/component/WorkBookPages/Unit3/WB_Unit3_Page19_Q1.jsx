@@ -1,4 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3WorkbookAudioText, {
+  stopWorkbookUnit3Audio,
+  workbookUnit3Audio,
+} from "./Unit3WorkbookAudioText";
 
 const SENTENCES = [
   { id: 1, prefix: "If I had", prefilled: null},
@@ -24,6 +30,10 @@ const LineInput = ({ value, onChange, disabled, style = {} }) => (
     type="text"
     value={value}
     disabled={disabled}
+    placeholder="complete the sentence"
+    title="Complete the second conditional sentence"
+    aria-label="Complete the sentence starter"
+    className="wb-unit3-answer"
     onChange={(e) => onChange(e.target.value)}
     style={{
       flex: 1,
@@ -46,6 +56,10 @@ const FullLineInput = ({ value, onChange }) => (
     type="text"
     value={value}
     onChange={(e) => onChange(e.target.value)}
+    placeholder="continue your answer"
+    title="Continue your second conditional sentence"
+    aria-label="Continue the sentence"
+    className="wb-unit3-answer"
     style={{
       width: "100%",
       border: "none",
@@ -69,20 +83,21 @@ const WB_Unit_SecondConditional_G = () => {
     setAnswers((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleReset = () => setAnswers(initAnswers());
+  const handleReset = () => {
+    stopWorkbookUnit3Audio();
+    setAnswers(initAnswers());
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
         {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>G</span>
-          Read each of the following sentence starters and write a{" "}
-          <span style={{ color: "orange" }}>second conditional</span> sentence of what you might
-          do in each situation.{" "}
- 
-        </h5>
+        <ExerciseHeader
+          sectionLetter="G"
+          title={<>Complete each sentence starter with a <span style={{ color: "orange" }}>second conditional</span> sentence about what you might do.</>}
+          subTitle="Check that the condition and result logically belong together, then write the full conditional sentence."
+        />
 
         {/* Sentences */}
         <div style={{ display: "flex", flexDirection: "column", gap: "32px", marginBottom: "3em" }}>
@@ -94,7 +109,16 @@ const WB_Unit_SecondConditional_G = () => {
                 <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>
                   {id}
                 </span>
-                <span style={{ fontSize: "17px", whiteSpace: "nowrap" }}>{prefix}</span>
+                <Unit3WorkbookAudioText
+                  src={workbookUnit3Audio(
+                    "Page 19 - Exercise G",
+                    `Item_${String(id).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play sentence starter ${id}`}
+                  style={{ fontSize: "17px", whiteSpace: "nowrap" }}
+                >
+                  {prefix}
+                </Unit3WorkbookAudioText>
                 <LineInput
                   value={answers[`${id}-line1`]}
                   disabled={!!prefilled}

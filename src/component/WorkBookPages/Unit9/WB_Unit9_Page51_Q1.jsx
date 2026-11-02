@@ -1,7 +1,15 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 
 // بدّل المسار للصورة الفعلية
 import notebookImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 1.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit9AudioText, {
+  stopWorkbookUnit9Audio,
+  workbookUnit9Audio,
+} from "./WorkbookUnit9AudioText";
+
+const audioFolder = "Page 51 - Exercise A";
 
 const WORD_BANK = ["discuss", "classmates", "novel", "perhaps"];
 
@@ -13,6 +21,10 @@ const LineInput = ({ lineId, value, onChange }) => (
     type="text"
     value={value}
     onChange={(e) => onChange(lineId, e.target.value)}
+    placeholder={`Write a sentence using ${WORD_BANK[lineId - 1]}`}
+    title={`Write a complete sentence using ${WORD_BANK[lineId - 1]}`}
+    aria-label={`Sentence ${lineId} using ${WORD_BANK[lineId - 1]}`}
+    className="workbook-unit9-input"
     style={{
       flex: 1,
       border: "none",
@@ -35,17 +47,20 @@ const WB_Unit9_VocabSentences_A = () => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleReset = () => setAnswers(initAnswers());
+  const handleReset = () => {
+    stopWorkbookUnit9Audio();
+    setAnswers(initAnswers());
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
-          Use each of these vocabulary words in a sentence.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Use each vocabulary word in a sentence."
+          subTitle="Use each vocabulary word in a complete sentence that clearly shows you understand its meaning."
+        />
 
         {/* Word Bank */}
         <div style={{
@@ -59,7 +74,16 @@ const WB_Unit9_VocabSentences_A = () => {
           color: "#333",
           justifyContent: "space-around",
         }}>
-          {WORD_BANK.map((w) => <span key={w}>{w}</span>)}
+          {WORD_BANK.map((word, index) => (
+            <WorkbookUnit9AudioText
+              key={word}
+              src={workbookUnit9Audio(audioFolder, `Item_${String(index + 1).padStart(3, "0")}_`)}
+              ariaLabel={`Play ${word}`}
+              flowText
+            >
+              {word}
+            </WorkbookUnit9AudioText>
+          ))}
         </div>
 
         {/* Lines */}
@@ -81,7 +105,7 @@ const WB_Unit9_VocabSentences_A = () => {
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "3em" }}>
           <img
             src={notebookImg}
-            alt="notebook"
+            alt="An orange notebook with a black elastic band"
             style={{
               width: "280px",
               height: "auto",

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "./Unit4StudentAudioText";
 import audio from "../../../assets/audio/ClassBook/U4/PG 32/cd20pg32.mp3";
 
 const Unit4_Page5_Q2 = () => {
@@ -16,7 +21,7 @@ const Unit4_Page5_Q2 = () => {
   const questions = [
     {
       id: 0,
-       parts: [
+      parts: [
         {
           type: "input",
           id: "0_0",
@@ -27,9 +32,9 @@ const Unit4_Page5_Q2 = () => {
     {
       id: 1,
       parts: [
-        { type: "text", value: "Is the key " },
+        { type: "text", value: "Is the key ", audio: "Item_001_" },
         { type: "input", id: "1_0", answer: "made" },
-        { type: "text", value: " by the " },
+        { type: "text", value: " by the ", audio: "Item_002_" },
         { type: "input", id: "1_1", answer: "locksmith" },
         { type: "text", value: "?" },
       ],
@@ -38,7 +43,11 @@ const Unit4_Page5_Q2 = () => {
       id: 2,
       parts: [
         { type: "input", id: "2_0", answer: "Is" },
-        { type: "text", value: " the letter brought to our mailbox by" },
+        {
+          type: "text",
+          value: " the letter brought to our mailbox by",
+          audio: "Item_003_",
+        },
         { type: "input", id: "2_1", answer: "the mail carrier" },
         { type: "text", value: "?" },
       ],
@@ -46,16 +55,20 @@ const Unit4_Page5_Q2 = () => {
     {
       id: 3,
       parts: [
-        { type: "text", value: "Clark's friend is " },
+        { type: "text", value: "Clark's friend is ", audio: "Item_004_" },
         { type: "input", id: "3_0", answer: "sent" },
-        { type: "text", value: " the e-mail by Clark" },
+        {
+          type: "text",
+          value: " the e-mail by Clark",
+          audio: "Item_005_",
+        },
       ],
     },
     {
       id: 4,
       parts: [
         { type: "input", id: "4_0", answer: "The horse is ridden" },
-        { type: "text", value: " to school by " },
+        { type: "text", value: " to school by ", audio: "Item_006_" },
         { type: "input", id: "4_1", answer: "Jenny" },
         { type: "text", value: "." },
       ],
@@ -90,10 +103,7 @@ const Unit4_Page5_Q2 = () => {
     }, {}),
   );
   const [correctLocked, setCorrectLocked] = useState(
-    Object.keys(allInputs).reduce((acc, k) => {
-     
-      return acc;
-    }, {}),
+    Object.keys(allInputs).reduce((acc) => acc, {}),
   );
   const [locked, setLocked] = useState(false);
 
@@ -187,6 +197,7 @@ const Unit4_Page5_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     const reset = {};
     const resetErrors = {};
     const resetLocked = {};
@@ -216,7 +227,7 @@ const Unit4_Page5_Q2 = () => {
     fontSize: "18px",
     textAlign: "center",
     fontWeight: 600,
-    width: id === "5_0" ||  id === "0_0" ? "450px" : "160px",
+    width: id === "5_0" || id === "0_0" ? "450px" : "160px",
     background: "transparent",
 
     textDecoration: isUnderlineOnly ? "line-through" : "none",
@@ -225,16 +236,18 @@ const Unit4_Page5_Q2 = () => {
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
       <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>
-            B
-          </span>
-          Listen to the sentence, then change it to present simple passive.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Listen to the sentence, then change it to present simple passive."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
         {/* AUDIO */}
-        <QuestionAudioPlayer src={audio} captions={captions} />
+        <QuestionAudioPlayer
+          src={audio}
+          captions={captions}
+          pageId="sb_unit4_page32_exercise_b"
+        />
 
         {/* QUESTIONS */}
         <div
@@ -242,7 +255,7 @@ const Unit4_Page5_Q2 = () => {
             display: "flex",
             flexDirection: "column",
             gap: "40px",
-            marginTop:"15px",
+            marginTop: "15px",
             marginBottom: "60px",
           }}
         >
@@ -275,9 +288,21 @@ const Unit4_Page5_Q2 = () => {
                 {q.parts.map((part, pi) => {
                   if (part.type === "text") {
                     return (
-                      <span key={pi} style={{ color: "#333" }}>
+                      <Unit4StudentAudioText
+                        key={pi}
+                        src={
+                          part.audio
+                            ? unit4StudentAudio(
+                                "Page 32 - Exercise B",
+                                part.audio,
+                              )
+                            : null
+                        }
+                        ariaLabel={`Play ${part.value.trim()}`}
+                        style={{ color: "#333" }}
+                      >
                         {part.value}
-                      </span>
+                      </Unit4StudentAudioText>
                     );
                   }
 
@@ -292,6 +317,15 @@ const Unit4_Page5_Q2 = () => {
                         value={answers[part.id] || ""}
                         disabled={locked || correctLocked[part.id]}
                         onChange={(e) => updateField(part.id, e.target.value)}
+                        placeholder={
+                          part.id === "1_0" ||
+                          part.id === "2_0" ||
+                          part.id === "3_0"
+                            ? "word"
+                            : "Write the missing words"
+                        }
+                        title="Write the missing passive form"
+                        aria-label={`Answer blank ${part.id.replace("_", "-")}`}
                         style={getInputStyle(part.id, part.underline)}
                       />
                       {/* error dot */}

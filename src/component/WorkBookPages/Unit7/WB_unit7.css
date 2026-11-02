@@ -88,3 +88,13 @@ top: 53.5%;
   top:80%;
   left: 73.5%;
 }
+.wb-unit7-input::placeholder {
+  color: #9ca3af;
+  font-size: 0.78em;
+}
+
+.wb-unit7-input:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px;
+  border-radius: 4px;
+}

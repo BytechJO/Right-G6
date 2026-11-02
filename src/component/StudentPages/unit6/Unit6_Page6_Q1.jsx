@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { FaRedo } from "react-icons/fa";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "./Unit6StudentAudioText";
 import battleKlushino from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 25.svg";
 
 const emptyAnswers = () => ({
@@ -26,7 +30,10 @@ const Unit6_Page6_Q1 = () => {
     });
   };
 
-  const reset = () => setAnswers(emptyAnswers());
+  const reset = () => {
+    stopUnit6StudentAudio();
+    setAnswers(emptyAnswers());
+  };
 
   const inputStyle = {
     borderBottom: "1.5px solid #aaa",
@@ -49,7 +56,9 @@ const Unit6_Page6_Q1 = () => {
           </span>
           {side === "left" && idx === 0 ? (
             <>
-              <span
+              <Unit6StudentAudioText
+                src={unit6StudentAudio("Page 51 - Exercise D", "Item_001_")}
+                ariaLabel="Play In 1610 they used to"
                 style={{
                   fontSize: "15px",
                   flexShrink: 0,
@@ -57,11 +66,14 @@ const Unit6_Page6_Q1 = () => {
                 }}
               >
                 In 1610 they used to
-              </span>
+              </Unit6StudentAudioText>
               <input
                 type="text"
                 value={q.line1 === "In 1610 they used to " ? "" : q.line1}
                 onChange={(e) => update(side, idx, "line1", e.target.value)}
+                placeholder="Complete the sentence"
+                title="Complete the used-to sentence"
+                aria-label="Complete the first 1610 sentence"
                 style={{ ...inputStyle, flex: 1 }}
               />
             </>
@@ -70,6 +82,9 @@ const Unit6_Page6_Q1 = () => {
               type="text"
               value={q.line1}
               onChange={(e) => update(side, idx, "line1", e.target.value)}
+              placeholder="Write a used-to sentence"
+              title="Write a sentence about the battle picture"
+              aria-label={`${side} picture sentence ${idx + 1}`}
               style={{ ...inputStyle, flex: 1 }}
             />
           )}
@@ -80,6 +95,9 @@ const Unit6_Page6_Q1 = () => {
             type="text"
             value={q.line2}
             onChange={(e) => update(side, idx, "line2", e.target.value)}
+            placeholder="Continue the sentence"
+            title="Continue the sentence"
+            aria-label={`${side} picture sentence ${idx + 1}, second line`}
             style={{ ...inputStyle, width: "100%" }}
           />
         </div>
@@ -89,18 +107,25 @@ const Unit6_Page6_Q1 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A mr-2">D</span>
-          Look at the two pictures. One shows what the Battle of Klushino was
-          like in 1610, and the other shows what the 19th century battles were
-          like. Write three sentences for each one telling about what people
-          used to do, wear, and carry in battles during the two different times.
-          Discuss how the two battle scenes are alike and different.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title="Compare the two battle pictures and write three sentences for each one about what people used to do, wear, and carry."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Study the first battle picture and write three clear
+                used-to sentences.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Then do the same for the second picture, focusing on
+                what people did, wore, and carried.
+              </span>
+            </>
+          }
+        />
         <img
           src={battleKlushino}
-          // alt="Battle of Klushino 1610"
+          alt="Two battle scenes comparing soldiers in 1610 and the nineteenth century"
           style={{ width: "100%", height: "220px", objectFit: "contain" }}
         />
         {/* TWO COLUMNS */}
@@ -108,7 +133,7 @@ const Unit6_Page6_Q1 = () => {
           style={{
             display: "flex",
             marginTop: "30px",
-            marginBottom:"30px",
+            marginBottom: "30px",
             gap: "24px",
             alignItems: "flex-start",
           }}

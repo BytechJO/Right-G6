@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import TimedNarrationText from "../../TimedNarrationText";
+import { stopUnit1Audio } from "./WB_Unit1_AudioText";
+import readingTimings from "../../../assets/json/pg7-QF_eng.json";
+import fullStoryAudio from "../../../assets/audio/WorkBook/unit1/Page 7 - Exercise F/full.mp3";
+
+const STORY_ALIASES = [
+  {
+    printed: ["all", "of", "us."],
+    spoken: ["all", "ofI", "us."],
+  },
+  {
+    printed: ["I'm"],
+    spoken: ["Iam"],
+  },
+  {
+    printed: ["going", "to"],
+    spoken: ["gonna", ""],
+  },
+];
 
 const WB_Unit1_Page7_F = () => {
-  const story = `"You can say that again!" I agree with my younger brother, who just said it is hot today. We have been camping for a week, and we are getting our supplies packed because we have to leave. It is 8:00 a.m., but the sun is already hot, and so are all of us. It's no fun to pack when it's hot outside.
-
-"Can I count on you to fold up the tent?" asks my mom. The stove is packed by my dad, the campsite is cleaned by my sister, and the car is packed by my older brother, so that leaves me to do the tent.
-
-"Sure," I say, but without much excitement in my voice.
-
-"I'm sorry to hear that," I hear my dad say, and I look over to see him talking to the park ranger. "Do you have any idea of when it's likely to be opened again?" my dad asks.
-
-My dad comes to our campfire and calls to all of us to come over. "I have some news that's likely to surprise or upset you," he says, "but don't worry, everything's going to work out well. The park ranger just told me that a set of big trucks were using the campground road late last night, and the road fell apart. So we have to stay another night."
-
-The reaction he got from us is probably different from what he expected. He was hugged by us, twirled around in circles by my brother, patted on the back by my sister, and stared at by my mother. We were all surprised and happy about staying for another day!`;
-
   const questions = [
     {
       id: 1,
@@ -24,7 +32,10 @@ The reaction he got from us is probably different from what he expected. He was 
     {
       id: 2,
       question: "Why is it difficult to start packing?",
-      answer: ["It is hot", "Camping was lots of fun, so they don't want to leave."],
+      answer: [
+        "It is hot",
+        "Camping was lots of fun, so they don't want to leave.",
+      ],
       subLabels: ["a)", "b)"],
       multiLine: true,
     },
@@ -41,6 +52,14 @@ The reaction he got from us is probably different from what he expected. He was 
       inline: false,
     },
   ];
+  const storyParagraphs = [
+    `"You can say that again!" I agree with my younger brother, who just said it is hot today. We have been camping for a week, and we are getting our supplies packed because we have to leave. It is 8:00 a.m., but the sun is already hot, and so are all of us. It's no fun to pack when it's hot outside.`,
+    `"Can I count on you to fold up the tent?" asks my mom. The stove is packed by my dad, the campsite is cleaned by my sister, and the car is packed by my older brother, so that leaves me to do the tent.`,
+    `"Sure," I say, but without much excitement in my voice.`,
+    `"I'm sorry to hear that," I hear my dad say, and I look over to see him talking to the park ranger. "Do you have any idea of when it's likely to be opened again?" my dad asks.`,
+    `My dad comes to our campfire and calls to all of us to come over. "I have some news that's likely to surprise or upset you," he says, "but don't worry, everything's going to work out well. The park ranger just told me that a set of big trucks were using the campground road late last night, and the road fell apart. So we have to stay another night."`,
+    `The reaction he got from us is probably different from what he expected. He was hugged by us, twirled around in circles by my brother, patted on the back by my sister, and stared at by my mother. We were all surprised and happy about staying for another day!`,
+  ];
 
   const initAnswers = () => ({
     1: "",
@@ -53,9 +72,14 @@ The reaction he got from us is probably different from what he expected. He was 
   const [answers, setAnswers] = useState(initAnswers());
   const [result, setResult] = useState({});
   const [locked, setLocked] = useState(false);
+  const [narrationResetKey, setNarrationResetKey] = useState(0);
 
-const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’'']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
   const handleChange = (key, value) => {
     if (locked || result[key] === true) return;
     setAnswers((prev) => ({ ...prev, [key]: value }));
@@ -90,11 +114,14 @@ const normalize = (str) =>
     setResult(newResult);
 
     const total = keys.length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
 
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
@@ -111,12 +138,14 @@ const normalize = (str) =>
   };
 
   const handleReset = () => {
+    stopUnit1Audio();
+    setNarrationResetKey((key) => key + 1);
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
   };
 
-  const inputLine = (key, width = "w-full") => {
+  const inputLine = (key) => {
     const isWrong = result[key] === false;
     const isCorrect = result[key] === true;
     return (
@@ -124,22 +153,38 @@ const normalize = (str) =>
         <input
           type="text"
           value={answers[key]}
+          placeholder={key === 1 ? "Type the word" : "Type the sentence"}
+          title={key === 1 ? "Type the word" : "Type the sentence"}
           disabled={locked || isCorrect}
           onChange={(e) => handleChange(key, e.target.value)}
           className={`
-            w-full border-0 border-b outline-none bg-transparent
+            wb-unit1-answer-input w-full border-0 border-b outline-none bg-transparent
             text-[17px]  px-1
             ${isWrong ? "border-[#D1232A]" : "border-black"}
           `}
         />
         {isWrong && (
-          <span style={{
-            position: "absolute", top: "-8px", right: "-8px",
-            width: "18px", height: "18px", background: "#ef4444", color: "white",
-            borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-            boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-          }}>✕</span>
+          <span
+            style={{
+              position: "absolute",
+              top: "-8px",
+              right: "-8px",
+              width: "18px",
+              height: "18px",
+              background: "#ef4444",
+              color: "white",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "11px",
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+            }}
+          >
+            ✕
+          </span>
         )}
       </span>
     );
@@ -148,20 +193,43 @@ const normalize = (str) =>
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>F</span>
-          Read the story and answer the questions.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="F"
+          title="Read the story and answer the questions."
+          subTitle="Read once for the story meaning, then answer one question at a time by returning to the sentence that gives the evidence."
+        />
 
         {/* Story */}
-        <div className="mb-8 text-[16px] leading-[1.9]" style={{ whiteSpace: "pre-line", color: "#333" }}>
-          {story}
-        </div>
+        <TimedNarrationText
+          key={narrationResetKey}
+          audioSrc={fullStoryAudio}
+          wordTimings={readingTimings}
+          aliases={STORY_ALIASES}
+          ariaLabel="the complete camping story"
+          onBeforePlay={stopUnit1Audio}
+          className="mb-8 text-[16px] leading-[1.9]"
+          style={{ color: "#333" }}
+        >
+          {storyParagraphs.map((paragraph, index) => (
+            <React.Fragment key={index}>
+              <p
+                style={{
+                  margin: index === storyParagraphs.length - 1 ? 0 : "0 0 8px",
+                  padding: 0,
+                  textIndent: "1.25em",
+                  textAlign: "left",
+                  width: "100%",
+                }}
+              >
+                {paragraph}
+              </p>
+              {" "}
+            </React.Fragment>
+          ))}
+        </TimedNarrationText>
 
         {/* Questions */}
         <div className="flex flex-col gap-6 text-[17px] mb-15">
-
           {/* Q1 - inline */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold">1</span>
@@ -198,9 +266,7 @@ const normalize = (str) =>
               <span className="font-bold">4</span>
               <span>{questions[3].question}</span>
             </div>
-            <div className="pl-5">
-              {inputLine(4)}
-            </div>
+            <div className="pl-5">{inputLine(4)}</div>
           </div>
         </div>
       </div>

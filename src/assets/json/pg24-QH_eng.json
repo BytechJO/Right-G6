@@ -1,0 +1,1171 @@
+{
+  "language_code": "eng",
+  "segments": [
+    {
+      "text": "Our town is the busiest in the morning. By 4:00 a.m., the bread is baked by the bakers. At 5:00 a.m., the newspapers are delivered by eight children on bikes. At 6:00 a.m., the buses are driven by the school bus drivers. By 7:00 a.m., some children are walking to school. The school bell is rung at 8:00 a.m. each morning, and the children go to their first class. From 6:00 a.m. to 8:00 a.m., some cars are driven by people on their way to work, but many others ride the bus or work from home. Everyone gets an early start each day. No wonder it's quiet by 10:00 p.m. in our town. Morning schedule. Time.",
+      "start_time": 0.18,
+      "end_time": 45.34,
+      "speaker": {
+        "id": "speaker_0",
+        "name": "Speaker 0"
+      },
+      "words": [
+        {
+          "text": "Our",
+          "start_time": 0.18,
+          "end_time": 0.42
+        },
+        {
+          "text": " ",
+          "start_time": 0.42,
+          "end_time": 0.5
+        },
+        {
+          "text": "town",
+          "start_time": 0.5,
+          "end_time": 0.92
+        },
+        {
+          "text": " ",
+          "start_time": 0.92,
+          "end_time": 0.96
+        },
+        {
+          "text": "is",
+          "start_time": 0.96,
+          "end_time": 1.08
+        },
+        {
+          "text": " ",
+          "start_time": 1.08,
+          "end_time": 1.12
+        },
+        {
+          "text": "the",
+          "start_time": 1.12,
+          "end_time": 1.26
+        },
+        {
+          "text": " ",
+          "start_time": 1.26,
+          "end_time": 1.3
+        },
+        {
+          "text": "busiest",
+          "start_time": 1.3,
+          "end_time": 1.7
+        },
+        {
+          "text": " ",
+          "start_time": 1.7,
+          "end_time": 1.74
+        },
+        {
+          "text": "in",
+          "start_time": 1.74,
+          "end_time": 1.8
+        },
+        {
+          "text": " ",
+          "start_time": 1.8,
+          "end_time": 1.84
+        },
+        {
+          "text": "the",
+          "start_time": 1.84,
+          "end_time": 1.9
+        },
+        {
+          "text": " ",
+          "start_time": 1.9,
+          "end_time": 1.96
+        },
+        {
+          "text": "morning.",
+          "start_time": 1.96,
+          "end_time": 2.4
+        },
+        {
+          "text": " ",
+          "start_time": 2.4,
+          "end_time": 2.7
+        },
+        {
+          "text": "By",
+          "start_time": 2.7,
+          "end_time": 2.92
+        },
+        {
+          "text": " ",
+          "start_time": 2.92,
+          "end_time": 2.96
+        },
+        {
+          "text": "4:00",
+          "start_time": 3.14,
+          "end_time": 3.34
+        },
+        {
+          "text": " ",
+          "start_time": 3.34,
+          "end_time": 3.4
+        },
+        {
+          "text": "a.m.,",
+          "start_time": 3.4,
+          "end_time": 3.7
+        },
+        {
+          "text": " ",
+          "start_time": 3.7,
+          "end_time": 4.08
+        },
+        {
+          "text": "the",
+          "start_time": 4.08,
+          "end_time": 4.14
+        },
+        {
+          "text": " ",
+          "start_time": 4.14,
+          "end_time": 4.24
+        },
+        {
+          "text": "bread",
+          "start_time": 4.24,
+          "end_time": 4.48
+        },
+        {
+          "text": " ",
+          "start_time": 4.48,
+          "end_time": 4.52
+        },
+        {
+          "text": "is",
+          "start_time": 4.52,
+          "end_time": 4.68
+        },
+        {
+          "text": " ",
+          "start_time": 4.68,
+          "end_time": 4.72
+        },
+        {
+          "text": "baked",
+          "start_time": 4.72,
+          "end_time": 4.94
+        },
+        {
+          "text": " ",
+          "start_time": 4.94,
+          "end_time": 4.98
+        },
+        {
+          "text": "by",
+          "start_time": 4.98,
+          "end_time": 5.1
+        },
+        {
+          "text": " ",
+          "start_time": 5.1,
+          "end_time": 5.14
+        },
+        {
+          "text": "the",
+          "start_time": 5.14,
+          "end_time": 5.26
+        },
+        {
+          "text": " ",
+          "start_time": 5.26,
+          "end_time": 5.3
+        },
+        {
+          "text": "bakers.",
+          "start_time": 5.3,
+          "end_time": 5.82
+        },
+        {
+          "text": " ",
+          "start_time": 5.82,
+          "end_time": 6.0
+        },
+        {
+          "text": "At",
+          "start_time": 6.0,
+          "end_time": 6.12
+        },
+        {
+          "text": " ",
+          "start_time": 6.12,
+          "end_time": 6.42
+        },
+        {
+          "text": "5:00",
+          "start_time": 6.42,
+          "end_time": 6.7
+        },
+        {
+          "text": " ",
+          "start_time": 6.7,
+          "end_time": 6.86
+        },
+        {
+          "text": "a.m.,",
+          "start_time": 6.86,
+          "end_time": 7.0
+        },
+        {
+          "text": " ",
+          "start_time": 7.0,
+          "end_time": 7.36
+        },
+        {
+          "text": "the",
+          "start_time": 7.36,
+          "end_time": 7.42
+        },
+        {
+          "text": " ",
+          "start_time": 7.42,
+          "end_time": 7.48
+        },
+        {
+          "text": "newspapers",
+          "start_time": 7.48,
+          "end_time": 8.119
+        },
+        {
+          "text": " ",
+          "start_time": 8.119,
+          "end_time": 8.22
+        },
+        {
+          "text": "are",
+          "start_time": 8.22,
+          "end_time": 8.34
+        },
+        {
+          "text": " ",
+          "start_time": 8.34,
+          "end_time": 8.36
+        },
+        {
+          "text": "delivered",
+          "start_time": 8.36,
+          "end_time": 8.86
+        },
+        {
+          "text": " ",
+          "start_time": 8.86,
+          "end_time": 8.9
+        },
+        {
+          "text": "by",
+          "start_time": 8.9,
+          "end_time": 9.16
+        },
+        {
+          "text": " ",
+          "start_time": 9.16,
+          "end_time": 9.26
+        },
+        {
+          "text": "eight",
+          "start_time": 9.26,
+          "end_time": 9.48
+        },
+        {
+          "text": " ",
+          "start_time": 9.48,
+          "end_time": 9.88
+        },
+        {
+          "text": "children",
+          "start_time": 9.88,
+          "end_time": 10.34
+        },
+        {
+          "text": " ",
+          "start_time": 10.34,
+          "end_time": 10.4
+        },
+        {
+          "text": "on",
+          "start_time": 10.4,
+          "end_time": 10.52
+        },
+        {
+          "text": " ",
+          "start_time": 10.52,
+          "end_time": 10.6
+        },
+        {
+          "text": "bikes.",
+          "start_time": 10.6,
+          "end_time": 11.12
+        },
+        {
+          "text": " ",
+          "start_time": 11.12,
+          "end_time": 11.58
+        },
+        {
+          "text": "At",
+          "start_time": 11.58,
+          "end_time": 11.74
+        },
+        {
+          "text": " ",
+          "start_time": 11.74,
+          "end_time": 11.98
+        },
+        {
+          "text": "6:00",
+          "start_time": 11.98,
+          "end_time": 12.3
+        },
+        {
+          "text": " ",
+          "start_time": 12.3,
+          "end_time": 12.36
+        },
+        {
+          "text": "a.m.,",
+          "start_time": 12.36,
+          "end_time": 12.64
+        },
+        {
+          "text": " ",
+          "start_time": 12.64,
+          "end_time": 12.98
+        },
+        {
+          "text": "the",
+          "start_time": 12.98,
+          "end_time": 13.08
+        },
+        {
+          "text": " ",
+          "start_time": 13.08,
+          "end_time": 13.1
+        },
+        {
+          "text": "buses",
+          "start_time": 13.1,
+          "end_time": 13.42
+        },
+        {
+          "text": " ",
+          "start_time": 13.42,
+          "end_time": 13.5
+        },
+        {
+          "text": "are",
+          "start_time": 13.5,
+          "end_time": 13.64
+        },
+        {
+          "text": " ",
+          "start_time": 13.64,
+          "end_time": 13.7
+        },
+        {
+          "text": "driven",
+          "start_time": 13.7,
+          "end_time": 14.1
+        },
+        {
+          "text": " ",
+          "start_time": 14.1,
+          "end_time": 14.12
+        },
+        {
+          "text": "by",
+          "start_time": 14.12,
+          "end_time": 14.26
+        },
+        {
+          "text": " ",
+          "start_time": 14.26,
+          "end_time": 14.28
+        },
+        {
+          "text": "the",
+          "start_time": 14.28,
+          "end_time": 14.38
+        },
+        {
+          "text": " ",
+          "start_time": 14.38,
+          "end_time": 14.42
+        },
+        {
+          "text": "school",
+          "start_time": 14.42,
+          "end_time": 14.64
+        },
+        {
+          "text": " ",
+          "start_time": 14.64,
+          "end_time": 14.72
+        },
+        {
+          "text": "bus",
+          "start_time": 14.72,
+          "end_time": 14.9
+        },
+        {
+          "text": " ",
+          "start_time": 14.9,
+          "end_time": 14.98
+        },
+        {
+          "text": "drivers.",
+          "start_time": 14.98,
+          "end_time": 15.64
+        },
+        {
+          "text": " ",
+          "start_time": 15.64,
+          "end_time": 16.04
+        },
+        {
+          "text": "By",
+          "start_time": 16.04,
+          "end_time": 16.239
+        },
+        {
+          "text": " ",
+          "start_time": 16.239,
+          "end_time": 16.54
+        },
+        {
+          "text": "7:00",
+          "start_time": 16.54,
+          "end_time": 16.9
+        },
+        {
+          "text": " ",
+          "start_time": 16.9,
+          "end_time": 16.94
+        },
+        {
+          "text": "a.m.,",
+          "start_time": 16.94,
+          "end_time": 17.2
+        },
+        {
+          "text": " ",
+          "start_time": 17.2,
+          "end_time": 17.48
+        },
+        {
+          "text": "some",
+          "start_time": 17.48,
+          "end_time": 17.64
+        },
+        {
+          "text": " ",
+          "start_time": 17.64,
+          "end_time": 17.76
+        },
+        {
+          "text": "children",
+          "start_time": 17.76,
+          "end_time": 18.22
+        },
+        {
+          "text": " ",
+          "start_time": 18.22,
+          "end_time": 18.26
+        },
+        {
+          "text": "are",
+          "start_time": 18.26,
+          "end_time": 18.44
+        },
+        {
+          "text": " ",
+          "start_time": 18.44,
+          "end_time": 18.48
+        },
+        {
+          "text": "walking",
+          "start_time": 18.48,
+          "end_time": 18.9
+        },
+        {
+          "text": " ",
+          "start_time": 18.9,
+          "end_time": 18.94
+        },
+        {
+          "text": "to",
+          "start_time": 18.94,
+          "end_time": 19.06
+        },
+        {
+          "text": " ",
+          "start_time": 19.06,
+          "end_time": 19.1
+        },
+        {
+          "text": "school.",
+          "start_time": 19.1,
+          "end_time": 19.5
+        },
+        {
+          "text": " ",
+          "start_time": 19.5,
+          "end_time": 19.5
+        },
+        {
+          "text": "The",
+          "start_time": 20.48,
+          "end_time": 20.78
+        },
+        {
+          "text": " ",
+          "start_time": 20.78,
+          "end_time": 21.46
+        },
+        {
+          "text": "school",
+          "start_time": 21.46,
+          "end_time": 21.74
+        },
+        {
+          "text": " ",
+          "start_time": 21.74,
+          "end_time": 21.84
+        },
+        {
+          "text": "bell",
+          "start_time": 21.84,
+          "end_time": 22.1
+        },
+        {
+          "text": " ",
+          "start_time": 22.1,
+          "end_time": 22.16
+        },
+        {
+          "text": "is",
+          "start_time": 22.16,
+          "end_time": 22.3
+        },
+        {
+          "text": " ",
+          "start_time": 22.3,
+          "end_time": 22.36
+        },
+        {
+          "text": "rung",
+          "start_time": 22.36,
+          "end_time": 22.6
+        },
+        {
+          "text": " ",
+          "start_time": 22.6,
+          "end_time": 22.62
+        },
+        {
+          "text": "at",
+          "start_time": 22.62,
+          "end_time": 22.72
+        },
+        {
+          "text": " ",
+          "start_time": 22.72,
+          "end_time": 23.0
+        },
+        {
+          "text": "8:00",
+          "start_time": 23.0,
+          "end_time": 23.24
+        },
+        {
+          "text": " ",
+          "start_time": 23.24,
+          "end_time": 23.28
+        },
+        {
+          "text": "a.m.",
+          "start_time": 23.28,
+          "end_time": 23.54
+        },
+        {
+          "text": " ",
+          "start_time": 23.54,
+          "end_time": 23.78
+        },
+        {
+          "text": "each",
+          "start_time": 23.78,
+          "end_time": 23.98
+        },
+        {
+          "text": " ",
+          "start_time": 23.98,
+          "end_time": 24.1
+        },
+        {
+          "text": "morning,",
+          "start_time": 24.1,
+          "end_time": 24.48
+        },
+        {
+          "text": " ",
+          "start_time": 24.48,
+          "end_time": 24.6
+        },
+        {
+          "text": "and",
+          "start_time": 24.6,
+          "end_time": 24.7
+        },
+        {
+          "text": " ",
+          "start_time": 24.7,
+          "end_time": 24.74
+        },
+        {
+          "text": "the",
+          "start_time": 24.74,
+          "end_time": 24.86
+        },
+        {
+          "text": " ",
+          "start_time": 24.86,
+          "end_time": 24.92
+        },
+        {
+          "text": "children",
+          "start_time": 24.92,
+          "end_time": 25.36
+        },
+        {
+          "text": " ",
+          "start_time": 25.36,
+          "end_time": 25.48
+        },
+        {
+          "text": "go",
+          "start_time": 25.48,
+          "end_time": 25.66
+        },
+        {
+          "text": " ",
+          "start_time": 25.66,
+          "end_time": 25.7
+        },
+        {
+          "text": "to",
+          "start_time": 25.7,
+          "end_time": 25.76
+        },
+        {
+          "text": " ",
+          "start_time": 25.76,
+          "end_time": 25.8
+        },
+        {
+          "text": "their",
+          "start_time": 25.8,
+          "end_time": 25.9
+        },
+        {
+          "text": " ",
+          "start_time": 25.9,
+          "end_time": 26.04
+        },
+        {
+          "text": "first",
+          "start_time": 26.04,
+          "end_time": 26.24
+        },
+        {
+          "text": " ",
+          "start_time": 26.24,
+          "end_time": 26.36
+        },
+        {
+          "text": "class.",
+          "start_time": 26.36,
+          "end_time": 26.9
+        },
+        {
+          "text": " ",
+          "start_time": 26.9,
+          "end_time": 27.46
+        },
+        {
+          "text": "From",
+          "start_time": 27.46,
+          "end_time": 27.62
+        },
+        {
+          "text": " ",
+          "start_time": 27.62,
+          "end_time": 28.06
+        },
+        {
+          "text": "6:00",
+          "start_time": 28.06,
+          "end_time": 28.18
+        },
+        {
+          "text": " ",
+          "start_time": 28.18,
+          "end_time": 28.24
+        },
+        {
+          "text": "a.m.",
+          "start_time": 28.24,
+          "end_time": 28.5
+        },
+        {
+          "text": " ",
+          "start_time": 28.5,
+          "end_time": 28.5
+        },
+        {
+          "text": "to",
+          "start_time": 28.5,
+          "end_time": 28.72
+        },
+        {
+          "text": " ",
+          "start_time": 28.72,
+          "end_time": 28.72
+        },
+        {
+          "text": "8:00",
+          "start_time": 29.18,
+          "end_time": 29.32
+        },
+        {
+          "text": " ",
+          "start_time": 29.32,
+          "end_time": 29.38
+        },
+        {
+          "text": "a.m.,",
+          "start_time": 29.6,
+          "end_time": 29.86
+        },
+        {
+          "text": " ",
+          "start_time": 29.86,
+          "end_time": 30.06
+        },
+        {
+          "text": "some",
+          "start_time": 30.06,
+          "end_time": 30.2
+        },
+        {
+          "text": " ",
+          "start_time": 30.2,
+          "end_time": 30.34
+        },
+        {
+          "text": "cars",
+          "start_time": 30.34,
+          "end_time": 30.66
+        },
+        {
+          "text": " ",
+          "start_time": 30.66,
+          "end_time": 30.76
+        },
+        {
+          "text": "are",
+          "start_time": 30.76,
+          "end_time": 30.84
+        },
+        {
+          "text": " ",
+          "start_time": 30.84,
+          "end_time": 30.94
+        },
+        {
+          "text": "driven",
+          "start_time": 30.94,
+          "end_time": 31.28
+        },
+        {
+          "text": " ",
+          "start_time": 31.28,
+          "end_time": 31.4
+        },
+        {
+          "text": "by",
+          "start_time": 31.4,
+          "end_time": 31.6
+        },
+        {
+          "text": " ",
+          "start_time": 31.6,
+          "end_time": 32.38
+        },
+        {
+          "text": "people",
+          "start_time": 32.38,
+          "end_time": 32.74
+        },
+        {
+          "text": " ",
+          "start_time": 32.74,
+          "end_time": 32.78
+        },
+        {
+          "text": "on",
+          "start_time": 32.78,
+          "end_time": 32.84
+        },
+        {
+          "text": " ",
+          "start_time": 32.84,
+          "end_time": 32.86
+        },
+        {
+          "text": "their",
+          "start_time": 32.86,
+          "end_time": 32.96
+        },
+        {
+          "text": " ",
+          "start_time": 32.96,
+          "end_time": 32.98
+        },
+        {
+          "text": "way",
+          "start_time": 32.98,
+          "end_time": 33.1
+        },
+        {
+          "text": " ",
+          "start_time": 33.1,
+          "end_time": 33.16
+        },
+        {
+          "text": "to",
+          "start_time": 33.16,
+          "end_time": 33.24
+        },
+        {
+          "text": " ",
+          "start_time": 33.24,
+          "end_time": 33.34
+        },
+        {
+          "text": "work,",
+          "start_time": 33.34,
+          "end_time": 33.7
+        },
+        {
+          "text": " ",
+          "start_time": 33.7,
+          "end_time": 33.86
+        },
+        {
+          "text": "but",
+          "start_time": 33.86,
+          "end_time": 34.02
+        },
+        {
+          "text": " ",
+          "start_time": 34.02,
+          "end_time": 34.06
+        },
+        {
+          "text": "many",
+          "start_time": 34.06,
+          "end_time": 34.32
+        },
+        {
+          "text": " ",
+          "start_time": 34.32,
+          "end_time": 34.38
+        },
+        {
+          "text": "others",
+          "start_time": 34.38,
+          "end_time": 34.66
+        },
+        {
+          "text": " ",
+          "start_time": 34.66,
+          "end_time": 34.76
+        },
+        {
+          "text": "ride",
+          "start_time": 34.76,
+          "end_time": 34.94
+        },
+        {
+          "text": " ",
+          "start_time": 34.94,
+          "end_time": 34.96
+        },
+        {
+          "text": "the",
+          "start_time": 34.96,
+          "end_time": 35.1
+        },
+        {
+          "text": " ",
+          "start_time": 35.1,
+          "end_time": 35.12
+        },
+        {
+          "text": "bus",
+          "start_time": 35.12,
+          "end_time": 35.54
+        },
+        {
+          "text": " ",
+          "start_time": 35.54,
+          "end_time": 35.8
+        },
+        {
+          "text": "or",
+          "start_time": 35.8,
+          "end_time": 35.94
+        },
+        {
+          "text": " ",
+          "start_time": 35.94,
+          "end_time": 36.02
+        },
+        {
+          "text": "work",
+          "start_time": 36.02,
+          "end_time": 36.22
+        },
+        {
+          "text": " ",
+          "start_time": 36.22,
+          "end_time": 36.26
+        },
+        {
+          "text": "from",
+          "start_time": 36.26,
+          "end_time": 36.4
+        },
+        {
+          "text": " ",
+          "start_time": 36.4,
+          "end_time": 36.46
+        },
+        {
+          "text": "home.",
+          "start_time": 36.46,
+          "end_time": 36.84
+        },
+        {
+          "text": " ",
+          "start_time": 36.84,
+          "end_time": 37.14
+        },
+        {
+          "text": "Everyone",
+          "start_time": 37.14,
+          "end_time": 37.56
+        },
+        {
+          "text": " ",
+          "start_time": 37.56,
+          "end_time": 37.58
+        },
+        {
+          "text": "gets",
+          "start_time": 37.58,
+          "end_time": 37.76
+        },
+        {
+          "text": " ",
+          "start_time": 37.76,
+          "end_time": 37.78
+        },
+        {
+          "text": "an",
+          "start_time": 37.78,
+          "end_time": 37.88
+        },
+        {
+          "text": " ",
+          "start_time": 37.88,
+          "end_time": 37.92
+        },
+        {
+          "text": "early",
+          "start_time": 37.92,
+          "end_time": 38.16
+        },
+        {
+          "text": " ",
+          "start_time": 38.16,
+          "end_time": 38.32
+        },
+        {
+          "text": "start",
+          "start_time": 38.32,
+          "end_time": 38.6
+        },
+        {
+          "text": " ",
+          "start_time": 38.6,
+          "end_time": 38.66
+        },
+        {
+          "text": "each",
+          "start_time": 38.66,
+          "end_time": 38.84
+        },
+        {
+          "text": " ",
+          "start_time": 38.84,
+          "end_time": 38.94
+        },
+        {
+          "text": "day.",
+          "start_time": 38.94,
+          "end_time": 39.22
+        },
+        {
+          "text": " ",
+          "start_time": 39.22,
+          "end_time": 39.64
+        },
+        {
+          "text": "No",
+          "start_time": 39.64,
+          "end_time": 39.78
+        },
+        {
+          "text": " ",
+          "start_time": 39.78,
+          "end_time": 39.82
+        },
+        {
+          "text": "wonder",
+          "start_time": 39.82,
+          "end_time": 40.08
+        },
+        {
+          "text": " ",
+          "start_time": 40.08,
+          "end_time": 40.12
+        },
+        {
+          "text": "it's",
+          "start_time": 40.12,
+          "end_time": 40.68
+        },
+        {
+          "text": " ",
+          "start_time": 40.68,
+          "end_time": 40.76
+        },
+        {
+          "text": "quiet",
+          "start_time": 40.76,
+          "end_time": 41.12
+        },
+        {
+          "text": " ",
+          "start_time": 41.12,
+          "end_time": 41.16
+        },
+        {
+          "text": "by",
+          "start_time": 41.16,
+          "end_time": 41.32
+        },
+        {
+          "text": " ",
+          "start_time": 41.32,
+          "end_time": 41.36
+        },
+        {
+          "text": "10:00",
+          "start_time": 41.36,
+          "end_time": 41.8
+        },
+        {
+          "text": " ",
+          "start_time": 41.8,
+          "end_time": 41.84
+        },
+        {
+          "text": "p.m.",
+          "start_time": 41.84,
+          "end_time": 42.06
+        },
+        {
+          "text": " ",
+          "start_time": 42.06,
+          "end_time": 42.18
+        },
+        {
+          "text": "in",
+          "start_time": 42.18,
+          "end_time": 42.24
+        },
+        {
+          "text": " ",
+          "start_time": 42.24,
+          "end_time": 42.28
+        },
+        {
+          "text": "our",
+          "start_time": 42.28,
+          "end_time": 42.4
+        },
+        {
+          "text": " ",
+          "start_time": 42.4,
+          "end_time": 42.46
+        },
+        {
+          "text": "town.",
+          "start_time": 42.46,
+          "end_time": 42.82
+        },
+        {
+          "text": " ",
+          "start_time": 42.82,
+          "end_time": 43.4
+        },
+        {
+          "text": "Morning",
+          "start_time": 43.4,
+          "end_time": 43.7
+        },
+        {
+          "text": " ",
+          "start_time": 43.7,
+          "end_time": 43.8
+        },
+        {
+          "text": "schedule.",
+          "start_time": 43.84,
+          "end_time": 44.36
+        },
+        {
+          "text": " ",
+          "start_time": 44.36,
+          "end_time": 44.9
+        },
+        {
+          "text": "Time.",
+          "start_time": 44.9,
+          "end_time": 45.34
+        }
+      ]
+    }
+  ]
+}

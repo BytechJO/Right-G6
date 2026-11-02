@@ -1,17 +1,23 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit10AudioText, {
+  workbookUnit10Audio,
+} from "./WorkbookUnit10AudioText";
 
 const ITEMS = [
-  { id: 1, prefix: "I like"      },
-  { id: 2, prefix: "I prefer"    },
-  { id: 3, prefix: "I dislike"   },
-  { id: 4, prefix: "I enjoy"     },
-  { id: 5, prefix: "I hate"      },
+  { id: 1, prefix: "I like" },
+  { id: 2, prefix: "I prefer" },
+  { id: 3, prefix: "I dislike" },
+  { id: 4, prefix: "I enjoy" },
+  { id: 5, prefix: "I hate" },
   { id: 6, prefix: "I don't mind" },
 ];
 
 const initAnswers = () => {
   const a = {};
-  ITEMS.forEach(({ id }) => { a[id] = ""; });
+  ITEMS.forEach(({ id }) => {
+    a[id] = "";
+  });
   return a;
 };
 
@@ -51,22 +57,47 @@ const WB_Unit_LikesDisikes_J = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
+        <ExerciseHeader
+          sectionLetter="J"
+          title="Complete each sentence with what you like and dislike. Use stative verbs and gerunds."
+          subTitle="After each stative verb, write an activity as a gerund and make sure the sentence expresses your own preference clearly."
+        />
 
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>J</span>
-          Complete each sentence with what you like and dislike. Use{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>stative verbs and gerunds</span>.
-          {" "}Example:{" "}
-          <span style={{ color: "orange", fontStyle: "italic" }}>
-            I like playing board games with my cousin.
-          </span>
-        </h5>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "45px", marginBottom: "3em" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "45px",
+          }}
+        >
           {ITEMS.map(({ id, prefix }) => (
-            <div key={id} style={{ display: "flex", alignItems: "flex-end", gap: "10px" }}>
-              <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>{id}</span>
-              <span style={{ fontSize: "18px", color: "#333", whiteSpace: "nowrap" }}>{prefix}</span>
+            <div
+              key={id}
+              style={{ display: "flex", alignItems: "flex-end", gap: "10px" }}
+            >
+              <span
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                  minWidth: "20px",
+                }}
+              >
+                {id}
+              </span>
+              <WorkbookUnit10AudioText
+                src={workbookUnit10Audio(
+                  "Page 61 - Exercise J",
+                  `Item_${String(id).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play ${prefix}`}
+                style={{
+                  fontSize: "18px",
+                  color: "#333",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {prefix}
+              </WorkbookUnit10AudioText>
               <LineInput
                 value={answers[id]}
                 onChange={(val) => handleChange(id, val)}
@@ -74,7 +105,6 @@ const WB_Unit_LikesDisikes_J = () => {
             </div>
           ))}
         </div>
-
       </div>
 
       <div className="action-buttons-container">

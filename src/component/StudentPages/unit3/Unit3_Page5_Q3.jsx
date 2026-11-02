@@ -1,11 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3StudentAudioText, { stopUnit3StudentAudio, unit3StudentAudio } from "./Unit3StudentAudioText";
 
 const normalize = (str) =>
   str
     .toLowerCase()
-    .replace(/[.,!?''""'';:\/]/g, "")
+    .replace(/[.,!?''""'';:/]/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -57,6 +60,12 @@ const CORRECT = {
   t3_r4_pr: ["come"],
 };
 
+const AUDIO_INDEX = {
+  present: 1, past: 2, do: 3, did: 4, made: 5, buy: 6, ate: 7,
+  go: 8, see: 9, chose: 10, "is/are": 11, take: 12, ride: 13,
+  read: 14, ran: 15, write: 16, won: 17, came: 18,
+};
+
 // Input خارج الكومبوننت لتفادي مشكلة re-render
 const CellInput = ({ cellKey, answers, errors, locked, onChange }) => {
   const isOk = errors[cellKey] === true;
@@ -73,6 +82,10 @@ const CellInput = ({ cellKey, answers, errors, locked, onChange }) => {
       <input
         value={answers[cellKey] || ""}
         disabled={locked || isOk}
+        placeholder="verb"
+        title="Type the missing verb form"
+        aria-label={`Type the missing verb form for ${cellKey}`}
+        className="unit3-student-answer-input"
         onChange={(e) => onChange(cellKey, e.target.value)}
         style={{
           width: "90px",
@@ -166,6 +179,7 @@ const Unit3_Page5_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit3StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setLocked(false);
@@ -192,7 +206,11 @@ const Unit3_Page5_Q3 = () => {
   const renderCell = (cell) => {
     if (cell.fixed !== undefined) {
       return (
-        <span style={{ fontSize: "18px", color: "#333" }}>{cell.fixed}</span>
+        <Unit3StudentAudioText
+          src={unit3StudentAudio("Page 26 - Exercise C", `Item_${String(AUDIO_INDEX[cell.fixed]).padStart(3, "0")}_`)}
+          ariaLabel={`Play ${cell.fixed}`}
+          style={{ fontSize: "18px", color: "#333" }}
+        >{cell.fixed}</Unit3StudentAudioText>
       );
     }
     return (
@@ -209,10 +227,11 @@ const Unit3_Page5_Q3 = () => {
   return (
     <div className="flex flex-col items-center p-8">
       <div className="div-forall"  style={{ gap: "30px" }}>
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2.5">C</span>
-          Complete the chart for the irregular verbs.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Complete the chart for the irregular verbs."
+          subTitle="Work through the chart one row at a time and use the row/column headings as clues before checking your entries."
+        />
 
         {/* الجداول الثلاثة */}
         <div
@@ -233,8 +252,8 @@ const Unit3_Page5_Q3 = () => {
             >
               <thead>
                 <tr>
-                  <th style={thStyle}>present</th>
-                  <th style={thStyle}>past</th>
+                  <th style={thStyle}><Unit3StudentAudioText src={unit3StudentAudio("Page 26 - Exercise C", "Item_001_")} ariaLabel="Play present">present</Unit3StudentAudioText></th>
+                  <th style={thStyle}><Unit3StudentAudioText src={unit3StudentAudio("Page 26 - Exercise C", "Item_002_")} ariaLabel="Play past">past</Unit3StudentAudioText></th>
                 </tr>
               </thead>
               <tbody>

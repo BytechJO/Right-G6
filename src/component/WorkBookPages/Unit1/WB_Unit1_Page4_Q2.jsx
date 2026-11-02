@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WBUnit1AudioText, {
+  stopUnit1Audio,
+  unit1Audio,
+} from "./WB_Unit1_AudioText";
 
 const WB_Unit1_Page4_Q3 = () => {
   const questions = [
@@ -26,9 +31,12 @@ const WB_Unit1_Page4_Q3 = () => {
   const [locked, setLocked] = useState(false);
   const [Shans, setShans] = useState(false);
 
-
-const normalize = (str) =>
-    str.toLowerCase().replace(/[.?!,’'']/g, "").replace(/\s+/g, " ").trim();;
+  const normalize = (str) =>
+    str
+      .toLowerCase()
+      .replace(/[.?!,’'']/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
   const handleChange = (i, value) => {
     if (locked || result[i] === true) return;
@@ -63,19 +71,22 @@ const normalize = (str) =>
       correctCount === total ? "green" : correctCount === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correctCount} / ${total}</span></div>`;
 
-    if (correctCount === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correctCount === 0) ValidationAlert.error(msg);
+    if (correctCount === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correctCount === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setShans(true)
+    setShans(true);
     setAnswers(questions.map((q) => q.answer));
     setResult(questions.map(() => true));
     setLocked(true);
   };
 
   const handleReset = () => {
+    stopUnit1Audio();
     setAnswers(["", "", "", ""]);
     setResult([]);
     setLocked(false);
@@ -83,15 +94,20 @@ const normalize = (str) =>
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* Title */}
-        <h5 className="header-title-page8 mb-10">
-          <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
-          Change the sentences from the simple past to the <span style={{ color : "orange"}}>present perfect</span>  tense.
-        </h5>
+      <div className="div-forall gap-10 mb-10">
+        <ExerciseHeader
+          sectionLetter="C"
+          title={
+            <>
+              Change the sentences from the simple past to the{" "}
+              <span style={{ color: "orange" }}>present perfect</span> tense.
+            </>
+          }
+          subTitle="Keep the original meaning unchanged while rewriting the grammar pattern, then reread the complete sentence."
+        />
 
         {/* Questions */}
-        <div className="flex flex-col gap-15 text-[18px]">
+        <div className="flex flex-col gap-10 text-[18px]">
           {questions.map((q, i) => {
             const isWrong = result[i] === false;
             const isCorrect = result[i] === true;
@@ -100,19 +116,34 @@ const normalize = (str) =>
               <div key={i} className="flex flex-col gap-2">
                 {/* Original sentence */}
                 <div className="flex items-center gap-3">
-                  <span className="font-bold text-[20px] min-w-[24px]">{i + 1}</span>
-                  <span>{q.sentence}</span>
+                  <span className="font-bold text-[20px] min-w-[24px]">
+                    {i + 1}
+                  </span>
+                  <WBUnit1AudioText
+                    src={unit1Audio(
+                      "Page 4 - Exercise C",
+                      `Item_${String(i + 1).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play sentence ${i + 1}`}
+                  >
+                    {q.sentence}
+                  </WBUnit1AudioText>
                 </div>
 
                 {/* Input line */}
-                <div className="relative flex items-center" style={{ paddingLeft: "36px" }}>
+                <div
+                  className="relative flex items-center"
+                  style={{ paddingLeft: "36px" }}
+                >
                   <input
                     type="text"
                     value={answers[i]}
+                    placeholder="Type the sentence"
+                    title="Type the sentence"
                     disabled={locked || isCorrect}
                     onChange={(e) => handleChange(i, e.target.value)}
                     className={`
-                      w-full border-0 border-b outline-none bg-transparent
+                      wb-unit1-answer-input w-full border-0 border-b outline-none bg-transparent
                       text-[18px] font-semibold px-1
                       ${isWrong ? "border-[#D1232A]" : "border-black"}
                     `}
@@ -121,13 +152,27 @@ const normalize = (str) =>
                     }}
                   />
                   {isWrong && (
-                    <span style={{
-                      position: "absolute", top: "-8px", right: "-8px",
-                      width: "20px", height: "20px", background: "#ef4444", color: "white",
-                      borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-                    }}>✕</span>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        width: "20px",
+                        height: "20px",
+                        background: "#ef4444",
+                        color: "white",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "11px",
+                        fontWeight: "bold",
+                        border: "2px solid white",
+                        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                      }}
+                    >
+                      ✕
+                    </span>
                   )}
                 </div>
               </div>

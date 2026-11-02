@@ -1,46 +1,92 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 const Review4_Page1_Q2 = () => {
   const rows = [
     {
-      left:  { text: "Janet mails the letter.", editable: false },
-      right: { text: "The letter is mailed by Janet.", editable: false },
+      left: {
+        text: "Janet mails the letter.",
+        editable: false,
+        audio: "Item_003_",
+      },
+      right: {
+        text: "The letter is mailed by Janet.",
+        editable: false,
+        audio: "Item_004_",
+      },
     },
     {
-      left:  { text: "Jeremy makes linen by using flaxseed.", editable: false },
-      right: { text: "By using flaxseed.", editable: false, answer: "By using flaxseed." },
+      left: {
+        text: "Jeremy makes linen by using flaxseed.",
+        editable: false,
+        audio: "Item_005_",
+      },
+      right: {
+        text: "By using flaxseed.",
+        editable: false,
+        answer: "By using flaxseed.",
+        audio: "Item_006_",
+      },
     },
     {
-      left:  { text: "The bakers make delicious rolls each day.", editable: false },
-      right: { text: "", editable: true, answer: "Delicious rolls are made by the bakers each day" },
+      left: {
+        text: "The bakers make delicious rolls each day.",
+        editable: false,
+        audio: "Item_007_",
+      },
+      right: {
+        text: "",
+        editable: true,
+        answer: "Delicious rolls are made by the bakers each day",
+      },
     },
     {
-      left:  { text: "", editable: true, answer: "The machines milk the cows on the farm." },
-      right: { text: "On their farm, the cows are milked by machines.", editable: false },
+      left: {
+        text: "",
+        editable: true,
+        answer: "The machines milk the cows on the farm.",
+      },
+      right: {
+        text: "On their farm, the cows are milked by machines.",
+        editable: false,
+        audio: "Item_008_",
+      },
     },
     {
-      left:  { text: "", editable: true, answer: "My sister cleans the house every Friday." },
-      right: { text: "Every Friday, the house is cleaned by my sister.", editable: false },
+      left: {
+        text: "",
+        editable: true,
+        answer: "My sister cleans the house every Friday.",
+      },
+      right: {
+        text: "Every Friday, the house is cleaned by my sister.",
+        editable: false,
+        audio: "Item_009_",
+      },
     },
   ];
 
   const totalInputs = rows.filter(
-    (r) => r.left.editable || r.right.editable
+    (r) => r.left.editable || r.right.editable,
   ).length;
 
   const initAnswers = () => {
     const obj = {};
     rows.forEach((row, i) => {
-      if (row.left.editable)  obj[`${i}-left`]  = "";
+      if (row.left.editable) obj[`${i}-left`] = "";
       if (row.right.editable) obj[`${i}-right`] = "";
     });
     return obj;
   };
 
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const normalize = (s) =>
     s.toLowerCase().replace(/\s+/g, " ").trim().replace(/\.$/, "");
@@ -119,6 +165,7 @@ const Review4_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
@@ -126,26 +173,38 @@ const Review4_Page1_Q2 = () => {
 
   const renderCell = (row, rowIndex, side) => {
     const cell = row[side];
-    const key  = `${rowIndex}-${side}`;
+    const key = `${rowIndex}-${side}`;
 
     if (!cell.editable) {
       return (
-        <span style={{ color: "var(--color-text-primary, #111)" }}>
+        <Unit4StudentAudioText
+          src={
+            cell.audio
+              ? unit4StudentAudio("Page 36 - Exercise B", cell.audio)
+              : null
+          }
+          ariaLabel={`Play ${cell.text}`}
+          style={{ color: "var(--color-text-primary, #111)" }}
+        >
           {cell.text}
-        </span>
+        </Unit4StudentAudioText>
       );
     }
 
-    const isWrong   = result[key] === false;
+    const isWrong = result[key] === false;
     const isCorrect = result[key] === true;
 
     return (
-      <span style={{ position: "relative", display: "inline-block", width: "100%" }}>
+      <span
+        style={{ position: "relative", display: "inline-block", width: "100%" }}
+      >
         <input
           disabled={locked || isCorrect}
           value={answers[key] ?? ""}
           onChange={(e) => handleChange(key, e.target.value)}
           placeholder="Write here..."
+          title={`Write the ${side === "left" ? "simple present" : "present simple passive"} sentence`}
+          aria-label={`Row ${rowIndex + 1}, ${side === "left" ? "simple present" : "present simple passive"}`}
           style={{
             width: "100%",
             border: "none",
@@ -155,7 +214,7 @@ const Review4_Page1_Q2 = () => {
             outline: "none",
             background: "transparent",
             fontSize: "15px",
-       
+
             fontWeight: "600",
             paddingBottom: "2px",
           }}
@@ -166,7 +225,7 @@ const Review4_Page1_Q2 = () => {
               position: "absolute",
               top: "-10px",
               right: "-10px",
-                   width: "22px",
+              width: "22px",
               height: "22px",
               background: "red",
               color: "white",
@@ -197,11 +256,23 @@ const Review4_Page1_Q2 = () => {
         padding: "30px",
       }}
     >
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-10">
-          <span className="mr-2">B</span>
-      Either change the sentence from the simple present to the present simple passive, or change it from the present simple passive to the simple present.
-        </h5>
+      <div className="div-forall gap-3 mb-10">
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title="Change each sentence between the simple present and the present simple passive."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Identify which side is active and which is passive
+                first.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Rewrite only the missing form while keeping the tense
+                and meaning unchanged.
+              </span>
+            </>
+          }
+        />
 
         {/* TABLE */}
         <table
@@ -224,7 +295,12 @@ const Review4_Page1_Q2 = () => {
                   width: "50%",
                 }}
               >
-                Simple present
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 36 - Exercise B", "Item_001_")}
+                  ariaLabel="Play Simple present"
+                >
+                  Simple present
+                </Unit4StudentAudioText>
               </th>
               <th
                 style={{
@@ -237,16 +313,18 @@ const Review4_Page1_Q2 = () => {
                   width: "50%",
                 }}
               >
-                Present participle
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 36 - Exercise B", "Item_002_")}
+                  ariaLabel="Play Present participle"
+                >
+                  Present participle
+                </Unit4StudentAudioText>
               </th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr
-                key={i}
-               
-              >
+              <tr key={i}>
                 {/* LEFT CELL */}
                 <td
                   style={{

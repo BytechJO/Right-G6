@@ -94,3 +94,6 @@
   right: 20%;
   top: 30%;
 }
+.student-unit1-answer-input::placeholder {
+  font-size: 0.78em;
+}

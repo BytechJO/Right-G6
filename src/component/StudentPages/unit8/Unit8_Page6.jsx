@@ -1,19 +1,29 @@
 import React from "react";
 import page_6 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/Page 69.png";
-// import song from "../../../assets/img_unit5/sounds-unit5/Pg15.Sing_Adult Lady.mp3";
 import "./Unit8_Page6.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
 const Unit8_Page6 = ({ openPopup }) => {
+  const openExercise = (startIndex) => {
+    openPopup("exercise", { startIndex });
+  };
 
+  const handleKeyDown = (event, startIndex) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openExercise(startIndex);
+      }
+    }
+  };
 
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_6})` }}
     >
-      {/* <img src={page_6} /> */}
-
       <div
         className="click-icon-unit8-page6-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -22,8 +32,15 @@ const Unit8_Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 69 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 1"
+          onClick={() => openExercise(69)}
+          onKeyDown={(event) => handleKeyDown(event, 69)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -35,6 +52,7 @@ const Unit8_Page6 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
       <div
         className="click-icon-unit8-page6-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -43,8 +61,15 @@ const Unit8_Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 70 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 2"
+          onClick={() => openExercise(70)}
+          onKeyDown={(event) => handleKeyDown(event, 70)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -56,7 +81,8 @@ const Unit8_Page6 = ({ openPopup }) => {
           />
         </svg>
       </div>
-          <div
+
+      <div
         className="click-icon-unit8-page6-3 hover:scale-110 transition"
         style={{ overflow: "visible" }}
       >
@@ -64,8 +90,15 @@ const Unit8_Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 71 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 3"
+          onClick={() => openExercise(71)}
+          onKeyDown={(event) => handleKeyDown(event, 71)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

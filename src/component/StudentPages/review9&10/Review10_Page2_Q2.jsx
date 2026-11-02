@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
+
+const audioFolder = "Page 91 - Exercise E";
+const promptAudioPrefixes = ["002", "003", "004", "005"];
+const prompts = [
+  "Rachel/dislike/take/pictures.",
+  "Dad/appreciates/hike/in the mountains.",
+  "Snowboard/is/a/popular/sport.",
+  "Type/and/write/are/important/skills.",
+];
 
 const Unit10_Page3_Q5 = () => {
   const questions = [
@@ -102,6 +116,7 @@ const Unit10_Page3_Q5 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", ""]);
 
     setResult([]);
@@ -116,6 +131,9 @@ const Unit10_Page3_Q5 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Write the sentence"
+        title={`Sentence ${i + 1}: use the words with a gerund`}
+        aria-label={`Sentence ${i + 1}: use the words with a gerund`}
         className={`
         w-full
         border-0
@@ -162,12 +180,12 @@ const Unit10_Page3_Q5 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[20px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[11vh]">
-          <span className="mr-4">E</span>
-          Use each set of words given to write a sentence with a gerund.
-        </div>
+      <div className="div-forall w-full text-[20px] gap-10">
+        <ExerciseHeaderReview
+          sectionLetter="E"
+          title="Use each set of words to write a sentence with a gerund."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         {/* QUESTIONS */}
         <div className="flex flex-col gap-20">
@@ -175,7 +193,12 @@ const Unit10_Page3_Q5 = () => {
           <div className="flex items-center gap-3">
             <span className="font-bold w-5">1</span>
 
-            <span>Rachel/dislike/take/pictures.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, promptAudioPrefixes[0])}
+              flowText
+            >
+              {prompts[0]}
+            </Unit10StudentAudioText>
 
             {inputField(0)}
           </div>
@@ -184,7 +207,12 @@ const Unit10_Page3_Q5 = () => {
           <div className="flex items-center gap-3">
             <span className="font-bold w-5">2</span>
 
-            <span>Dad/appreciates/hike/in the mountains.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, promptAudioPrefixes[1])}
+              flowText
+            >
+              {prompts[1]}
+            </Unit10StudentAudioText>
 
             {inputField(1)}
           </div>
@@ -193,7 +221,12 @@ const Unit10_Page3_Q5 = () => {
           <div className="flex items-center gap-3">
             <span className="font-bold w-5">3</span>
 
-            <span>Snowboard/is/a/popular/sport.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, promptAudioPrefixes[2])}
+              flowText
+            >
+              {prompts[2]}
+            </Unit10StudentAudioText>
 
             {inputField(2)}
           </div>
@@ -202,7 +235,12 @@ const Unit10_Page3_Q5 = () => {
           <div className="flex items-center gap-3">
             <span className="font-bold w-5">4</span>
 
-            <span>Type/and/write/are/important/skills.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, promptAudioPrefixes[3])}
+              flowText
+            >
+              {prompts[3]}
+            </Unit10StudentAudioText>
 
             {inputField(3)}
           </div>

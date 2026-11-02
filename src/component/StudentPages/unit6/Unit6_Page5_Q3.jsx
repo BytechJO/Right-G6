@@ -1,17 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "./Unit6StudentAudioText";
 import audio from "../../../assets/audio/ClassBook/U6/PG 51/CD30.Pg50_Instruction1_Adult Lady.mp3";
 
 const names = ["Gerald", "Marcia", "Belinda", "Jerry", "Polly", "Margaret"];
 
+const nameAudio = {
+  Gerald: "Item_001_",
+  Marcia: "Item_004_",
+  Belinda: "Item_005_",
+  Jerry: "Item_008_",
+  Polly: "Item_009_",
+  Margaret: "Item_012_",
+};
+
 const sentences = [
-  { id: 1, text: "is used to hearing many interesting stories." },
-  { id: 2, text: "used to be a singer." },
-  { id: 3, text: "never used to watch TV." },
-  { id: 4, text: "used to listen to records." },
-  { id: 5, text: "is used to living on a farm." },
-  { id: 6, text: "isn't used to using a computer." },
+  {
+    id: 1,
+    text: "is used to hearing many interesting stories.",
+    audio: "Item_002_",
+  },
+  { id: 2, text: "used to be a singer.", audio: "Item_003_" },
+  { id: 3, text: "never used to watch TV.", audio: "Item_006_" },
+  { id: 4, text: "used to listen to records.", audio: "Item_007_" },
+  { id: 5, text: "is used to living on a farm.", audio: "Item_010_" },
+  { id: 6, text: "isn't used to using a computer.", audio: "Item_011_" },
 ];
 
 const correctAnswers = {
@@ -23,18 +41,21 @@ const correctAnswers = {
   Margaret: 5,
 };
 
-const captions = [
-  { start: 0.0, end: 20.0, text: "Match each vocabulary word to its picture." },
-];
+const captions = [{ start: 0.0, end: 20.0, text: "Listen and match." }];
 
 const Unit6_Page5_Q3 = () => {
   const [matches, setMatches] = useState({}); // { name: sentenceId }
   const [selectedName, setSelectedName] = useState(null);
+  const [selectedSentence, setSelectedSentence] = useState(null);
+  const [keyboardSelection, setKeyboardSelection] = useState(false);
+  const [focusedEndpoint, setFocusedEndpoint] = useState(null);
   const [errors, setErrors] = useState({});
   const [locked, setLocked] = useState(false);
 
   const leftDotRefs = useRef({});
   const rightDotRefs = useRef({});
+  const leftItemRefs = useRef({});
+  const rightItemRefs = useRef({});
   const containerRef = useRef(null);
   const [dotPositions, setDotPositions] = useState({});
 
@@ -76,47 +97,133 @@ const Unit6_Page5_Q3 = () => {
     Object.entries(matches).map(([n, sid]) => [sid, n]),
   );
 
-  const handleNameClick = (name) => {
-    if (locked) return;
-    // if correct → locked, can't touch
-    if (errors[name] === false) return;
-    setSelectedName(selectedName === name ? null : name);
-  };
+  const isNameLocked = (name) => errors[name] === false;
 
-  const handleSentenceClick = (sentenceId) => {
-    if (locked || !selectedName) return;
+  const connect = (name, sentenceId, fromKeyboard = false) => {
+    if (locked || isNameLocked(name)) return;
+    const existingOwner = sentenceToName[sentenceId];
+    if (existingOwner && isNameLocked(existingOwner)) return;
 
-    const existingOwner = sentenceToName[sentenceId]; // name already linked to this sentence
-
-    // if this sentence is already correctly matched → ignore
-    if (existingOwner && errors[existingOwner] === false) return;
-
-    // if this sentence is already matched to a WRONG name → unlink that name first
-    if (existingOwner && errors[existingOwner] !== false) {
-      setMatches((prev) => {
-        const updated = { ...prev };
-        delete updated[existingOwner];
-        return updated;
-      });
-      setErrors((prev) => {
-        const updated = { ...prev };
-        delete updated[existingOwner];
-        return updated;
-      });
-    }
-
-    // if selectedName already had a match → remove it first
     setMatches((prev) => {
       const updated = { ...prev };
-      updated[selectedName] = sentenceId;
+      if (existingOwner && existingOwner !== name)
+        delete updated[existingOwner];
+      updated[name] = sentenceId;
       return updated;
     });
     setErrors((prev) => {
       const updated = { ...prev };
-      delete updated[selectedName];
+      delete updated[name];
+      if (existingOwner) delete updated[existingOwner];
       return updated;
     });
     setSelectedName(null);
+    setSelectedSentence(null);
+    setKeyboardSelection(false);
+    setFocusedEndpoint(null);
+
+    if (fromKeyboard) {
+      requestAnimationFrame(() => {
+        const nextName = names.find(
+          (candidate) => candidate !== name && !isNameLocked(candidate),
+        );
+        leftItemRefs.current[nextName]?.focus();
+      });
+    }
+  };
+
+  const handleNameClick = (name, fromKeyboard = false) => {
+    if (locked || isNameLocked(name)) return;
+    if (selectedSentence !== null) {
+      connect(name, selectedSentence, fromKeyboard);
+      return;
+    }
+    if (selectedName === name) {
+      setSelectedName(null);
+      setKeyboardSelection(false);
+      return;
+    }
+    setSelectedName(name);
+    setSelectedSentence(null);
+    setKeyboardSelection(fromKeyboard);
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+    if (fromKeyboard) {
+      requestAnimationFrame(() => {
+        const firstSentence = sentences.find((sentence) => {
+          const owner = sentenceToName[sentence.id];
+          return !owner || !isNameLocked(owner);
+        });
+        rightItemRefs.current[firstSentence?.id]?.focus();
+      });
+    }
+  };
+
+  const handleSentenceClick = (sentenceId, fromKeyboard = false) => {
+    if (locked) return;
+    const owner = sentenceToName[sentenceId];
+    if (owner && isNameLocked(owner)) return;
+    if (selectedName !== null) {
+      connect(selectedName, sentenceId, fromKeyboard);
+      return;
+    }
+    if (selectedSentence === sentenceId) {
+      setSelectedSentence(null);
+      setKeyboardSelection(false);
+      return;
+    }
+    setSelectedSentence(sentenceId);
+    setSelectedName(null);
+    setKeyboardSelection(fromKeyboard);
+    if (fromKeyboard) {
+      requestAnimationFrame(() => {
+        const firstName = names.find((name) => !isNameLocked(name));
+        leftItemRefs.current[firstName]?.focus();
+      });
+    }
+  };
+
+  const handleEndpointKeyDown = (event, side, id) => {
+    if (event.key === "Tab" && keyboardSelection) {
+      const expectedSide = selectedName !== null ? "sentence" : "name";
+      if (side === expectedSide) {
+        const ids =
+          side === "sentence"
+            ? sentences
+                .filter((sentence) => {
+                  const owner = sentenceToName[sentence.id];
+                  return !owner || !isNameLocked(owner);
+                })
+                .map((sentence) => sentence.id)
+            : names.filter((name) => !isNameLocked(name));
+        const index = Math.max(0, ids.indexOf(id));
+        const step = event.shiftKey ? -1 : 1;
+        const nextId = ids[(index + step + ids.length) % ids.length];
+        event.preventDefault();
+        const refs = side === "sentence" ? rightItemRefs : leftItemRefs;
+        refs.current[nextId]?.focus();
+      }
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      const sourceName = selectedName;
+      const sourceSentence = selectedSentence;
+      setSelectedName(null);
+      setSelectedSentence(null);
+      setKeyboardSelection(false);
+      setFocusedEndpoint(null);
+      requestAnimationFrame(() => {
+        if (sourceName !== null) leftItemRefs.current[sourceName]?.focus();
+        if (sourceSentence !== null)
+          rightItemRefs.current[sourceSentence]?.focus();
+      });
+      return;
+    }
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.repeat) return;
+    event.currentTarget.querySelector("button")?.click();
   };
 
   const checkAnswers = () => {
@@ -156,13 +263,20 @@ const Unit6_Page5_Q3 = () => {
     setMatches(correct);
     setErrors(correctErrors);
     setSelectedName(null);
+    setSelectedSentence(null);
+    setKeyboardSelection(false);
+    setFocusedEndpoint(null);
     setLocked(true);
   };
 
   const reset = () => {
+    stopUnit6StudentAudio();
     setMatches({});
     setErrors({});
     setSelectedName(null);
+    setSelectedSentence(null);
+    setKeyboardSelection(false);
+    setFocusedEndpoint(null);
     setLocked(false);
   };
 
@@ -188,31 +302,80 @@ const Unit6_Page5_Q3 = () => {
 
   // is a sentence available to be clicked?
   const isSentenceClickable = (sentenceId) => {
-    if (locked || !selectedName) return false;
+    if (locked) return false;
     const owner = sentenceToName[sentenceId];
     if (owner && errors[owner] === false) return false; // correctly locked
     return true;
   };
 
+  const previewLine = (() => {
+    if (!keyboardSelection || !focusedEndpoint) return null;
+    if (selectedName !== null && focusedEndpoint.side === "sentence") {
+      const start = dotPositions[`left_${selectedName}`];
+      const end = dotPositions[`right_${focusedEndpoint.id}`];
+      return start && end ? { start, end } : null;
+    }
+    if (selectedSentence !== null && focusedEndpoint.side === "name") {
+      const start = dotPositions[`right_${selectedSentence}`];
+      const end = dotPositions[`left_${focusedEndpoint.id}`];
+      return start && end ? { start, end } : null;
+    }
+    return null;
+  })();
+
+  const isNameActive = (name) =>
+    selectedName === name ||
+    (selectedSentence !== null &&
+      focusedEndpoint?.side === "name" &&
+      focusedEndpoint.id === name);
+
+  const isSentenceActive = (sentenceId) =>
+    selectedSentence === sentenceId ||
+    (selectedName !== null &&
+      focusedEndpoint?.side === "sentence" &&
+      focusedEndpoint.id === sentenceId);
+
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-4">
-          <span className="ex-A mr-2">C</span>
-          Listen and match.
-        </h5>
+      <div className="div-forall mb-10" style={{ gap: "10px" }}>
+        <style>{`
+          [data-unit6-page5-q3] [data-match-endpoint]:focus-visible {
+            outline: 4px solid #2563eb;
+            outline-offset: 3px;
+            border-radius: 8px;
+          }
+          [data-unit6-page5-q3] .matching-preview-line {
+            animation: blink-preview-unit6-page5-q3 0.8s ease-in-out infinite;
+            filter: drop-shadow(0 0 2px rgba(247, 150, 49, 0.65));
+          }
+          @keyframes blink-preview-unit6-page5-q3 {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+          }
+        `}</style>
 
-        <QuestionAudioPlayer src={audio} captions={captions} stopAtSecond={4} />
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Listen and match."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
+
+        <QuestionAudioPlayer
+          src={audio}
+          captions={captions}
+          stopAtSecond={4}
+          pageId="Unit6_Page5_Q3"
+        />
 
         {/* MATCHING AREA */}
         <div
           ref={containerRef}
+          data-unit6-page5-q3
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-start",
-            marginTop: "10px",
+            marginTop: "0px",
             position: "relative",
           }}
         >
@@ -226,7 +389,7 @@ const Unit6_Page5_Q3 = () => {
               height: "100%",
               pointerEvents: "none",
               overflow: "visible",
-              zIndex: 0,
+              zIndex: 2,
             }}
           >
             {names.map((name) => {
@@ -248,6 +411,19 @@ const Unit6_Page5_Q3 = () => {
                 />
               );
             })}
+            {previewLine && (
+              <line
+                className="matching-preview-line"
+                x1={previewLine.start.x}
+                y1={previewLine.start.y}
+                x2={previewLine.end.x}
+                y2={previewLine.end.y}
+                stroke="#f79631"
+                strokeWidth="3"
+                strokeDasharray="7 6"
+                strokeLinecap="round"
+              />
+            )}
           </svg>
 
           {/* LEFT: Names */}
@@ -263,27 +439,53 @@ const Unit6_Page5_Q3 = () => {
             {names.map((name) => (
               <div
                 key={name}
-                onClick={() => handleNameClick(name)}
+                ref={(el) => (leftItemRefs.current[name] = el)}
+                role="button"
+                tabIndex={locked || isNameLocked(name) ? -1 : 0}
+                data-match-endpoint
+                aria-label={`Select ${name}`}
+                aria-pressed={selectedName === name}
+                aria-disabled={locked || isNameLocked(name)}
+                onClick={(event) => handleNameClick(name, event.detail === 0)}
+                onKeyDown={(event) =>
+                  handleEndpointKeyDown(event, "name", name)
+                }
+                onFocus={() => setFocusedEndpoint({ side: "name", id: name })}
+                onBlur={() => setFocusedEndpoint(null)}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "10px",
+                  padding: "4px 6px",
+                  borderRadius: "8px",
+                  backgroundColor: isNameActive(name)
+                    ? "rgba(247, 150, 49, 0.13)"
+                    : "transparent",
+                  boxShadow: isNameActive(name)
+                    ? "0 0 0 2px rgba(247, 150, 49, 0.75)"
+                    : "none",
                   cursor:
                     locked || errors[name] === false ? "default" : "pointer",
                   userSelect: "none",
                 }}
               >
-                <span
+                <Unit6StudentAudioText
+                  src={unit6StudentAudio(
+                    "Page 50 - Exercise C",
+                    nameAudio[name],
+                  )}
+                  ariaLabel={`Play ${name}`}
+                  focusable={false}
                   style={{
                     fontSize: "18px",
                     width: "100px",
-                    fontWeight: selectedName === name ? "700" : "500",
-                    color: selectedName === name ? "#f0a500" : "#222",
-                    transition: "color 0.15s",
+                    fontWeight: isNameActive(name) ? "700" : "500",
+                    color: isNameActive(name) ? "#f79631" : "#222",
+                    transition: "color 0.15s, font-weight 0.15s",
                   }}
                 >
                   {name}
-                </span>
+                </Unit6StudentAudioText>
 
                 {/* Left dot */}
                 <div
@@ -294,7 +496,12 @@ const Unit6_Page5_Q3 = () => {
                     borderRadius: "50%",
                     backgroundColor: getNameDotColor(name),
                     flexShrink: 0,
-                    transition: "background 0.15s",
+                    transform: isNameActive(name) ? "scale(1.35)" : "scale(1)",
+                    boxShadow: isNameActive(name)
+                      ? "0 0 0 4px rgba(247, 150, 49, 0.22)"
+                      : "none",
+                    transition:
+                      "background 0.15s, transform 0.15s, box-shadow 0.15s",
                     position: "relative",
                   }}
                 >
@@ -343,11 +550,45 @@ const Unit6_Page5_Q3 = () => {
             {sentences.map((s) => (
               <div
                 key={s.id}
-                onClick={() => handleSentenceClick(s.id)}
+                ref={(el) => (rightItemRefs.current[s.id] = el)}
+                role="button"
+                tabIndex={
+                  locked ||
+                  (sentenceToName[s.id] && isNameLocked(sentenceToName[s.id]))
+                    ? -1
+                    : 0
+                }
+                data-match-endpoint
+                aria-label={`Select sentence ${s.id}: ${s.text}`}
+                aria-pressed={selectedSentence === s.id}
+                aria-disabled={
+                  locked ||
+                  Boolean(
+                    sentenceToName[s.id] && isNameLocked(sentenceToName[s.id]),
+                  )
+                }
+                onClick={(event) =>
+                  handleSentenceClick(s.id, event.detail === 0)
+                }
+                onKeyDown={(event) =>
+                  handleEndpointKeyDown(event, "sentence", s.id)
+                }
+                onFocus={() =>
+                  setFocusedEndpoint({ side: "sentence", id: s.id })
+                }
+                onBlur={() => setFocusedEndpoint(null)}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "10px",
+                  padding: "4px 6px",
+                  borderRadius: "8px",
+                  backgroundColor: isSentenceActive(s.id)
+                    ? "rgba(247, 150, 49, 0.13)"
+                    : "transparent",
+                  boxShadow: isSentenceActive(s.id)
+                    ? "0 0 0 2px rgba(247, 150, 49, 0.75)"
+                    : "none",
                   cursor: isSentenceClickable(s.id) ? "pointer" : "default",
                   userSelect: "none",
                 }}
@@ -361,15 +602,32 @@ const Unit6_Page5_Q3 = () => {
                     borderRadius: "50%",
                     backgroundColor: getSentenceDotColor(s.id),
                     flexShrink: 0,
-                    transition: "background 0.15s",
+                    transform: isSentenceActive(s.id)
+                      ? "scale(1.35)"
+                      : "scale(1)",
+                    boxShadow: isSentenceActive(s.id)
+                      ? "0 0 0 4px rgba(247, 150, 49, 0.22)"
+                      : "none",
+                    transition:
+                      "background 0.15s, transform 0.15s, box-shadow 0.15s",
                   }}
                 />
-                <span style={{ fontSize: "18px", color: "#222" }}>
+                <Unit6StudentAudioText
+                  src={unit6StudentAudio("Page 50 - Exercise C", s.audio)}
+                  ariaLabel={`Play ${s.text}`}
+                  focusable={false}
+                  style={{
+                    fontSize: "18px",
+                    color: isSentenceActive(s.id) ? "#f79631" : "#222",
+                    fontWeight: isSentenceActive(s.id) ? 700 : 500,
+                    transition: "color 0.15s, font-weight 0.15s",
+                  }}
+                >
                   <span style={{ fontWeight: "bold", marginRight: "4px" }}>
                     {s.id}
                   </span>
                   {s.text}
-                </span>
+                </Unit6StudentAudioText>
               </div>
             ))}
           </div>

@@ -7,43 +7,43 @@ import grammer_u1 from "../../../assets/audio/ClassBook/U2/PG 12/grammer.mp3";
 
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
 const GrammarSection_U2 = () => {
-const captions = [
-  {
-    start: 0.579,
-    end: 5.799,
-    text: "Page 12, grammar. Expressing extremes, so and such.",
-  },
-  {
-    start: 6.48,
-    end: 9.179,
-    text: "They were so tired that they fell asleep in class.",
-  },
-  {
-    start: 9.579,
-    end: 13.119,
-    text: "They were such good workers that they stayed two hours extra.",
-  },
-  {
-    start: 13.899,
-    end: 16.26,
-    text: "Mary ran so fast that I couldn't catch her.",
-  },
-  {
-    start: 17.059,
-    end: 19.68,
-    text: "Ben played such a good game that his team won.",
-  },
-  {
-    start: 20.399,
-    end: 22.819,
-    text: "We talked so much that we forgot the time.",
-  },
-  {
-    start: 23.459,
-    end: 25.2,
-    text: "Ben is such a good player",
-  },
-];
+  const captions = [
+    {
+      start: 0.579,
+      end: 5.799,
+      text: "Page 12, grammar. Expressing extremes, so and such.",
+    },
+    {
+      start: 6.48,
+      end: 9.179,
+      text: "They were so tired that they fell asleep in class.",
+    },
+    {
+      start: 9.579,
+      end: 13.119,
+      text: "They were such good workers that they stayed two hours extra.",
+    },
+    {
+      start: 13.899,
+      end: 16.26,
+      text: "Mary ran so fast that I couldn't catch her.",
+    },
+    {
+      start: 17.059,
+      end: 19.68,
+      text: "Ben played such a good game that his team won.",
+    },
+    {
+      start: 20.399,
+      end: 22.819,
+      text: "We talked so much that we forgot the time.",
+    },
+    {
+      start: 23.459,
+      end: 25.2,
+      text: "Ben is such a good player",
+    },
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center mt-3">
@@ -61,6 +61,7 @@ const captions = [
           src={grammer_u1}
           captions={captions}
           stopAtSecond={2}
+          pageId="sb_unit2_page12_grammar"
           justify={"start"}
         />
       </div>

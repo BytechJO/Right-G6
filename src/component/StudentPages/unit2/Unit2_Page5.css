@@ -436,3 +436,6 @@ top: 51.5%;
     font-size: 18px;
   }
 }
+.unit2-answer-input::placeholder {
+  font-size: 0.78em;
+}

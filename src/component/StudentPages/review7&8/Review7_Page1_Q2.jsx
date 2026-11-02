@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const Review7_Page1_Q2 = () => {
   const questions = [
@@ -17,6 +22,8 @@ const Review7_Page1_Q2 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -105,6 +112,7 @@ const Review7_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", "", "", "", ""]);
 
     setResult([]);
@@ -118,6 +126,9 @@ const Review7_Page1_Q2 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="Rewrite the expression"
+        title="Rewrite the complete correct expression"
+        aria-label={`Correct expression ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
           w-full
@@ -165,25 +176,24 @@ const Review7_Page1_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        <h5 className="header-title-page8 mb-[7vh]">
-          <span
-            style={{
-              marginRight: "20px",
-            }}
-          >
-            B
-          </span>
-          Change one word in each expression below to make it correct. Rewrite
-          the expression.
-        </h5>
+      <div className="div-forall gap-7 w-full text-[18px]">
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title="Change one word in each expression to make it correct. Rewrite the expression."
+          subTitle="Identify exactly what must change, rewrite the complete correct form, and reread it to make sure the original meaning is preserved."
+        />
 
-        <div className="flex flex-col gap-[6vh]">
+        <div className="flex flex-col gap-[5vh]">
           {/* 1 */}
           <div className="flex items-center gap-4">
             <span className="font-bold">1</span>
 
-            <span>stand in</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 70 - Exercise B", "Item_001_")}
+              ariaLabel="Play stand in"
+            >
+              stand in
+            </Unit8StudentAudioText>
 
             <div className="flex-1">{inputField(0)}</div>
           </div>
@@ -192,7 +202,12 @@ const Review7_Page1_Q2 = () => {
           <div className="flex items-center gap-4">
             <span className="font-bold">2</span>
 
-            <span>catch down</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 70 - Exercise B", "Item_002_")}
+              ariaLabel="Play catch down"
+            >
+              catch down
+            </Unit8StudentAudioText>
 
             <div className="flex-1">{inputField(1)}</div>
           </div>
@@ -201,7 +216,12 @@ const Review7_Page1_Q2 = () => {
           <div className="flex items-center gap-4">
             <span className="font-bold">3</span>
 
-            <span>It’s had too long ...</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 70 - Exercise B", "Item_003_")}
+              ariaLabel="Play expression 3"
+            >
+              It’s had too long ...
+            </Unit8StudentAudioText>
 
             <div className="flex-1">{inputField(2)}</div>
           </div>
@@ -210,7 +230,12 @@ const Review7_Page1_Q2 = () => {
           <div className="flex items-center gap-4">
             <span className="font-bold">4</span>
 
-            <span>You’re a normal!</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 70 - Exercise B", "Item_004_")}
+              ariaLabel="Play expression 4"
+            >
+              You’re a normal!
+            </Unit8StudentAudioText>
 
             <div className="flex-1">{inputField(3)}</div>
           </div>
@@ -219,7 +244,12 @@ const Review7_Page1_Q2 = () => {
           <div className="flex items-center gap-4">
             <span className="font-bold">5</span>
 
-            <span>Here I went.</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 70 - Exercise B", "Item_005_")}
+              ariaLabel="Play expression 5"
+            >
+              Here I went.
+            </Unit8StudentAudioText>
 
             <div className="flex-1">{inputField(4)}</div>
           </div>
@@ -228,7 +258,12 @@ const Review7_Page1_Q2 = () => {
           <div className="flex items-center gap-4">
             <span className="font-bold">6</span>
 
-            <span>Later is your chance.</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 70 - Exercise B", "Item_006_")}
+              ariaLabel="Play expression 6"
+            >
+              Later is your chance.
+            </Unit8StudentAudioText>
 
             <div className="flex-1">{inputField(5)}</div>
           </div>

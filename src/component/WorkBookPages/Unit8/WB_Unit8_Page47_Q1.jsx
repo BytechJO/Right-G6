@@ -1,5 +1,13 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit8AudioText, {
+  workbookUnit8Audio,
+  stopWorkbookUnit8Audio,
+} from "./WorkbookUnit8AudioText";
+
+const audioFolder = "Page 47 - Exercise E";
 
 const ITEMS = [
   {
@@ -32,13 +40,18 @@ const inputItems = ITEMS.filter((i) => !i.prefilled);
 
 const initAnswers = () => {
   const a = {};
-  inputItems.forEach(({ id }) => { a[id] = ""; });
+  inputItems.forEach(({ id }) => {
+    a[id] = "";
+  });
   return a;
 };
 
 const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
-
+  str
+    .toLowerCase()
+    .replace(/[.?!,’'"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 // ── Sub-components OUTSIDE parent ──
 
@@ -49,13 +62,16 @@ const AnswerInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
+      placeholder="Write the reported sentence"
+      title="Change the sentence to reported speech"
+      aria-label="Change the sentence to reported speech"
       style={{
         width: "100%",
         border: "none",
         borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
         outline: "none",
         background: "transparent",
-        fontSize: "16px",
+        fontSize: "19px",
         color: isCorrect ? "#c0392b" : isWrong ? "#D1232A" : "#333",
         fontWeight: isCorrect ? "600" : "400",
         paddingBottom: "2px",
@@ -63,13 +79,27 @@ const AnswerInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-8px",
-        width: "18px", height: "18px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "-8px",
+          right: "-8px",
+          width: "20px",
+          height: "20px",
+          background: "#ef4444",
+          color: "white",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "11px",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </div>
 );
@@ -78,19 +108,22 @@ const AnswerInput = ({ value, onChange, disabled, isWrong, isCorrect }) => (
 
 const WB_Unit_ReportedSpeech_E = () => {
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleChange = (id, value) => {
     if (locked || result[id] === true) return;
     setAnswers((prev) => ({ ...prev, [id]: value }));
-    setResult((prev)  => ({ ...prev, [id]: undefined }));
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
     const hasEmpty = inputItems.some(({ id }) => !answers[id].trim());
-    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
+    if (hasEmpty) {
+      ValidationAlert.info("Please complete all answers.");
+      return;
+    }
 
     let correct = 0;
     const nr = {};
@@ -102,53 +135,110 @@ const WB_Unit_ReportedSpeech_E = () => {
     setResult(nr);
 
     const total = inputItems.length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
-    inputItems.forEach(({ id, answer }) => { a[id] = answer; r[id] = true; });
-    setAnswers(a); setResult(r); setLocked(true);
+    const a = {};
+    const r = {};
+    inputItems.forEach(({ id, answer }) => {
+      a[id] = answer;
+      r[id] = true;
+    });
+    setAnswers(a);
+    setResult(r);
+    setLocked(true);
   };
 
   const handleReset = () => {
-    setAnswers(initAnswers()); setResult({}); setLocked(false);
+    stopWorkbookUnit8Audio();
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
   };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
+      <div className="div-forall gap-5">
+        <ExerciseHeader
+          sectionLetter="E"
+          title={
+            <>
+              Change each{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                direct speech
+              </span>{" "}
+              sentence to{" "}
+              <span style={{ color: "orange", fontWeight: "bold" }}>
+                reported speech
+              </span>
+              .
+            </>
+          }
+          subTitle="Keep the original meaning while changing pronouns, tense, and time references required by reported speech."
+        />
 
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>E</span>
-          Change each <span style={{ color: "orange", fontWeight: "bold" }}>direct speech</span>  given below to{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>reported speech</span>.
-        </h5>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "60px", marginBottom: "3em" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "45px",
+            marginBottom: "3em",
+          }}
+        >
           {ITEMS.map((item) => (
-            <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-
+            <div
+              key={item.id}
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
               {/* Direct speech */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>{item.id}</span>
-                <span style={{ fontSize: "16px", color: "#333" }}>{item.direct}</span>
+              <div
+                style={{ display: "flex", alignItems: "baseline", gap: "10px" }}
+              >
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    minWidth: "20px",
+                  }}
+                >
+                  {item.id}
+                </span>
+                <WorkbookUnit8AudioText
+                  src={
+                    item.id > 1
+                      ? workbookUnit8Audio(
+                          audioFolder,
+                          `Item_00${item.id - 1}_`,
+                        )
+                      : null
+                  }
+                  ariaLabel={`Play direct speech sentence ${item.id}`}
+                  style={{ fontSize: "19px", color: "#333" }}
+                >
+                  {item.direct}
+                </WorkbookUnit8AudioText>
               </div>
 
               {/* Answer */}
               <div style={{ paddingLeft: "30px" }}>
                 {item.prefilled ? (
-                  <div style={{
-                    borderBottom: "1.5px solid #555",
-                    fontSize: "16px",
-                    color: "#333",
-                    paddingBottom: "2px",
-                    textDecoration: "underline",
-                  }}>
+                  <div
+                    style={{
+                      borderBottom: "1.5px solid #555",
+                      fontSize: "16px",
+                      color: "#333",
+                      paddingBottom: "2px",
+                      textDecoration: "underline",
+                    }}
+                  >
                     {item.answer}
                   </div>
                 ) : (
@@ -161,17 +251,21 @@ const WB_Unit_ReportedSpeech_E = () => {
                   />
                 )}
               </div>
-
             </div>
           ))}
         </div>
-
       </div>
 
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

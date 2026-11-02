@@ -1,6 +1,27 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "./Unit10StudentAudioText";
+
+const audioFolder = "Page 87 - Exercise E";
+const baseAudioPrefix = {
+  live: "011",
+  write: "012",
+  type: "013",
+  cut: "014",
+  drive: "015",
+  set: "016",
+  knit: "017",
+  swim: "018",
+  let: "019",
+  create: "020",
+  put: "021",
+  ride: "022",
+};
 
 const Unit10_Page6_Q2 = () => {
   const questions = [
@@ -144,6 +165,7 @@ const Unit10_Page6_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", "", "", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -159,6 +181,8 @@ const Unit10_Page6_Q2 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        title={`Write the -ing form for item ${i + 1}`}
+        aria-label={`Write the -ing form for item ${i + 1}`}
         className={`
           w-full
           h-full
@@ -204,84 +228,86 @@ const Unit10_Page6_Q2 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-8">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            E
-          </span>
-          Sometimes when <span style={{ color: "#E97E1D" }}>–ing</span> is added
-          to a verb, spelling changes need to occur. Read the examples, and then
-          finish the chart by writing the{" "}
-          <span style={{ color: "#E97E1D" }}>–ing</span> verbs correctly.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="E"
+          title={
+            <>
+              Complete the chart by writing the{" "}
+              <span style={{ color: "#E97E1D" }}>-ing</span> verbs correctly.
+            </>
+          }
+          subTitle="Work through the chart one row at a time and use the row and column headings as clues before checking your entries."
+        />
 
+        {/* TOP GREEN BOX WITH AUDIO */}
         <div
           className="rounded-[18px] px-6 py-5 mb-10 text-[18px]"
-          style={{
-            background: "#DDE3C8",
-          }}
+          style={{ background: "#DDE3C8" }}
         >
           {/* ROW 1 */}
           <div className="flex items-center gap-8 mb-5">
-            <span className="w-[120px] shrink-0">Silent e:</span>
-
-            <div className="flex items-center gap-2">
-              <span>make</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>making</span>
+            <div className="w-[120px] shrink-0">
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "Item_001_")}
+                ariaLabel="Play Silent e"
+                flowText
+              >
+                Silent e:
+              </Unit10StudentAudioText>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span>bake</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>baking</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span>give</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>giving</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span>care</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>caring</span>
-            </div>
+            {[
+              ["make", "making", "Item_002_"],
+              ["bake", "baking", "Item_003_"],
+              ["give", "giving", "Item_004_"],
+              ["care", "caring", "Item_005_"],
+            ].map(([word, ing, prefix]) => (
+              <Unit10StudentAudioText
+                key={prefix}
+                src={unit10StudentAudio(audioFolder, prefix)}
+                ariaLabel={`Play ${word} ${ing}`}
+                flowText
+              >
+                <span className="inline-flex items-center gap-2">
+                  <span>{word}</span>
+                  <span style={{ color: "#E97E1D" }}>➜</span>
+                  <span>{ing}</span>
+                </span>
+              </Unit10StudentAudioText>
+            ))}
           </div>
 
           {/* ROW 2 */}
           <div className="flex items-center gap-8">
-            <span className="w-[120px] shrink-0">CVC words:</span>
-
-            <div className="flex items-center gap-2">
-              <span>hop</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>hopping</span>
+            <div className="w-[120px] shrink-0">
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "Item_006_")}
+                ariaLabel="Play CVC words"
+                flowText
+              >
+                CVC words:
+              </Unit10StudentAudioText>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span>tap</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>tapping</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span>win</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>winning</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span>run</span>
-              <span style={{ color: "#E97E1D" }}>➜</span>
-              <span>running</span>
-            </div>
+            {[
+              ["hop", "hopping", "Item_007_"],
+              ["tap", "tapping", "Item_008_"],
+              ["win", "winning", "Item_009_"],
+              ["run", "running", "Item_010_"],
+            ].map(([word, ing, prefix]) => (
+              <Unit10StudentAudioText
+                key={prefix}
+                src={unit10StudentAudio(audioFolder, prefix)}
+                ariaLabel={`Play ${word} ${ing}`}
+                flowText
+              >
+                <span className="inline-flex items-center gap-2">
+                  <span>{word}</span>
+                  <span style={{ color: "#E97E1D" }}>➜</span>
+                  <span>{ing}</span>
+                </span>
+              </Unit10StudentAudioText>
+            ))}
           </div>
         </div>
 
@@ -309,7 +335,13 @@ const Unit10_Page6_Q2 = () => {
                   text-[18px]
                 "
               >
-                {row[0]}
+                <Unit10StudentAudioText
+                  src={unit10StudentAudio(audioFolder, baseAudioPrefix[row[0]])}
+                  ariaLabel={`Play ${row[0]}`}
+                  flowText
+                >
+                  {row[0]}
+                </Unit10StudentAudioText>
               </div>
 
               {/* LEFT ANSWER */}
@@ -340,7 +372,13 @@ const Unit10_Page6_Q2 = () => {
                   text-[18px]
                 "
               >
-                {row[2]}
+                <Unit10StudentAudioText
+                  src={unit10StudentAudio(audioFolder, baseAudioPrefix[row[2]])}
+                  ariaLabel={`Play ${row[2]}`}
+                  flowText
+                >
+                  {row[2]}
+                </Unit10StudentAudioText>
               </div>
 
               {/* RIGHT ANSWER */}

@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 21.svg";
+
+const audioFolder = "Page 89 - Exercise D";
 
 const Review9_Page2_Q1 = () => {
   const questions = [
@@ -109,6 +116,7 @@ const Review9_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -123,6 +131,9 @@ const Review9_Page2_Q1 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Verb form"
+        title={`Blank ${i + 1}: write the present perfect progressive form`}
+        aria-label={`Blank ${i + 1}: write the present perfect progressive form`}
         className={`
           ${width}
           border-0
@@ -170,12 +181,12 @@ const Review9_Page2_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[12vh]">
-          <span className=" mr-4">D</span>
-          Write the present perfect progressive verb form in the blank.
-        </div>
+      <div className="div-forall w-full text-[18px] gap-7 mb-10">
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title="Write the present perfect progressive verb form in each blank."
+          subTitle="Read the full sentence first, then enter the verb form that fits both meaning and grammar before checking."
+        />
 
         {/* CONTENT */}
         <div className="flex justify-between items-start gap-10 w-[110%]">
@@ -185,56 +196,95 @@ const Review9_Page2_Q1 = () => {
             <div className="flex items-center gap-3 flex-wrap">
               <span className="font-bold w-5">1</span>
 
-              <span>It</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "002")}
+                flowText
+              >
+                It
+              </Unit10StudentAudioText>
 
               {inputField(0, "w-[180px]")}
 
-              (<span style={{ color: "#E97E1D" }}>snow</span>)
-
-              <span>for three days.</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "001")}
+                flowText
+              >
+                (<span style={{ color: "#E97E1D" }}>snow</span>) for three days.
+              </Unit10StudentAudioText>
             </div>
 
             {/* 2 */}
             <div className="flex items-center gap-3 flex-wrap">
               <span className="font-bold w-5">2</span>
 
-              <span>Our cousins</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "003")}
+                flowText
+              >
+                Our cousins
+              </Unit10StudentAudioText>
 
               {inputField(1, "w-[190px]")}
 
-              (<span style={{ color: "#E97E1D" }}>travel</span>)
-
-              <span>for two weeks.</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "004")}
+                flowText
+              >
+                (<span style={{ color: "#E97E1D" }}>travel</span>) for two
+                weeks.
+              </Unit10StudentAudioText>
             </div>
 
             {/* 3 */}
             <div className="flex items-center gap-3 flex-wrap">
               <span className="font-bold w-5">3</span>
 
-              <span>My brother</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "006")}
+                flowText
+              >
+                My brother
+              </Unit10StudentAudioText>
 
               {inputField(2, "w-[240px]")}
 
-              (<span style={{ color: "#E97E1D" }}>rock climb</span>)
-
-              <span>many times before.</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "005")}
+                flowText
+              >
+                (<span style={{ color: "#E97E1D" }}>rock climb</span>) many
+                times before.
+              </Unit10StudentAudioText>
             </div>
 
             {/* 4 */}
             <div className="flex items-center gap-3 flex-wrap">
               <span className="font-bold w-5">4</span>
 
-              <span>What</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "007")}
+                flowText
+              >
+                What
+              </Unit10StudentAudioText>
 
               {inputField(3, "w-[90px]")}
 
-              <span>you</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "009")}
+                flowText
+              >
+                you
+              </Unit10StudentAudioText>
 
               {inputField(4, "w-[170px]")}
 
-              (<span style={{ color: "#E97E1D" }}>do</span>)
-
-              <span>lately?</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "008")}
+                flowText
+              >
+                (<span style={{ color: "#E97E1D" }}>do</span>) lately?
+              </Unit10StudentAudioText>
             </div>
 
             {/* 5 */}
@@ -243,13 +293,21 @@ const Review9_Page2_Q1 = () => {
 
               {inputField(5, "w-[90px]")}
 
-              <span>you</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "009")}
+                flowText
+              >
+                you
+              </Unit10StudentAudioText>
 
               {inputField(6, "w-[170px]")}
 
-              (<span style={{ color: "#E97E1D" }}>ski</span>)
-
-              <span>in the Alps?</span>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "010")}
+                flowText
+              >
+                (<span style={{ color: "#E97E1D" }}>ski</span>) in the Alps?
+              </Unit10StudentAudioText>
             </div>
           </div>
 
@@ -257,7 +315,7 @@ const Review9_Page2_Q1 = () => {
           <div>
             <img
               src={img1}
-              alt="rock climbing"
+              alt="A person rock climbing on a snowy mountain"
               style={{
                 width: "250px",
                 height: "350px",

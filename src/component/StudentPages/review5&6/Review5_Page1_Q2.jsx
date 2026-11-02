@@ -1,6 +1,34 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 import basketImg from "../../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 22.svg";
+
+const basketWords = [
+  { text: "while", width: "7%", height: "10%", top: "16%", right: "76%" },
+  { text: "I", width: "4%", height: "10%", top: "16%", right: "68.5%" },
+  { text: "after", width: "7%", height: "10%", top: "16%", right: "59%" },
+  { text: "see", width: "6%", height: "10%", top: "16%", right: "49%" },
+  { text: "taste", width: "7%", height: "10%", top: "16%", right: "38%" },
+  { text: "all", width: "5%", height: "10%", top: "16%", right: "29%" },
+  { text: "say", width: "6%", height: "10%", top: "16%", right: "22%" },
+
+  { text: "a", width: "4%", height: "10%", top: "27%", right: "75%" },
+  { text: "your", width: "7%", height: "10%", top: "27%", right: "64%" },
+  { text: "guess", width: "8%", height: "10%", top: "27%", right: "53%" },
+  { text: "if", width: "4%", height: "10%", top: "27%", right: "45%" },
+  { text: "suits", width: "7%", height: "10%", top: "27%", right: "35%" },
+  { text: "yourself", width: "10%", height: "10%", top: "27%", right: "21%" },
+
+  { text: "it", width: "4%", height: "10%", top: "37%", right: "68%" },
+  { text: "far", width: "6%", height: "10%", top: "37%", right: "57%" },
+  { text: "you", width: "6%", height: "10%", top: "37%", right: "48%" },
+  { text: "suit", width: "6%", height: "10%", top: "37%", right: "38%" },
+  { text: "so", width: "5%", height: "10%", top: "37%", right: "30%" },
+];
 
 const correctAnswers = [
   "a while",
@@ -93,6 +121,7 @@ const Review5_Page1_Q2 = () => {
   };
 
   const reset = () => {
+    stopUnit6StudentAudio();
     setAnswers(emptyAnswers());
     setErrors(Array(6).fill(false));
     setCorrectLocked(Array(6).fill(false));
@@ -113,6 +142,9 @@ const Review5_Page1_Q2 = () => {
           value={answers[index]}
           disabled={locked || correctLocked[index]}
           onChange={(e) => updateAnswer(index, e.target.value)}
+          placeholder="Write an expression"
+          title="Write one complete expression"
+          aria-label={`Expression ${index + 1}`}
           style={{
             width: "100%",
             border: "none",
@@ -156,28 +188,74 @@ const Review5_Page1_Q2 = () => {
 
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{ gap: "20px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="mr-2">B</span>
-          The words in the basket need to be put into the correct sentences in
-          order to make the expressions. Use the words to make the six
-          expressions, then cross out the ones that are not needed.
-        </h5>
+      <div className="div-forall mb-10" style={{ gap: "20px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title="Put the basket words in the correct order to make six expressions, then cross out the words that are not needed."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Reorder the basket words to build one correct expression
+                at a time.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: After making all six expressions, cross out only the
+                words that were not used.
+              </span>
+            </>
+          }
+        />
 
+        {/* BASKET IMAGE */}
         {/* BASKET IMAGE */}
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            // marginBottom: "28px",
+            width: "100%",
           }}
         >
-          <img
-            src={basketImg}
-            alt="word basket"
-            style={{ height: "250px", width: "auto" }}
-          />
+          <div
+            style={{
+              position: "relative",
+              width: "fit-content",
+            }}
+          >
+            <img
+              src={basketImg}
+              alt="A word basket containing tiles used to build six expressions"
+              style={{
+                height: "250px",
+                width: "auto",
+                display: "block",
+              }}
+            />
+
+            {basketWords.map((word, index) => (
+              <Unit6StudentAudioText
+                key={`${word.text}-${index}`}
+                src={unit6StudentAudio(
+                  "Page 52 - Exercise B",
+                  `Item_${String(index + 1).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play ${word.text}`}
+                style={{
+                  position: "absolute",
+                  width: word.width,
+                  height: word.height,
+                  top: word.top,
+                  right: word.right,
+                  zIndex: 5,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <span className="sr-only">{word.text}</span>
+              </Unit6StudentAudioText>
+            ))}
+          </div>
         </div>
 
         {/* 6 ANSWERS IN 2 COLUMNS */}

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 const Review3_Page2_Q3 = () => {
   const questions = [
@@ -8,18 +13,21 @@ const Review3_Page2_Q3 = () => {
       prompt: "Rick/ buy/ skateboard/ where/ ride/ it/?",
       answer: "If Rick bought a skateboard, where would he ride it?",
       prefilled: false,
+      audio: "Item_001_",
     },
     {
       id: 1,
       prompt: "brother/ go/ skiing/ where/ get/ skis/?",
       answer: "If my brother went skiing, where would he get skis?",
       prefilled: false,
+      audio: "Item_002_",
     },
     {
       id: 2,
       prompt: "Heidi/ visit/ friend/ how/ travel/ there/?",
       answer: "If Heidi visited my friend, how would she travel there?",
       prefilled: false,
+      audio: "Item_003_",
     },
   ];
 
@@ -94,6 +102,7 @@ const Review3_Page2_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(initAnswers());
     setErrors(initErrors());
     setCorrectLocked(initLocked());
@@ -119,14 +128,12 @@ const Review3_Page2_Q3 = () => {
 
   return (
     <div style={{ padding: "30px", display: "flex", justifyContent: "center" }}>
-      <div className="div-forall" style={{gap:"50px"}}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-10">
-          <span style={{ marginRight: "10px" }}>
-            F
-          </span>
-          Make a question from the sentence parts.
-        </h5>
+      <div className="div-forall" style={{ gap: "50px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="F"
+          title="Make a question from the sentence parts."
+          subTitle="Say the correct sentence or expression first, then put the words in order and check capitalization and punctuation."
+        />
 
         {/* QUESTIONS */}
         <div
@@ -157,7 +164,13 @@ const Review3_Page2_Q3 = () => {
                 >
                   {i + 1}
                 </span>
-                <span style={{ fontSize: "18px" }}>{q.prompt}</span>
+                <Unit4StudentAudioText
+                  src={unit4StudentAudio("Page 35 - Exercise F", q.audio)}
+                  ariaLabel={`Play ${q.prompt}`}
+                  style={{ fontSize: "18px" }}
+                >
+                  {q.prompt}
+                </Unit4StudentAudioText>
               </div>
 
               {/* ANSWER INPUT */}
@@ -167,6 +180,9 @@ const Review3_Page2_Q3 = () => {
                   value={answers[i]}
                   disabled={locked || correctLocked[i]}
                   onChange={(e) => handleChange(i, e.target.value)}
+                  placeholder="Write the complete question"
+                  title="Arrange the sentence parts into a question"
+                  aria-label={`Question ${i + 1}`}
                   style={inputStyle(i)}
                 />
                 {errors[i] && (

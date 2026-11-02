@@ -29,28 +29,23 @@ const GrammarB = () => {
 
   const exampleIndex = 0; // Q1 is pre-filled as example
 
-  const initialAnswers = questions.map((q, i) => "");
+  const initialAnswers = questions.map(() => "");
 
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
   const [locked, setLocked] = useState(false);
 
-const normalize = (text) => {
-  return text
-    .trim()
-    .toLowerCase()
-
-    // contractions
-    .replace(/\bhave not\b/g, "haven't")
-    .replace(/\bhas not\b/g, "hasn't")
-
-    // remove punctuation
-    .replace(/’/g, "'")
-
-    // normalize spaces
-    .replace(/\s+/g, " ")
-    .trim();
-};
+  const normalize = (text) => {
+    return text
+      .trim()
+      .toLowerCase()
+      .replace(/’/g, "'")
+      .replace(/\bhave not\b/g, "haven't")
+      .replace(/\bhas not\b/g, "hasn't")
+      .replace(/\s+/g, " ")
+      .replace(/\s+([?.!,])/g, "$1")
+      .trim();
+  };
   const handleCheck = () => {
     if (locked) return;
 
@@ -194,6 +189,8 @@ const normalize = (text) => {
               <div className="ml-6">
                 <input
                   value={answers[i]}
+                  placeholder="Type the sentence"
+                  title="Type the sentence"
                   disabled={isLocked}
                   onChange={(e) => {
                     const updated = [...answers];
@@ -205,10 +202,9 @@ const normalize = (text) => {
                       [i]: undefined,
                     }));
                   }}
-                  className={`border-b outline-none w-full max-w-[480px] font-semibold
+                  className={`student-unit1-answer-input border-b outline-none w-full max-w-[480px] font-semibold
                     ${errors[i] === true ? "border-red-500" : "border-black"}
                   `}
-                  placeholder={"Write your answer here..."}
                 />
               </div>
             </div>

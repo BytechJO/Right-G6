@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit6StudentAudioText, {
+  stopUnit6StudentAudio,
+  unit6StudentAudio,
+} from "../unit6/Unit6StudentAudioText";
 
 const Review6_Page2_Q1 = () => {
   const questions = [
@@ -81,6 +86,7 @@ const Review6_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit6StudentAudio();
     setSelected(Array(questions.length).fill(""));
     setResult([]);
     setLocked(false);
@@ -96,9 +102,11 @@ const Review6_Page2_Q1 = () => {
           value={selected[i]}
           onChange={(e) => handleChange(i, e.target.value)}
           disabled={locked || isCorrect}
-          placeholder=""
+          placeholder="accustomed / past action"
+          title="Enter accustomed or past action"
+          aria-label={`Meaning for sentence ${i + 1}`}
           style={{
-            width: "160px",
+            width: "200px",
             border: "none",
             borderBottom: `1px solid ${isWrong ? "#D1232A" : "#222"}`,
             outline: "none",
@@ -142,30 +150,34 @@ const Review6_Page2_Q1 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall" style={{ gap: "60px" }}>
-        {/* TITLE */}
-        <h5 className="header-title-page8">
-          <span style={{ marginRight: "10px" }}>C</span>
-          Write{" "}
-          <span className="text-orange-500" style={{ fontWeight: "bold" }}>
-            "accustomed"
-          </span>{" "}
-          or{" "}
-          <span className="text-orange-500" style={{ fontWeight: "bold" }}>
-            "past action"
-          </span>{" "}
-          to tell what{" "}
-          <span className="text-orange-500" style={{ fontStyle: "italic" }}>
-            used to
-          </span>{" "}
-          /{" "}
-          <span className="text-orange-500" style={{ fontStyle: "italic" }}>
-            use to
-          </span>{" "}
-          means in each sentence.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title={
+            <>
+              Write <span className="text-orange-500">accustomed</span> or{" "}
+              <span className="text-orange-500">past action</span> to tell what{" "}
+              <span className="text-orange-500" style={{ fontStyle: "italic" }}>
+                used to / use to
+              </span>{" "}
+              means in each sentence.
+            </>
+          }
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Decide whether each sentence describes a past
+                habit/action or being accustomed to something.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Write only 'past action' or 'accustomed' after checking
+                the form used to / be used to.
+              </span>
+            </>
+          }
+        />
 
         {/* QUESTIONS */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           {questions.map((q, i) => (
             <div
               key={i}
@@ -182,7 +194,16 @@ const Review6_Page2_Q1 = () => {
                 {i + 1}
               </span>
               {/* sentence */}
-              <span style={{ flex: 0.8 }}>{q.sentence}</span>
+              <Unit6StudentAudioText
+                src={unit6StudentAudio(
+                  "Page 55 - Exercise C",
+                  `Item_${String(i + 1).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play ${q.sentence}`}
+                style={{ flex: 0.8 }}
+              >
+                {q.sentence}
+              </Unit6StudentAudioText>
               {/* input */}
               {renderInput(i)}
             </div>

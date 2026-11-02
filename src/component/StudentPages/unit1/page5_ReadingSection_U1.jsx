@@ -4,12 +4,12 @@ import ComprehensionB from "./page5_ComprehensionB";
 import question from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 6.svg";
 import imgReading from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 5.svg";
 import readingAudio from "../../../assets/audio/ClassBook/U1/PG 5/readingU1.mp3";
+import readingTimings from "../../../assets/json/readingU1_eng.json";
 
 const ReadingSection_U1 = () => {
   const paragraphs = [
     "Around the world, there are many festivals such as Christmas, Eid, and Carnival. Did you know that there are some unusual festivals that happen around the world? Lately, one that has become a popular tourist attraction is the Monkey Buffet Festival. In Lopburi, Thailand, so many monkeys have come to the town, that tourists have started to visit to see them. To encourage the monkeys to stay, the local businessmen have planned a terrific dinner once a year.",
-    "The dinner is not for the people, though; it’s for the monkeys! A countless supply of fruits and other foods are put out on The dinner is not for the people, though; it’s for the monkeys! A countless supply of fruits and other foods are put out on",
-    "tables in an outdoor gathering area of the city, and the monkeys swarm in like bees!",
+    "The dinner is not for the people, though; it’s for the monkeys! A countless supply of fruits and other foods are put out on tables in an outdoor gathering area of the city, and the monkeys swarm in like bees!",
     "In Japan, they have a festival called Konaki Sumo. It is based on the Japanese proverb “Crying babies grow fast.” Parents from all around the country bring their babies to see if they can get them to grow well!",
     "How do they do that? No, they don’t spank them or do anything mean to them. They simply let them be held ... by a giant sumo wrestler! A clown stands by to keep the babies entertained, and the baby that starts crying first is the winner!",
   ];
@@ -48,7 +48,7 @@ const ReadingSection_U1 = () => {
     {
       start: 44.84,
       end: 53.439,
-      text: "A countless supply of fruits and other foods are put on tables in an outdoor gathering area of the city, and the monkeys swarm in like bees.",
+      text: "A countless supply of fruits and other foods are put out on tables in an outdoor gathering area of the city, and the monkeys swarm in like bees.",
     },
     {
       start: 53.899,
@@ -95,8 +95,23 @@ of festivals have you gone to?"
         image={imgReading}
         paragraphs={paragraphs}
         question={question}
+        pageId="sb_unit1_page5_reading"
+        subTitle="Press Play and follow the text as it is read; pause or replay any part you need to hear again."
+        headerTitle="Listen and read along: Some Unusual Celebrations."
         sound={readingAudio}
         captions={captions}
+        imageAlt="A monkey sitting on a colorful display of fruits and flowers at the Monkey Buffet Festival in Thailand."
+        wordTimings={readingTimings}
+        timingAliases={[
+          {
+            printed: ["out"],
+            spoken: [""],
+          },
+          {
+            printed: ["Konaki"],
+            spoken: ["Konak"],
+          },
+        ]}
         stopAtSecond={7.0}
       />
 

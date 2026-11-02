@@ -1,8 +1,27 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 31.svg";
 
+const audioFolder = "Page 89 - Exercise E";
+const activityLabels = [
+  "Take notes",
+  "Give a presentation",
+  "Work on a project",
+  "Take a test",
+  "warren",
+  "stacey",
+  "linda",
+  "steven",
+  "paula",
+];
+const leftPositions = ["23%", "42%", "61%", "80%"];
+const topPositions = ["27%", "42%", "57%", "72%", "87%"];
 const Review9_Page2_Q2 = () => {
   const questions = [
     "has been taking notes and working on a project",
@@ -105,6 +124,7 @@ const Review9_Page2_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", ""]);
 
     setResult([]);
@@ -119,6 +139,9 @@ const Review9_Page2_Q2 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Write the sentence"
+        title={`Student ${i + 1}: describe what the student has been doing`}
+        aria-label={`Student ${i + 1}: describe what the student has been doing`}
         className={`
           w-full
           border-0
@@ -165,26 +188,56 @@ const Review9_Page2_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px] mb-10">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-12">
-          <span className="mr-2">E</span>
-          Everyone is done with morning classes, and it’s time for lunch. What
-          have the students been doing this morning? Use the present perfect
-          progressive.
-        </div>
+      <div className="div-forall w-full text-[18px] mb-10 gap-7">
+        <ExerciseHeaderReview
+          sectionLetter="E"
+          title="Use the chart to write what each student has been doing this morning."
+          subTitle="Work through the chart one row at a time and use the row and column headings as clues before checking your entries."
+        />
 
         {/* TABLE IMAGE */}
         <div className="flex justify-center mb-12">
-          <img
-            src={img1}
-            alt="activity table"
-            style={{
-              width: "auto",
-              height: "220px",
-              objectFit: "contain",
-            }}
-          />
+          <div className="relative">
+            <img
+              src={img1}
+              alt="Chart showing the morning activities completed by Warren, Stacey, Linda, Steven, and Paula"
+              style={{
+                width: "auto",
+                height: "220px",
+                objectFit: "contain",
+              }}
+            />
+            {activityLabels.map((label, index) => (
+              <Unit10StudentAudioText
+                key={label}
+                src={unit10StudentAudio(
+                  audioFolder,
+                  String(index + 1).padStart(3, "0"),
+                )}
+                ariaLabel={`Play ${label}`}
+                fullAudio
+                style={
+                  index <= 3
+                    ? {
+                        position: "absolute",
+                        top: 0,
+                        left: leftPositions[index],
+                        width: "18%",
+                        height: "25%",
+                      }
+                    : {
+                        position: "absolute",
+                        top: topPositions[index - 4],
+                        left: "0%",
+                        width: "22%",
+                        height: "12%",
+                      }
+                }
+              >
+                <span className="sr-only">{label}</span>
+              </Unit10StudentAudioText>
+            ))}
+          </div>
         </div>
 
         {/* QUESTIONS */}
@@ -194,7 +247,18 @@ const Review9_Page2_Q2 = () => {
               <div key={index} className="flex items-center gap-4">
                 <span className="font-bold w-5">{index + 1}</span>
 
-                <span className="min-w-20">{name}</span>
+                <span className="min-w-20">
+                  <Unit10StudentAudioText
+                    src={unit10StudentAudio(
+                      audioFolder,
+                      String(index + 5).padStart(3, "0"),
+                    )}
+                    ariaLabel={`Play ${name}`}
+                    flowText
+                  >
+                    {name}
+                  </Unit10StudentAudioText>
+                </span>
 
                 <div className="flex-1">{inputField(index)}</div>
               </div>

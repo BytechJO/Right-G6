@@ -3,6 +3,11 @@ import ValidationAlert from "../../Popup/ValidationAlert";
 import Button from "../../Button";
 import trueIcon from "../../../assets/imgs/true.svg";
 import falseIcon from "../../../assets/imgs/false.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3StudentAudioText, {
+  stopUnit3StudentAudio,
+  unit3StudentAudio,
+} from "./Unit3StudentAudioText";
 const QUESTIONS = [
   { id: 1, text: "I don't see so!" },
   { id: 2, text: "I'll pass." },
@@ -122,6 +127,7 @@ const Unit3_Page5_Q2 = () => {
   };
 
   const reset = () => {
+    stopUnit3StudentAudio();
     setAnswers(initState());
     setErrors(Array(QUESTIONS.length).fill(null));
     setLocked(false);
@@ -129,16 +135,21 @@ const Unit3_Page5_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-8">
-      <div className="div-forall">
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2.5">B</span>
-          Read the expressions and write{" "}
-          <strong className="text-red-600">✓</strong> or{" "}
-          <strong className="text-red-600">✗</strong>. Correct the expressions
-          that are incorrect.
-        </h5>
+      <div className="div-forall gap-4">
+        <ExerciseHeader
+          sectionLetter="B"
+          title={
+            <>
+              Read the expressions and write{" "}
+              <strong className="text-red-600">✓</strong> or{" "}
+              <strong className="text-red-600">✗</strong>. Correct the
+              expressions that are incorrect.
+            </>
+          }
+          subTitle="Check the key detail in each statement before choosing ✓/✗ or true/false; correct the wording when the task requires it."
+        />
 
-        <div className="flex flex-col gap-12 mt-6">
+        <div className="flex flex-col gap-10 mt-6">
           {QUESTIONS.map((q, i) => {
             const isOk = errors[i] === true;
             const isWrong = errors[i] === false;
@@ -151,6 +162,9 @@ const Unit3_Page5_Q2 = () => {
 
                 {/* زر ✓ */}
                 <button
+                  aria-label={`Mark expression ${q.id} as correct`}
+                  aria-pressed={answers[i].mark === true}
+                  className="unit3-student-choice"
                   onClick={() => handleCheck(i)}
                   disabled={locked || isOk}
                   style={{
@@ -174,7 +188,7 @@ const Unit3_Page5_Q2 = () => {
                   }}
                 >
                   {answers[i].mark === true ? (
-                    <img src={trueIcon} style={{ height: "25px" }} />
+                    <img src={trueIcon} alt="" style={{ height: "25px" }} />
                   ) : (
                     ""
                   )}
@@ -209,6 +223,9 @@ const Unit3_Page5_Q2 = () => {
 
                 {/* زر ✗ */}
                 <button
+                  aria-label={`Mark expression ${q.id} as incorrect`}
+                  aria-pressed={answers[i].mark === false}
+                  className="unit3-student-choice"
                   onClick={() => handleCross(i)}
                   disabled={locked || isOk}
                   style={{
@@ -231,7 +248,7 @@ const Unit3_Page5_Q2 = () => {
                   }}
                 >
                   {answers[i].mark === false ? (
-                    <img src={falseIcon} style={{ height: "25px" }} />
+                    <img src={falseIcon} alt="" style={{ height: "25px" }} />
                   ) : (
                     ""
                   )}
@@ -265,11 +282,21 @@ const Unit3_Page5_Q2 = () => {
                 </button>
 
                 {/* نص السؤال */}
-                <span
-                  style={{ minWidth: "160px", fontSize: "18px", color: "#333" }}
+                <Unit3StudentAudioText
+                  src={unit3StudentAudio(
+                    "Page 26 - Exercise B",
+                    `Item_${String(i + 1).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play expression ${q.id}`}
+                  style={{
+                    minWidth: "160px",
+                    fontSize: "18px",
+                    color: "#333",
+                    textAlign: "left",
+                  }}
                 >
                   {q.text}
-                </span>
+                </Unit3StudentAudioText>
 
                 {/* حقل التصحيح - يظهر بس لما يختار ✗ */}
                 <span style={{ position: "relative", flex: 1 }}>
@@ -280,6 +307,8 @@ const Unit3_Page5_Q2 = () => {
                     placeholder={
                       needsCorrection ? "Write the correction..." : ""
                     }
+                    title={`Write the corrected form of expression ${q.id}`}
+                    className="unit3-student-answer-input"
                     style={{
                       width: "100%",
                       borderBottom: isWrong

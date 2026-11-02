@@ -5,6 +5,21 @@ import GrammarSection_U8 from "./Unit8_Page3_GrammarSection_U8";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 
 const Unit8_Page3 = ({ openPopup }) => {
+  const openGrammar = () => {
+    openPopup("html", <GrammarSection_U8 />);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openGrammar();
+      }
+    }
+  };
+
   return (
     <div
       className="page1-img-wrapper"
@@ -18,8 +33,15 @@ const Unit8_Page3 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("html", <GrammarSection_U8 />)}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open grammar section"
+          onClick={openGrammar}
+          onKeyDown={handleKeyDown}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

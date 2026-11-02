@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
-
 import ActionButtons from "../../ActionButtons";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit5StudentAudioText, {
+  stopUnit5StudentAudio,
+  unit5StudentAudio,
+} from "./Unit5StudentAudioText";
 
 const Unit5_Page6_Q1 = () => {
+  const audioFolder = "Page 45 - Exercise D";
   const questions = [
     {
       scrambled: "lots they Engineers don't of science study , ?",
       hint: null,
+      audio: "Item_001_",
       correct: [
         "Lots of engineers study science, don’t they?",
         "Lots of engineers study science, don't they?",
@@ -17,6 +23,7 @@ const Unit5_Page6_Q1 = () => {
     {
       scrambled: "said she would our didn't make Mom lunches she , ?",
       hint: null,
+      audio: "Item_002_",
       correct: [
         "Mom said she would make our lunches, didn’t she?",
         "Mom said she would make our lunches, didn't she?",
@@ -26,6 +33,7 @@ const Unit5_Page6_Q1 = () => {
     {
       scrambled: "he to Zane come wants doesn't , ?",
       hint: { text: "doesn't", label: "doesn't is in the tag" },
+      audio: "Item_003_",
       correct: [
         "Zane does want to come too, doesn’t he?",
         "Zane does want to come too, doesn't he?",
@@ -35,11 +43,11 @@ const Unit5_Page6_Q1 = () => {
     {
       scrambled: "ride coaster she won't the roller Mom will , ?",
       hint: { text: "won't", label: "won't is in the tag" },
+      audio: "Item_004_",
       correct: [
         "Mom will ride the roller coaster, won’t she?",
         "Mom will ride the roller coaster, won't she?",
         "Mom will ride the roller coaster, will not she?",
-      
       ],
     },
   ];
@@ -47,6 +55,8 @@ const Unit5_Page6_Q1 = () => {
   const [answers, setAnswers] = useState(["", "", "", ""]);
   const [locked, setLocked] = useState(false);
   const [result, setResult] = useState([]);
+
+  useEffect(() => () => stopUnit5StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -100,6 +110,7 @@ const Unit5_Page6_Q1 = () => {
   };
 
   const reset = () => {
+    stopUnit5StudentAudio();
     setAnswers(["", "", "", ""]);
     setResult([]);
     setLocked(false);
@@ -108,18 +119,18 @@ const Unit5_Page6_Q1 = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "30px" }}>
-        {/* HEADER */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A mr-2">D</span>
-          Unscramble the sentences and write them with correct punctuation.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title="Unscramble the sentences and write them with correct punctuation."
+          subTitle="Say the correct sentence or expression first, then put the words in order and check capitalization and punctuation."
+        />
 
         {/* QUESTIONS */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "40px",
+            gap: "20px",
             fontSize: "18px",
           }}
         >
@@ -137,7 +148,11 @@ const Unit5_Page6_Q1 = () => {
                 <span style={{ fontWeight: "bold", minWidth: "20px" }}>
                   {i + 1}
                 </span>
-                <span style={{ color: "#333" }}>
+                <Unit5StudentAudioText
+                  src={unit5StudentAudio(audioFolder, q.audio)}
+                  ariaLabel={`Play scrambled sentence ${i + 1}`}
+                  style={{ color: "#333" }}
+                >
                   {q.scrambled}
                   {q.hint && (
                     <span
@@ -154,14 +169,18 @@ const Unit5_Page6_Q1 = () => {
                       is in the tag)
                     </span>
                   )}
-                </span>
+                </Unit5StudentAudioText>
               </div>
 
               {/* Input line */}
               <div style={{ marginLeft: "30px", position: "relative" }}>
                 <input
+                  className="unit5-student-input"
                   type="text"
                   value={answers[i]}
+                  placeholder="Write the correct sentence"
+                  title="Write the sentence with correct capitalization and punctuation"
+                  aria-label={`Unscrambled sentence ${i + 1}`}
                   disabled={locked || result[i] === true}
                   onChange={(e) => handleChange(i, e.target.value)}
                   style={{

@@ -1,219 +1,179 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit9AudioText, {
+  stopWorkbookUnit9Audio,
+  workbookUnit9Audio,
+} from "./WorkbookUnit9AudioText";
 
-// بدّل المسار للصورة الفعلية
-import girlsImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 2.svg";
+const audioFolder = "Page 52 - Exercise C";
 
 const QUESTIONS = [
-  { id: 1,  scrambled: "csaracterh",  word: "characters", match: "j" },
-  { id: 2,  scrambled: "loven",       word: "novel",      match: "c" },
-  { id: 3,  scrambled: "pcahtre",     word: "chapter",    match: "a" },
-  { id: 4,  scrambled: "scsudis",     word: "discuss",    match: "d" },
-  { id: 5,  scrambled: "gdisaens",    word: "assigned",   match: "f" },
-  { id: 6,  scrambled: "msatcselas",  word: "classmates", match: "h" },
-  { id: 7,  scrambled: "esrpehap",    word: "perhaps",    match: "b" },
-  { id: 8,  scrambled: "edla",        word: "deal",       match: "g" },
-  { id: 9,  scrambled: "imna",        word: "main",       match: "e" },
-  { id: 10, scrambled: "casitdtr",    word: "distract",   match: "i" },
+  { id: 1, scrambled: "csaracterh", match: "j", audio: "Item_002_" },
+  { id: 2, scrambled: "loven", match: "c", audio: "Item_004_" },
+  { id: 3, scrambled: "pcahtre", match: "a", audio: "Item_005_" },
+  { id: 4, scrambled: "scsudis", match: "d", audio: "Item_007_" },
+  { id: 5, scrambled: "gdisaens", match: "f", audio: "Item_009_" },
+  { id: 6, scrambled: "msatcselas", match: "h", audio: "Item_011_" },
+  { id: 7, scrambled: "esrpehap", match: "b", audio: "Item_013_" },
+  { id: 8, scrambled: "edla", match: "g", audio: "Item_015_" },
+  { id: 9, scrambled: "imna", match: "e", audio: "Item_017_" },
+  { id: 10, scrambled: "casitdtr", match: "i", audio: "Item_019_" },
 ];
 
 const SECTION_B = [
-  { label: "a", word: "chapter"    },
-  { label: "b", word: "perhaps"    },
-  { label: "c", word: "novel"      },
-  { label: "d", word: "discuss"    },
-  { label: "e", word: "main"       },
-  { label: "f", word: "assigned"   },
-  { label: "g", word: "deal"       },
-  { label: "h", word: "classmates" },
-  { label: "i", word: "distract"   },
-  { label: "j", word: "characters" },
+  ["a", "chapter", "Item_001_"], ["b", "perhaps", "Item_003_"],
+  ["c", "novel", "Item_006_"], ["d", "discuss", "Item_008_"],
+  ["e", "main", "Item_010_"], ["f", "assigned", "Item_012_"],
+  ["g", "deal", "Item_014_"], ["h", "classmates", "Item_016_"],
+  ["i", "distract", "Item_018_"], ["j", "characters", "Item_020_"],
 ];
 
+const normalize = (value) => value.toLowerCase().trim();
+const initialAnswers = () => Object.fromEntries(QUESTIONS.map(({ id }) => [id, ""]));
 
-const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
-
-
-const initAnswers = () => {
-  const a = {};
-  QUESTIONS.forEach(({ id }) => {  a[`${id}-m`] = ""; });
-  return a;
-};
-
-// ── WordInput — OUTSIDE parent ──
-const WordInput = ({ fKey, value, onChange, isCorrect, isWrong, disabled, width = "140px" }) => (
-  <span style={{ position: "relative", display: "inline-block" }}>
+const MatchInput = ({ id, value, onChange, correct, wrong, disabled }) => (
+  <span style={{ position: "relative", display: "inline-block", width: 135 }}>
     <input
       type="text"
+      maxLength={1}
       value={value}
       disabled={disabled}
-      onChange={(e) => onChange(fKey, e.target.value)}
+      onChange={(event) => onChange(id, event.target.value)}
+      placeholder="a–j"
+      title={`Item ${id}: enter the matching letter from section B`}
+      aria-label={`Item ${id}: matching letter`}
+      className="workbook-unit9-input"
       style={{
-        width,
-        border: "none",
-        borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
-        outline: "none",
-        background: "transparent",
-        fontSize: "18px",
-        color:  "#333",
-        fontWeight: isCorrect ? "600" : "400",
-        paddingBottom: "2px",
-        fontFamily: "inherit",
-        textAlign: "center",
-        marginLeft: "35vh",
+        width: "100%", border: "none",
+        borderBottom: `1.5px solid ${wrong ? "#D1232A" : "#555"}`,
+        outline: "none", background: "transparent", fontSize: 18,
+        color: correct ? "#c0392b" : wrong ? "#D1232A" : "#333",
+        fontWeight: correct ? 600 : 400, padding: "0 4px 2px",
+        textAlign: "center", fontFamily: "inherit",
       }}
     />
-    {isWrong && (
-      <span style={{
-        position: "absolute", top: "-7px", right: "-7px",
-        width: "14px", height: "14px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
-    )}
+    {wrong && <span style={wrongStyle}>✕</span>}
   </span>
 );
 
-// ── MAIN COMPONENT ──
 const WB_Unit9_UnscrambleMatch_C = () => {
-  const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [answers, setAnswers] = useState(initialAnswers);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
-  const handleChange = (key, value) => {
-    if (locked || result[key] === true) return;
-    setAnswers((prev) => ({ ...prev, [key]: value.toLowerCase() }));
-    setResult((prev)  => ({ ...prev, [key]: undefined }));
+  const changeAnswer = (id, value) => {
+    if (locked || result[id] === true) return;
+    setAnswers((previous) => ({ ...previous, [id]: value.toLowerCase() }));
+    setResult((previous) => ({ ...previous, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
-    const hasEmpty = Object.values(answers).some((v) => !v.trim());
-    if (hasEmpty) { ValidationAlert.info("Please complete all answers."); return; }
-
-    let correct = 0;
-    const nr = {};
-    QUESTIONS.forEach(({ id, word, match }) => {
-      const wKey = `${id}-w`, mKey = `${id}-m`;
-      const mOk = normalize(answers[mKey]) === normalize(match);
-      if (mOk) correct++;
-      nr[mKey] = mOk;
+    if (QUESTIONS.some(({ id }) => !answers[id].trim())) {
+      ValidationAlert.info("Please complete all answers.");
+      return;
+    }
+    const nextResult = {};
+    let correctCount = 0;
+    QUESTIONS.forEach(({ id, match }) => {
+      const isCorrect = normalize(answers[id]) === match;
+      nextResult[id] = isCorrect;
+      if (isCorrect) correctCount += 1;
     });
-    setResult(nr);
-    const total = QUESTIONS.length * 1;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
-    const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
-    else ValidationAlert.warning(msg);
+    setResult(nextResult);
+    const message = `Score: ${correctCount} / ${QUESTIONS.length}`;
+    if (correctCount === QUESTIONS.length) {
+      setLocked(true);
+      ValidationAlert.success(message);
+    } else if (correctCount === 0) ValidationAlert.error(message);
+    else ValidationAlert.warning(message);
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
-    QUESTIONS.forEach(({ id, word, match }) => {
-      a[`${id}-w`] = word; a[`${id}-m`] = match;
-      r[`${id}-w`] = true; r[`${id}-m`] = true;
-    });
-    setAnswers(a); setResult(r); setLocked(true);
+    setAnswers(Object.fromEntries(QUESTIONS.map(({ id, match }) => [id, match])));
+    setResult(Object.fromEntries(QUESTIONS.map(({ id }) => [id, true])));
+    setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const reset = () => {
+    stopWorkbookUnit9Audio();
+    setAnswers(initialAnswers());
+    setResult({});
+    setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Unscramble the words in section A, then match them with the same words in section B."
+          subTitle="Unscramble each vocabulary word first, then match it to the identical correctly spelled word in the right column."
+        />
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8 " style={{ whiteSpace : "nowrap" }}>
-          <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
-          Unscramble the words in section A. Then match with the same words in section B.
-        </h5>
-
-        {/* Two columns layout */}
-        <div style={{ display: "flex", gap: "32px", marginBottom: "24px", alignItems: "flex-start" }}>
-
-          {/* Section A */}
-          <div style={{ flex: 1 }}>
-            <div style={{ 
-               fontWeight: "bold", fontSize: "22px", marginBottom: "12px", marginLeft: "8vh" }}>A</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-              {QUESTIONS.map(({ id, scrambled }) => {
-                const wKey = `${id}-w`;
-                const mKey = `${id}-m`;
-                const wCorrect = result[wKey] === true;
-                const wWrong   = result[wKey] === false;
-                const mCorrect = result[mKey] === true;
-                const mWrong   = result[mKey] === false;
-                return (
-                  <div key={id} style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    fontSize: "18px",
-                  }}>
-                    <span style={{ fontWeight: "bold", minWidth: "24px" }}>{id}</span>
-                    <span style={{ minWidth: "110px", color: "#333" }}>{scrambled}</span>
-                    {/* Word input */}
-
-                  
-                    {/* Match input */}
-                    <WordInput
-                      fKey={mKey}
-                      value={answers[mKey]}
-                      onChange={handleChange}
-                      isCorrect={mCorrect}
-                      isWrong={mWrong}
-                      disabled={locked || mCorrect}
-                      width="36px"
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Section B */}
-          <div style={{ minWidth: "160px" }}>
-            <div style={{ textAlign: "start", fontWeight: "bold", fontSize: "22px", marginBottom: "12px", marginLeft: "7vh" }}>B</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-              {SECTION_B.map(({ label, word }) => (
-                <div key={label} style={{ display: "flex", gap: "8px", fontSize: "18px", alignItems: "center" }}>
-                  <span style={{ fontWeight: "bold", minWidth: "16px" }}>{label}</span>
-                  <span>{word}</span>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 0.75fr", columnGap: 90, alignItems: "start", margin: "18px 0 5em" }}>
+          <section aria-label="Section A">
+            <div style={{ textAlign: "center", fontWeight: "bold", marginBottom: 16 }}>A</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {QUESTIONS.map(({ id, scrambled, audio }) => (
+                <div key={id} style={{ display: "grid", gridTemplateColumns: "28px 115px 135px", alignItems: "center", gap: 10, minHeight: 28 }}>
+                  <b>{id}</b>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, audio)}
+                    ariaLabel={`Play ${scrambled}`}
+                    flowText
+                  >
+                    {scrambled}
+                  </WorkbookUnit9AudioText>
+                  <MatchInput
+                    id={id}
+                    value={answers[id]}
+                    onChange={changeAnswer}
+                    correct={result[id] === true}
+                    wrong={result[id] === false}
+                    disabled={locked || result[id] === true}
+                  />
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
+          <section aria-label="Section B" style={{ width: "max-content", minWidth: 170 }}>
+            <div style={{ textAlign: "left", paddingLeft: 38, fontWeight: "bold", marginBottom: 16 }}>B</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {SECTION_B.map(([letter, word, audio]) => (
+                <div key={letter} style={{ display: "grid", gridTemplateColumns: "28px 1fr", alignItems: "center", minHeight: 28 }}>
+                  <b>{letter}</b>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, audio)}
+                    ariaLabel={`Play ${word}`}
+                    flowText
+                  >
+                    {word}
+                  </WorkbookUnit9AudioText>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
-
-        {/* Girls Image */}
-        <div style={{ display: "flex", justifyContent: "center", margin: "1em 0 5em" }}>
-          <img
-            src={girlsImg}
-            alt="students"
-            style={{
-              width: "60%",
-              maxWidth: "400px",
-              height: "auto",
-              objectFit: "contain",
-              borderRadius: "8px",
-            }}
-          />
-        </div>
-
       </div>
 
-      {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={reset}>Start Again ↻</button>
+        <button className="show-answer-btn" onClick={showAnswers}>Show Answer</button>
+        <button className="check-button2" onClick={checkAnswers}>Check Answer ✓</button>
       </div>
     </div>
   );
+};
+
+const wrongStyle = {
+  position: "absolute", top: -8, right: -8, width: 20, height: 20,
+  background: "#ef4444", color: "white", borderRadius: "50%", fontSize: 11,
+  display: "inline-flex", alignItems: "center", justifyContent: "center",
+  fontWeight: "bold", border: "2px solid white", boxShadow: "0 1px 4px rgba(0,0,0,.2)",
 };
 
 export default WB_Unit9_UnscrambleMatch_C;

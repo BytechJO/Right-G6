@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaRedo } from "react-icons/fa";
+import ActionButtons from "../../ActionButtons";
 
 const questions = [
   { id: 1, label: "Who founded (started) the town:" },
@@ -41,23 +42,9 @@ const Unit6_Page3_GrammarB = () => {
           </div>
         ))}
       </div>
-
-      {/* RESET BUTTON */}
-      <div className="flex justify-center mt-10">
-        <div className="relative group">
-          <div
-            onClick={() => setAnswers(Array(questions.length).fill(""))}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-      </div>
+      <ActionButtons
+        onReset={() => setAnswers(Array(questions.length).fill(""))}
+      />
     </div>
   );
 };

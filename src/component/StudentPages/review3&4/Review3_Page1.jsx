@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/Page 34.png";
 import "./Review3_Page1.css";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 // import Unit4_Page6_Q2 from "./Unit4_Page6_Q2";
 const Review3_Page1 = ({ openPopup }) => {
+  const openExercise = (startIndex) =>
+    openPopup("exercise", { startIndex });
+
+  const handleKeyDown = (event, startIndex) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (!event.repeat) openExercise(startIndex);
+  };
+
   return (
     <div
       className="page1-img-wrapper"
@@ -19,8 +29,12 @@ const Review3_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 32 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 3 exercise A"
+          onClick={() => openExercise(32)}
+          onKeyDown={(event) => handleKeyDown(event, 32)}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"
@@ -40,8 +54,12 @@ const Review3_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 33 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 3 exercise B"
+          onClick={() => openExercise(33)}
+          onKeyDown={(event) => handleKeyDown(event, 33)}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"
@@ -61,8 +79,12 @@ const Review3_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 34 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open Review 3 exercise C"
+          onClick={() => openExercise(34)}
+          onKeyDown={(event) => handleKeyDown(event, 34)}
+          style={{ overflow: "visible", cursor: "pointer" }}
         >
           <image
             className="svg-img"

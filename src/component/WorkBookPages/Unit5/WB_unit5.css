@@ -87,3 +87,15 @@ top: 2.7%;
   top:80%;
   left: 73.5%;
 }
+.wb-unit5-input::placeholder {
+  color: #7c8798;
+  font-size: 0.78em;
+  font-weight: 400;
+}
+
+.wb-unit5-input:focus-visible,
+.wb-unit5-choice:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px;
+  border-radius: 6px;
+}

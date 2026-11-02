@@ -1,6 +1,11 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import Unit2AudioText, {
+  stopUnit2Audio,
+  unit2Audio,
+} from "../unit2/Unit2AudioText";
 
 const VERBS = [
   { verb: "see", correct: "seen" },
@@ -18,6 +23,20 @@ const VERBS = [
 ];
 
 const normalize = (t) => t.toLowerCase().trim();
+const VERB_AUDIO_INDEX = {
+  see: 1,
+  go: 2,
+  buy: 3,
+  drive: 4,
+  choose: 5,
+  ride: 6,
+  read: 7,
+  run: 8,
+  sleep: 9,
+  teach: 10,
+  write: 11,
+  think: 12,
+};
 
 const Page_C_Participles = () => {
   const inputCount = VERBS.filter((v) => !v.example).length;
@@ -72,6 +91,7 @@ const Page_C_Participles = () => {
   };
 
   const handleReset = () => {
+    stopUnit2Audio();
     setAnswers(Array(inputCount).fill(""));
     setResult(Array(inputCount).fill(null));
     setLocked(false);
@@ -97,6 +117,9 @@ const Page_C_Participles = () => {
         <span style={{ position: "relative", display: "inline-block" }}>
           <input
             value={answers[idx]}
+            placeholder="Type the word"
+            title="Type the past participle"
+            className="review-unit2-answer-input"
             disabled={locked || isOk}
             onChange={(e) => handleChange(idx, e.target.value)}
             style={{
@@ -148,18 +171,39 @@ const Page_C_Participles = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "40px" }}>
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-2">C</span>
-          Complete the chart with the participles of irregular verbs.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Complete the chart with the participles of the irregular verbs."
+          subTitle="Work through the chart one row at a time and use the row and column headings as clues before checking your entries."
+        />
 
-        <div style={{ display: "flex",justifyContent:"space-around", width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            width: "100%",
+          }}
+        >
           {/* الجدول الأيسر */}
           <table style={styles.table}>
             <tbody>
               {leftVerbs.map((v, i) => (
                 <tr key={i}>
-                  <td style={styles.tdVerb}>{v.verb}</td>
+                  <td style={styles.tdVerb}>
+                    <Unit2AudioText
+                      src={
+                        VERB_AUDIO_INDEX[v.verb]
+                          ? unit2Audio(
+                              "Page 17 - Exercise C",
+                              `Item_${String(VERB_AUDIO_INDEX[v.verb]).padStart(3, "0")}_`,
+                            )
+                          : null
+                      }
+                      ariaLabel={`Play ${v.verb}`}
+                    >
+                      {v.verb}
+                    </Unit2AudioText>
+                  </td>
                   {renderCell(v)}
                 </tr>
               ))}
@@ -171,7 +215,21 @@ const Page_C_Participles = () => {
             <tbody>
               {rightVerbs.map((v, i) => (
                 <tr key={i}>
-                  <td style={styles.tdVerb}>{v.verb}</td>
+                  <td style={styles.tdVerb}>
+                    <Unit2AudioText
+                      src={
+                        VERB_AUDIO_INDEX[v.verb]
+                          ? unit2Audio(
+                              "Page 17 - Exercise C",
+                              `Item_${String(VERB_AUDIO_INDEX[v.verb]).padStart(3, "0")}_`,
+                            )
+                          : null
+                      }
+                      ariaLabel={`Play ${v.verb}`}
+                    >
+                      {v.verb}
+                    </Unit2AudioText>
+                  </td>
                   {renderCell(v)}
                 </tr>
               ))}

@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const Review8_Page1_Q3 = () => {
   const correctAnswers = [
@@ -15,6 +20,8 @@ const Review8_Page1_Q3 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -42,6 +49,7 @@ const Review8_Page1_Q3 = () => {
   };
 
   const checkAnswers = () => {
+    if (locked) return;
     const hasEmpty = answers.some((item) => !item.trim());
 
     if (hasEmpty) {
@@ -94,6 +102,7 @@ const Review8_Page1_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", "", ""]);
 
     setResult([]);
@@ -107,6 +116,9 @@ const Review8_Page1_Q3 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="expression"
+        title="Type the correct expression"
+        aria-label={`Expression ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
           border-0
@@ -154,43 +166,85 @@ const Review8_Page1_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <h5 className="header-title-page8 mb-[15vh]">
-          <span
-            style={{
-              marginRight: "20px",
-            }}
-          >
-            C
-          </span>
-          Fill in the blanks with the correct expressions.
-        </h5>
+      <div className="div-forall gap-20 text-[18px] w-full">
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Fill in the blanks with the correct expressions."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         <div className="flex flex-col gap-[8vh]">
           {/* 1 */}
           <div>
             <span className="font-bold mr-4">1</span>
-            {inputField(0, "420px")} ! I was looking for you everywhere.
+            {inputField(0, "420px")} !{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_001_")}
+              ariaLabel="Play sentence 1"
+              flowText
+            >
+              I was looking for you everywhere.
+            </Unit8StudentAudioText>
           </div>
 
           {/* 2 */}
           <div>
-            <span className="font-bold mr-4">2</span>I haven’t seen this toy{" "}
-            {inputField(1, "220px")} ! The last time I saw it was when I was
-            four years old.
+            <span className="font-bold mr-4">2</span>{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_002_")}
+              ariaLabel="Play sentence 2 ending"
+              flowText
+            >
+              I haven’t seen this toy{" "}
+            </Unit8StudentAudioText>
+            {inputField(1, "220px")}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_003_")}
+              ariaLabel="Play sentence 2 ending"
+              flowText
+            >
+              ! The last time I saw it was when I was four years old.
+            </Unit8StudentAudioText>
           </div>
 
           {/* 3 */}
           <div>
-            <span className="font-bold mr-4">3</span>I might not find a use for
-            this old pin now, but it might {inputField(2, "260px")} one day.
+            <span className="font-bold mr-4">3</span>
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_004_")}
+              ariaLabel="Play sentence 3 beginning"
+              flowText
+            >
+              I might not find a use for this old pin now, but it might
+            </Unit8StudentAudioText>{" "}
+            {inputField(2, "260px")}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_005_")}
+              ariaLabel="Play sentence 3 ending"
+              flowText
+            >
+              one day.
+            </Unit8StudentAudioText>
           </div>
 
           {/* 4 */}
           <div>
             <span className="font-bold mr-4">4</span>
-            My friends will {inputField(3, "320px")} on my lawn at eight
-            o’clock.
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_006_")}
+              ariaLabel="Play sentence 4 beginning"
+              flowText
+            >
+              My friends will
+            </Unit8StudentAudioText>{" "}
+            {inputField(3, "320px")}{" "}
+            <Unit8StudentAudioText
+              src={unit8StudentAudio("Page 72 - Exercise C", "Item_007_")}
+              ariaLabel="Play sentence 4 ending"
+              flowText
+            >
+              on my lawn at eight o’clock.
+            </Unit8StudentAudioText>
           </div>
         </div>
       </div>

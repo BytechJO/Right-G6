@@ -1,22 +1,25 @@
 import page_1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/Page 28.png";
 import "./Unit4_Page1.css";
+
 import longAudio from "../../../assets/audio/ClassBook/U4/PG 28/pg28-conversation.mp3";
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import arrowBtn from "../../../assets/Page 01/Arrow.svg";
+
 import Conversation from "../../Conversation";
 import Vocabulary from "../../Vocabulary";
 import VocabularAudio from "../../../assets/audio/ClassBook/U4/PG 28/cd17pg28-vocab.mp3";
 
 import CriticalThinking from "../../CriticalThinking";
+
 import imgConversation1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 31.svg";
 import imgConversation2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 32.svg";
 import imgConversation3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 33.svg";
 import imgConversation4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 30.svg";
+
 import wordJson from "../../../assets/json/pg28-conversation_eng.json";
 import video from "../../../assets/videos/grade 6 unit 4 page 28.mp4";
 
 const Unit4_Page1 = ({ openPopup }) => {
-  // ==================== conversation data ==================== //
   const data = [
     {
       number: 1,
@@ -103,6 +106,7 @@ const Unit4_Page1 = ({ openPopup }) => {
       ],
     },
   ];
+
   const captionsExample = [
     {
       start: 0.299,
@@ -185,6 +189,7 @@ const Unit4_Page1 = ({ openPopup }) => {
       text: "That would be interesting",
     },
   ];
+
   const captionTimings = [
     [
       captionsExample[1],
@@ -192,7 +197,6 @@ const Unit4_Page1 = ({ openPopup }) => {
       captionsExample[3],
       captionsExample[4],
     ],
-
     [
       captionsExample[5],
       captionsExample[6],
@@ -200,11 +204,10 @@ const Unit4_Page1 = ({ openPopup }) => {
       captionsExample[8],
       captionsExample[9],
     ],
-
     [captionsExample[10], captionsExample[11], captionsExample[12]],
-
     [captionsExample[13], captionsExample[14], captionsExample[15]],
   ];
+
   const filteredSegments = wordJson.segments.slice(1);
 
   const Voc = [
@@ -214,7 +217,6 @@ const Unit4_Page1 = ({ openPopup }) => {
       filteredSegments[2]?.words || [],
       filteredSegments[3]?.words || [],
     ],
-
     [
       filteredSegments[4]?.words || [],
       filteredSegments[5]?.words || [],
@@ -222,13 +224,11 @@ const Unit4_Page1 = ({ openPopup }) => {
       filteredSegments[7]?.words || [],
       filteredSegments[8]?.words || [],
     ],
-
     [
       filteredSegments[9]?.words || [],
       filteredSegments[10]?.words || [],
       filteredSegments[11]?.words || [],
     ],
-
     [
       filteredSegments[12]?.words || [],
       filteredSegments[13]?.words || [],
@@ -236,30 +236,24 @@ const Unit4_Page1 = ({ openPopup }) => {
     ],
   ];
 
-  /////////////////VOCABULARY/////////////////
-
   const captionVoc = [
     {
       start: 0.219,
       end: 7.639,
       text: "Page 28, Unit 4, Vocabulary. Listen and repeat. Find the words and expressions in the conversation above.",
     },
-
     { start: 8.539, end: 10.38, text: "1. antique." },
     { start: 10.819, end: 12.439, text: "2. collection." },
     { start: 12.88, end: 14.699, text: "3. trinkets." },
     { start: 15.139, end: 17.119, text: "4. souvenirs." },
-
     { start: 17.739, end: 19.399, text: "5. travels." },
     { start: 19.959, end: 21.659, text: "6. stuff." },
     { start: 22.359, end: 24.119, text: "7. sewing." },
     { start: 24.5, end: 26.239, text: "8. archer." },
-
     { start: 27.139, end: 28.92, text: "9. archery." },
     { start: 29.619, end: 31.42, text: "10. carved." },
     { start: 32.139, end: 34.079, text: "11. range." },
     { start: 35.079, end: 37.52, text: "12. for a living." },
-
     { start: 38.079, end: 40.099, text: "13. spare time." },
     { start: 40.719, end: 42.68, text: "14. extra money." },
     { start: 43.399, end: 45.899, text: "15. bow and arrow." },
@@ -271,28 +265,113 @@ const Unit4_Page1 = ({ openPopup }) => {
     { start: 10.819, end: 12.439, text: "2. collection." },
     { start: 12.88, end: 14.699, text: "3. trinkets." },
     { start: 15.139, end: 17.119, text: "4. souvenirs." },
-
     { start: 17.739, end: 19.399, text: "5. travels." },
     { start: 19.959, end: 21.659, text: "6. stuff." },
     { start: 22.359, end: 24.119, text: "7. sewing." },
     { start: 24.5, end: 26.239, text: "8. archer." },
-
     { start: 27.139, end: 28.92, text: "9. archery." },
     { start: 29.619, end: 31.42, text: "10. carved." },
     { start: 32.139, end: 34.079, text: "11. range." },
     { start: 35.079, end: 37.52, text: "12. for a living." },
-
     { start: 38.079, end: 40.099, text: "13. spare time." },
     { start: 40.719, end: 42.68, text: "14. extra money." },
     { start: 43.399, end: 45.899, text: "15. bow and arrow." },
     { start: 46.86, end: 49.439, text: "16. world-class." },
   ];
 
+  const handleKeyDown = (event, action) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        action();
+      }
+    }
+  };
+
+  const openConversation = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Conversation
+          title="Conversation"
+          items={data}
+          sound={longAudio}
+          captions={captionsExample}
+          stopAtSecond={5.039}
+          captionTimings={captionTimings}
+          wordTimings={Voc}
+          pageId="sb_unit4_page28_conversation"
+          openPopup={openPopup}
+          video={video}
+          keyboardAccessible={true}
+        />
+      </div>,
+    );
+  };
+
+  const openVocabulary = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Vocabulary
+          title="VOCABULARY"
+          subtitle="Listen and repeat. Find the words and expressions in the conversation above."
+          sound={VocabularAudio}
+          captions={captionVoc}
+          stopAtSecond={8.2}
+          pageId="sb_unit4_page28_vocab"
+          wordTimings={wordTimingsVoc}
+          keyboardAccessible={true}
+          words={[
+            "antique",
+            "collection",
+            "trinkets",
+            "souvenirs",
+            "travels",
+            "stuff",
+            "sewing",
+            "archer",
+            "archery",
+            "carved",
+            "range",
+            "for a living",
+            "spare time",
+            "extra money",
+            "bow and arrow",
+            "world-class",
+          ]}
+        />
+      </div>,
+    );
+  };
+
+  const openCriticalThinking = () => {
+    openPopup(
+      "html",
+      <CriticalThinking title="How will Stella get rewarded for helping to clean Helen’s room?" />,
+    );
+  };
+
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_1})` }}
     >
+      {/* Conversation */}
       <div
         className="headset-icon-CD-page4-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -301,31 +380,15 @@ const Unit4_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Conversation
-                  title="Conversation"
-                  items={data}
-                  sound={longAudio}
-                  captions={captionsExample}
-                  stopAtSecond={5.039}
-                  captionTimings={captionTimings}
-                  wordTimings={Voc}
-                  openPopup={openPopup}
-                  video={video}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open conversation"
+          onClick={openConversation}
+          onKeyDown={(event) => handleKeyDown(event, openConversation)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -338,6 +401,8 @@ const Unit4_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Vocabulary */}
       <div
         className="headset-icon-CD-page4-2 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -346,47 +411,15 @@ const Unit4_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Vocabulary
-                  title="VOCABULARY"
-                  subtitle="Listen and repeat. Find the words and expressions in the conversation above."
-                  sound={VocabularAudio}
-                  captions={captionVoc}
-                  stopAtSecond={8.539}
-                  // sounds={sounds}
-                  wordTimings={wordTimingsVoc}
-                  words={[
-                    "antique",
-                    "collection",
-                    "trinkets",
-                    "souvenirs",
-                    "travels",
-                    "stuff",
-                    "sewing",
-                    "archer",
-                    "archery",
-                    "carved",
-                    "range",
-                    "for a living",
-                    "spare time",
-                    "extra money",
-                    "bow and arrow",
-                    "world-class",
-                  ]}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open vocabulary"
+          onClick={openVocabulary}
+          onKeyDown={(event) => handleKeyDown(event, openVocabulary)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -399,6 +432,8 @@ const Unit4_Page1 = ({ openPopup }) => {
           />
         </svg>
       </div>
+
+      {/* Critical Thinking */}
       <div
         className="headset-icon-CD-page4-3 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -407,15 +442,15 @@ const Unit4_Page1 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <CriticalThinking
-                title={"How will Stella get rewarded for helping to clean Helen’s room?"}
-              />,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open critical thinking activity"
+          onClick={openCriticalThinking}
+          onKeyDown={(event) => handleKeyDown(event, openCriticalThinking)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

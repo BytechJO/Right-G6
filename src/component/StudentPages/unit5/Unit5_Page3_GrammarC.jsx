@@ -49,9 +49,9 @@ const Unit4_Page5_GrammarC = () => {
       .replace(/can’t/g, "can not")
       .replace(/won't/g, "will not")
       .replace(/won’t/g, "will not")
-        .replace(/has't/g, "has not")
+      .replace(/has't/g, "has not")
       .replace(/has’t/g, "has not")
-        .replace(/have't/g, "have not")
+      .replace(/have't/g, "have not")
       .replace(/have’t/g, "have not")
       .replace(/[.,!?'"’;:]/g, "")
       .replace(/\s+/g, " "); // normalize spaces
@@ -340,14 +340,24 @@ const Unit4_Page5_GrammarC = () => {
         {/* Reset */}
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Reset activity"
             onClick={reset}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                if (!e.repeat) reset();
+              }
+            }}
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaRedo size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
             Reset
           </span>
         </div>
@@ -355,14 +365,24 @@ const Unit4_Page5_GrammarC = () => {
         {/* Show */}
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Show answer"
             onClick={showAnswers}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                if (!e.repeat) showAnswers();
+              }
+            }}
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaEye size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition whitespace-nowrap">
             Show Answer
           </span>
         </div>
@@ -370,14 +390,24 @@ const Unit4_Page5_GrammarC = () => {
         {/* Check */}
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Check answer"
             onClick={checkAnswers}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                if (!e.repeat) checkAnswers();
+              }
+            }}
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaCheck size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition whitespace-nowrap">
             Check Answer
           </span>
         </div>

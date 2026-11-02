@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "./Unit8StudentAudioText";
 
 const Unit8_Page6_Q3 = () => {
   const questions = [
@@ -15,6 +20,8 @@ const Unit8_Page6_Q3 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -102,6 +109,7 @@ const Unit8_Page6_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", "", ""]);
 
     setResult([]);
@@ -115,6 +123,9 @@ const Unit8_Page6_Q3 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="Write the direct quote"
+        title="Write the direct quote"
+        aria-label={`Direct quote ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
           w-full
@@ -162,20 +173,23 @@ const Unit8_Page6_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        <h5 className="header-title-page8 mb-[8vh]">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            F
-          </span>
-          Using the sentences from Exercise E, write direct quotes of what the
-          people said. Remember to use quotation marks (“...”) at the beginning
-          and ending of the quote.
-        </h5>
+      <div className="div-forall gap-7 w-full text-[18px]">
+        <ExerciseHeader
+          sectionLetter="F"
+          title="Using the sentences from Exercise E, write direct quotes of what the people said."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Use the corrected sentences from Exercise E as your
+                source.
+              </span>{" "}
+              <span style={{ display: "block" }}>
+                Task 2: Rewrite each one as a direct quote with quotation marks
+                and correct punctuation.
+              </span>
+            </>
+          }
+        />
 
         <div className="flex flex-col gap-[10vh]">
           {/* 1 */}
@@ -183,7 +197,13 @@ const Unit8_Page6_Q3 = () => {
             <div className="flex items-center gap-4">
               <span className="font-bold">1</span>
 
-              <span>John said,</span>
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 69 - Exercise F", "Item_001_")}
+                ariaLabel="Play John said"
+                flowText
+              >
+                John said,
+              </Unit8StudentAudioText>
 
               <div className="flex-1">{inputField(0)}</div>
             </div>
@@ -194,7 +214,13 @@ const Unit8_Page6_Q3 = () => {
             <div className="flex items-center gap-4">
               <span className="font-bold">2</span>
 
-              <span>Did Carly say,</span>
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 69 - Exercise F", "Item_002_")}
+                ariaLabel="Play Did Carly say"
+                flowText
+              >
+                Did Carly say,
+              </Unit8StudentAudioText>
 
               <div className="flex-1">{inputField(1)}</div>
             </div>

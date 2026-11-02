@@ -5,13 +5,27 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
 const WB_Unit1_Page4 = ({ openPopup }) => {
   const audioRef = useRef(null);
+
+  const openExercise = (startIndex) => {
+    openPopup("exercise", { startIndex });
+  };
+
+  const handleKeyDown = (event, startIndex) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openExercise(startIndex);
+      }
+    }
+  };
+
   return (
     <div
       className="page1-img-wrapper"
       style={{ backgroundImage: `url(${page_4})` }}
     >
-      {/* <img src={page_4} /> */}
-
       <div
         className="q3-1 hover:scale-110 transition"
         style={{ overflow: "visible" }}
@@ -20,8 +34,15 @@ const WB_Unit1_Page4 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 1 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 1"
+          onClick={() => openExercise(1)}
+          onKeyDown={(event) => handleKeyDown(event, 1)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
@@ -43,8 +64,15 @@ const WB_Unit1_Page4 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("exercise", { startIndex: 2 })}
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open exercise 2"
+          onClick={() => openExercise(2)}
+          onKeyDown={(event) => handleKeyDown(event, 2)}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

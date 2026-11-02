@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit4StudentAudioText, {
+  stopUnit4StudentAudio,
+  unit4StudentAudio,
+} from "../unit4/Unit4StudentAudioText";
 
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 53.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 4 Whats It Like Folder/SVG/Asset 55.svg";
@@ -45,6 +50,9 @@ const Review4_Page2_Q1 = () => {
         disabled={locked || result[i] === true}
         value={answers[i]}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Write the passive sentence"
+        title="Answer using the present simple passive"
+        aria-label={`Passive answer ${i + 1}`}
         style={{
           width: "100%",
           borderTop: "none",
@@ -130,11 +138,12 @@ const Review4_Page2_Q1 = () => {
 
   const showAnswers = () => {
     setAnswers(correctAnswers);
-    setResult([true, true, true]);
+    setResult([true, true, true, true]);
     setLocked(true);
   };
 
   const handleReset = () => {
+    stopUnit4StudentAudio();
     setAnswers(["", "", "", ""]);
     setResult([]);
     setLocked(false);
@@ -154,21 +163,29 @@ const Review4_Page2_Q1 = () => {
     {
       img: img1,
       question: "Does Marcy or Sam write the letter?",
+      audio: "Item_001_",
+      alt: "Sam standing with folded arms",
       idx: 0,
     },
     {
       img: img2,
       question: "Does the cat or the mouse drink the milk?",
+      audio: "Item_002_",
+      alt: "A cat lying down",
       idx: 1,
     },
     {
       img: img3,
       question: "Does Mom or Dad drive the van?",
+      audio: "Item_003_",
+      alt: "Mom standing and smiling",
       idx: 2,
     },
     {
       img: img4,
       question: "Does the gardener or my sister water the plants?",
+      audio: null,
+      alt: "A gardener",
       idx: 3,
     },
   ];
@@ -183,11 +200,11 @@ const Review4_Page2_Q1 = () => {
       }}
     >
       <div className="div-forall">
-        <h5 className="header-title-page8 mb-17">
-          <span className="mr-6">C</span>
-          Who did it? Look at the pictures and answer the question, using the
-          present simple passive.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Who did it? Look at the pictures and answer the question, using the present simple passive."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
           {/* Editable rows */}
@@ -214,7 +231,7 @@ const Review4_Page2_Q1 = () => {
               </span>
 
               {/* Image */}
-              <img src={row.img} alt="" style={imageStyle} />
+              <img src={row.img} alt={row.alt} style={imageStyle} />
 
               {/* Question + Input */}
               <div
@@ -227,7 +244,18 @@ const Review4_Page2_Q1 = () => {
                   fontSize: "17px",
                 }}
               >
-                <p style={{ margin: "0", color: "#222" }}>{row.question}</p>
+                <p style={{ margin: "0", color: "#222" }}>
+                  <Unit4StudentAudioText
+                    src={
+                      row.audio
+                        ? unit4StudentAudio("Page 37 - Exercise C", row.audio)
+                        : null
+                    }
+                    ariaLabel={`Play ${row.question}`}
+                  >
+                    {row.question}
+                  </Unit4StudentAudioText>
+                </p>
                 {renderInput(row.idx)}
               </div>
             </div>

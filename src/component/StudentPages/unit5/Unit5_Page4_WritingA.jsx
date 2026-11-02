@@ -121,14 +121,27 @@ const Unit4_Page6_SpeakingA = () => {
       <div className="flex justify-center mt-8">
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Reset activity"
             onClick={handleReset}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+
+                if (!e.repeat) {
+                  handleReset();
+                }
+              }
+            }}
             className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaRedo size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition">
             Reset
           </span>
         </div>

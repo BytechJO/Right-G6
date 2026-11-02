@@ -5,12 +5,11 @@ import TopNavbar from "./Book/Navbar/TopNavbar";
 import BottomBar from "./Book/Navbar/BottomBar";
 import LeftSidebar from "./Book/Sidebars/LeftSidebar";
 import RightSidebar from "./Book/Sidebars/RightSidebar";
+
 // === cover img ===
 import workbookCover from "../assets/imgs/pages/workbook-cover.jpg";
 import stbookCover from "../assets/imgs/pages/classbook-cover.png";
 import teacherBookCover from "../assets/imgs/pages/Right InternationalTB/Right 2nd edition TB G6_Page_001.png";
-
-// === VIEWERS ===
 
 // === POPUP ===
 import Popup from "./Popup/Popup";
@@ -32,147 +31,249 @@ import { FaKey } from "react-icons/fa";
 import audioBtn from "../assets/Page 01/Audio btn.svg";
 import arrowBtn from "../assets/Page 01/Arrow.svg";
 import pauseBtn from "../assets/Page 01/Right Video Button.svg";
+
 // === PAGES DATA ===
 import { studentPages, workbookPages, teacherPages, posters } from "./BookData";
+
 import WorkBookNavigator from "./WorkBookPages/WorkBookNavigator";
-// import { postersVocabPages } from "./BookData/postersVocabPages";
-// import PosterVocabNavigator from "./PostersVocabPages/PosterVocabNavigator";
 import TeacherBook from "./TeacherBookPages/TeacherBook";
+
+// ===========================================================
+//                  AVAILABLE BOOK TABS
+// ===========================================================
+const BOOK_TABS = new Set(["student", "work", "teacher", "poster"]);
+
+// ===========================================================
+//                 SAVED ACTIVE TAB
+// ===========================================================
+const getInitialActiveTab = () => {
+  const savedTab = localStorage.getItem("activeTab");
+
+  return BOOK_TABS.has(savedTab) ? savedTab : "student";
+};
+
+// ===========================================================
+//                 SAVED PAGE PER TAB
+// ===========================================================
+const getSavedPageIndex = (tab, includeLegacyValue = false) => {
+  const savedValue = localStorage.getItem(`pageIndex-${tab}`);
+
+  const valueToRead =
+    savedValue ??
+    (includeLegacyValue ? localStorage.getItem("pageIndex") : null);
+
+  const parsedValue = Number(valueToRead);
+
+  return Number.isInteger(parsedValue) && parsedValue >= 0 ? parsedValue : 0;
+};
 
 export default function Book() {
   // ===========================================================
-  //                 📌 STATE
+  //                         STATE
   // ===========================================================
-  const [pageIndex, setPageIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem("activeTab") || "student";
-  });
+
+  const [activeTab, setActiveTab] = useState(getInitialActiveTab);
+
+  const [pageIndex, setPageIndex] = useState(() =>
+    getSavedPageIndex(getInitialActiveTab(), true),
+  );
+
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1200);
-  const touchStart = useRef({ x: 0, y: 0 });
+
+  const touchStart = useRef({
+    x: 0,
+    y: 0,
+  });
+
   const [zoom, setZoom] = useState(1);
   const [viewMode, setViewMode] = useState("spread");
 
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({
+    x: 0,
+    y: 0,
+  });
+
   const [isDragging, setIsDragging] = useState(false);
 
   const [leftBarOpen, setLeftBarOpen] = useState(false);
   const [rightBarOpen, setRightBarOpen] = useState(false);
 
-  //------------------ swipe function -----------------------------
+  // refs for focus return from sidebars/popups
+  const menuButtonRef = useRef(null);
+  const iconKeyButtonRef = useRef(null);
 
   // Popup
   const [popupOpen, setPopupOpen] = useState(false);
   const [popupContent, setPopupContent] = useState(null);
+
   const [mobileTabsOpen, setMobileTabsOpen] = useState(false);
 
   // ===========================================================
-  //                 📌 PAGE LIST SELECTOR
+  //                   PAGE LIST SELECTOR
   // ===========================================================
+
   const pages = {
     student: studentPages(openPopup, goToUnit),
+
     work: workbookPages(openPopup, goToUnit),
-    teacher: teacherPages.map((t) => <TeacherBook teacher={t} />),
+
+    teacher: teacherPages.map((t) => (
+      <TeacherBook key={t?.id ?? t?.page ?? undefined} teacher={t} />
+    )),
+
     poster: posters(openPopup),
   }[activeTab];
 
   // ===========================================================
-  //                 📌 POPUP HANDLERS
+  //                      POPUP HANDLERS
   // ===========================================================
+
   function openPopup(type, data) {
-    setPopupContent({ type, data, tab: activeTab });
+    setPopupContent({
+      type,
+      data,
+      tab: activeTab,
+    });
+
     setPopupOpen(true);
   }
+
   function closePopup() {
     setPopupOpen(false);
   }
 
   // ===========================================================
-  //                 📌 RESIZE LISTENER
+  //                       TAB CHANGE
   // ===========================================================
+
+  const handleTabChange = (nextTab) => {
+    if (!BOOK_TABS.has(nextTab) || nextTab === activeTab) return;
+
+    setActiveTab(nextTab);
+
+    // رجّع كل كتاب على آخر صفحة كان المستخدم واقف عليها
+    setPageIndex(getSavedPageIndex(nextTab));
+  };
+
+  // ===========================================================
+  //                     RESIZE LISTENER
+  // ===========================================================
+
   useEffect(() => {
     const resize = () => {
       const mobile = window.innerWidth <= 1200;
+
       setIsMobile(mobile);
 
       if (mobile) {
-        setViewMode("single"); // 🔥 إجبار الموبايل على single mode
+        setViewMode("single");
       }
     };
 
     window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
+  // ===========================================================
+  //                RESET VIEW WHEN TAB CHANGES
+  // ===========================================================
+
   useEffect(() => {
-    setPageIndex(0);
-    setOffset({ x: 0, y: 0 });
+    setOffset({
+      x: 0,
+      y: 0,
+    });
+
     setZoom(1);
-    localStorage.setItem("activeTab", activeTab);
-    localStorage.setItem("pageIndex", pageIndex);
+
     if (activeTab === "poster") {
-      setViewMode("single"); // بوستر = صفحة واحدة دائمًا
+      setViewMode("single");
     } else {
       if (!isMobile) {
-        setViewMode("spread"); // لو الشاشة كبيرة → رجّع صفحتين
+        setViewMode("spread");
       } else {
-        setViewMode("single"); // لو شاشة صغيرة → صفحة واحدة دائمًا
+        setViewMode("single");
       }
     }
-  }, [activeTab]);
+  }, [activeTab, isMobile]);
+
+  // ===========================================================
+  //                  SAVE TAB + PAGE
+  // ===========================================================
+
+  useEffect(() => {
+    localStorage.setItem("activeTab", activeTab);
+
+    localStorage.setItem(`pageIndex-${activeTab}`, String(pageIndex));
+
+    // remove old global pageIndex system
+    localStorage.removeItem("pageIndex");
+  }, [activeTab, pageIndex]);
+
+  // ===========================================================
+  //                 FIX SPREAD PAGE INDEX
+  // ===========================================================
+
   useEffect(() => {
     if (viewMode === "spread" && !isMobile) {
       const currentPageNumber = pageIndex + 1;
 
-      // لو فردية → رجّعها للي قبلها
+      // لو الصفحة فردية، ارجع للصفحة السابقة
+      // إلا لو الصفحة الأولى
       if (currentPageNumber % 2 === 1 && currentPageNumber !== 1) {
-        setPageIndex(pageIndex - 1);
+        setPageIndex((prev) => Math.max(0, prev - 1));
       }
     }
-  }, [viewMode]);
+  }, [viewMode, isMobile]);
 
   // ===========================================================
-  //                 📌 PAGE NAVIGATION
+  //                       PAGE NAVIGATION
   // ===========================================================
+
   function goToUnit(index) {
-    setPageIndex(index - 1);
-    // ===========================
-    // ❌ التحقق من إدخال غير صحيح
-    // ===========================
+    // التحقق أولًا قبل تغيير الصفحة
     if (isNaN(index) || index < 1 || index > pages.length) {
-      // رجّعه للفهرس (الصفحة الثانية لأن الأولى سينجل)
       setPageIndex(1);
       return;
     }
+
+    setPageIndex(index - 1);
   }
 
   const goToPage = (pageNumber) => {
     const num = Number(pageNumber);
 
-    // ===========================
-    // ❌ التحقق من إدخال غير صحيح
-    // ===========================
+    // ===========================================================
+    //                     INVALID PAGE
+    // ===========================================================
+
     if (isNaN(num) || num < 1 || num > pages.length) {
-      setPageIndex(1); // رجّعه للصفحة الثانية دائماً
+      setPageIndex(1);
       return;
     }
 
-    // ===========================
-    // 📱 Mobile OR single mode
-    // ===========================
+    // ===========================================================
+    //                  MOBILE / SINGLE MODE
+    // ===========================================================
+
     if (isMobile || viewMode === "single") {
       setPageIndex(num - 1);
       return;
     }
 
-    // ===========================
-    // 📘 Spread Mode (لجميع التابات الأخرى)
-    // ===========================
+    // ===========================================================
+    //                       SPREAD MODE
+    // ===========================================================
+
     if (num === 1) {
       setPageIndex(0);
       return;
     }
 
-    // لو فردية → اعرض السابقة
+    // لو فردية → اعرض السابقة معها
     if (num % 2 === 1) {
       setPageIndex(num - 2);
       return;
@@ -182,73 +283,122 @@ export default function Book() {
     setPageIndex(num - 1);
   };
 
+  // ===========================================================
+  //                         NEXT PAGE
+  // ===========================================================
+
   const nextPage = () => {
-    // =============== Posters → always single ===============
-    if (activeTab === "flash") {
+    // Poster always single page
+    if (activeTab === "poster") {
       if (pageIndex < pages.length - 1) {
-        setPageIndex(pageIndex + 1);
+        setPageIndex((prev) => prev + 1);
       }
+
       return;
     }
 
-    // =============== DEFAULT LOGIC FOR OTHER TABS ===============
+    // Mobile / Single
     if (isMobile || viewMode === "single") {
       if (pageIndex < pages.length - 1) {
-        setPageIndex(pageIndex + 1);
+        setPageIndex((prev) => prev + 1);
       }
     } else {
+      // Spread
       if (pageIndex === 0) {
         setPageIndex(1);
       } else if (pageIndex < pages.length - 2) {
-        setPageIndex(pageIndex + 2);
+        setPageIndex((prev) => prev + 2);
       }
     }
   };
 
+  // ===========================================================
+  //                       PREVIOUS PAGE
+  // ===========================================================
+
   const prevPage = () => {
-    // Posters → always one page
-    if (activeTab === "flash") {
-      if (pageIndex > 0) setPageIndex(pageIndex - 1);
+    // Poster always single page
+    if (activeTab === "poster") {
+      if (pageIndex > 0) {
+        setPageIndex((prev) => prev - 1);
+      }
+
       return;
     }
-    // Normal logic
+
+    // Mobile / Single
     if (isMobile || viewMode === "single") {
-      if (pageIndex > 0) setPageIndex(pageIndex - 1);
+      if (pageIndex > 0) {
+        setPageIndex((prev) => prev - 1);
+      }
     } else {
-      if (pageIndex === 1) setPageIndex(0);
-      else if (pageIndex > 1) setPageIndex(pageIndex - 2);
+      // Spread
+      if (pageIndex === 1) {
+        setPageIndex(0);
+      } else if (pageIndex > 1) {
+        setPageIndex((prev) => prev - 2);
+      }
     }
   };
+
+  // ===========================================================
+  //                           HOME
+  // ===========================================================
 
   function goHome() {
     setPageIndex(1);
   }
 
   // ===========================================================
-  //                 📌 FULLSCREEN
+  //                        FULLSCREEN
   // ===========================================================
+
   function toggleFullScreen() {
     const el = document.documentElement;
-    if (!document.fullscreenElement) el.requestFullscreen();
-    else document.exitFullscreen();
+
+    if (!document.fullscreenElement) {
+      el.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
   }
 
   // ===========================================================
-  //                 📌 ZOOM & PANNING
+  //                       ZOOM & PANNING
   // ===========================================================
+
   function resetZoom() {
     setZoom(1);
-    setOffset({ x: 0, y: 0 });
+
+    setOffset({
+      x: 0,
+      y: 0,
+    });
   }
+
+  const start = useRef({
+    x: 0,
+    y: 0,
+  });
+
+  // ===========================================================
+  //                        MOUSE DRAG
+  // ===========================================================
 
   function handleMouseDown(e) {
     if (zoom === 1) return;
+
     setIsDragging(true);
-    start.current = { x: e.clientX - offset.x, y: e.clientY - offset.y };
+
+    start.current = {
+      x: e.clientX - offset.x,
+      y: e.clientY - offset.y,
+    };
   }
 
   function handleMouseMove(e) {
     if (!isDragging) return;
+
     setOffset({
       x: e.clientX - start.current.x,
       y: e.clientY - start.current.y,
@@ -259,12 +409,17 @@ export default function Book() {
     setIsDragging(false);
   }
 
-  const start = useRef({ x: 0, y: 0 });
+  // ===========================================================
+  //                        TOUCH DRAG
+  // ===========================================================
+
   function handleTouchStart(e) {
     if (zoom === 1) return;
 
     const touch = e.touches[0];
+
     setIsDragging(true);
+
     touchStart.current = {
       x: touch.clientX - offset.x,
       y: touch.clientY - offset.y,
@@ -275,6 +430,7 @@ export default function Book() {
     if (!isDragging) return;
 
     const touch = e.touches[0];
+
     setOffset({
       x: touch.clientX - touchStart.current.x,
       y: touch.clientY - touchStart.current.y,
@@ -286,42 +442,185 @@ export default function Book() {
   }
 
   // ===========================================================
-  //                 📌 UNITS LIST
+  //                       STUDENT UNITS
   // ===========================================================
 
   const studentUnits = [
-    { id: 1, label: "Unit 1", start: 4, pages: 6 },
-    { id: 2, label: "Unit 2", start: 10, pages: 6 },
-    { id: 3, label: "Review 1 and 2", start: 16, pages: 6 },
-    { id: 4, label: "Unit 3", start: 22, pages: 6 },
-    { id: 5, label: "Unit 4", start: 28, pages: 6 },
-    { id: 6, label: "Review 3 and 4", start: 34, pages: 6 },
-    { id: 7, label: "Unit 5", start: 40, pages: 6 },
-    { id: 8, label: "Unit 6", start: 46, pages: 6 },
-    { id: 9, label: "Review 5 and 6", start: 52, pages: 6 },
-    { id: 10, label: "Unit 7", start: 58, pages: 6 },
-    { id: 11, label: "Unit 8", start: 64, pages: 6 },
-    { id: 12, label: "Review 7 and 8", start: 70, pages: 6 },
-    { id: 13, label: "Unit 9", start: 76, pages: 6 },
-    { id: 14, label: "Unit 10", start: 82, pages: 6 },
-    { id: 15, label: "Review 9 and 10", start: 88, pages: 6 },
+    {
+      id: 1,
+      label: "Unit 1",
+      start: 4,
+      pages: 6,
+    },
+    {
+      id: 2,
+      label: "Unit 2",
+      start: 10,
+      pages: 6,
+    },
+    {
+      id: 3,
+      label: "Review 1 and 2",
+      start: 16,
+      pages: 6,
+    },
+    {
+      id: 4,
+      label: "Unit 3",
+      start: 22,
+      pages: 6,
+    },
+    {
+      id: 5,
+      label: "Unit 4",
+      start: 28,
+      pages: 6,
+    },
+    {
+      id: 6,
+      label: "Review 3 and 4",
+      start: 34,
+      pages: 6,
+    },
+    {
+      id: 7,
+      label: "Unit 5",
+      start: 40,
+      pages: 6,
+    },
+    {
+      id: 8,
+      label: "Unit 6",
+      start: 46,
+      pages: 6,
+    },
+    {
+      id: 9,
+      label: "Review 5 and 6",
+      start: 52,
+      pages: 6,
+    },
+    {
+      id: 10,
+      label: "Unit 7",
+      start: 58,
+      pages: 6,
+    },
+    {
+      id: 11,
+      label: "Unit 8",
+      start: 64,
+      pages: 6,
+    },
+    {
+      id: 12,
+      label: "Review 7 and 8",
+      start: 70,
+      pages: 6,
+    },
+    {
+      id: 13,
+      label: "Unit 9",
+      start: 76,
+      pages: 6,
+    },
+    {
+      id: 14,
+      label: "Unit 10",
+      start: 82,
+      pages: 6,
+    },
+    {
+      id: 15,
+      label: "Review 9 and 10",
+      start: 88,
+      pages: 6,
+    },
   ];
 
+  // ===========================================================
+  //                       WORKBOOK UNITS
+  // ===========================================================
+
   const workbookUnits = [
-    { id: 1, label: "Unit 1", start: 3, pages: 7 },
-    { id: 2, label: "Unit 2", start: 9, pages: 6 },
-    { id: 3, label: "Unit 3", start: 15, pages: 6 },
-    { id: 4, label: "Unit 4", start: 21, pages: 6 },
-    { id: 5, label: "Unit 5", start: 27, pages: 6 },
-    { id: 6, label: "Unit 6", start: 33, pages: 6 },
-    { id: 7, label: "Unit 7", start: 39, pages: 6 },
-    { id: 8, label: "Unit 8", start: 45, pages: 6 },
-    { id: 9, label: "Unit 9", start: 51, pages: 6 },
-    { id: 10, label: "Unit 10", start: 57, pages: 6 },
+    {
+      id: 1,
+      label: "Unit 1",
+      start: 3,
+      pages: 7,
+    },
+    {
+      id: 2,
+      label: "Unit 2",
+      start: 9,
+      pages: 6,
+    },
+    {
+      id: 3,
+      label: "Unit 3",
+      start: 15,
+      pages: 6,
+    },
+    {
+      id: 4,
+      label: "Unit 4",
+      start: 21,
+      pages: 6,
+    },
+    {
+      id: 5,
+      label: "Unit 5",
+      start: 27,
+      pages: 6,
+    },
+    {
+      id: 6,
+      label: "Unit 6",
+      start: 33,
+      pages: 6,
+    },
+    {
+      id: 7,
+      label: "Unit 7",
+      start: 39,
+      pages: 6,
+    },
+    {
+      id: 8,
+      label: "Unit 8",
+      start: 45,
+      pages: 6,
+    },
+    {
+      id: 9,
+      label: "Unit 9",
+      start: 51,
+      pages: 6,
+    },
+    {
+      id: 10,
+      label: "Unit 10",
+      start: 57,
+      pages: 6,
+    },
   ];
+
+  // ===========================================================
+  //                        POSTER UNITS
+  // ===========================================================
+
   const posterUnits = [
-    { id: 1, label: "Posters", start: 1, pages: posters().length },
+    {
+      id: 1,
+      label: "Posters",
+      start: 1,
+      pages: posters().length,
+    },
   ];
+
+  // ===========================================================
+  //                       TEACHER UNITS
+  // ===========================================================
 
   const teacherUnits = [
     {
@@ -372,7 +671,6 @@ export default function Book() {
       start: 106,
       pages: 9,
     },
-
     {
       id: 9,
       label: "Unit 8",
@@ -405,45 +703,61 @@ export default function Book() {
     },
   ];
 
-  // const posterUnits = [
-  //   { id: 1, label: "Posters", start: 2, pages: posterPages.length },
-  // ];
-  // const posterVocabUnits = [
-  //   { id: 1, label: "Unit 1", start: 1, pages: 1 },
-  //   { id: 2, label: "Unit 2", start: 1, pages: 1 },
-  // ];
+  // ===========================================================
+  //                       PAGE RENDERER
+  // ===========================================================
 
-  // ===========================================================
-  //                 📌 PAGE RENDERER
-  // ===========================================================
   function renderPage(content) {
     if (typeof content === "string") {
-      return <img src={content} className="w-full h-full object-contain" />;
+      return (
+        <img src={content} alt="" className="w-full h-full object-contain" />
+      );
     }
+
     return content;
   }
 
   // ===========================================================
-  //                 📌 TABS DEFINITION
+  //                       TABS DEFINITION
   // ===========================================================
+
   const tabs = [
-    { id: "student", label: "Student’s Book" },
-    { id: "work", label: "Workbook" },
-    { id: "teacher", label: "Teacher’s Book" },
-    { id: "poster", label: "Posters" },
-    // { id: "posterVocab", label: "Posters" },
+    {
+      id: "student",
+      label: "Student’s Book",
+    },
+    {
+      id: "work",
+      label: "Workbook",
+    },
+    {
+      id: "teacher",
+      label: "Teacher’s Book",
+    },
+    {
+      id: "poster",
+      label: "Posters",
+    },
   ];
+
+  // ===========================================================
+  //                       SIDEBAR UNITS
+  // ===========================================================
+
   const sidebarUnits = {
     student: studentUnits,
     work: workbookUnits,
     teacher: teacherUnits,
     poster: posterUnits,
-    // posterVocab: posterVocabUnits,
   }[activeTab];
+
+  // ===========================================================
+  //                        BOOK INFO
+  // ===========================================================
 
   const studentBookInfo = {
     cover: stbookCover,
-    title: `Right 1 Class Book`,
+    title: "Right 1 Class Book",
     pages: studentPages().length,
   };
 
@@ -459,41 +773,38 @@ export default function Book() {
     pages: teacherPages.length,
   };
 
-  // const flashInfo = {
-  //   cover: fcBookCover,
-  //   title: "Right 1 flashcard",
-  //   pages: flashPages.length,
-  // };
-
   const posterInfo = {
     cover: "",
     title: "Right 1 Grammar Poster",
     pages: posters().length,
   };
-  // const posterVocabInfo = {
-  //   cover: "",
-  //   title: "Right 1 Posters",
-  //   pages: postersVocabPages().length,
-  // };
+
   const bookInfoSelector = {
     student: studentBookInfo,
     work: workbookInfo,
     teacher: teacherInfo,
-    // flash: flashInfo,
     poster: posterInfo,
-    // posterVocab: posterVocabInfo,
   };
+
+  // ===========================================================
+  //                       LAST PAGE CHECK
+  // ===========================================================
+
   const isLastPage = pageIndex === pages.length - 1;
+
   const isLastSpread = viewMode === "spread" && pageIndex === pages.length - 2;
+
   // ===========================================================
-  //                 📌 RENDER
+  //                           RENDER
   // ===========================================================
+
   return (
     <>
       {/* ===================== TOP NAV ===================== */}
+
       <TopNavbar
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleTabChange}
         logo={logo}
         menuIcon={menu}
         tabs={tabs}
@@ -503,29 +814,44 @@ export default function Book() {
       />
 
       {/* ===================== MAIN PAGE VIEW ===================== */}
+
       <div
         className="content-wrapper overflow-auto lg:overflow-hidden w-full h-[87vh] flex items-center justify-center relative"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        //-----------swipe function---------------------
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* ==== NAVIGATION ARROWS (Next / Prev) ==== */}
+        {/* ===================== PREVIOUS ===================== */}
+
         {pageIndex > 0 && (
           <svg
             width="30"
             height="30"
             viewBox="0 0 90 90"
             onClick={prevPage}
-            className="nav-btn absolute left-10 w-14 h-14 rounded-full flex items-center justify-center z-9999  transition"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                prevPage();
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-label="Previous page"
+            className="nav-btn absolute left-10 w-14 h-14 rounded-full flex items-center justify-center z-9999 transition"
+            style={{
+              cursor: "pointer",
+            }}
           >
             <image href={back} x="0" y="0" width="90" height="90" />
           </svg>
         )}
+
+        {/* ===================== NEXT ===================== */}
 
         {pageIndex < pages.length - 1 && (
           <svg
@@ -533,17 +859,28 @@ export default function Book() {
             height="30"
             viewBox="0 0 90 90"
             onClick={nextPage}
-            className="nav-btn absolute right-10 w-14 h-14 rounded-full  flex items-center justify-center z-99999999 transition"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                nextPage();
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-label="Next page"
+            className="nav-btn absolute right-10 w-14 h-14 rounded-full flex items-center justify-center z-99999999 transition"
+            style={{
+              cursor: "pointer",
+            }}
           >
             <image href={next} x="0" y="0" width="90" height="90" />
           </svg>
         )}
 
-        {/* POSTERS ALWAYS SINGLE PAGE */}
+        {/* ===================== SINGLE PAGE ===================== */}
+
         {isMobile ||
         activeTab === "poster" ||
-        activeTab === "posterVocab" ||
-        activeTab === "flash" ||
         viewMode === "single" ||
         pageIndex === 0 ||
         isLastPage ||
@@ -558,7 +895,7 @@ export default function Book() {
             {renderPage(pages[pageIndex])}
           </div>
         ) : (
-          // Spread Mode
+          // ===================== SPREAD MODE =====================
 
           <div
             className="bg-white rounded-2xl shadow-2xl border grid grid-cols-2 overflow-hidden self-center"
@@ -570,6 +907,7 @@ export default function Book() {
             <div className="flex items-center justify-center border-r">
               {renderPage(pages[pageIndex])}
             </div>
+
             <div className="flex items-center justify-center border-l">
               {renderPage(pages[pageIndex + 1])}
             </div>
@@ -578,6 +916,7 @@ export default function Book() {
       </div>
 
       {/* ===================== BOTTOM BAR ===================== */}
+
       <BottomBar
         key={pageIndex}
         pageIndex={pageIndex}
@@ -592,6 +931,8 @@ export default function Book() {
         viewMode={viewMode}
         activeTab={activeTab}
         setViewMode={setViewMode}
+        menuButtonRef={menuButtonRef}
+        iconKeyButtonRef={iconKeyButtonRef}
         icons={{
           menu,
           home,
@@ -600,38 +941,69 @@ export default function Book() {
           fullScreen,
           onePage,
           openBook,
-          openSidebar: () => setLeftBarOpen(true),
-          openRightSidebar: () => setRightBarOpen(true),
+
+          openSidebar: () => {
+            setLeftBarOpen(true);
+          },
+
+          openRightSidebar: () => {
+            setRightBarOpen(true);
+          },
+
           keyIcon: FaKey,
         }}
-        teacherPdf={teacherPdf} // 👈 جديد
+        teacherPdf={teacherPdf}
       />
 
       {/* ===================== LEFT SIDEBAR ===================== */}
+
       <LeftSidebar
         isOpen={leftBarOpen}
         close={() => setLeftBarOpen(false)}
-        units={sidebarUnits} // ← داتا التاب الصحيح
+        units={sidebarUnits}
         goToPage={goToPage}
-        book={bookInfoSelector[activeTab]} // ← 🔥 أهم سطر
+        book={bookInfoSelector[activeTab]}
       />
 
       {/* ===================== RIGHT SIDEBAR ===================== */}
+
       <RightSidebar
         isOpen={rightBarOpen}
         close={() => setRightBarOpen(false)}
         menu={[
-          { key: "audio", label: "Audio Button", icon: audioBtn },
-          { key: "video", label: "Video Button", icon: pauseBtn },
-          { key: "arrow", label: "Arrow Button", icon: arrowBtn },
-          { key: "prev", label: "Prev Button", icon: back },
-          { key: "next", label: "Next Button", icon: next },
+          {
+            key: "audio",
+            label: "Audio Button",
+            icon: audioBtn,
+          },
+          {
+            key: "video",
+            label: "Video Button",
+            icon: pauseBtn,
+          },
+          {
+            key: "arrow",
+            label: "Arrow Button",
+            icon: arrowBtn,
+          },
+          {
+            key: "prev",
+            label: "Prev Button",
+            icon: back,
+          },
+          {
+            key: "next",
+            label: "Next Button",
+            icon: next,
+          },
         ]}
       />
 
       {/* ===================== POPUP ===================== */}
+
       <Popup isOpen={popupOpen} onClose={closePopup} type={popupContent?.type}>
-        {/* ========== WORKBOOK ========== */}
+        {/* ===================== WORKBOOK ===================== */}
+
         {popupContent?.tab === "work" && popupContent?.type === "exercise" && (
           <WorkBookNavigator
             startIndex={popupContent.data.startIndex}
@@ -639,22 +1011,15 @@ export default function Book() {
           />
         )}
 
-        {/* ========== POSTER VOCAB ========== */}
-        {popupContent?.tab === "posterVocab" &&
-          popupContent?.type === "exercise" && (
-            <PosterVocabNavigator
-              startIndex={popupContent.data.startIndex}
-              mode="posterVocab"
-            />
-          )}
+        {/* ================= STUDENT + TEACHER ================= */}
 
-        {/* ========== STUDENT + TEACHER ONLY ========== */}
         {(popupContent?.tab === "student" || popupContent?.tab === "teacher") &&
           popupContent?.type === "exercise" && (
             <LessonNavigator startIndex={popupContent.data.startIndex} />
           )}
 
-        {/* ========== أي popup آخر (صور / فيديو / نص) ========== */}
+        {/* ================= OTHER POPUPS ================= */}
+
         {popupContent?.type !== "exercise" && popupContent?.data}
       </Popup>
     </>

@@ -65,6 +65,13 @@
   cursor: pointer;
 }
 
+.unit7-exercise-input::placeholder {
+  color: #9ca3af;
+  font-size: 0.78em;
+}
+
+
+
 .click-icon-unit7-page5-4 {
   position: absolute;
   padding: 5px;

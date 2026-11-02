@@ -36,7 +36,7 @@ const FourImagesWithAudio = ({
   // ================================
   const updateCaption = (time) => {
     const index = captions.findIndex(
-      (cap) => time >= cap.start && time <= cap.end
+      (cap) => time >= cap.start && time <= cap.end,
     );
     setActiveIndex2(index);
   };
@@ -132,7 +132,8 @@ const FourImagesWithAudio = ({
           {titleQ}
         </h5>
       </div>
-      <div className="audio-popup-read-container"
+      <div
+        className="audio-popup-read-container"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -152,7 +153,7 @@ const FourImagesWithAudio = ({
                 setCurrent(time);
 
                 const idx = checkpoints.findIndex(
-                  (cp) => time >= cp && time < cp + 0.8
+                  (cp) => time >= cp && time < cp + 0.8,
                 );
                 setActiveIndex(idx !== -1 ? idx : null);
                 updateCaption(time);
@@ -196,8 +197,10 @@ const FourImagesWithAudio = ({
                 onClick={() => setShowCaption(!showCaption)}
               >
                 <TbMessageCircle size={36} />
-                <div className={`caption-inPopup ${showCaption ? "show" : ""}`}
-                     style={{ top: "100%", left: "10%" }}>
+                <div
+                  className={`caption-inPopup ${showCaption ? "show" : ""}`}
+                  style={{ top: "100%", left: "10%" }}
+                >
                   {captions.map((cap, i) => (
                     <p
                       key={i}

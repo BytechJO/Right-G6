@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
 
 // ── صور وهمية — بدّل المسارات للمسارات الفعلية ──
 import img1 from "../../../assets/imgs/pages/workbook/Right Int WB G6 U3 Folder/SVG/Asset 1.svg";
@@ -39,11 +41,15 @@ const WaveArrow = () => (
 // ─────────────────────────────────────────────
 //  Free Input — defined OUTSIDE parent
 // ─────────────────────────────────────────────
-const FreeInput = ({ value, onChange, flex = true }) => (
+const FreeInput = ({ value, onChange, flex = true, ariaLabel }) => (
   <input
     type="text"
     value={value}
     onChange={(e) => onChange(e.target.value)}
+    placeholder="Write the next conditional sentence"
+    title="Continue the if and then chain"
+    aria-label={ariaLabel}
+    className="wb-unit3-answer"
     style={{
       flex: flex ? 1 : undefined,
       width: flex ? undefined : "100%",
@@ -84,15 +90,11 @@ const WB_Unit3_ChainConditional_J = () => {
       <div className="div-forall">
 
         {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>J</span>
-          Use the{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>"then"</span>{" "}
-          clause from the sentence before to make the next{" "}
-          <span style={{ color: "orange", fontWeight: "bold" }}>"if"</span>{" "}
-          clause.{" "}
-
-        </h5>
+        <ExerciseHeader
+          sectionLetter="J"
+          title={<>Use the <span style={{ color: "orange", fontWeight: "bold" }}>then</span> clause from the sentence before to make the next <span style={{ color: "orange", fontWeight: "bold" }}>if</span> clause.</>}
+          subTitle="Use the result from one sentence as the condition for the next so the if/then chain stays logical from start to finish."
+        />
 
         {/* Sentences */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0px", marginBottom: "2em" }}>
@@ -103,6 +105,7 @@ const WB_Unit3_ChainConditional_J = () => {
             <FreeInput
               value={answers[1]}
               onChange={(val) => handleChange(1, val)}
+              ariaLabel="Conditional chain sentence 1"
             />
           </div>
 
@@ -117,6 +120,7 @@ const WB_Unit3_ChainConditional_J = () => {
             <FreeInput
               value={answers[2]}
               onChange={(val) => handleChange(2, val)}
+              ariaLabel="Conditional chain sentence 2"
             />
           </div>
 
@@ -131,6 +135,7 @@ const WB_Unit3_ChainConditional_J = () => {
             <FreeInput
               value={answers[3]}
               onChange={(val) => handleChange(3, val)}
+              ariaLabel="Conditional chain sentence 3"
             />
           </div>
 
@@ -145,6 +150,7 @@ const WB_Unit3_ChainConditional_J = () => {
             <FreeInput
               value={answers[4]}
               onChange={(val) => handleChange(4, val)}
+              ariaLabel="Conditional chain sentence 4"
             />
           </div>
 
@@ -159,6 +165,7 @@ const WB_Unit3_ChainConditional_J = () => {
             <FreeInput
               value={answers[5]}
               onChange={(val) => handleChange(5, val)}
+              ariaLabel="Conditional chain sentence 5"
             />
           </div>
 
@@ -171,11 +178,15 @@ const WB_Unit3_ChainConditional_J = () => {
           gap: "16px",
           marginBottom: "3em",
         }}>
-          {[img1, img2, img3].map((src, i) => (
+          {[
+            [img1, "A father carrying his smiling son on a beach"],
+            [img2, "A family walking together along a beach"],
+            [img3, "Sunlight over ocean waves and a cloudy sky"],
+          ].map(([src, alt], i) => (
             <img
               key={i}
               src={src}
-              alt={`beach ${i + 1}`}
+              alt={alt}
               style={{
                 width: "100%",
                 height: "AUTO",

@@ -3,7 +3,11 @@ import page_6 from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been The
 import audioBtn from "../../../assets/Page 01/Audio btn.svg";
 import "./Page6.css";
 import GrammarSection_U1 from "./page6_GrammarSection_U1";
+
 const Page6 = ({ openPopup }) => {
+  const openGrammar = () => {
+    openPopup("html", <GrammarSection_U1 />);
+  };
 
   return (
     <div
@@ -18,8 +22,20 @@ const Page6 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("html", <GrammarSection_U1 />)}
-          style={{ overflow: "visible" }}
+          tabIndex={0}
+          role="button"
+          aria-label="Open grammar activity"
+          onClick={openGrammar}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openGrammar();
+            }
+          }}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

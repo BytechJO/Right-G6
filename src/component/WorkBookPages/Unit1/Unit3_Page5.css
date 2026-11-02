@@ -158,3 +158,11 @@ position: absolute;
     left: 70.6%;
 
 }
+.wb-unit1-answer-input::placeholder {
+  font-size: 0.78em;
+}
+
+.wb-unit1-audio-text:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}

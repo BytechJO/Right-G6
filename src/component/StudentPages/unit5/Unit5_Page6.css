@@ -34,3 +34,9 @@
   left: 24%;
   cursor: pointer;
 }
+
+.unit5-student-input::placeholder {
+  font-size: 0.78em;
+  font-weight: 400;
+  color: #7c8798;
+}

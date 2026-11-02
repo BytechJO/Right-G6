@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const normalize = (str) =>
   str
@@ -41,6 +46,8 @@ const Unit3_Page5_Q1 = () => {
   const [errors, setErrors] = useState(Array(6).fill(null));
   const [locked, setLocked] = useState(false);
 
+  useEffect(() => () => stopUnit8StudentAudio(), []);
+
   const handleChange = (i, val) => {
     if (locked || errors[i] === true) return;
     const updated = [...answers];
@@ -80,6 +87,7 @@ const Unit3_Page5_Q1 = () => {
   };
 
   const reset = () => {
+    stopUnit8StudentAudio();
     setAnswers(Array(6).fill(""));
     setErrors(Array(6).fill(null));
     setLocked(false);
@@ -93,6 +101,9 @@ const Unit3_Page5_Q1 = () => {
         <input
           value={answers[index]}
           disabled={locked || isOk}
+          placeholder="e.g. a"
+          title="Type the matching definition letter"
+          aria-label={`Definition letter for ${WORDS[index].word}`}
           onChange={(e) => handleChange(index, e.target.value)}
           style={{
             width: "50px",
@@ -135,11 +146,12 @@ const Unit3_Page5_Q1 = () => {
 
   return (
     <div className="p-[30px] flex flex-col items-center">
-      <div className="div-forall" style={{ gap: "40px" }}>
-        <h5 className="header-title-page8 ">
-          <span className=" mr-4">A</span>
-          Match each vocabulary word to its definition.
-        </h5>
+      <div className="div-forall" style={{ gap: "20px" }}>
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Match each vocabulary word to its definition."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
 
         <div
           style={{
@@ -151,7 +163,7 @@ const Unit3_Page5_Q1 = () => {
         >
           {/* العمود الأيسر - الكلمات مع الفراغات */}
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
+            style={{ display: "flex", flexDirection: "column", gap: "45px" }}
           >
             {WORDS.map((item, i) => (
               <div
@@ -162,14 +174,30 @@ const Unit3_Page5_Q1 = () => {
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {item.num}
                 </span>
-                <span style={{ color: "#333" }}>{item.word}</span>
+                <Unit8StudentAudioText
+                  src={unit8StudentAudio(
+                    "Page 72 - Exercise A",
+                    {
+                      gadget: "Item_012_",
+                      glows: "Item_003_",
+                      helicopter: "Item_004_",
+                      wireless: "Item_006_",
+                      skills: "Item_009_",
+                      peculiar: "Item_011_",
+                    }[item.word],
+                  )}
+                  ariaLabel={`Play ${item.word}`}
+                  style={{ color: "#333" }}
+                >
+                  {item.word}
+                </Unit8StudentAudioText>
               </div>
             ))}
           </div>
 
           {/* العمود الأيمن - التعريفات */}
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
+            style={{ display: "flex", flexDirection: "column", gap: "45px" }}
           >
             {DEFINITIONS.map((def, i) => (
               <div
@@ -179,7 +207,23 @@ const Unit3_Page5_Q1 = () => {
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {def.letter}
                 </span>
-                <span style={{ color: "#333" }}>{def.text}</span>
+                <Unit8StudentAudioText
+                  src={unit8StudentAudio(
+                    "Page 72 - Exercise A",
+                    {
+                      a: "Item_001_",
+                      b: "Item_002_",
+                      c: "Item_005_",
+                      d: "Item_007_",
+                      e: "Item_008_",
+                      f: "Item_010_",
+                    }[def.letter],
+                  )}
+                  ariaLabel={`Play definition ${def.letter}`}
+                  style={{ color: "#333" }}
+                >
+                  {def.text}
+                </Unit8StudentAudioText>
               </div>
             ))}
           </div>

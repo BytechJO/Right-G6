@@ -1,7 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit8AudioText, {
+  workbookUnit8Audio,
+  stopWorkbookUnit8Audio,
+} from "./WorkbookUnit8AudioText";
 
 const BORDER = "#84ad40";
+const audioFolder = "Page 46 - Exercise C";
 
 // جدول الكود A-Z مع أرقامها
 const CODE_TABLE = [
@@ -31,10 +38,6 @@ const WORDS = [
 ];
 
 
-const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
-
-
 const initAnswers = () => {
   const a = {};
   WORDS.forEach(({ id, codes }) => {
@@ -44,7 +47,7 @@ const initAnswers = () => {
 };
 
 // ── LetterBox — OUTSIDE parent ──
-const LetterBox = ({ value, onChange, onKeyDown, inputRef, isCorrect, isWrong, disabled }) => (
+const LetterBox = ({ value, onChange, onKeyDown, inputRef, isWrong, disabled }) => (
   <input
     ref={inputRef}
     type="text"
@@ -54,6 +57,9 @@ const LetterBox = ({ value, onChange, onKeyDown, inputRef, isCorrect, isWrong, d
     onChange={onChange}
     onKeyDown={onKeyDown}
     onFocus={(e) => e.target.select()}
+    placeholder="A"
+    title="Type one decoded letter"
+    aria-label="Type one decoded letter"
     style={{
       width: "28px",
       height: "28px",
@@ -74,6 +80,7 @@ const LetterBox = ({ value, onChange, onKeyDown, inputRef, isCorrect, isWrong, d
 const WB_Unit8_CodeWords_C = () => {
   const [answers, setAnswers] = useState(initAnswers);
   const [result,  setResult]  = useState({});
+  const [letterResults, setLetterResults] = useState({});
   const [locked,  setLocked]  = useState(false);
   const refs = useRef({});
 
@@ -86,7 +93,11 @@ const WB_Unit8_CodeWords_C = () => {
       const arr = [...prev[id]]; arr[idx] = ch;
       return { ...prev, [id]: arr };
     });
-    setResult((prev) => ({ ...prev, [id]: undefined }));
+    setLetterResults((prev) => {
+      const nextWordResults = [...(prev[id] || [])];
+      nextWordResults[idx] = undefined;
+      return { ...prev, [id]: nextWordResults };
+    });
     if (ch) {
       const word = WORDS.find((w) => w.id === id);
       const next = refs.current[refKey(id, idx + 1)];
@@ -110,14 +121,19 @@ const WB_Unit8_CodeWords_C = () => {
 
     let correct = 0;
     const nr = {};
+    const nextLetterResults = {};
     WORDS.forEach(({ id, answer }) => {
       const userStr = answers[id].join("").toLowerCase();
       const ansStr  = answer.replace(/\s/g, "").toLowerCase();
       const ok = userStr === ansStr;
       if (ok) correct++;
       nr[id] = ok;
+      nextLetterResults[id] = answers[id].map(
+        (letter, index) => letter.toLowerCase() === ansStr[index],
+      );
     });
     setResult(nr);
+    setLetterResults(nextLetterResults);
     const total = WORDS.length;
     const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
@@ -127,32 +143,33 @@ const WB_Unit8_CodeWords_C = () => {
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
+    const a = {}; const r = {}; const lr = {};
     WORDS.forEach(({ id, answer }) => {
       a[id] = answer.replace(/\s/g, "").split("");
       r[id] = true;
+      lr[id] = a[id].map(() => true);
     });
-    setAnswers(a); setResult(r); setLocked(true);
+    setAnswers(a); setResult(r); setLetterResults(lr); setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => { stopWorkbookUnit8Audio(); setAnswers(initAnswers()); setResult({}); setLetterResults({}); setLocked(false); };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
+      <div className="div-forall gap-5">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>C</span>
-          Use the code to find the words.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="C"
+          title="Use the code to find the words."
+          subTitle="Decode one number at a time with the key, then reread the whole word to catch any wrong letter."
+        />
 
         {/* Code Table */}
         <div style={{
           border: `1.5px solid #84ad40`,
           borderRadius: "6px",
           overflow: "hidden",
-          marginBottom: "28px",
+          marginBottom: "5px",
           display: "inline-block",
           width: "100%",
         }}>
@@ -188,12 +205,25 @@ const WB_Unit8_CodeWords_C = () => {
         </div>
 
         {/* Words */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "28px", marginBottom: "3em" }}>
-          {WORDS.map(({ id, codes }) => {
+        <div style={{ display: "flex", flexDirection: "column", gap: "0px", marginBottom: "3em" }}>
+          {WORDS.map(({ id, answer, codes }) => {
             const isCorrect = result[id] === true;
             const isWrong   = result[id] === false;
             return (
-              <div key={id} style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+              <WorkbookUnit8AudioText
+                key={id}
+                src={isCorrect ? workbookUnit8Audio(audioFolder, `Item_00${id}_`) : null}
+                ariaLabel={`Play ${answer}`}
+                fullAudio
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "16px",
+                  width: "fit-content",
+                  padding: "6px",
+                  borderRadius: "8px",
+                }}
+              >
                 {/* Number */}
                 <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px", paddingTop: "4px" }}>
                   {id}
@@ -205,9 +235,8 @@ const WB_Unit8_CodeWords_C = () => {
                     <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
                       <LetterBox
                         value={answers[id][i] || ""}
-                        isCorrect={isCorrect}
-                        isWrong={isWrong}
-                        disabled={locked || isCorrect}
+                        isWrong={letterResults[id]?.[i] === false}
+                        disabled={locked || isCorrect || letterResults[id]?.[i] === true}
                         inputRef={(el) => (refs.current[refKey(id, i)] = el)}
                         onChange={(e) => handleChange(id, i, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(id, i, e)}
@@ -218,7 +247,31 @@ const WB_Unit8_CodeWords_C = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+                {isWrong && (
+                  <span
+                    aria-label={`Word ${id} is incorrect`}
+                    style={{
+                      position: "relative",
+                      top: "-8px",
+                      width: "20px",
+                      height: "20px",
+                      flexShrink: 0,
+                      background: "#ef4444",
+                      color: "white",
+                      borderRadius: "50%",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "11px",
+                      fontWeight: "bold",
+                      border: "2px solid white",
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    ✕
+                  </span>
+                )}
+              </WorkbookUnit8AudioText>
             );
           })}
         </div>

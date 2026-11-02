@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit7AudioText, {
+  stopWorkbookUnit7Audio,
+  workbookUnit7AudioSequence,
+} from "./WorkbookUnit7AudioText";
 
 const BORDER = "#333";
 
@@ -36,9 +42,24 @@ const RESPONSES = [
   },
 ];
 
-const normalize = (str) =>
-  str.toLowerCase().replace(/[.?!,’'"]/g, "").replace(/\s+/g, " ").trim();
+const QUESTION_AUDIO = {
+  1: ["Item_001_", "Item_003_"],
+  2: ["Item_005_", "Item_007_"],
+  3: ["Item_009_", "Item_011_"],
+};
 
+const RESPONSE_AUDIO = {
+  a: ["Item_002_", "Item_004_"],
+  b: ["Item_006_", "Item_008_"],
+  c: ["Item_010_", "Item_012_"],
+};
+
+const normalize = (str) =>
+  str
+    .toLowerCase()
+    .replace(/[.?!,’'"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
 const initAnswers = () => ({ 1: "", 2: "", 3: "" });
 
@@ -46,11 +67,15 @@ const initAnswers = () => ({ 1: "", 2: "", 3: "" });
 const MatchInput = ({ qId, value, onChange, isCorrect, isWrong, disabled }) => (
   <span style={{ position: "relative", display: "inline-block" }}>
     <input
+      className="wb-unit7-input"
       type="text"
       maxLength={1}
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(qId, e.target.value.toLowerCase())}
+      placeholder="a"
+      title="Type the matching answer letter"
+      aria-label={`Matching answer letter for question ${qId}`}
       style={{
         width: "44px",
         border: "none",
@@ -66,41 +91,79 @@ const MatchInput = ({ qId, value, onChange, isCorrect, isWrong, disabled }) => (
       }}
     />
     {isWrong && (
-      <span style={{
-        position: "absolute", top: "-8px", right: "-6px",
-        width: "15px", height: "15px", background: "#ef4444", color: "white",
-        borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-      }}>✕</span>
+      <span
+        style={{
+          position: "absolute",
+          top: "50%",
+          right: "-8px",
+          transform: "translateY(-50%)",
+          width: "20px",
+          height: "20px",
+          background: "red",
+          color: "white",
+          borderRadius: "50%",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "11px",
+          fontWeight: "bold",
+          border: "2px solid white",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        }}
+      >
+        ✕
+      </span>
     )}
   </span>
 );
 
 // SVG arrow decoration (matches book style)
 const ArrowDeco = () => (
-  <svg width="60" height="24" viewBox="0 0 60 24" style={{ display: "block", margin: "0 auto" }}>
-    <line x1="0" y1="4" x2="28" y2="20" stroke="#555" strokeWidth="1.5" strokeLinecap="round"/>
-    <line x1="60" y1="4" x2="32" y2="20" stroke="#555" strokeWidth="1.5" strokeLinecap="round"/>
+  <svg
+    width="60"
+    height="24"
+    viewBox="0 0 60 24"
+    style={{ display: "block", margin: "0 auto" }}
+  >
+    <line
+      x1="0"
+      y1="4"
+      x2="28"
+      y2="20"
+      stroke="#555"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <line
+      x1="60"
+      y1="4"
+      x2="32"
+      y2="20"
+      stroke="#555"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 // ── MAIN COMPONENT ──
 const WB_Unit7_Match_I = () => {
+  const audioFolder = "Page 43 - Exercise I";
   const [answers, setAnswers] = useState(initAnswers);
-  const [result,  setResult]  = useState({});
-  const [locked,  setLocked]  = useState(false);
+  const [result, setResult] = useState({});
+  const [locked, setLocked] = useState(false);
 
   const handleChange = (id, value) => {
     if (locked || result[id] === true) return;
     setAnswers((prev) => ({ ...prev, [id]: value }));
-    setResult((prev)  => ({ ...prev, [id]: undefined }));
+    setResult((prev) => ({ ...prev, [id]: undefined }));
   };
 
   const checkAnswers = () => {
     if (locked) return;
     if (Object.values(answers).some((v) => !v.trim())) {
-      ValidationAlert.info("Please complete all answers."); return;
+      ValidationAlert.info("Please complete all answers.");
+      return;
     }
     let correct = 0;
     const nr = {};
@@ -111,20 +174,34 @@ const WB_Unit7_Match_I = () => {
     });
     setResult(nr);
     const total = QUESTIONS.length;
-    const color = correct === total ? "green" : correct === 0 ? "red" : "orange";
+    const color =
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
     const msg = `<div style="font-size:18px;text-align:center;"><span style="color:${color};font-weight:bold;">Score: ${correct} / ${total}</span></div>`;
-    if (correct === total) { setLocked(true); ValidationAlert.success(msg); }
-    else if (correct === 0) ValidationAlert.error(msg);
+    if (correct === total) {
+      setLocked(true);
+      ValidationAlert.success(msg);
+    } else if (correct === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    const a = {}; const r = {};
-    QUESTIONS.forEach(({ id, answer }) => { a[id] = answer; r[id] = true; });
-    setAnswers(a); setResult(r); setLocked(true);
+    const a = {};
+    const r = {};
+    QUESTIONS.forEach(({ id, answer }) => {
+      a[id] = answer;
+      r[id] = true;
+    });
+    setAnswers(a);
+    setResult(r);
+    setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit7Audio();
+    setAnswers(initAnswers());
+    setResult({});
+    setLocked(false);
+  };
 
   const cardStyle = {
     border: `1.5px solid ${BORDER}`,
@@ -140,31 +217,57 @@ const WB_Unit7_Match_I = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>I</span>
-          Match each question to its correct answer.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="I"
+          title="Match each question to its correct answer."
+          subTitle="Start with one item, find the response or definition that matches its meaning, then confirm the pair before moving on."
+        />
 
         {/* Grid */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "40px 16px",
-          margin: "2em 0",
-        }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "40px 16px",
+            margin: "2em 0",
+          }}
+        >
           {QUESTIONS.map(({ id, text }, qi) => {
             const resp = RESPONSES[qi];
             const isCorrect = result[id] === true;
-            const isWrong   = result[id] === false;
+            const isWrong = result[id] === false;
             return (
               <React.Fragment key={id}>
                 {/* Left: question card */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: "bold", fontSize: "18px", minWidth: "20px" }}>{id}</span>
-                    <div style={{ ...cardStyle, flex: 1, display: "flex", alignItems: "flex-start", gap: "4px" }}>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "18px",
+                        minWidth: "20px",
+                      }}
+                    >
+                      {id}
+                    </span>
+                    <div
+                      style={{
+                        ...cardStyle,
+                        flex: 1,
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "4px",
+                      }}
+                    >
                       {/* Input at start */}
                       <MatchInput
                         qId={id}
@@ -174,7 +277,16 @@ const WB_Unit7_Match_I = () => {
                         isWrong={isWrong}
                         disabled={locked || isCorrect}
                       />
-                      <span>{text}</span>
+                      <WorkbookUnit7AudioText
+                        src={workbookUnit7AudioSequence(
+                          audioFolder,
+                          QUESTION_AUDIO[id],
+                        )}
+                        ariaLabel={`Play question ${id}`}
+                        style={{ alignItems: "flex-start" }}
+                      >
+                        {text}
+                      </WorkbookUnit7AudioText>
                     </div>
                   </div>
                   {/* Spacer between rows */}
@@ -182,10 +294,36 @@ const WB_Unit7_Match_I = () => {
                 </div>
 
                 {/* Right: response card */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                  <div style={{ ...cardStyle, display: "flex", gap: "8px", marginBottom: "6px" }}>
-                    <span style={{ fontWeight: "bold", fontSize: "16px", minWidth: "18px" }}>{resp.label}</span>
-                    <span>{resp.text}</span>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                >
+                  <div
+                    style={{
+                      ...cardStyle,
+                      display: "flex",
+                      gap: "8px",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        minWidth: "18px",
+                      }}
+                    >
+                      {resp.label}
+                    </span>
+                    <WorkbookUnit7AudioText
+                      src={workbookUnit7AudioSequence(
+                        audioFolder,
+                        RESPONSE_AUDIO[resp.label],
+                      )}
+                      ariaLabel={`Play answer ${resp.label}`}
+                      style={{ alignItems: "flex-start" }}
+                    >
+                      {resp.text}
+                    </WorkbookUnit7AudioText>
                   </div>
                   <div style={{ height: "12px" }} />
                 </div>
@@ -193,14 +331,19 @@ const WB_Unit7_Match_I = () => {
             );
           })}
         </div>
-
       </div>
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>Start Again ↻</button>
-        <button className="show-answer-btn"  onClick={showAnswers}>Show Answer</button>
-        <button className="check-button2"    onClick={checkAnswers}>Check Answer ✓</button>
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+        <button className="show-answer-btn" onClick={showAnswers}>
+          Show Answer
+        </button>
+        <button className="check-button2" onClick={checkAnswers}>
+          Check Answer ✓
+        </button>
       </div>
     </div>
   );

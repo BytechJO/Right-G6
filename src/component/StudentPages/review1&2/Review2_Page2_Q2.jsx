@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/11.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/12.svg";
 import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/13.svg";
 import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 2 Going to the Extreme Folder/SVG/14.svg";
 
-const ITEMS = [{ img: img1 }, { img: img2 }, { img: img3 }, { img: img4 }];
+const ITEMS = [
+  { img: img1, alt: "A tall tree" },
+  { img: img2, alt: "A bowl of food" },
+  { img: img3, alt: "A girl working at a computer" },
+  { img: img4, alt: "A sick boy coughing" },
+];
 
 const Review2_Page2_Q2 = () => {
   const [answers, setAnswers] = useState(ITEMS.map(() => ["", ""]));
@@ -38,14 +44,19 @@ const Review2_Page2_Q2 = () => {
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall">
         {/* العنوان */}
-        <h5 className="header-title-page8 mb-7">
-          <span className="mr-2">D</span>
-          Look at the picture, and then write a sentence using{" "}
-          <span style={{ color: "#f79631", fontWeight: "bold" }}>
-            so
-          </span> or{" "}
-          <span style={{ color: "#f79631", fontWeight: "bold" }}>such</span>.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title={
+            <>
+              Look at each picture and write a sentence using{" "}
+              <span style={{ color: "#f79631", fontWeight: "bold" }}>so</span>{" "}
+              or{" "}
+              <span style={{ color: "#f79631", fontWeight: "bold" }}>such</span>
+              .
+            </>
+          }
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         {/* الأسئلة */}
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -57,7 +68,7 @@ const Review2_Page2_Q2 = () => {
               {/* الصورة */}
               <img
                 src={item.img}
-                alt={`item ${i + 1}`}
+                alt={item.alt}
                 style={{
                   width: "auto",
                   height: "120px",
@@ -88,6 +99,9 @@ const Review2_Page2_Q2 = () => {
                   </span>
                   <input
                     value={answers[i][0]}
+                    placeholder="Type the sentence"
+                    title="Type the sentence"
+                    className="review-unit2-answer-input"
                     onChange={(e) => handleChange(i, 0, e.target.value)}
                     style={{ ...lineStyle, marginBottom: 0 }}
                   />
@@ -95,6 +109,9 @@ const Review2_Page2_Q2 = () => {
                 <div style={{ paddingLeft: "28px" }}>
                   <input
                     value={answers[i][1]}
+                    placeholder="Continue the sentence"
+                    title="Continue the sentence"
+                    className="review-unit2-answer-input"
                     onChange={(e) => handleChange(i, 1, e.target.value)}
                     style={{ ...lineStyle, marginBottom: 0 }}
                   />
@@ -103,16 +120,14 @@ const Review2_Page2_Q2 = () => {
             </div>
           ))}
         </div>
+      </div>
 
-       
-      </div> 
-      
       {/* زر Reset فقط */}
-        <div className="action-buttons-container">
-          <button className="try-again-button" onClick={handleReset}>
-            Start Again ↻
-          </button>
-        </div>
+      <div className="action-buttons-container">
+        <button className="try-again-button" onClick={handleReset}>
+          Start Again ↻
+        </button>
+      </div>
     </div>
   );
 };

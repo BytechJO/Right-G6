@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "./Unit10StudentAudioText";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 17.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/121.svg";
 import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 16.svg";
 import img4 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 19.svg";
 import img5 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 18.svg";
 const Unit10_Page5_Q1 = () => {
+  const audioFolder = "Page 86 - Exercise A";
   const questions = [
     "seashells",
     "sunburn",
@@ -102,6 +108,7 @@ const Unit10_Page5_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", ""]);
 
     setResult([]);
@@ -116,6 +123,9 @@ const Unit10_Page5_Q1 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Type the word"
+        title={`Picture ${i + 1}: enter the matching word`}
+        aria-label={`Picture ${i + 1}: enter the matching word`}
         className={`
           ${width}
           border-0
@@ -159,56 +169,69 @@ const Unit10_Page5_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-10">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            A
-          </span>
-          Look and match.
-        </h5>
+      <div className="div-forall gap-5 mb-10">
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Look and match."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
 
         {/* WORD BANK */}
         <div
-          className="flex justify-between items-center px-6 py-3 rounded-xl mb-10"
+          className="flex justify-between items-center px-6 py-3 rounded-xl mb-5"
           style={{
             background: "#DDE3C8",
             fontSize: "18px",
           }}
         >
-          <span className="flex items-center gap-2">
-            <b>a</b>
+          <Unit10StudentAudioText
+            src={unit10StudentAudio(audioFolder, "001")}
+            ariaLabel="Play surfboard"
+            style={{ display: "flex", gap: 8 }}
+          >
+            <b className="mr-2">a</b>
             surfboard
-          </span>
+          </Unit10StudentAudioText>
 
-          <span className="flex items-center gap-2">
-            <b>b</b>
+          <Unit10StudentAudioText
+            src={unit10StudentAudio(audioFolder, "002")}
+            ariaLabel="Play seashells"
+            style={{ display: "flex", gap: 8 }}
+          >
+            <b className="mr-2">b</b>
             seashells
-          </span>
+          </Unit10StudentAudioText>
 
-          <span className="flex items-center gap-2">
-            <b>c</b>
+          <Unit10StudentAudioText
+            src={unit10StudentAudio(audioFolder, "003")}
+            ariaLabel="Play sandcastles"
+            style={{ display: "flex", gap: 8 }}
+          >
+            <b className="mr-2">c</b>
             sandcastles
-          </span>
+          </Unit10StudentAudioText>
 
-          <span className="flex items-center gap-2">
-            <b>d</b>
+          <Unit10StudentAudioText
+            src={unit10StudentAudio(audioFolder, "004")}
+            ariaLabel="Play sunburn"
+            style={{ display: "flex", gap: 8 }}
+          >
+            <b className="mr-2">d</b>
             sunburn
-          </span>
+          </Unit10StudentAudioText>
 
-          <span className="flex items-center gap-2">
-            <b>e</b>
+          <Unit10StudentAudioText
+            src={unit10StudentAudio(audioFolder, "005")}
+            ariaLabel="Play surfing"
+            style={{ display: "flex", gap: 8 }}
+          >
+            <b className="mr-2">e</b>
             surfing
-          </span>
+          </Unit10StudentAudioText>
         </div>
 
         {/* IMAGES */}
-        <div className="grid grid-cols-3 gap-y-12 gap-x-15">
+        <div className="grid grid-cols-3 gap-y-6 gap-x-15">
           {/* 1 */}
           <div className="flex items-start gap-3">
             <img

@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ActionButtons from "../../ActionButtons";
 const Unit6_Page4_WritingA = () => {
   const questions = [
     { id: 1, sentence: "What did Virginia used to be called?" },
-    { id: 2, sentence: "How did the people of Jamestown live differently to how we live today?" },
- ];
+    {
+      id: 2,
+      sentence:
+        "How did the people of Jamestown live differently to how we live today?",
+    },
+  ];
 
   const correctAnswers = [
     "Virginia used to be called Jamestown.",
     "People were used to living without electricity.",
-
   ];
 
   const [answers, setAnswers] = useState(Array(questions.length).fill(""));
@@ -95,7 +99,7 @@ const Unit6_Page4_WritingA = () => {
       {/* HEADER */}
       <h5 className="header-title-page8-read mb-10">
         <span className="ex-A-read mr-2">A</span>
-       Answer the questions.
+        Answer the questions.
       </h5>
 
       {/* QUESTIONS */}
@@ -151,51 +155,12 @@ const Unit6_Page4_WritingA = () => {
       </div>
 
       {/* BUTTONS */}
-      <div className="flex justify-center gap-6 mt-10">
-        {/* Reset */}
-        <div className="relative group">
-          <div
-            onClick={handleReset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-            Reset
-          </span>
-        </div>
-
-        {/* Show */}
-        <div className="relative group">
-          <div
-            onClick={handleShow}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Show Answer
-          </span>
-        </div>
-
-        {/* Check */}
-        <div className="relative group">
-          <div
-            onClick={handleCheck}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
-          >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
-            </div>
-          </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-            Check Answer
-          </span>
-        </div>
+      <div className="flex justify-center gap-6 ">
+        <ActionButtons
+          onReset={handleReset}
+          onShow={handleShow}
+          onCheck={handleCheck}
+        />
       </div>
     </div>
   );

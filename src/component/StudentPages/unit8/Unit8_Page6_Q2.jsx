@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "./Unit8StudentAudioText";
 
 const Unit8_Page6_Q2 = () => {
   const questions = [
@@ -15,6 +20,8 @@ const Unit8_Page6_Q2 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -102,6 +109,7 @@ const Unit8_Page6_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", "", ""]);
 
     setResult([]);
@@ -115,6 +123,9 @@ const Unit8_Page6_Q2 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="Write the sentence"
+        title="Write the unscrambled sentence"
+        aria-label={`Answer ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
   w-full
@@ -161,25 +172,25 @@ const Unit8_Page6_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <h5 className="header-title-page8 mb-[8vh]">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            E
-          </span>
-          Unscramble and write the sentences.
-        </h5>
+      <div className="div-forall gap-7 text-[18px] w-full">
+        <ExerciseHeader
+          sectionLetter="E"
+          title="Unscramble and write the sentences."
+          subTitle="Say the correct sentence or expression first, then put the words in order and check capitalization and punctuation."
+        />
 
         <div className="flex flex-col gap-[6vh]">
           {/* 1 */}
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">1</span>
-              said would John library that tonight he the at be .
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 69 - Exercise E", "Item_001_")}
+                ariaLabel="Play scrambled sentence 1"
+                flowText
+              >
+                said would John library that tonight he the at be .
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(0)}
@@ -189,7 +200,13 @@ const Unit8_Page6_Q2 = () => {
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">2</span>
-              Carly ? to did with say us wanted come she that
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 69 - Exercise E", "Item_002_")}
+                ariaLabel="Play scrambled sentence 2"
+                flowText
+              >
+                Carly ? to did with say us wanted come she that
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(1)}
@@ -199,7 +216,13 @@ const Unit8_Page6_Q2 = () => {
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">3</span>
-              help the officer that us said home would safely he get .
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 69 - Exercise E", "Item_003_")}
+                ariaLabel="Play scrambled sentence 3"
+                flowText
+              >
+                help the officer that us said home would safely he get .
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(2)}
@@ -209,7 +232,13 @@ const Unit8_Page6_Q2 = () => {
           <div>
             <div className="mb-4">
               <span className="font-bold mr-4">4</span>
-              that carnival Andrea today school me at told was a there .
+              <Unit8StudentAudioText
+                src={unit8StudentAudio("Page 69 - Exercise E", "Item_004_")}
+                ariaLabel="Play scrambled sentence 4"
+                flowText
+              >
+                that carnival Andrea today school me at told was a there .
+              </Unit8StudentAudioText>
             </div>
 
             {inputField(3)}

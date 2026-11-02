@@ -14,8 +14,8 @@ const WritingC = () => {
       {/* العنوان */}
       <h5 className="header-title-page8-read pb-2.5">
         <span className="ex-A-read mr-2">B</span>
-      Now choose one of the topics from Exercise A. Tell about your experience in two to
-three paragraphs, using the writing tips from above.
+        Now choose one of the topics from Exercise A. Tell about your experience
+        in two to three paragraphs, using the writing tips from above.
       </h5>
 
       {/* textarea */}
@@ -27,13 +27,25 @@ three paragraphs, using the writing tips from above.
       />
 
       {/* 🔄 Reset Button */}
+
       <div className="flex justify-center mt-4">
         <div
           onClick={handleReset}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              if (!e.repeat) {
+                handleReset();
+              }
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Reset activity"
           className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
         >
-          <div className="bg-white p-3 rounded-full shadow">
-            <FaRedo size={14} className="text-gray-700" />
+          <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+            <FaRedo size={14} className="text-gray-700" aria-hidden="true" />
           </div>
         </div>
       </div>

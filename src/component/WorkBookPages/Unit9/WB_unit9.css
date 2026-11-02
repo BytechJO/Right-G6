@@ -89,3 +89,39 @@ position: absolute;
   top:83%;
   left: 73.5%;
 }
+
+.workbook-unit9-input::placeholder {
+  color: #9ca3af;
+  font-size: 0.78em;
+  font-weight: 400;
+}
+
+.workbook-unit9-input:focus-visible,
+.workbook-unit9-audio:focus-visible,
+.workbook-unit9-choice:focus-visible,
+.workbook-unit9-cell:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px;
+}
+
+.workbook-unit9-playing {
+  position: absolute;
+  top: -16px;
+  right: -14px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.workbook-unit9-audio-area:hover,
+.workbook-unit9-audio-area:focus-visible {
+  background: rgba(37, 99, 235, 0.08) !important;
+  box-shadow: inset 0 0 0 3px #2563eb;
+}

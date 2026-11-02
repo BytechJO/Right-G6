@@ -1,8 +1,16 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 import soccerImg from "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 12.svg";
 import micImg    from "../../../assets/imgs/pages/workbook/Right Int WB G6 U9 Folder/SVG/Asset 13.svg";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit9AudioText, {
+  stopWorkbookUnit9Audio,
+  workbookUnit9Audio,
+} from "./WorkbookUnit9AudioText";
+
+const audioFolder = "Page 56 - Exercise I";
 
 const WORD_BANK = [
   "I have been dying to ...",
@@ -57,6 +65,10 @@ const AnswerInput = ({ qId, value, onChange, isCorrect, isWrong, disabled }) => 
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(qId, e.target.value)}
+      placeholder="Write the expression"
+      title={`Prompt ${qId}: write the expression that answers naturally`}
+      aria-label={`Prompt ${qId}: expression answer`}
+      className="workbook-unit9-input"
       style={{
         width: "100%",
         border: "none",
@@ -121,17 +133,20 @@ const WB_Unit9_ExpressionAnswer_I = () => {
     setAnswers(a); setResult(r); setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => {
+    stopWorkbookUnit9Audio();
+    setAnswers(initAnswers()); setResult({}); setLocked(false);
+  };
 
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A" style={{ marginRight: "10px" }}>I</span>
-          Use and write the correct expression to answer.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="I"
+          title="Use the correct expression to answer each prompt."
+          subTitle="Read the full phrase or sentence first, then choose the expression that sounds natural in that context."
+        />
 
         {/* Word Bank */}
         <div style={{
@@ -145,8 +160,15 @@ const WB_Unit9_ExpressionAnswer_I = () => {
           fontSize: "18px",
           color: "#333",
         }}>
-          {WORD_BANK.map((w, i) => (
-            <span key={i}>{w}</span>
+          {WORD_BANK.map((word, index) => (
+            <WorkbookUnit9AudioText
+              key={word}
+              src={workbookUnit9Audio(audioFolder, `Item_${String(index + 1).padStart(3, "0")}_`)}
+              ariaLabel={`Play ${word}`}
+              flowText
+            >
+              {word}
+            </WorkbookUnit9AudioText>
           ))}
         </div>
 
@@ -160,7 +182,14 @@ const WB_Unit9_ExpressionAnswer_I = () => {
                 {/* Question text */}
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "18px" }}>
                   <span style={{ fontWeight: "bold", minWidth: "18px" }}>{id}</span>
-                  <span style={{ color: "#333", lineHeight: "1.5" }}>{text}</span>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, `Item_${String(id + 5).padStart(3, "0")}_`)}
+                    ariaLabel={`Play prompt ${id}`}
+                    flowText
+                    style={{ color: "#333", lineHeight: "1.5" }}
+                  >
+                    {text}
+                  </WorkbookUnit9AudioText>
                 </div>
                 {/* Answer input */}
                 <div style={{ paddingLeft: "26px" }}>

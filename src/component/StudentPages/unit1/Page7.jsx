@@ -3,7 +3,12 @@ import arrowBtn from "../../../assets/Page 01/Arrow.svg";
 
 import "./Page7.css";
 import WritingSection_U1 from "./page7_WritingSection_U1";
+
 const Page7 = ({ openPopup }) => {
+  const openWriting = () => {
+    openPopup("html", <WritingSection_U1 />);
+  };
+
   return (
     <div
       className="page1-img-wrapper"
@@ -17,8 +22,20 @@ const Page7 = ({ openPopup }) => {
           width="22"
           height="22"
           viewBox="0 0 90 90"
-          onClick={() => openPopup("html", <WritingSection_U1 />)}
-          style={{ overflow: "visible" }}
+          tabIndex={0}
+          role="button"
+          aria-label="Open writing activity"
+          onClick={openWriting}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openWriting();
+            }
+          }}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"

@@ -1,0 +1,1001 @@
+{
+  "language_code": "eng",
+  "segments": [
+    {
+      "text": "How to make pancakes by Kevin Stocker. First, mix the flour, eggs, salt, honey, milk, or water, and baking powder in a bowl. Check for lumps and squash any lumps out with a spoon. Put some oil in a pan and heat the pan until it begins getting hot. Spoon the pancakes onto the hot pan for the size of pancakes you want. Cook on one side until it see a toe bubbles on top, and then turn the pancakes over and grill until golden brown on the other side. Most importantly, enjoy some with your family or friends.",
+      "start_time": 0.12,
+      "end_time": 40.66,
+      "speaker": {
+        "id": "speaker_0",
+        "name": "Speaker 0"
+      },
+      "words": [
+        {
+          "text": "How",
+          "start_time": 0.12,
+          "end_time": 0.22
+        },
+        {
+          "text": " ",
+          "start_time": 0.22,
+          "end_time": 0.24
+        },
+        {
+          "text": "to",
+          "start_time": 0.24,
+          "end_time": 0.32
+        },
+        {
+          "text": " ",
+          "start_time": 0.32,
+          "end_time": 0.36
+        },
+        {
+          "text": "make",
+          "start_time": 0.36,
+          "end_time": 0.5
+        },
+        {
+          "text": " ",
+          "start_time": 0.5,
+          "end_time": 0.6
+        },
+        {
+          "text": "pancakes",
+          "start_time": 0.6,
+          "end_time": 1.36
+        },
+        {
+          "text": " ",
+          "start_time": 1.36,
+          "end_time": 1.74
+        },
+        {
+          "text": "by",
+          "start_time": 1.74,
+          "end_time": 1.9
+        },
+        {
+          "text": " ",
+          "start_time": 1.9,
+          "end_time": 1.96
+        },
+        {
+          "text": "Kevin",
+          "start_time": 1.96,
+          "end_time": 2.26
+        },
+        {
+          "text": " ",
+          "start_time": 2.26,
+          "end_time": 2.4
+        },
+        {
+          "text": "Stocker.",
+          "start_time": 2.4,
+          "end_time": 2.88
+        },
+        {
+          "text": " ",
+          "start_time": 2.88,
+          "end_time": 3.32
+        },
+        {
+          "text": "First,",
+          "start_time": 3.32,
+          "end_time": 3.8
+        },
+        {
+          "text": " ",
+          "start_time": 3.8,
+          "end_time": 4.34
+        },
+        {
+          "text": "mix",
+          "start_time": 4.34,
+          "end_time": 4.58
+        },
+        {
+          "text": " ",
+          "start_time": 4.58,
+          "end_time": 4.62
+        },
+        {
+          "text": "the",
+          "start_time": 4.62,
+          "end_time": 4.72
+        },
+        {
+          "text": " ",
+          "start_time": 4.72,
+          "end_time": 4.78
+        },
+        {
+          "text": "flour,",
+          "start_time": 4.78,
+          "end_time": 5.28
+        },
+        {
+          "text": " ",
+          "start_time": 5.28,
+          "end_time": 5.74
+        },
+        {
+          "text": "eggs,",
+          "start_time": 5.74,
+          "end_time": 6.22
+        },
+        {
+          "text": " ",
+          "start_time": 6.22,
+          "end_time": 6.62
+        },
+        {
+          "text": "salt,",
+          "start_time": 6.62,
+          "end_time": 7.04
+        },
+        {
+          "text": " ",
+          "start_time": 7.04,
+          "end_time": 7.42
+        },
+        {
+          "text": "honey,",
+          "start_time": 7.42,
+          "end_time": 7.82
+        },
+        {
+          "text": " ",
+          "start_time": 7.82,
+          "end_time": 8.2
+        },
+        {
+          "text": "milk,",
+          "start_time": 8.2,
+          "end_time": 8.56
+        },
+        {
+          "text": " ",
+          "start_time": 8.56,
+          "end_time": 8.8
+        },
+        {
+          "text": "or",
+          "start_time": 8.8,
+          "end_time": 8.94
+        },
+        {
+          "text": " ",
+          "start_time": 8.94,
+          "end_time": 9.08
+        },
+        {
+          "text": "water,",
+          "start_time": 9.08,
+          "end_time": 9.44
+        },
+        {
+          "text": " ",
+          "start_time": 9.44,
+          "end_time": 9.72
+        },
+        {
+          "text": "and",
+          "start_time": 9.72,
+          "end_time": 9.84
+        },
+        {
+          "text": " ",
+          "start_time": 9.84,
+          "end_time": 9.96
+        },
+        {
+          "text": "baking",
+          "start_time": 9.96,
+          "end_time": 10.26
+        },
+        {
+          "text": " ",
+          "start_time": 10.26,
+          "end_time": 10.38
+        },
+        {
+          "text": "powder",
+          "start_time": 10.38,
+          "end_time": 10.76
+        },
+        {
+          "text": " ",
+          "start_time": 10.76,
+          "end_time": 10.82
+        },
+        {
+          "text": "in",
+          "start_time": 10.82,
+          "end_time": 10.92
+        },
+        {
+          "text": " ",
+          "start_time": 10.92,
+          "end_time": 11.04
+        },
+        {
+          "text": "a",
+          "start_time": 11.04,
+          "end_time": 11.18
+        },
+        {
+          "text": " ",
+          "start_time": 11.18,
+          "end_time": 11.86
+        },
+        {
+          "text": "bowl.",
+          "start_time": 11.86,
+          "end_time": 12.26
+        },
+        {
+          "text": " ",
+          "start_time": 12.26,
+          "end_time": 12.88
+        },
+        {
+          "text": "Check",
+          "start_time": 12.88,
+          "end_time": 13.04
+        },
+        {
+          "text": " ",
+          "start_time": 13.04,
+          "end_time": 13.1
+        },
+        {
+          "text": "for",
+          "start_time": 13.1,
+          "end_time": 13.2
+        },
+        {
+          "text": " ",
+          "start_time": 13.2,
+          "end_time": 13.28
+        },
+        {
+          "text": "lumps",
+          "start_time": 13.28,
+          "end_time": 13.68
+        },
+        {
+          "text": " ",
+          "start_time": 13.68,
+          "end_time": 13.84
+        },
+        {
+          "text": "and",
+          "start_time": 13.84,
+          "end_time": 13.94
+        },
+        {
+          "text": " ",
+          "start_time": 13.94,
+          "end_time": 14.04
+        },
+        {
+          "text": "squash",
+          "start_time": 14.04,
+          "end_time": 14.5
+        },
+        {
+          "text": " ",
+          "start_time": 14.5,
+          "end_time": 14.56
+        },
+        {
+          "text": "any",
+          "start_time": 14.56,
+          "end_time": 14.7
+        },
+        {
+          "text": " ",
+          "start_time": 14.7,
+          "end_time": 14.8
+        },
+        {
+          "text": "lumps",
+          "start_time": 14.8,
+          "end_time": 15.2
+        },
+        {
+          "text": " ",
+          "start_time": 15.2,
+          "end_time": 15.68
+        },
+        {
+          "text": "out",
+          "start_time": 15.68,
+          "end_time": 15.82
+        },
+        {
+          "text": " ",
+          "start_time": 15.82,
+          "end_time": 15.86
+        },
+        {
+          "text": "with",
+          "start_time": 15.86,
+          "end_time": 15.94
+        },
+        {
+          "text": " ",
+          "start_time": 15.94,
+          "end_time": 15.96
+        },
+        {
+          "text": "a",
+          "start_time": 15.96,
+          "end_time": 16.059
+        },
+        {
+          "text": " ",
+          "start_time": 16.059,
+          "end_time": 16.1
+        },
+        {
+          "text": "spoon.",
+          "start_time": 16.18,
+          "end_time": 16.54
+        },
+        {
+          "text": " ",
+          "start_time": 16.54,
+          "end_time": 16.86
+        },
+        {
+          "text": "Put",
+          "start_time": 16.86,
+          "end_time": 17.0
+        },
+        {
+          "text": " ",
+          "start_time": 17.0,
+          "end_time": 17.02
+        },
+        {
+          "text": "some",
+          "start_time": 17.02,
+          "end_time": 17.18
+        },
+        {
+          "text": " ",
+          "start_time": 17.18,
+          "end_time": 17.22
+        },
+        {
+          "text": "oil",
+          "start_time": 17.22,
+          "end_time": 17.4
+        },
+        {
+          "text": " ",
+          "start_time": 17.4,
+          "end_time": 17.44
+        },
+        {
+          "text": "in",
+          "start_time": 17.44,
+          "end_time": 17.5
+        },
+        {
+          "text": " ",
+          "start_time": 17.5,
+          "end_time": 17.54
+        },
+        {
+          "text": "a",
+          "start_time": 17.54,
+          "end_time": 17.6
+        },
+        {
+          "text": " ",
+          "start_time": 17.6,
+          "end_time": 17.66
+        },
+        {
+          "text": "pan",
+          "start_time": 17.66,
+          "end_time": 17.94
+        },
+        {
+          "text": " ",
+          "start_time": 17.94,
+          "end_time": 18.02
+        },
+        {
+          "text": "and",
+          "start_time": 18.02,
+          "end_time": 18.18
+        },
+        {
+          "text": " ",
+          "start_time": 18.18,
+          "end_time": 18.6
+        },
+        {
+          "text": "heat",
+          "start_time": 18.6,
+          "end_time": 18.82
+        },
+        {
+          "text": " ",
+          "start_time": 18.82,
+          "end_time": 18.86
+        },
+        {
+          "text": "the",
+          "start_time": 18.86,
+          "end_time": 18.96
+        },
+        {
+          "text": " ",
+          "start_time": 18.96,
+          "end_time": 19.02
+        },
+        {
+          "text": "pan",
+          "start_time": 19.02,
+          "end_time": 19.36
+        },
+        {
+          "text": " ",
+          "start_time": 19.36,
+          "end_time": 19.4
+        },
+        {
+          "text": "until",
+          "start_time": 19.4,
+          "end_time": 19.66
+        },
+        {
+          "text": " ",
+          "start_time": 19.66,
+          "end_time": 19.7
+        },
+        {
+          "text": "it",
+          "start_time": 19.72,
+          "end_time": 19.82
+        },
+        {
+          "text": " ",
+          "start_time": 19.82,
+          "end_time": 19.86
+        },
+        {
+          "text": "begins",
+          "start_time": 19.86,
+          "end_time": 20.26
+        },
+        {
+          "text": " ",
+          "start_time": 20.26,
+          "end_time": 20.3
+        },
+        {
+          "text": "getting",
+          "start_time": 20.3,
+          "end_time": 20.52
+        },
+        {
+          "text": " ",
+          "start_time": 20.52,
+          "end_time": 20.58
+        },
+        {
+          "text": "hot.",
+          "start_time": 20.58,
+          "end_time": 20.96
+        },
+        {
+          "text": " ",
+          "start_time": 20.96,
+          "end_time": 20.96
+        },
+        {
+          "text": "Spoon",
+          "start_time": 21.68,
+          "end_time": 22.22
+        },
+        {
+          "text": " ",
+          "start_time": 22.22,
+          "end_time": 22.6
+        },
+        {
+          "text": "the",
+          "start_time": 22.6,
+          "end_time": 22.74
+        },
+        {
+          "text": " ",
+          "start_time": 22.74,
+          "end_time": 22.8
+        },
+        {
+          "text": "pancakes",
+          "start_time": 22.8,
+          "end_time": 23.48
+        },
+        {
+          "text": " ",
+          "start_time": 23.48,
+          "end_time": 23.52
+        },
+        {
+          "text": "onto",
+          "start_time": 23.52,
+          "end_time": 23.76
+        },
+        {
+          "text": " ",
+          "start_time": 23.76,
+          "end_time": 23.8
+        },
+        {
+          "text": "the",
+          "start_time": 23.8,
+          "end_time": 23.88
+        },
+        {
+          "text": " ",
+          "start_time": 23.88,
+          "end_time": 23.9
+        },
+        {
+          "text": "hot",
+          "start_time": 23.92,
+          "end_time": 24.08
+        },
+        {
+          "text": " ",
+          "start_time": 24.08,
+          "end_time": 24.2
+        },
+        {
+          "text": "pan",
+          "start_time": 24.2,
+          "end_time": 24.46
+        },
+        {
+          "text": " ",
+          "start_time": 24.46,
+          "end_time": 24.54
+        },
+        {
+          "text": "for",
+          "start_time": 24.54,
+          "end_time": 24.66
+        },
+        {
+          "text": " ",
+          "start_time": 24.66,
+          "end_time": 24.7
+        },
+        {
+          "text": "the",
+          "start_time": 24.7,
+          "end_time": 24.8
+        },
+        {
+          "text": " ",
+          "start_time": 24.8,
+          "end_time": 24.84
+        },
+        {
+          "text": "size",
+          "start_time": 24.84,
+          "end_time": 25.14
+        },
+        {
+          "text": " ",
+          "start_time": 25.14,
+          "end_time": 25.2
+        },
+        {
+          "text": "of",
+          "start_time": 25.2,
+          "end_time": 25.42
+        },
+        {
+          "text": " ",
+          "start_time": 25.42,
+          "end_time": 25.8
+        },
+        {
+          "text": "pancakes",
+          "start_time": 25.8,
+          "end_time": 26.38
+        },
+        {
+          "text": " ",
+          "start_time": 26.38,
+          "end_time": 26.42
+        },
+        {
+          "text": "you",
+          "start_time": 26.42,
+          "end_time": 26.5
+        },
+        {
+          "text": " ",
+          "start_time": 26.5,
+          "end_time": 26.54
+        },
+        {
+          "text": "want.",
+          "start_time": 26.54,
+          "end_time": 26.88
+        },
+        {
+          "text": " ",
+          "start_time": 26.88,
+          "end_time": 27.18
+        },
+        {
+          "text": "Cook",
+          "start_time": 27.18,
+          "end_time": 27.34
+        },
+        {
+          "text": " ",
+          "start_time": 27.34,
+          "end_time": 27.4
+        },
+        {
+          "text": "on",
+          "start_time": 27.4,
+          "end_time": 27.52
+        },
+        {
+          "text": " ",
+          "start_time": 27.52,
+          "end_time": 27.56
+        },
+        {
+          "text": "one",
+          "start_time": 27.56,
+          "end_time": 27.7
+        },
+        {
+          "text": " ",
+          "start_time": 27.7,
+          "end_time": 27.78
+        },
+        {
+          "text": "side",
+          "start_time": 27.78,
+          "end_time": 28.0
+        },
+        {
+          "text": " ",
+          "start_time": 28.0,
+          "end_time": 28.02
+        },
+        {
+          "text": "until",
+          "start_time": 28.02,
+          "end_time": 28.28
+        },
+        {
+          "text": " ",
+          "start_time": 28.28,
+          "end_time": 28.34
+        },
+        {
+          "text": "it",
+          "start_time": 28.34,
+          "end_time": 28.46
+        },
+        {
+          "text": " ",
+          "start_time": 28.46,
+          "end_time": 28.92
+        },
+        {
+          "text": "see",
+          "start_time": 28.92,
+          "end_time": 29.16
+        },
+        {
+          "text": " ",
+          "start_time": 29.16,
+          "end_time": 29.24
+        },
+        {
+          "text": "a",
+          "start_time": 29.24,
+          "end_time": 29.32
+        },
+        {
+          "text": " ",
+          "start_time": 29.32,
+          "end_time": 29.4
+        },
+        {
+          "text": "toe",
+          "start_time": 29.4,
+          "end_time": 29.74
+        },
+        {
+          "text": " ",
+          "start_time": 29.74,
+          "end_time": 30.16
+        },
+        {
+          "text": "bubbles",
+          "start_time": 30.16,
+          "end_time": 30.54
+        },
+        {
+          "text": " ",
+          "start_time": 30.54,
+          "end_time": 30.6
+        },
+        {
+          "text": "on",
+          "start_time": 30.6,
+          "end_time": 30.74
+        },
+        {
+          "text": " ",
+          "start_time": 30.74,
+          "end_time": 30.78
+        },
+        {
+          "text": "top,",
+          "start_time": 30.78,
+          "end_time": 31.1
+        },
+        {
+          "text": " ",
+          "start_time": 31.1,
+          "end_time": 31.28
+        },
+        {
+          "text": "and",
+          "start_time": 31.28,
+          "end_time": 31.4
+        },
+        {
+          "text": " ",
+          "start_time": 31.4,
+          "end_time": 31.46
+        },
+        {
+          "text": "then",
+          "start_time": 31.46,
+          "end_time": 31.64
+        },
+        {
+          "text": " ",
+          "start_time": 31.64,
+          "end_time": 31.68
+        },
+        {
+          "text": "turn",
+          "start_time": 31.68,
+          "end_time": 31.86
+        },
+        {
+          "text": " ",
+          "start_time": 31.86,
+          "end_time": 31.9
+        },
+        {
+          "text": "the",
+          "start_time": 31.9,
+          "end_time": 31.98
+        },
+        {
+          "text": " ",
+          "start_time": 31.98,
+          "end_time": 32.02
+        },
+        {
+          "text": "pancakes",
+          "start_time": 32.02,
+          "end_time": 32.659
+        },
+        {
+          "text": " ",
+          "start_time": 32.659,
+          "end_time": 33.08
+        },
+        {
+          "text": "over",
+          "start_time": 33.08,
+          "end_time": 33.38
+        },
+        {
+          "text": " ",
+          "start_time": 33.38,
+          "end_time": 33.4
+        },
+        {
+          "text": "and",
+          "start_time": 33.4,
+          "end_time": 33.5
+        },
+        {
+          "text": " ",
+          "start_time": 33.5,
+          "end_time": 33.58
+        },
+        {
+          "text": "grill",
+          "start_time": 33.58,
+          "end_time": 33.8
+        },
+        {
+          "text": " ",
+          "start_time": 33.8,
+          "end_time": 33.84
+        },
+        {
+          "text": "until",
+          "start_time": 33.84,
+          "end_time": 34.1
+        },
+        {
+          "text": " ",
+          "start_time": 34.1,
+          "end_time": 34.22
+        },
+        {
+          "text": "golden",
+          "start_time": 34.22,
+          "end_time": 34.52
+        },
+        {
+          "text": " ",
+          "start_time": 34.52,
+          "end_time": 34.6
+        },
+        {
+          "text": "brown",
+          "start_time": 34.6,
+          "end_time": 34.86
+        },
+        {
+          "text": " ",
+          "start_time": 34.86,
+          "end_time": 34.9
+        },
+        {
+          "text": "on",
+          "start_time": 34.9,
+          "end_time": 34.98
+        },
+        {
+          "text": " ",
+          "start_time": 34.98,
+          "end_time": 35.02
+        },
+        {
+          "text": "the",
+          "start_time": 35.02,
+          "end_time": 35.08
+        },
+        {
+          "text": " ",
+          "start_time": 35.08,
+          "end_time": 35.16
+        },
+        {
+          "text": "other",
+          "start_time": 35.16,
+          "end_time": 35.46
+        },
+        {
+          "text": " ",
+          "start_time": 35.46,
+          "end_time": 35.84
+        },
+        {
+          "text": "side.",
+          "start_time": 35.84,
+          "end_time": 36.22
+        },
+        {
+          "text": " ",
+          "start_time": 36.22,
+          "end_time": 36.8
+        },
+        {
+          "text": "Most",
+          "start_time": 36.8,
+          "end_time": 37.02
+        },
+        {
+          "text": " ",
+          "start_time": 37.02,
+          "end_time": 37.08
+        },
+        {
+          "text": "importantly,",
+          "start_time": 37.08,
+          "end_time": 37.74
+        },
+        {
+          "text": " ",
+          "start_time": 37.74,
+          "end_time": 37.88
+        },
+        {
+          "text": "enjoy",
+          "start_time": 37.88,
+          "end_time": 38.28
+        },
+        {
+          "text": " ",
+          "start_time": 38.28,
+          "end_time": 38.32
+        },
+        {
+          "text": "some",
+          "start_time": 38.32,
+          "end_time": 38.48
+        },
+        {
+          "text": " ",
+          "start_time": 38.48,
+          "end_time": 38.52
+        },
+        {
+          "text": "with",
+          "start_time": 38.52,
+          "end_time": 38.64
+        },
+        {
+          "text": " ",
+          "start_time": 38.64,
+          "end_time": 38.68
+        },
+        {
+          "text": "your",
+          "start_time": 38.68,
+          "end_time": 38.92
+        },
+        {
+          "text": " ",
+          "start_time": 38.92,
+          "end_time": 39.36
+        },
+        {
+          "text": "family",
+          "start_time": 39.38,
+          "end_time": 39.86
+        },
+        {
+          "text": " ",
+          "start_time": 39.86,
+          "end_time": 39.9
+        },
+        {
+          "text": "or",
+          "start_time": 39.9,
+          "end_time": 39.98
+        },
+        {
+          "text": " ",
+          "start_time": 39.98,
+          "end_time": 40.12
+        },
+        {
+          "text": "friends.",
+          "start_time": 40.12,
+          "end_time": 40.66
+        }
+      ]
+    }
+  ]
+}

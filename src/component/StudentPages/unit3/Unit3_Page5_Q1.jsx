@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3StudentAudioText, { stopUnit3StudentAudio, unit3StudentAudio } from "./Unit3StudentAudioText";
 
-const normalize = (str) =>
-  str
-    .toLowerCase()
-    .replace(/[.,!?''""'';:\s]/g, "")
-    .trim();
+const normalize = (value) => value.toLowerCase().replace(/\s+/g, "").trim();
 
-// الكلمات والتعريفات
 const WORDS = [
   { num: 1, word: "offer" },
   { num: 2, word: "diner" },
@@ -25,113 +22,70 @@ const DEFINITIONS = [
   { letter: "e", text: "an animal part that can be eaten as food" },
 ];
 
-// الإجابات الصحيحة: رقم السؤال → الحرف
 const CORRECT = ["d", "c", "e", "b", "a"];
+const LEFT_AUDIO = [1, 3, 6, 7, 9];
+const RIGHT_AUDIO = [2, 4, 5, 8, 10];
 
 const Unit3_Page5_Q1 = () => {
   const [answers, setAnswers] = useState(Array(5).fill(""));
-  const [errors, setErrors] = useState(Array(5).fill(null));
-  const [locked, setLocked] = useState(false);
+  const [results, setResults] = useState(Array(5).fill(null));
+  const [completed, setCompleted] = useState(false);
 
-  const handleChange = (i, val) => {
-    if (locked || errors[i] === true) return;
-    const updated = [...answers];
-    updated[i] = val;
-    setAnswers(updated);
-    const updatedErr = [...errors];
-    updatedErr[i] = null;
-    setErrors(updatedErr);
+  const handleChange = (index, value) => {
+    if (completed || results[index] === true) return;
+    setAnswers((previous) =>
+      previous.map((answer, answerIndex) =>
+        answerIndex === index ? value.slice(0, 1) : answer,
+      ),
+    );
+    setResults((previous) =>
+      previous.map((result, resultIndex) =>
+        resultIndex === index ? null : result,
+      ),
+    );
   };
 
   const checkAnswers = () => {
-    if (locked) return;
-    if (answers.some((a) => !a.trim())) {
+    if (completed) return;
+    if (answers.some((answer) => !answer.trim())) {
       ValidationAlert.info();
       return;
     }
-    let score = 0;
-    const newErr = answers.map((a, i) => {
-      const ok = normalize(a) === normalize(CORRECT[i]);
-      if (ok) score++;
-      return ok;
-    });
-    setErrors(newErr);
+    const nextResults = answers.map(
+      (answer, index) => normalize(answer) === CORRECT[index],
+    );
+    const score = nextResults.filter(Boolean).length;
+    setResults(nextResults);
     const total = CORRECT.length;
     const msg = `Score: ${score} / ${total}`;
     if (score === total) {
-      setLocked(true);
+      setCompleted(true);
       ValidationAlert.success(msg);
     } else if (score === 0) ValidationAlert.error(msg);
     else ValidationAlert.warning(msg);
   };
 
   const showAnswers = () => {
-    setAnswers(CORRECT);
-    setErrors(Array(5).fill(true));
-    setLocked(true);
+    setAnswers([...CORRECT]);
+    setResults(Array(5).fill(true));
+    setCompleted(true);
   };
 
   const reset = () => {
+    stopUnit3StudentAudio();
     setAnswers(Array(5).fill(""));
-    setErrors(Array(5).fill(null));
-    setLocked(false);
-  };
-
-  const InputBox = ({ index }) => {
-    const isOk = errors[index] === true;
-    const isWrong = errors[index] === false;
-    return (
-      <span style={{ position: "relative", display: "inline-block" }}>
-        <input
-          value={answers[index]}
-          disabled={locked || isOk}
-          onChange={(e) => handleChange(index, e.target.value)}
-          style={{
-            width: "50px",
-            borderBottom: isWrong ? "2px solid #ef4444" : "1px solid #aaa",
-            outline: "none",
-            background: "transparent",
-            textAlign: "center",
-            fontSize: "17px",
-            fontWeight: "bold",
-            // color: isOk ? "#84ad40" : "#6D2980",
-          }}
-        />
-        {isWrong && (
-          <span
-            style={{
-              position: "absolute",
-              top: "-8px",
-              right: "-8px",
-              width: "22px",
-              height: "22px",
-              background: "red",
-              color: "white",
-              borderRadius: "50%",
-              fontSize: "12px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              border: "2px solid white",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
-              zIndex: 5,
-            }}
-          >
-            ✕
-          </span>
-        )}
-      </span>
-    );
+    setResults(Array(5).fill(null));
+    setCompleted(false);
   };
 
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "50px" }}>
-        <h5 className="header-title-page8 mb-5">
-          <span className="ex-A mr-2">A</span>
-          Match each vocabulary word to its definition.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Match each vocabulary word to its definition."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
 
         <div
           style={{
@@ -141,50 +95,108 @@ const Unit3_Page5_Q1 = () => {
             fontSize: "18px",
           }}
         >
-          {/* العمود الأيسر - الكلمات مع الفراغات */}
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
-          >
-            {WORDS.map((item, i) => (
-              <div
-                key={i}
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-              >
-                <InputBox index={i} />
-                <span style={{ fontWeight: "bold", color: "#333" }}>
-                  {item.num}
-                </span>
-                <span style={{ color: "#333" }}>{item.word}</span>
-              </div>
-            ))}
+          <div style={{ display: "flex", flexDirection: "column", gap: "50px" }}>
+            {WORDS.map((item, index) => {
+              const isWrong = results[index] === false;
+              return (
+                <div
+                  key={item.word}
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <span style={{ position: "relative", display: "inline-block" }}>
+                    <input
+                      value={answers[index]}
+                      disabled={completed || results[index] === true}
+                      maxLength={1}
+                      placeholder="a"
+                      title="Write the matching letter"
+                      aria-label={`Write the matching letter for ${item.word}`}
+                      className="unit3-student-answer-input"
+                      onChange={(event) => handleChange(index, event.target.value)}
+                      style={{
+                        width: "50px",
+                        border: "none",
+                        borderBottom: isWrong
+                          ? "2px solid #ef4444"
+                          : "1px solid #aaa",
+                        outline: "none",
+                        background: "transparent",
+                        textAlign: "center",
+                        fontSize: "17px",
+                        fontWeight: "bold",
+                      }}
+                    />
+                    {isWrong && (
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: "-8px",
+                          width: "22px",
+                          height: "22px",
+                          background: "red",
+                          color: "white",
+                          borderRadius: "50%",
+                          fontSize: "12px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: "bold",
+                          border: "2px solid white",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                          zIndex: 5,
+                          pointerEvents: "none",
+                        }}
+                      >
+                        ✕
+                      </span>
+                    )}
+                  </span>
+                  <strong>{item.num}</strong>
+                  <Unit3StudentAudioText
+                    src={unit3StudentAudio(
+                      "Page 26 - Exercise A",
+                      `Item_${String(LEFT_AUDIO[index]).padStart(3, "0")}_`,
+                    )}
+                    ariaLabel={`Play ${item.word}`}
+                  >
+                    {item.word}
+                  </Unit3StudentAudioText>
+                </div>
+              );
+            })}
           </div>
 
-          {/* العمود الأيمن - التعريفات */}
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "50px" }}
-          >
-            {DEFINITIONS.map((def, i) => (
+          <div style={{ display: "flex", flexDirection: "column", gap: "50px" }}>
+            {DEFINITIONS.map((definition, index) => (
               <div
-                key={i}
+                key={definition.letter}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
-                <span style={{ fontWeight: "bold", color: "#333" }}>
-                  {def.letter}
-                </span>
-                <span style={{ color: "#333" }}>{def.text}</span>
+                <strong>{definition.letter}</strong>
+                <Unit3StudentAudioText
+                  src={unit3StudentAudio(
+                    "Page 26 - Exercise A",
+                    `Item_${String(RIGHT_AUDIO[index]).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play ${definition.text}`}
+                >
+                  {definition.text}
+                </Unit3StudentAudioText>
               </div>
             ))}
           </div>
         </div>
       </div>
-      {/* Buttons */}
-   
+
+      <div className="action-buttons-container">
         <ActionButtons
           handleShowAnswer={showAnswers}
           handleStartAgain={reset}
           checkAnswers={checkAnswers}
         />
-    
+      </div>
     </div>
   );
 };

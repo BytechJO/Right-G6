@@ -1,25 +1,46 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit2WorkbookAudioText, {
+  stopWorkbookUnit2Audio,
+  workbookUnit2Audio,
+} from "./Unit2WorkbookAudioText";
 
 const questions = [
   {
     id: 1,
-    text: <>Look at that roller coaster! <u>It look so</u> thrilling.</>,
+    text: (
+      <>
+        Look at that roller coaster! <u>It look so</u> thrilling.
+      </>
+    ),
     answer: "wrong",
   },
   {
     id: 2,
-    text: <><u>I am still not sure</u> fun to ride.</>,
+    text: (
+      <>
+        <u>I am still not sure</u> fun to ride.
+      </>
+    ),
     answer: "correct",
   },
   {
     id: 3,
-    text: <>We're going on a bike ride. <u>Come along</u>!</>,
+    text: (
+      <>
+        We're going on a bike ride. <u>Come along</u>!
+      </>
+    ),
     answer: "correct",
   },
   {
     id: 4,
-    text: <>I'd like to <u>where's your sense of adventure</u> today.</>,
+    text: (
+      <>
+        I'd like to <u>where's your sense of adventure</u> today.
+      </>
+    ),
     answer: "wrong",
   },
 ];
@@ -72,11 +93,7 @@ const WB_Unit2_Page13_H = () => {
     const total = questions.length;
 
     const color =
-      correct === total
-        ? "green"
-        : correct === 0
-        ? "red"
-        : "orange";
+      correct === total ? "green" : correct === 0 ? "red" : "orange";
 
     const msg = `
       <div style="font-size:18px;text-align:center;">
@@ -103,6 +120,7 @@ const WB_Unit2_Page13_H = () => {
   };
 
   const handleReset = () => {
+    stopWorkbookUnit2Audio();
     setAnswers(init());
     setResult([]);
     setLocked(false);
@@ -116,6 +134,17 @@ const WB_Unit2_Page13_H = () => {
     return (
       <span
         onClick={() => !isDisabled && handleSelect(qIndex, value)}
+        onKeyDown={(event) => {
+          if (!isDisabled && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            handleSelect(qIndex, value);
+          }
+        }}
+        role="radio"
+        aria-checked={selected}
+        aria-label={value === "correct" ? "Correct" : "Incorrect"}
+        aria-disabled={isDisabled}
+        tabIndex={isDisabled ? -1 : 0}
         style={{
           position: "relative",
           display: "inline-flex",
@@ -169,20 +198,17 @@ const WB_Unit2_Page13_H = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-
-        {/* Title */}
-        <h5 className="header-title-page8 mb-10">
-          <span
-            className="ex-A"
-            style={{ marginRight: "10px" }}
-          >
-            H
-          </span>
-
-          Is the expression used correctly? Write{" "}
-          <strong style={{ color: "red" }}>✓</strong> or{" "}
-          <strong style={{ color: "red" }}>✕</strong>.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="H"
+          title={
+            <>
+              Decide whether each expression is used correctly. Write{" "}
+              <strong style={{ color: "red" }}>✓</strong> or{" "}
+              <strong style={{ color: "red" }}>X</strong>.
+            </>
+          }
+          subTitle=" Decide ✓ or X first; if the item is wrong, correct only the part requested."
+        />
 
         {/* Questions */}
         <div className="flex flex-col gap-14 my-10">
@@ -192,30 +218,26 @@ const WB_Unit2_Page13_H = () => {
               className="flex items-center gap-4"
               style={{ fontSize: "19px" }}
             >
-
               {/* ✓ */}
-              <ChoiceBox
-                qIndex={i}
-                value="correct"
-                symbol="✓"
-              />
+              <ChoiceBox qIndex={i} value="correct" symbol="✓" />
 
               {/* ✕ */}
-              <ChoiceBox
-                qIndex={i}
-                value="wrong"
-                symbol="✕"
-              />
+              <ChoiceBox qIndex={i} value="wrong" symbol="✕" />
 
               {/* Question */}
-              <span
-                className="font-bold"
-                style={{ minWidth: 24 }}
-              >
+              <span className="font-bold" style={{ minWidth: 24 }}>
                 {q.id}
               </span>
 
-              <span>{q.text}</span>
+              <Unit2WorkbookAudioText
+                src={workbookUnit2Audio(
+                  "Page 13 - Exercise H",
+                  `Item_${String(i + 1).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play sentence ${q.id}`}
+              >
+                {q.text}
+              </Unit2WorkbookAudioText>
             </div>
           ))}
         </div>
@@ -223,24 +245,15 @@ const WB_Unit2_Page13_H = () => {
 
       {/* Buttons */}
       <div className="action-buttons-container">
-        <button
-          className="try-again-button"
-          onClick={handleReset}
-        >
+        <button className="try-again-button" onClick={handleReset}>
           Start Again ↻
         </button>
 
-        <button
-          className="show-answer-btn"
-          onClick={showAnswers}
-        >
+        <button className="show-answer-btn" onClick={showAnswers}>
           Show Answer
         </button>
 
-        <button
-          className="check-button2"
-          onClick={checkAnswers}
-        >
+        <button className="check-button2" onClick={checkAnswers}>
           Check Answer ✓
         </button>
       </div>

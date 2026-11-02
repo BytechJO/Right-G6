@@ -5,7 +5,7 @@ import { FaCheck, FaRedo, FaEye } from "react-icons/fa";
 const Unit5_Page2_ComprehensionA = () => {
   const [selected, setSelected] = useState(new Set());
   const [locked, setLocked] = useState(false);
-  const [result, setResult] = useState(null); // null | { correct: Set, wrong: Set, missed: Set }
+  const [result, setResult] = useState(null);
 
   const words = [
     { text: "hard-working", correct: true },
@@ -23,12 +23,19 @@ const Unit5_Page2_ComprehensionA = () => {
 
   const toggle = (i) => {
     if (locked) return;
+
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(i)) next.delete(i);
-      else next.add(i);
+
+      if (next.has(i)) {
+        next.delete(i);
+      } else {
+        next.add(i);
+      }
+
       return next;
     });
+
     setResult(null);
   };
 
@@ -36,9 +43,11 @@ const Unit5_Page2_ComprehensionA = () => {
     if (!result) {
       return selected.has(i) ? "word-selected" : "word-default";
     }
+
     if (result.correct.has(i)) return "word-correct";
     if (result.wrong.has(i)) return "word-wrong";
     if (result.missed.has(i)) return "word-missed";
+
     return "word-default";
   };
 
@@ -55,12 +64,21 @@ const Unit5_Page2_ComprehensionA = () => {
     const missed = new Set();
 
     words.forEach((w, i) => {
-      if (selected.has(i) && w.correct) correct.add(i);
-      else if (selected.has(i) && !w.correct) wrong.add(i);
-      else if (!selected.has(i) && w.correct) missed.add(i);
+      if (selected.has(i) && w.correct) {
+        correct.add(i);
+      } else if (selected.has(i) && !w.correct) {
+        wrong.add(i);
+      } else if (!selected.has(i) && w.correct) {
+        missed.add(i);
+      }
     });
 
-    setResult({ correct, wrong, missed });
+    setResult({
+      correct,
+      wrong,
+      missed,
+    });
+
     const finalScore = Math.max(0, correct.size - wrong.size);
 
     const score = `Score: ${finalScore} / ${correctSet.size}`;
@@ -82,6 +100,7 @@ const Unit5_Page2_ComprehensionA = () => {
   const showAnswers = () => {
     setSelected(new Set(correctSet));
     setLocked(true);
+
     setResult({
       correct: new Set(correctSet),
       wrong: new Set(),
@@ -93,6 +112,17 @@ const Unit5_Page2_ComprehensionA = () => {
     setSelected(new Set());
     setLocked(false);
     setResult(null);
+  };
+
+  const handleActionKeyDown = (event, action) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        action();
+      }
+    }
   };
 
   return (
@@ -123,6 +153,7 @@ const Unit5_Page2_ComprehensionA = () => {
         >
           {words.map((w, i) => {
             const cls = getWordClass(i);
+
             const styleMap = {
               "word-default": {
                 color: "var(--color-text-primary, #3a3a3a)",
@@ -133,6 +164,7 @@ const Unit5_Page2_ComprehensionA = () => {
                 textDecoration: "none",
                 cursor: locked ? "default" : "pointer",
               },
+
               "word-selected": {
                 color: "#2c5a0e",
                 border: "1.5px solid #2c5a0e",
@@ -142,6 +174,7 @@ const Unit5_Page2_ComprehensionA = () => {
                 textDecoration: "none",
                 cursor: "pointer",
               },
+
               "word-correct": {
                 color: "#1a6e2e",
                 border: "1.5px solid #1a6e2e",
@@ -151,6 +184,7 @@ const Unit5_Page2_ComprehensionA = () => {
                 textDecoration: "none",
                 cursor: "default",
               },
+
               "word-wrong": {
                 color: "#c0392b",
                 border: "1.5px solid #c0392b",
@@ -158,20 +192,37 @@ const Unit5_Page2_ComprehensionA = () => {
                 padding: "5px 16px",
                 background: "transparent",
                 textDecoration: "line-through",
-                cursor: "default",
+                cursor: "pointer",
+              },
+
+              "word-missed": {
+                color: "var(--color-text-primary, #3a3a3a)",
+                border: "1.5px solid transparent",
+                borderRadius: "999px",
+                padding: "5px 16px",
+                background: "transparent",
+                textDecoration: "none",
+                cursor: "pointer",
               },
             };
 
             return (
               <button
                 key={i}
+                type="button"
                 onClick={() => toggle(i)}
                 disabled={locked}
+                aria-pressed={selected.has(i)}
+                aria-label={`${w.text}${selected.has(i) ? ", selected" : ""}`}
+                className="
+                  focus-visible:outline
+                  focus-visible:outline-[3px]
+                  focus-visible:outline-[#2563eb]
+                  focus-visible:outline-offset-[3px]
+                "
                 style={{
                   fontSize: "16px",
                   fontWeight: "500",
-                  outline: "none",
-                  border: "2.5px solid transparent",
                   background: "transparent",
                   transition: "all 0.18s ease",
                   userSelect: "none",
@@ -190,44 +241,151 @@ const Unit5_Page2_ComprehensionA = () => {
         {/* Reset */}
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Reset activity"
             onClick={reset}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#ffc107] hover:bg-[#e0a800] cursor-pointer transition shadow-sm"
+            onKeyDown={(event) => handleActionKeyDown(event, reset)}
+            className="
+              flex items-center justify-center
+              w-14 h-14
+              rounded-xl
+              bg-[#ffc107]
+              hover:bg-[#e0a800]
+              cursor-pointer
+              transition
+              shadow-sm
+              focus-visible:outline
+              focus-visible:outline-[3px]
+              focus-visible:outline-[#2563eb]
+              focus-visible:outline-offset-[3px]
+            "
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaRedo size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaRedo size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+
+          <span
+            className="
+              absolute
+              -top-8
+              left-1/2
+              -translate-x-1/2
+              bg-black
+              text-white
+              text-xs
+              px-2
+              py-1
+              rounded
+              opacity-0
+              group-hover:opacity-100
+              group-focus-within:opacity-100
+              transition
+            "
+          >
             Reset
           </span>
         </div>
 
-        {/* Show */}
+        {/* Show Answer */}
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Show answer"
             onClick={showAnswers}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#2c78b4] hover:bg-[#1a5a8a] cursor-pointer transition shadow-sm"
+            onKeyDown={(event) => handleActionKeyDown(event, showAnswers)}
+            className="
+              flex items-center justify-center
+              w-14 h-14
+              rounded-xl
+              bg-[#2c78b4]
+              hover:bg-[#1a5a8a]
+              cursor-pointer
+              transition
+              shadow-sm
+              focus-visible:outline
+              focus-visible:outline-[3px]
+              focus-visible:outline-[#2563eb]
+              focus-visible:outline-offset-[3px]
+            "
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaEye size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaEye size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+
+          <span
+            className="
+              absolute
+              -top-8
+              left-1/2
+              -translate-x-1/2
+              bg-black
+              text-white
+              text-xs
+              px-2
+              py-1
+              rounded
+              opacity-0
+              group-hover:opacity-100
+              group-focus-within:opacity-100
+              transition
+              whitespace-nowrap
+            "
+          >
             Show Answer
           </span>
         </div>
 
-        {/* Check */}
+        {/* Check Answer */}
         <div className="relative group">
           <div
+            role="button"
+            tabIndex={0}
+            aria-label="Check answer"
             onClick={checkAnswers}
-            className="flex items-center justify-center w-14 h-14 rounded-xl bg-[#55c271] hover:bg-[#449d5a] cursor-pointer transition shadow-sm"
+            onKeyDown={(event) => handleActionKeyDown(event, checkAnswers)}
+            className="
+              flex items-center justify-center
+              w-14 h-14
+              rounded-xl
+              bg-[#55c271]
+              hover:bg-[#449d5a]
+              cursor-pointer
+              transition
+              shadow-sm
+              focus-visible:outline
+              focus-visible:outline-[3px]
+              focus-visible:outline-[#2563eb]
+              focus-visible:outline-offset-[3px]
+            "
           >
-            <div className="bg-white p-3 rounded-full shadow">
-              <FaCheck size={14} />
+            <div className="bg-white p-3 rounded-full shadow pointer-events-none">
+              <FaCheck size={14} aria-hidden="true" />
             </div>
           </div>
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+
+          <span
+            className="
+              absolute
+              -top-8
+              left-1/2
+              -translate-x-1/2
+              bg-black
+              text-white
+              text-xs
+              px-2
+              py-1
+              rounded
+              opacity-0
+              group-hover:opacity-100
+              group-focus-within:opacity-100
+              transition
+              whitespace-nowrap
+            "
+          >
             Check Answer
           </span>
         </div>

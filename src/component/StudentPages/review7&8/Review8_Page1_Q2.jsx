@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 
 import trueImg from "../../../assets/imgs/true.svg";
 import falseImg from "../../../assets/imgs/false.svg";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const Review8_Page1_Q2 = () => {
   const questions = [
@@ -52,6 +57,8 @@ const Review8_Page1_Q2 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -211,6 +218,7 @@ const Review8_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setMarks(["", "", "", "", ""]);
 
     setAnswers(["", "", "", "", ""]);
@@ -289,6 +297,8 @@ const Review8_Page1_Q2 = () => {
         type="text"
         value={answers[i]}
         placeholder={marks[i] === "false" ? "Write the correct expression" : ""}
+        title="Write the corrected expression"
+        aria-label={`Correction for expression ${i + 1}`}
         disabled={locked || result[i]?.row === true || marks[i] === "true"}
         onChange={(e) => handleChange(i, e.target.value)}
         className={`
@@ -341,14 +351,19 @@ const Review8_Page1_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall text-[18px] w-full">
-        <div className="header-title-page8 mb-[10vh]">
-          <span className="mr-4">B</span>
-          Read the expressions and write{" "}
-          <span className="text-[#D1252B]">✓</span> or{" "}
-          <span className="text-[#D1252B]">✗</span>. Correct the expressions
-          that are incorrect.
-        </div>
+      <div className="div-forall gap-10 text-[18px] w-full">
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title={
+            <>
+              Read the expressions and write{" "}
+              <span className="text-[#D1252B]">✓</span> or{" "}
+              <span className="text-[#D1252B]">✗</span>. Correct the expressions
+              that are incorrect.
+            </>
+          }
+          subTitle="Check the key detail in each statement before choosing ✓/✗ or true/false; correct the wording when the task requires it."
+        />
 
         <div className="flex flex-col gap-10">
           {sentences.map((sentence, index) => (
@@ -362,7 +377,16 @@ const Review8_Page1_Q2 = () => {
                   {markBox(index, "false", falseImg)}
                 </div>
 
-                <div className="min-w-[260px]">{sentence}</div>
+                <Unit8StudentAudioText
+                  src={unit8StudentAudio(
+                    "Page 72 - Exercise B",
+                    `Item_${String(index + 1).padStart(3, "0")}_`,
+                  )}
+                  ariaLabel={`Play expression ${index + 1}`}
+                  className="min-w-[260px]"
+                >
+                  {sentence}
+                </Unit8StudentAudioText>
 
                 <div className="flex-1">{inputField(index)}</div>
               </div>

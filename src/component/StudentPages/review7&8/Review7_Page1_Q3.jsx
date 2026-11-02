@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 23.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 22.svg";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
 
 const Review7_Page1_Q3 = () => {
   const correctAnswers = ["false", "true"];
@@ -100,6 +101,9 @@ const Review7_Page1_Q3 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="true or false"
+        title="Type true or false"
+        aria-label={`True or false answer ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className={`
           w-60
@@ -148,17 +152,16 @@ const Review7_Page1_Q3 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall w-full text-[18px]" style={{ gap: "80px" }}>
-        <h5 className="header-title-page8">
-          <span
-            style={{
-              marginRight: "20px",
-            }}
-          >
-            C
-          </span>
-          Read, look, and write <span className="text-[#F79530]">true</span> or{" "}
-          <span className="text-[#F79530]">false</span>.
-        </h5>
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title={
+            <>
+              Read, look, and write{" "}
+              <span className="text-[#F79530]">true</span> or{" "}
+              <span className="text-[#F79530]">false</span>.
+            </>
+          }
+        />
 
         <div className="grid grid-cols-1 gap-20">
           {/* Question 1 */}
@@ -177,7 +180,7 @@ const Review7_Page1_Q3 = () => {
             </div>
             <img
               src={img1}
-              alt=""
+              alt="A person painting a wall without using stencils"
               style={{
                 width: "160px",
                 height: "auto",
@@ -200,7 +203,7 @@ const Review7_Page1_Q3 = () => {
             </div>
             <img
               src={img2}
-              alt=""
+              alt="A dog wearing a silly costume"
               style={{
                 width: "160px",
                 height: "auto",

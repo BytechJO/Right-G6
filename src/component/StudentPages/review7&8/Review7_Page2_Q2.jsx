@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 18.svg";
 import img2 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 19.svg";
 import img3 from "../../../assets/imgs/pages/classbook/Right 6 Unit 8 What Did He Say Folder/SVG/Asset 21.svg";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit8StudentAudioText, {
+  stopUnit8StudentAudio,
+  unit8StudentAudio,
+} from "../unit8/Unit8StudentAudioText";
 
 const Review7_Page2_Q2 = () => {
   const questions = ["b", "c", "a"];
@@ -13,6 +18,8 @@ const Review7_Page2_Q2 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
+
+  useEffect(() => () => stopUnit8StudentAudio(), []);
 
   const normalize = (str) =>
     str
@@ -92,6 +99,7 @@ const Review7_Page2_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit8StudentAudio();
     setAnswers(["", "", ""]);
 
     setResult([]);
@@ -105,6 +113,9 @@ const Review7_Page2_Q2 = () => {
         type="text"
         value={answers[index]}
         disabled={locked || result[index] === true}
+        placeholder="e.g. a"
+        title="Type the matching letter"
+        aria-label={`Matching letter ${index + 1}`}
         onChange={(e) => handleChange(index, e.target.value)}
         className="
           w-20
@@ -155,30 +166,59 @@ const Review7_Page2_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        <h5 className="header-title-page8 mb-[8vh]">
-          <span
-            style={{
-              marginRight: "20px",
-            }}
-          >
-            E
-          </span>
-          Read and match.
-        </h5>
+      <div className="div-forall gap-7 w-full text-[18px]">
+        <ExerciseHeaderReview
+          sectionLetter="E"
+          title="Read and match the dialogues."
+          subTitle="Start with one item, find the matching partner that completes the meaning, then review the pair before moving on."
+        />
 
         <div className="flex flex-col gap-[8vh]">
           {[1, 2, 3].map((num, index) => (
             <div key={index} className="flex items-center gap-6">
-              <img
-                src={index === 0 ? img1 : index === 1 ? img2 : img3}
-                alt={`question ${num}`}
-                style={{
-                  width: "720px",
-                  height: "100px",
-                  objectFit: "contain",
-                }}
-              />
+              <div
+                className="relative"
+                style={{ width: "720px", height: "100px", flexShrink: 0 }}
+              >
+                <img
+                  src={index === 0 ? img1 : index === 1 ? img2 : img3}
+                  alt={
+                    index === 0
+                      ? "Dialogue about a dirty cat"
+                      : index === 1
+                        ? "Dialogue about feeling sad"
+                        : "Dialogue about missing a library meeting"
+                  }
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+
+                {[1, 2].map((sentenceNumber) => (
+                  <Unit8StudentAudioText
+                    key={sentenceNumber}
+                    src={unit8StudentAudio(
+                      "Page 71 - Exercise E",
+                      `image${num}_${sentenceNumber}`,
+                    )}
+                    ariaLabel={`Play sentence ${sentenceNumber} in dialogue ${num}`}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: sentenceNumber === 1 ? 0 : "50%",
+                      width: "50%",
+                      height: "100%",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <span className="sr-only">
+                      Sentence {sentenceNumber} in dialogue {num}
+                    </span>
+                  </Unit8StudentAudioText>
+                ))}
+              </div>
 
               {inputField(index)}
             </div>

@@ -6,32 +6,64 @@ import readingAudio from "../../../assets/audio/ClassBook/U5/PG 41/cd23pg41-read
 import ReadingBG from "../../../assets/imgs/pages/classbook/Reading.svg";
 import comprehesion from "../../../assets/imgs/pages/classbook/comprehesion.svg";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import readingTimings from "../../../assets/json/cd23pg41-reading_eng.json";
+import { useReadingHighlight } from "../../useReadingHighlight";
+import ExerciseHeader from "../../ExerciseHeader";
+
 const ReadingSection_U4 = () => {
- const captions = [
-  {
-    start: 0.36,
-    end: 47.14,
-    text: "Page 41 reading. Have you ever read or listened to an interview with a famous person? Did you learn anything new about this person? A celebrity interview. Gary James is an American actor. He grew up in Texas with hardworking parents and a fairly regular life. He became an actor almost by accident, and even after becoming successful, he and his wife live a modest life. He works hard and has acted in many different types of shows, from plays on stage to TV shows to movies. He has also acted in many different types of roles. Your newest movie, Time Traveling Police Force, is set in the 1990s, but you were only a year old when the decade began. It seemed odd to recreate that period for film, didn't it?",
-  },
-  {
-    start: 48.38,
-    end: 74.22,
-    text: "Well, strangely, I have so much experience with the '90s. Not music necessarily. For some reason, we didn't have a lot of music in the house when I was growing up. So I started learning music when I was twenty. But with films, I have so much experience with the '90s, which my friends sometimes tease me about. So to get to do a '90s movie is something really special for me, I suppose. Which films appeal to you then?",
-  },
-  {
-    start: 75.3,
-    end: 89.34,
-    text: "Ones that Hugh Anderly directed. I like films like It's the Future movies and The Cloud Home. Also, for some reason, when a '90s movie comes on at eight o'clock at night, I would be drawn to that more than I would be to something more modern.",
-  },
-  {
-    start: 90.4,
-    end: 110.619,
-    text: "A love of cinema when you were young probably led to your career, didn't it? I didn't really think about that until I was actually given a job when I was fourteen. I'd never really intended it to be a career. But quite often those movies were about the unpopular kid turning into the hero. That's quite empowering for a kid who wants to be a superhero.",
-  },
-];
+  const { highlight, onTimeUpdate } = useReadingHighlight(
+    readingTimings,
+    [
+      {
+        printed: ["an", "a", "90s"],
+        spoken: ["a", "", "90s"],
+      },
+      {
+        printed: ["appealed"],
+        spoken: ["appeal"],
+      },
+      {
+        printed: ["Anderly"],
+        spoken: ["Anderle"],
+      },
+      {
+        printed: ["the", "It's", "the", "Future", "movies"],
+        spoken: ["", "It's", "the", "Future", "Movies"],
+      },
+    ],
+    true,
+  );
+  const captions = [
+    {
+      start: 0.36,
+      end: 47.14,
+      text: "Page 41 reading. Have you ever read or listened to an interview with a famous person? Did you learn anything new about this person? A celebrity interview. Gary James is an American actor. He grew up in Texas with hardworking parents and a fairly regular life. He became an actor almost by accident, and even after becoming successful, he and his wife live a modest life. He works hard and has acted in many different types of shows, from plays on stage to TV shows to movies. He has also acted in many different types of roles. Your newest movie, Time Traveling Police Force, is set in the 1990s, but you were only a year old when the decade began. It seemed odd to recreate that period for film, didn't it?",
+    },
+    {
+      start: 48.38,
+      end: 74.22,
+      text: "Well, strangely, I have so much experience with the '90s. Not music necessarily. For some reason, we didn't have a lot of music in the house when I was growing up. So I started learning music when I was twenty. But with films, I have so much experience with the '90s, which my friends sometimes tease me about. So to get to do a '90s movie is something really special for me, I suppose. Which films appeal to you then?",
+    },
+    {
+      start: 75.3,
+      end: 89.34,
+      text: "Ones that Hugh Anderly directed. I like films like It's the Future movies and The Cloud Home. Also, for some reason, when a '90s movie comes on at eight o'clock at night, I would be drawn to that more than I would be to something more modern.",
+    },
+    {
+      start: 90.4,
+      end: 110.619,
+      text: "A love of cinema when you were young probably led to your career, didn't it? I didn't really think about that until I was actually given a job when I was fourteen. I'd never really intended it to be a career. But quite often those movies were about the unpopular kid turning into the hero. That's quite empowering for a kid who wants to be a superhero.",
+    },
+  ];
   return (
     <div className=" flex flex-col items-center">
       <div className="p-6 flex flex-col items-center gap-5">
+        <div className="w-[60%]">
+          <ExerciseHeader
+            title="Listen and read along: A Celebrity Interview."
+            subTitle="Press Play and follow the text as it is read; pause or replay any part you need to hear again."
+          />
+        </div>
         <div className="flex justify-start gap-1 mb-4 w-[60%]">
           <img
             src={ReadingBG}
@@ -42,15 +74,18 @@ const ReadingSection_U4 = () => {
           />
 
           <h2 className="font-bold text-[18px] text-black">
-            Have you ever read or listened to an interview with a famous person?
-            Did you learn anything new about this person?
+            {highlight(
+              "Have you ever read or listened to an interview with a famous person? Did you learn anything new about this person?",
+            )}
           </h2>
         </div>
         <div className="w-[60%] mx-auto">
           <QuestionAudioPlayer
             src={readingAudio}
             captions={captions}
-            stopAtSecond={9.2}
+            stopAtSecond={9}
+            pageId="sb_unit5_page41_reading"
+            onTimeUpdate={onTimeUpdate}
           />
         </div>
         <div className="relative w-[60%] mt-2">
@@ -58,7 +93,7 @@ const ReadingSection_U4 = () => {
             className="absolute -top-9 left-4 bg-[#84ad40] text-white px-5 py-1 rounded-[20px 0px] text-[20px] font-bold w-[300px]"
             style={{ borderRadius: "20px 20px 0px 0px " }}
           >
-            A Celebrity Interview
+            {highlight("A Celebrity Interview")}
           </div>
 
           <div className="border-2 border-[#84ad40] rounded-2xl p-4 pt-6 bg-white">
@@ -86,7 +121,7 @@ const ReadingSection_U4 = () => {
                   },
                 ].map((line, i) => (
                   <p key={i} style={{ color: line.color }} className="mb-0.5">
-                    {line.text}
+                    {highlight(line.text)}
                   </p>
                 ))}
               </div>
@@ -116,7 +151,7 @@ const ReadingSection_U4 = () => {
                 },
               ].map((line, i) => (
                 <p key={i} style={{ color: line.color }}>
-                  {line.text}
+                  {highlight(line.text)}
                 </p>
               ))}
             </div>

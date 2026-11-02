@@ -124,6 +124,8 @@ const handleCheck = () => {
       <span className="relative inline-flex items-center mx-1">
         <input
           value={answers[i]}
+          placeholder="Type the answer"
+          title="Type the answer"
           disabled={locked || isCorrect}
           onChange={(e) => {
             const updated = [...answers];
@@ -136,7 +138,7 @@ const handleCheck = () => {
               [i]: undefined,
             }));
           }}
-          className={`border-b outline-none w-[140px] text-center font-semibold bg-transparent
+          className={`student-unit1-answer-input border-b outline-none w-[140px] text-center font-semibold bg-transparent
             ${hasError ? "border-red-500" : "border-black"}
           `}
         />

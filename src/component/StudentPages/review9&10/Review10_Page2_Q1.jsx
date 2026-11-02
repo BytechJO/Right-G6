@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
+
+const audioFolder = "Page 91 - Exercise D";
+const sentenceAudioPrefixes = ["005", "006", "007", "008", "009", "010"];
 
 const Review10_Page2_Q1 = () => {
   const correctGroups = {
@@ -192,6 +200,7 @@ const Review10_Page2_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setPresentAnswers(["", "", "", "", ""]);
 
     setGerundAnswers(["", "", "", "", ""]);
@@ -211,6 +220,9 @@ const Review10_Page2_Q1 = () => {
         value={value}
         disabled={locked || isCorrect === true}
         onChange={(e) => handleChange(group, index, e.target.value)}
+        placeholder="Enter a sentence"
+        title={`${group === "present" ? "Present Progressive" : "Gerund"}, row ${index + 1}`}
+        aria-label={`${group === "present" ? "Present Progressive" : "Gerund"}, row ${index + 1}`}
         className={`
           w-full
           h-full
@@ -253,15 +265,26 @@ const Review10_Page2_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-10">
-          <span className=" mr-4">D</span>
-          Put the sentences below into the correct group on the chart.
-        </div>
+      <div className="div-forall w-full text-[18px] gap-5">
+        <ExerciseHeaderReview
+          sectionLetter="D"
+          title="Put the sentences into the correct group: Present Progressive or Gerund."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Decide whether -ing shows an action happening now or
+                functions as a noun/activity.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Place each sentence under Present Progressive or Gerund
+                only after checking its role in the sentence.
+              </span>
+            </>
+          }
+        />
 
         {/* TABLES */}
-        <div className="flex gap-8 mb-10">
+        <div className="flex gap-8 mb-5">
           {/* PRESENT */}
           <div className="flex-1">
             <div
@@ -278,7 +301,12 @@ const Review10_Page2_Q1 = () => {
                 bg-[#E2E9D1]
               "
             >
-              Present Progressive
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "002")}
+                flowText
+              >
+                Present Progressive
+              </Unit10StudentAudioText>
             </div>
 
             <div
@@ -290,7 +318,12 @@ const Review10_Page2_Q1 = () => {
               "
             >
               <div className="h-[46px] border-b border-[#9CCB5B] px-2 flex items-center ">
-                I am rock climbing.
+                <Unit10StudentAudioText
+                  src={unit10StudentAudio(audioFolder, "003")}
+                  flowText
+                >
+                  I am rock climbing.
+                </Unit10StudentAudioText>
               </div>
 
               {[0, 1, 2, 3, 4].map((i) => (
@@ -333,7 +366,12 @@ const Review10_Page2_Q1 = () => {
                  bg-[#E2E9D1]
               "
             >
-              Gerund
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "001")}
+                flowText
+              >
+                Gerund
+              </Unit10StudentAudioText>
             </div>
 
             <div
@@ -345,7 +383,12 @@ const Review10_Page2_Q1 = () => {
               "
             >
               <div className="h-[46px] border-b border-[#9CCB5B] px-2 flex items-center">
-                I like rock climbing.
+                <Unit10StudentAudioText
+                  src={unit10StudentAudio(audioFolder, "004")}
+                  flowText
+                >
+                  I like rock climbing.
+                </Unit10StudentAudioText>
               </div>
 
               {[0, 1, 2, 3, 4].map((i) => (
@@ -371,7 +414,18 @@ const Review10_Page2_Q1 = () => {
         {/* SENTENCE BANK */}
         <div className="grid grid-cols-2 gap-y-5 gap-x-20 mb-10">
           {sentencePool.map((sentence, index) => (
-            <div key={index}>{sentence}</div>
+            <div key={index}>
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(
+                  audioFolder,
+                  sentenceAudioPrefixes[index],
+                )}
+                ariaLabel={`Play sentence ${index + 1}`}
+                flowText
+              >
+                {sentence}
+              </Unit10StudentAudioText>
+            </div>
           ))}
         </div>
       </div>

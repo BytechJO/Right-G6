@@ -1,28 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import img from "../../../assets/imgs/pages/classbook/Right 6 Unit 1 Been There, Done That Folder/SVG/Asset 7.svg";
 
+const activationKeys = {
+  onKeyDown: (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (!event.repeat) event.currentTarget.click();
+  },
+  onKeyUp: (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  },
+};
+
+const questions = [
+  {
+    before: "The baseball players",
+    after: "every day",
+    initial: ["practice", "don’t they"],
+    options: [
+      ["will practice", "won’t they"],
+      ["don’t practice", "do they"],
+      ["have practiced", "haven’t they"],
+    ],
+  },
+  {
+    before: "He",
+    after: "to go to the beach",
+    initial: ["wants", "doesn’t he"],
+    options: [
+      ["didn’t want", "did he"],
+      ["wanted", "didn’t he"],
+      ["won’t want", "will he"],
+    ],
+  },
+];
+
 const GrammarA = () => {
-  const questions = [
-    {
-      sentence: (
-        <>
-          The baseball players <span className="text-[#f79631]">practice</span>every day,<span className="text-[#f79631]">don’t they</span>?
-        </>
+  const [selectedOptions, setSelectedOptions] = useState(
+    questions.map((question) => question.initial),
+  );
+  const [announcement, setAnnouncement] = useState("");
+
+  const chooseOption = (questionIndex, option) => {
+    setSelectedOptions((previous) =>
+      previous.map((value, index) =>
+        index === questionIndex ? option : value,
       ),
-      options: ["will practice, won’t they", "don’t practice, do they", "have practiced, haven’t they"],
-    },
-    {
-      sentence: (
-        <>
-         He <span className="text-[#f79631]">wants</span> to go to the beach, <span className="text-[#f79631]">doesn’t he</span>?
-        </>
-      ),
-      options: ["didn’t want, did he", "wanted, didn’t he", "won’t want, will he"],
-    },
-  ];
+    );
+
+    const question = questions[questionIndex];
+    setAnnouncement(
+      `${question.before} ${option[0]} ${question.after}, ${option[1]}?`,
+    );
+  };
 
   return (
-    <div>
+    <div data-unit5-scope="grammar-a">
+      <style>{`
+        [data-unit5-scope="grammar-a"] [data-choice]:focus-visible {
+          outline: 4px solid #2563eb;
+          outline-offset: 3px;
+          border-radius: 6px;
+        }
+      `}</style>
+
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announcement}
+      </div>
+
       {/* HEADER */}
       <div className="flex items-center gap-2 mb-5 mt-5">
         <h5 className="header-title-page8-read pb-2.5">
@@ -35,7 +84,10 @@ const GrammarA = () => {
 
       {/* QUESTIONS */}
       <div className="space-y-10">
-        {questions.map((q, i) => (
+        {questions.map((q, i) => {
+          const selected = selectedOptions[i];
+
+          return (
           <div key={i} className="flex items-start gap-5 mt-7">
             <img
               src={img}
@@ -44,19 +96,40 @@ const GrammarA = () => {
             />
             <div>
               {/* SENTENCE */}
-              <p className="text-[18px] font-semibold">{q.sentence}</p>
+              <p className="text-[18px] font-semibold">
+                {q.before}{" "}
+                <span className="text-[#f79631]">{selected[0]}</span>{" "}
+                {q.after},{" "}
+                <span className="text-[#f79631]">{selected[1]}</span>?
+              </p>
 
               {/* OPTIONS */}
               <div className="flex flex-wrap gap-x-10 gap-y-2 mt-4 text-[17px]">
-                {q.options.map((opt, j) => (
-                  <span key={j}>
-                    <b>{j + 1}</b> {opt}
-                  </span>
-                ))}
+                {q.options.map((opt, j) => {
+                  const isSelected =
+                    selected[0] === opt[0] && selected[1] === opt[1];
+
+                  return (
+                    <span
+                      key={j}
+                      role="button"
+                      tabIndex={0}
+                      data-choice
+                      aria-label={`Use ${opt[0]}, ${opt[1]} in example ${i + 1}`}
+                      aria-pressed={isSelected}
+                      {...activationKeys}
+                      onClick={() => chooseOption(i, opt)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <b>{j + 1}</b> {opt[0]}, {opt[1]}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

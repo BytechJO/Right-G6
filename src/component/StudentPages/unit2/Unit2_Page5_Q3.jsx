@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
+import ExerciseHeader from "../../ExerciseHeader";
 
 const QUESTIONS = [
   {
@@ -151,12 +152,17 @@ const GrammarC = () => {
   return (
     <div className="p-[30px] flex flex-col items-center">
       <div className="div-forall" style={{ gap: "40px" }}>
-        <h5 className="header-title-page8 mb-7">
-          <span className="ex-A mr-2">C</span>
-          Write either <strong className="text-orange-500">so</strong>, <strong className="text-orange-500">such</strong>, or{" "}
-          <strong className="text-orange-500">that</strong> for each blank.
-        </h5>
-
+        <ExerciseHeader
+          sectionLetter="C"
+          title={
+            <>
+              Write either <strong className="text-orange-500">so</strong>,{" "}
+              <strong className="text-orange-500">such</strong>, or{" "}
+              <strong className="text-orange-500">that</strong> for each blank.
+            </>
+          }
+          subTitle="Choose the word that best completes each sentence: so, such, or that."
+        />
         <div className="flex flex-col gap-10 text-[18px] mt-5">
           {QUESTIONS.map((q, qi) => {
             let blankIdx = 0;
@@ -185,6 +191,9 @@ const GrammarC = () => {
                     >
                       <input
                         value={answers[qi][bi]}
+                        placeholder="Type here"
+                        title="Type so, such, or that"
+                        className="unit2-answer-input"
                         disabled={locked || isOk}
                         onChange={(e) => handleChange(qi, bi, e.target.value)}
                         style={{
@@ -197,7 +206,7 @@ const GrammarC = () => {
                           textAlign: "center",
                           fontSize: "18px",
                           fontWeight: "500",
-                        //   color: isOk ? "#e53935" : undefined,
+                          //   color: isOk ? "#e53935" : undefined,
                           padding: "2px 4px",
                         }}
                       />

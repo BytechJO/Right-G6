@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import Button from "../../Button";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit3WorkbookAudioText, {
+  Unit3WorkbookAudioArea,
+  stopWorkbookUnit3Audio,
+  workbookUnit3Audio,
+} from "./Unit3WorkbookAudioText";
 
 // ─────────────────────────────────────────────
 //  🎨  COLORS
@@ -48,6 +54,13 @@ const ITEMS = [
   },
 ];
 
+const AUDIO_PARTS = [
+  [1, 2],
+  [4, 3],
+  [6, 5],
+  [8, 7],
+];
+
 // ─────────────────────────────────────────────
 //  🔧  NORMALIZE
 // ─────────────────────────────────────────────
@@ -63,22 +76,26 @@ export default function WB_WriteVocab_QB() {
   const [answers,     setAnswers]     = useState({});
   const [showResults, setShowResults] = useState(false);
   const [showAns,     setShowAns]     = useState(false);
+  const [completed,   setCompleted]   = useState(false);
 
   const handleChange = (id, value) => {
-    if (showAns) return;
+    if (showAns || completed) return;
     const item = ITEMS.find((i) => i.id === id);
     if (showResults && item && isCorrect(answers[id] || "", item.correct)) return;
     setAnswers((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleCheck = () => {
-    if (showAns) return;
+    if (showAns || completed) return;
     const allAnswered = ITEMS.every((item) => answers[item.id]?.trim());
     if (!allAnswered) { ValidationAlert.info("Please complete all answers first."); return; }
     let score = 0;
     ITEMS.forEach((item) => { if (isCorrect(answers[item.id] || "", item.correct)) score++; });
     setShowResults(true);
-    if (score === ITEMS.length)   ValidationAlert.success(`Score: ${score} / ${ITEMS.length}`);
+    if (score === ITEMS.length) {
+      setCompleted(true);
+      ValidationAlert.success(`Score: ${score} / ${ITEMS.length}`);
+    }
     else if (score > 0)           ValidationAlert.warning(`Score: ${score} / ${ITEMS.length}`);
     else                          ValidationAlert.error(`Score: ${score} / ${ITEMS.length}`);
   };
@@ -86,11 +103,12 @@ export default function WB_WriteVocab_QB() {
   const handleShowAnswer = () => {
     const filled = {};
     ITEMS.forEach((item) => { filled[item.id] = item.answer; });
-    setAnswers(filled); setShowResults(false); setShowAns(true);
+    setAnswers(filled); setShowResults(false); setShowAns(true); setCompleted(true);
   };
 
   const handleReset = () => {
-    setAnswers({}); setShowResults(false); setShowAns(false);
+    stopWorkbookUnit3Audio();
+    setAnswers({}); setShowResults(false); setShowAns(false); setCompleted(false);
   };
 
   const isWrong    = (item) => showResults && !showAns && !isCorrect(answers[item.id] || "", item.correct);
@@ -195,10 +213,11 @@ export default function WB_WriteVocab_QB() {
       <div className="div-forall" style={{ display:"flex", flexDirection:"column", gap:"clamp(14px,2vw,22px)", maxWidth:"1100px", margin:"0 auto" }}>
 
         {/* ── Header ── */}
-        <h1 className="header-title-page8" style={{ margin:0, display:"flex", alignItems:"center", gap:"12px", flexWrap:"wrap" }}>
-          <span className="ex-A">B</span>
-          Write the correct vocabulary word in each sentence.
-        </h1>
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Write the correct vocabulary word in each sentence."
+          subTitle="Read the full sentence first, then choose the word or expression that fits both the meaning and grammar."
+        />
 
         {/* ── Items ── */}
         <div className="wvb-list">
@@ -208,19 +227,48 @@ export default function WB_WriteVocab_QB() {
             const tColor   = showAns ? INPUT_ANS_COLOR : INPUT_TEXT_COLOR;
             const uColor   = wrong ? INPUT_UL_WRONG : INPUT_UL_DEFAULT;
             const disabled = isDisabled(item);
+            const fullReady = showAns || (
+              showResults && isCorrect(answers[item.id] || "", item.correct)
+            );
 
             return (
-              <div key={item.id} className="wvb-item">
+              <Unit3WorkbookAudioArea
+                key={item.id}
+                className="wvb-item"
+                active={fullReady}
+                src={workbookUnit3Audio(
+                  "Page 15 - Exercise B",
+                  `full${item.id}`,
+                )}
+                ariaLabel={`Play full sentence ${item.id}`}
+              >
                 <span className="wvb-num">{item.id}</span>
                 <div className="wvb-para">
-                  {item.before && <span className="wvb-text">{item.before}</span>}
+                  {item.before && (
+                    <Unit3WorkbookAudioText
+                      className="wvb-text"
+                      src={workbookUnit3Audio(
+                        "Page 15 - Exercise B",
+                        `Item_${String(AUDIO_PARTS[item.id - 1][0]).padStart(3, "0")}_`,
+                      )}
+                      ariaLabel={`Play the beginning of sentence ${item.id}`}
+                      disabled={fullReady}
+                    >
+                      {item.before}
+                    </Unit3WorkbookAudioText>
+                  )}
 
                   <div className="wvb-input-wrap">
                     <input
                       type="text"
-                      className={["wvb-input", wrong?"wvb-input--wrong":"", showAns?"wvb-input--answer":""].filter(Boolean).join(" ")}
+                      className={["wvb-input", "wb-unit3-answer", wrong?"wvb-input--wrong":"", showAns?"wvb-input--answer":""].filter(Boolean).join(" ")}
                       value={value}
-                      disabled={disabled}
+                      readOnly={disabled}
+                      aria-readonly={disabled}
+                      tabIndex={disabled ? -1 : 0}
+                      placeholder="Type the vocabulary word"
+                      title="Write the vocabulary word that completes the sentence"
+                      aria-label={`Vocabulary answer ${item.id}`}
                       onChange={(e) => handleChange(item.id, e.target.value)}
                       style={{ borderBottomColor: uColor, color: tColor }}
                       spellCheck={false}
@@ -229,9 +277,21 @@ export default function WB_WriteVocab_QB() {
                     {wrong && <div className="wvb-badge">✕</div>}
                   </div>
 
-                  {item.after && <span className="wvb-text">{item.after}</span>}
+                  {item.after && (
+                    <Unit3WorkbookAudioText
+                      className="wvb-text"
+                      src={workbookUnit3Audio(
+                        "Page 15 - Exercise B",
+                        `Item_${String(AUDIO_PARTS[item.id - 1][1]).padStart(3, "0")}_`,
+                      )}
+                      ariaLabel={`Play the end of sentence ${item.id}`}
+                      disabled={fullReady}
+                    >
+                      {item.after}
+                    </Unit3WorkbookAudioText>
+                  )}
                 </div>
-              </div>
+              </Unit3WorkbookAudioArea>
             );
           })}
         </div>

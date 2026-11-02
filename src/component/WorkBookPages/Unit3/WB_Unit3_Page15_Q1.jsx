@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
 
 const WB_Unit3_Page15_A = () => {
 
@@ -38,6 +39,7 @@ const WB_Unit3_Page15_A = () => {
   });
 
   const activeCells = new Set(Object.keys(cellOwners));
+  const firstActiveCell = Object.keys(cellOwners)[0];
 
   // ── State ──
   const initAnswers = () => words.map((w) => Array(w.word.length).fill(""));
@@ -45,6 +47,31 @@ const WB_Unit3_Page15_A = () => {
   const [result,  setResult]  = useState({});
   const [locked,  setLocked]  = useState(false);
   const inputsRef = useRef({});
+  const cellRefs = useRef({});
+
+  const handleCellKeyDown = (event, row, col) => {
+    const directions = {
+      ArrowUp: [-1, 0],
+      ArrowDown: [1, 0],
+      ArrowLeft: [0, -1],
+      ArrowRight: [0, 1],
+    };
+    const movement = directions[event.key];
+    if (!movement) return;
+    event.preventDefault();
+    let nextRow = row + movement[0];
+    let nextCol = col + movement[1];
+    while (nextRow >= 0 && nextRow < ROWS && nextCol >= 0 && nextCol < COLS) {
+      const nextInput = cellRefs.current[`${nextRow}-${nextCol}`];
+      if (nextInput) {
+        nextInput.focus();
+        nextInput.select();
+        return;
+      }
+      nextRow += movement[0];
+      nextCol += movement[1];
+    }
+  };
 
   // ── Handle change: fill ALL words that share this cell ──
   const handleChange = (ownersArr, value) => {
@@ -142,10 +169,11 @@ const WB_Unit3_Page15_A = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        <h5 className="header-title-page8 mb-8">
-          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
-          Complete the puzzle. Use the vocabulary words.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Complete the puzzle. Use the vocabulary words."
+          subTitle="Solve the clearest clues first, then use crossing letters to confirm the remaining vocabulary."
+        />
 
         {/* Grid */}
         <div style={{ marginBottom: "28px" }}>
@@ -188,13 +216,22 @@ const WB_Unit3_Page15_A = () => {
 
                     {isActive && (
                       <input
-                        ref={(el) => { if (refKey) inputsRef.current[refKey] = el; }}
+                        ref={(el) => {
+                          if (refKey) inputsRef.current[refKey] = el;
+                          cellRefs.current[key] = el;
+                        }}
                         type="text"
                         maxLength={1}
                         value={val}
-                        disabled={locked || isCorrect}
+                        readOnly={locked || isCorrect}
+                        aria-readonly={locked || isCorrect}
+                        tabIndex={key === firstActiveCell ? 0 : -1}
+                        aria-label={`Crossword cell row ${r + 1}, column ${c + 1}`}
+                        title="Enter one letter"
+                        className="wb-unit3-grid-cell"
                         onFocus={(e) => e.target.select()}
                         onChange={(e) => owners && handleChange(owners, e.target.value)}
+                        onKeyDown={(e) => handleCellKeyDown(e, r, c)}
                         style={{
                           width: "100%", height: "100%",
                           border: "none", outline: "none",
@@ -202,7 +239,7 @@ const WB_Unit3_Page15_A = () => {
                           textAlign: "center",
                           fontSize: "16px", fontWeight: "bold",
                           color: "black",
-                          cursor: "text",
+                          cursor: locked || isCorrect ? "default" : "text",
                           paddingTop: "6px",
                         }}
                       />

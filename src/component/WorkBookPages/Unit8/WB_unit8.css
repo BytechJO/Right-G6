@@ -103,3 +103,19 @@
   top: 80% !important;
   left: 73.5% !important;
 }
+
+.div-forall input::placeholder {
+  font-size: 0.78em;
+  color: #9ca3af;
+}
+
+.div-forall input:focus-visible,
+.wb-unit8-word-cell:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 3px;
+}
+
+.wb-unit8-word-cell:focus-visible {
+  position: relative;
+  z-index: 2;
+}

@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit8AudioText, {
+  workbookUnit8Audio,
+  stopWorkbookUnit8Audio,
+} from "./WorkbookUnit8AudioText";
 
 // ── بدّل المسارات للصور الفعلية ──
 import imgNighttime    from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/1.svg";
@@ -16,20 +22,21 @@ import imgGadget       from "../../../assets/imgs/pages/workbook/Right Int WB G6
 import imgElectric     from "../../../assets/imgs/pages/workbook/Right Int WB G6 U8 Folder/SVG/Asset 12.svg";
 
 const BORDER = "#84ad40";
+const audioFolder = "Page 45 - Exercise A";
 
 const WORD_BANK = [
-  { label: "a", word: "timer" },
-  { label: "b", word: "table lamp" },
-  { label: "c", word: "glows" },
-  { label: "d", word: "tablet" },
-  { label: "e", word: "helicopter" },
-  { label: "f", word: "nighttime" },
-  { label: "g", word: "gadget" },
-  { label: "h", word: "can opener" },
-  { label: "i", word: "remote control" },
-  { label: "j", word: "electric" },
-  { label: "k", word: "memo holder" },
-  { label: "l", word: "wireless" },
+  { label: "a", word: "timer", audio: "Item_001_" },
+  { label: "b", word: "table lamp", audio: "Item_002_" },
+  { label: "c", word: "glows", audio: "Item_003_" },
+  { label: "d", word: "tablet", audio: "Item_004_" },
+  { label: "e", word: "helicopter", audio: "Item_005_" },
+  { label: "f", word: "nighttime", audio: "Item_006_" },
+  { label: "g", word: "gadget", audio: "Item_007_" },
+  { label: "h", word: "can opener", audio: "Item_008_" },
+  { label: "i", word: "remote control", audio: "Item_009_" },
+  { label: "j", word: "electric", audio: "Item_010_" },
+  { label: "k", word: "memo holder", audio: "Item_011_" },
+  { label: "l", word: "wireless", audio: "Item_012_" },
 ];
 
 // 12 صور في صفين (6×2)
@@ -67,6 +74,9 @@ const PicInput = ({ picId, value, onChange, isCorrect, isWrong, disabled }) => (
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(picId, e.target.value.toLowerCase())}
+      placeholder="a"
+      title="Type the matching letter"
+      aria-label={`Picture ${picId}: type the matching word-bank letter`}
       style={{
         width: "100%",
         border: "none",
@@ -83,10 +93,10 @@ const PicInput = ({ picId, value, onChange, isCorrect, isWrong, disabled }) => (
     {isWrong && (
       <span style={{
         position: "absolute", top: "-6px", right: "4px",
-        width: "14px", height: "14px", background: "#ef4444", color: "white",
+        width: "20px", height: "20px", background: "#ef4444", color: "white",
         borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-        fontSize: "9px", fontWeight: "bold", border: "2px solid white",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+        fontSize: "11px", fontWeight: "bold", border: "2px solid white",
+        boxShadow: "0 1px 6px rgba(0,0,0,0.2)",
       }}>✕</span>
     )}
   </span>
@@ -131,12 +141,12 @@ const WB_Unit8_ReadChooseMatch_A = () => {
     setAnswers(a); setResult(r); setLocked(true);
   };
 
-  const handleReset = () => { setAnswers(initAnswers()); setResult({}); setLocked(false); };
+  const handleReset = () => { stopWorkbookUnit8Audio(); setAnswers(initAnswers()); setResult({}); setLocked(false); };
 
   const row1 = PICS.slice(0, 6);
   const row2 = PICS.slice(6);
 
-  const renderCell = ({ id, img }) => {
+  const renderCell = ({ id, img, answer }) => {
     const isCorrect = result[id] === true;
     const isWrong   = result[id] === false;
     return (
@@ -149,7 +159,7 @@ const WB_Unit8_ReadChooseMatch_A = () => {
         {/* Image */}
         <img
           src={img}
-          alt={`pic ${id}`}
+          alt={WORD_BANK.find((item) => item.label === answer)?.word || `Vocabulary picture ${id}`}
           style={{
             width: "100%",
             height: "110px",
@@ -181,11 +191,11 @@ const WB_Unit8_ReadChooseMatch_A = () => {
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
 
-        {/* Title */}
-        <h5 className="header-title-page8 mb-6">
-          <span className="ex-A" style={{ marginRight: "10px" }}>A</span>
-          Read, choose, and match.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="A"
+          title="Read, choose, and match."
+          subTitle="Start with one item, find the response or definition that matches its meaning, then confirm the pair before moving on."
+        />
 
         {/* Word Bank */}
         <div style={{
@@ -199,8 +209,12 @@ const WB_Unit8_ReadChooseMatch_A = () => {
           color: "#333",
         }}>
           <div style={{ display: "flex", justifyContent :"flex-start", flexWrap: "wrap", gap: "4px 32px", marginBottom: "4px" }}>
-            {WORD_BANK.map(({ label, word }) => (
-              <span key={label}><strong>{label}</strong> {word}</span>
+            {WORD_BANK.map(({ label, word, audio }) => (
+              <WorkbookUnit8AudioText
+                key={label}
+                src={workbookUnit8Audio(audioFolder, audio)}
+                ariaLabel={`Play ${word}`}
+              ><strong>{label}</strong>&nbsp;{word}</WorkbookUnit8AudioText>
             ))}
           </div>
 
