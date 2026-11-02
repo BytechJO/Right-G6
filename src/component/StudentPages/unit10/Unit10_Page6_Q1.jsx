@@ -1,4 +1,32 @@
 import React, { useState } from "react";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "./Unit10StudentAudioText";
+
+const audioFolder = "Page 87 - Exercise D";
+const preferenceHeaders = ["I love", "I like", "I don’t mind", "I dislike"];
+const activities = [
+  "cooking",
+  "cleaning",
+  "teaching",
+  "writing",
+  "playing sports",
+  "helping others",
+  "drawing",
+  "sewing",
+  "talking",
+  "listening",
+  "doing math",
+  "fixing computers",
+  "building",
+  "selling",
+  "running",
+  "traveling",
+  "doing science",
+  "taking care of others",
+];
 
 const Unit10_Page6_Q1 = () => {
   const [answers, setAnswers] = useState({
@@ -16,6 +44,7 @@ const Unit10_Page6_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers({
       love: ["", "", "", ""],
       like: ["", "", "", ""],
@@ -29,6 +58,8 @@ const Unit10_Page6_Q1 = () => {
       type="text"
       value={answers[section][index]}
       placeholder="Write here..."
+      title={`${preferenceHeaders[["love", "like", "dontMind", "dislike"].indexOf(section)]}, row ${index + 1}`}
+      aria-label={`${preferenceHeaders[["love", "like", "dontMind", "dislike"].indexOf(section)]}, row ${index + 1}`}
       onChange={(e) => handleChange(section, index, e.target.value)}
       className="
         w-full
@@ -51,30 +82,31 @@ const Unit10_Page6_Q1 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-8">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            D
-          </span>
-          What about you? What do you like to do? Complete the chart to find out
-          about yourself and what your likes and dislikes are. A list of
-          possible words for the chart is listed underneath to help you.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="D"
+          title="Complete the chart to show what you love, like, do not mind, and dislike doing."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Sort each activity by your own preference: love, like,
+                do not mind, or dislike.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Review the chart so the same activity is not
+                accidentally entered in conflicting columns.
+              </span>
+            </>
+          }
+        />
 
         {/* TABLE */}
         <div className="mb-10">
           {/* HEADERS */}
           <div className="grid grid-cols-4 border border-[#9CCB5B]">
-            {["I love", "I like", "I don’t mind", "I dislike"].map(
-              (title, i) => (
-                <div
-                  key={i}
-                  className="
+            {preferenceHeaders.map((title, i) => (
+              <div
+                key={i}
+                className="
                   border-r
                   last:border-r-0
                   border-[#9CCB5B]
@@ -86,11 +118,19 @@ const Unit10_Page6_Q1 = () => {
                   text-[18px]
                   text-[#7DA63C]
                 "
+              >
+                <Unit10StudentAudioText
+                  src={unit10StudentAudio(
+                    audioFolder,
+                    String(i + 1).padStart(3, "0"),
+                  )}
+                  ariaLabel={`Play ${title}`}
+                  flowText
                 >
                   {title}
-                </div>
-              ),
-            )}
+                </Unit10StudentAudioText>
+              </div>
+            ))}
           </div>
 
           {/* ROWS */}
@@ -133,26 +173,19 @@ const Unit10_Page6_Q1 = () => {
             background: "#E2E9D1",
           }}
         >
-          <span>cooking</span>
-          <span>cleaning</span>
-          <span>teaching</span>
-          <span>writing</span>
-          <span>playing sports</span>
-          <span>helping others</span>
-
-          <span>drawing</span>
-          <span>sewing</span>
-          <span>talking</span>
-          <span>listening</span>
-          <span>doing math</span>
-          <span>fixing computers</span>
-
-          <span>building</span>
-          <span>selling</span>
-          <span>running</span>
-          <span>traveling</span>
-          <span>doing science</span>
-          <span>taking care of others</span>
+          {activities.map((activity, index) => (
+            <Unit10StudentAudioText
+              key={activity}
+              src={unit10StudentAudio(
+                audioFolder,
+                String(index + 5).padStart(3, "0"),
+              )}
+              ariaLabel={`Play ${activity}`}
+              flowText
+            >
+              {activity}
+            </Unit10StudentAudioText>
+          ))}
         </div>
       </div>
 

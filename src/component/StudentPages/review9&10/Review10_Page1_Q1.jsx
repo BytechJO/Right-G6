@@ -1,7 +1,36 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
 import img1 from "../../../assets/imgs/pages/classbook/Right 6 Unit 10 Not Just a Jumble of Gerunds Folder/SVG/Asset 22.svg";
+
+const audioFolder = "Page 90 - Exercise A";
+const wordColumns = [
+  [
+    ["surf", "001"],
+    ["castles", "006"],
+  ],
+  [
+    ["burn", "002"],
+    ["screen", "009"],
+  ],
+  [
+    ["sand", "003"],
+    ["board", "007"],
+  ],
+  [
+    ["sun", "004"],
+    ["shells", "008"],
+  ],
+  [
+    ["sea", "005"],
+    ["sun", "004"],
+  ],
+];
 
 const Review10_Page1_Q1 = () => {
   const questions = ["surfboard", "sunburn", "sandcastle", "seashells"];
@@ -93,6 +122,7 @@ const Review10_Page1_Q1 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", ""]);
 
     setResult([]);
@@ -107,6 +137,9 @@ const Review10_Page1_Q1 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Compound word"
+        title={`Compound vocabulary word ${i + 1}`}
+        aria-label={`Compound vocabulary word ${i + 1}`}
         className={`
           ${width}
           border-0
@@ -153,16 +186,15 @@ const Review10_Page1_Q1 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[10vh]">
-          <span className=" mr-4">A</span>
-          Several of the vocabulary words are compound words. Put the words
-          together to make vocabulary words.
-        </div>
+      <div className="div-forall w-full text-[18px] gap-10 ">
+        <ExerciseHeaderReview
+          sectionLetter="A"
+          title="Put the words together to make the compound vocabulary words."
+          subTitle="Use the visible word parts systematically, then check each completed vocabulary word before submitting."
+        />
 
         {/* WORD BANK */}
-        <div className="flex justify-center mb-[12vh]">
+        <div className="flex justify-center mb-[10vh]">
           <div
             className="rounded-2xl px-10 py-5"
             style={{
@@ -170,30 +202,20 @@ const Review10_Page1_Q1 = () => {
             }}
           >
             <div className="grid grid-cols-5 gap-x-14 text-center text-[18px]">
-              <div className="flex flex-col gap-2">
-                <span>surf</span>
-                <span>castles</span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <span>burn</span>
-                <span>screen</span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <span>sand</span>
-                <span>board</span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <span>sun</span>
-                <span>shells</span>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <span>sea</span>
-                <span>sun</span>
-              </div>
+              {wordColumns.map((column, columnIndex) => (
+                <div key={columnIndex} className="flex flex-col gap-2">
+                  {column.map(([word, prefix], wordIndex) => (
+                    <Unit10StudentAudioText
+                      key={`${word}-${wordIndex}`}
+                      src={unit10StudentAudio(audioFolder, prefix)}
+                      ariaLabel={`Play ${word}`}
+                      flowText
+                    >
+                      {word}
+                    </Unit10StudentAudioText>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>

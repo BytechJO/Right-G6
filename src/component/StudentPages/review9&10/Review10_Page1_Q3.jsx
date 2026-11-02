@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
+
+const audioFolder = "Page 90 - Exercise C";
 
 const Review10_Page1_Q3 = () => {
   const questions = [
@@ -125,6 +132,7 @@ const Review10_Page1_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -139,6 +147,9 @@ const Review10_Page1_Q3 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder={i < 6 ? "Missing word" : "Expression"}
+        title={i < 6 ? `Expression blank ${i + 1}` : `Sentence ${i - 5}`}
+        aria-label={i < 6 ? `Expression blank ${i + 1}` : `Sentence ${i - 5}`}
         className={`
           ${width}
           border-0
@@ -186,23 +197,38 @@ const Review10_Page1_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[10vh]">
-          <span className="mr-2">C</span>
-          Write the missing words for each expression, and then fill in the
-          blank lines from a to d.
-        </div>
+      <div className="div-forall w-full text-[18px] gap-7">
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Write the missing words for each expression, then use the completed expressions in the sentences."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Complete each expression before using it in the
+                sentences.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Then choose the completed expression that makes each
+                sentence natural and grammatical.
+              </span>
+            </>
+          }
+        />
 
         {/* TOP EXPRESSIONS */}
-        <div className="grid grid-cols-2 gap-y-8 gap-x-20 mb-12">
+        <div className="grid grid-cols-2 gap-y-8 gap-x-20 mb-5">
           {/* 1 */}
           <div className="flex items-center gap-2">
             <span className="font-bold w-5">1</span>
 
             {inputField(0, "w-[110px]")}
 
-            <span>tell you the</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "001")}
+              flowText
+            >
+              tell you the
+            </Unit10StudentAudioText>
 
             {inputField(1, "w-[110px]")}
           </div>
@@ -213,11 +239,21 @@ const Review10_Page1_Q3 = () => {
 
             {inputField(2, "w-[110px]")}
 
-            <span>fine</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "002")}
+              flowText
+            >
+              fine
+            </Unit10StudentAudioText>
 
             {inputField(3, "w-[110px]")}
 
-            <span>me.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "003")}
+              flowText
+            >
+              me.
+            </Unit10StudentAudioText>
           </div>
 
           {/* 3 */}
@@ -226,7 +262,12 @@ const Review10_Page1_Q3 = () => {
 
             {inputField(4, "w-[110px]")}
 
-            <span>fun</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "004")}
+              flowText
+            >
+              fun
+            </Unit10StudentAudioText>
           </div>
 
           {/* 4 */}
@@ -235,7 +276,12 @@ const Review10_Page1_Q3 = () => {
 
             {inputField(5, "w-[110px]")}
 
-            <span>close</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "005")}
+              flowText
+            >
+              close
+            </Unit10StudentAudioText>
           </div>
         </div>
 
@@ -247,7 +293,12 @@ const Review10_Page1_Q3 = () => {
 
             {inputField(6, "w-[280px]")}
 
-            <span>, I don’t really like swimming.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "006")}
+              flowText
+            >
+              , I don’t really like swimming.
+            </Unit10StudentAudioText>
           </div>
 
           {/* B */}
@@ -256,9 +307,12 @@ const Review10_Page1_Q3 = () => {
 
             {inputField(7, "w-[220px]")}
 
-            <span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "007")}
+              flowText
+            >
               while we’re going through the crowd so we don’t get separated.
-            </span>
+            </Unit10StudentAudioText>
           </div>
 
           {/* C */}
@@ -267,14 +321,24 @@ const Review10_Page1_Q3 = () => {
 
             {inputField(8, "w-[250px]")}
 
-            <span>I love to walk.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "008")}
+              flowText
+            >
+              I love to walk.
+            </Unit10StudentAudioText>
           </div>
 
           {/* D */}
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold text-[20px]">d</span>
 
-            <span>As we left to go to the carnival, my mom said,</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "009")}
+              flowText
+            >
+              As we left to go to the carnival, my mom said,
+            </Unit10StudentAudioText>
 
             <span>"</span>
 

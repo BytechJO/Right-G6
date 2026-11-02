@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
-import grammer_u1 from "../../../assets/audio/ClassBook/U10/PG 86/CD50.Pg86_Instruction_Adult Lady.mp3";
+import instructionAudio from "../../../assets/audio/ClassBook/U10/PG 86/CD50.Pg86_Instruction_Adult Lady.mp3";
 import QuestionAudioPlayer from "../../QuestionAudioPlayer";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "./Unit10StudentAudioText";
+
+const audioFolder = "Page 86 - Exercise C";
 const Unit10_Page5_Q3 = () => {
   const questions = ["false", "false", "true", "false", "true"];
 
@@ -11,37 +18,6 @@ const Unit10_Page5_Q3 = () => {
   const [result, setResult] = useState([]);
 
   const [locked, setLocked] = useState(false);
-  const captions = [
-    {
-      start: 0.199,
-      end: 4.099,
-      text: "Page 86. Grammar. Using gerunds.",
-    },
-
-    {
-      start: 5.099,
-      end: 6.92,
-      text: "Stella likes climbing on rocks.",
-    },
-
-    {
-      start: 7.859,
-      end: 9.86,
-      text: "Does Stella like climbing on rocks?",
-    },
-
-    {
-      start: 10.659,
-      end: 13.879,
-      text: "Your brothers prefer riding dirt bikes.",
-    },
-
-    {
-      start: 13.92,
-      end: 16.5,
-      text: "Do your brothers prefer riding dirt bikes?",
-    },
-  ];
 
   const normalize = (str) =>
     str
@@ -124,6 +100,7 @@ const Unit10_Page5_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", ""]);
 
     setResult([]);
@@ -138,6 +115,9 @@ const Unit10_Page5_Q3 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="True or false"
+        title={`Statement ${i + 1}: enter true or false`}
+        aria-label={`Statement ${i + 1}: enter true or false`}
         className={`
           ${width}
           border
@@ -184,44 +164,25 @@ const Unit10_Page5_Q3 = () => {
   return (
     <div className="flex flex-col items-center p-[30px]">
       <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-10 flex items-center">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            C
-          </span>
-          After listening to the passage, write{" "}
-          <span
-            style={{
-              color: "#E97E1D",
-              marginLeft: "5px",
-              marginRight: "5px",
-            }}
-          >
-            true
-          </span>
-          or
-          <span
-            style={{
-              color: "#E97E1D",
-              marginLeft: "5px",
-            }}
-          >
-            false
-          </span>
-          for each statement.
-        </h5>
+        <ExerciseHeader
+          sectionLetter="C"
+          title={
+            <>
+              After listening to the passage, write{" "}
+              <span style={{ color: "#E97E1D" }}>true</span> or{" "}
+              <span style={{ color: "#E97E1D" }}>false</span> for each
+              statement.
+            </>
+          }
+          subTitle="Check the key detail in each statement before choosing ✓/✗ or true/false; correct the wording when the task requires it."
+        />
         <QuestionAudioPlayer
-          src={grammer_u1}
-          captions={captions}
+          src={instructionAudio}
           stopAtSecond={9.5}
+          pageId="sb_unit10_page86_exercise_c"
         />
         {/* QUESTIONS */}
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-7">
           {[
             "Sarah enjoys cooking.",
             "Dora doesn’t like building things.",
@@ -234,7 +195,18 @@ const Unit10_Page5_Q3 = () => {
               <div className="flex items-center gap-4">
                 <span className="font-bold text-[18px] w-5">{i + 1}</span>
 
-                <span className="text-[18px]">{question}</span>
+                <span className="text-[18px]">
+                  <Unit10StudentAudioText
+                    src={unit10StudentAudio(
+                      audioFolder,
+                      String(i + 1).padStart(3, "0"),
+                    )}
+                    ariaLabel={`Play statement ${i + 1}`}
+                    flowText
+                  >
+                    {question}
+                  </Unit10StudentAudioText>
+                </span>
               </div>
 
               {/* INPUT */}

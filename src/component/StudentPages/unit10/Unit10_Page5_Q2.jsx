@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeader from "../../ExerciseHeader";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudioSequence,
+} from "./Unit10StudentAudioText";
+
+const audioFolder = "Page 86 - Exercise B";
+const questionAudioPrefixes = [
+  ["001", "002"],
+  ["003", "004"],
+  ["005"],
+  ["006"],
+  ["007"],
+];
 
 const Unit10_Page5_Q2 = () => {
   const questions = [
@@ -104,6 +118,7 @@ const Unit10_Page5_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", ""]);
 
     setResult([]);
@@ -118,6 +133,9 @@ const Unit10_Page5_Q2 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder="Type the expression"
+        title={`Situation ${i + 1}: enter the matching expression`}
+        aria-label={`Situation ${i + 1}: enter the matching expression`}
         className={`
           ${width}
           border-0
@@ -162,23 +180,15 @@ const Unit10_Page5_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        {/* TITLE */}
-        <h5 className="header-title-page8 mb-[8vh]">
-          <span
-            className="ex-A"
-            style={{
-              marginRight: "10px",
-            }}
-          >
-            B
-          </span>
-          Write the expression that tells about each of the people or
-          situations.
-        </h5>
+      <div className="div-forall gap-7 mb-10">
+        <ExerciseHeader
+          sectionLetter="B"
+          title="Write the expression that tells about each of the people or situations."
+          subTitle="Read the full sentence or clue first, then enter the word or expression that fits both meaning and grammar before checking."
+        />
 
         {/* QUESTIONS */}
-        <div className="flex flex-col gap-15">
+        <div className="flex flex-col gap-10">
           {[
             "When you want to say something that is true, you begin by saying this.",
             "When you want someone to be near where you are, you tell them this.",
@@ -191,7 +201,18 @@ const Unit10_Page5_Q2 = () => {
               <div className="flex items-start gap-3 max-w-[600px]">
                 <span className="font-bold text-[18px] mt-0.5">{i + 1}</span>
 
-                <p className="text-[18px] leading-[1.3]">{question}</p>
+                <p className="text-[18px] leading-[1.3]">
+                  <Unit10StudentAudioText
+                    src={unit10StudentAudioSequence(
+                      audioFolder,
+                      questionAudioPrefixes[i],
+                    )}
+                    ariaLabel={`Play situation ${i + 1}`}
+                    flowText
+                  >
+                    {question}
+                  </Unit10StudentAudioText>
+                </p>
               </div>
 
               {/* INPUT */}

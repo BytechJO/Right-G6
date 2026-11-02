@@ -75,4 +75,14 @@
 
 /* ============================= */
 /*      RESPONSIVE DESIGN        */
-/* 
+.div-forall input::placeholder {
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.div-forall input:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

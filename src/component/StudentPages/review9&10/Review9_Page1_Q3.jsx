@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
+
+const audioFolder = "Page 88 - Exercise C";
 
 const Review9_Page1_Q3 = () => {
   const [answers, setAnswers] = useState(["", "", "", "", "", ""]);
@@ -12,6 +19,7 @@ const Review9_Page1_Q3 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", "", ""]);
   };
 
@@ -20,6 +28,9 @@ const Review9_Page1_Q3 = () => {
       type="text"
       value={answers[i]}
       onChange={(e) => handleChange(i, e.target.value)}
+      placeholder="Complete the sentence"
+      title={`Sentence field ${i + 1}`}
+      aria-label={`Sentence field ${i + 1}`}
       className={`
         ${width}
         border-0
@@ -43,6 +54,9 @@ const Review9_Page1_Q3 = () => {
       type="text"
       value={answers[i]}
       onChange={(e) => handleChange(i, e.target.value)}
+      placeholder="Continue your sentence"
+      title={`Sentence field ${i + 1}`}
+      aria-label={`Sentence field ${i + 1}`}
       className="
         w-full
         border-0
@@ -62,12 +76,12 @@ const Review9_Page1_Q3 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[12vh]">
-          <span className=" mr-4">C</span>
-          Use the expressions below, in sentences.
-        </div>
+      <div className="div-forall w-full text-[18px] gap-10">
+        <ExerciseHeaderReview
+          sectionLetter="C"
+          title="Use the expressions below in sentences."
+          subTitle="Use the prompt, picture, or grammar pattern to write a complete response, then reread it for meaning, form, and punctuation."
+        />
 
         {/* QUESTION 1 */}
         <div className="flex flex-col gap-4 mb-15 ">
@@ -76,7 +90,15 @@ const Review9_Page1_Q3 = () => {
 
             {inputField(0, "w-[340px]")}
 
-            <span className="font-bold">in no time.</span>
+            <span className="font-bold">
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "001")}
+                ariaLabel="Play in no time"
+                flowText
+              >
+                in no time.
+              </Unit10StudentAudioText>
+            </span>
           </div>
 
           <div className="ml-5 mb-4">{lineField(1)}</div>
@@ -89,7 +111,15 @@ const Review9_Page1_Q3 = () => {
           <div className="flex items-center gap-5 mb-4">
             <span className="font-bold">2</span>
 
-            <span className="font-bold">What are your plans</span>
+            <span className="font-bold">
+              <Unit10StudentAudioText
+                src={unit10StudentAudio(audioFolder, "002")}
+                ariaLabel="Play What are your plans"
+                flowText
+              >
+                What are your plans
+              </Unit10StudentAudioText>
+            </span>
 
             {inputField(3, "w-[220px]")}
 

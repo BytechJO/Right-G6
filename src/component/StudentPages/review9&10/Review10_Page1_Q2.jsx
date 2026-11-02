@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
+import ExerciseHeaderReview from "../../ExerciseHeaderReview";
+import Unit10StudentAudioText, {
+  stopUnit10StudentAudio,
+  unit10StudentAudio,
+} from "../unit10/Unit10StudentAudioText";
+
+const audioFolder = "Page 90 - Exercise B";
 
 const Review10_Page1_Q2 = () => {
   const questions = [
@@ -110,6 +117,7 @@ const Review10_Page1_Q2 = () => {
   };
 
   const handleReset = () => {
+    stopUnit10StudentAudio();
     setAnswers(["", "", "", "", "", "", "", ""]);
 
     setResult([]);
@@ -124,6 +132,9 @@ const Review10_Page1_Q2 = () => {
         value={answers[i]}
         disabled={locked || result[i] === true}
         onChange={(e) => handleChange(i, e.target.value)}
+        placeholder={i < 4 ? "Synonym" : "Vocabulary word"}
+        title={i < 4 ? `Synonym ${i + 1}` : `Sentence blank ${i - 3}`}
+        aria-label={i < 4 ? `Synonym ${i + 1}` : `Sentence blank ${i - 3}`}
         className={`
   flex-1
   min-w-[120px]
@@ -171,21 +182,35 @@ const Review10_Page1_Q2 = () => {
 
   return (
     <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall w-full text-[18px]">
-        {/* TITLE */}
-        <div className="header-title-page8 mb-[10vh]">
-          <span className="mr-4">B</span>
-          Write the vocabulary words that are synonyms for each word, and then
-          put each one in a sentence below.
-        </div>
+      <div className="div-forall w-full text-[18px] gap-7">
+        <ExerciseHeaderReview
+          sectionLetter="B"
+          title="Write vocabulary synonyms for each word, then use each synonym in a sentence."
+          subTitle={
+            <>
+              <span style={{ display: "block" }}>
+                Task 1: Write the vocabulary synonym beside each clue first.
+              </span>
+              <span style={{ display: "block" }}>
+                Task 2: Then use each synonym in a complete sentence that shows
+                its meaning.
+              </span>
+            </>
+          }
+        />
 
         {/* TOP QUESTIONS */}
-        <div className="grid grid-cols-2 gap-y-8 gap-x-20 mb-[8vh] whitespace-nowrap">
+        <div className="grid grid-cols-2 gap-y-8 gap-x-20 mb-[5vh] whitespace-nowrap">
           {/* 1 */}
           <div className="flex items-center gap-2">
             <span className="font-bold w-5">1</span>
 
-            <span>needed</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "001")}
+              flowText
+            >
+              needed
+            </Unit10StudentAudioText>
 
             <div className="flex-1 ml-2">{inputField(0)}</div>
           </div>
@@ -194,7 +219,12 @@ const Review10_Page1_Q2 = () => {
           <div className="flex items-center gap-2">
             <span className="font-bold w-5">2</span>
 
-            <span>at least twelve</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "002")}
+              flowText
+            >
+              at least twelve
+            </Unit10StudentAudioText>
 
             <div className="flex-1 ml-2">{inputField(1)}</div>
           </div>
@@ -203,7 +233,12 @@ const Review10_Page1_Q2 = () => {
           <div className="flex items-center gap-2">
             <span className="font-bold w-5">3</span>
 
-            <span>busy</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "003")}
+              flowText
+            >
+              busy
+            </Unit10StudentAudioText>
 
             <div className="flex-1 ml-2">{inputField(2)}</div>
           </div>
@@ -212,7 +247,12 @@ const Review10_Page1_Q2 = () => {
           <div className="flex items-center gap-2">
             <span className="font-bold w-5">4</span>
 
-            <span>lease, borrow, hire</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "004")}
+              flowText
+            >
+              lease, borrow, hire
+            </Unit10StudentAudioText>
 
             <div className="flex-1 ml-2">{inputField(3)}</div>
           </div>
@@ -223,46 +263,84 @@ const Review10_Page1_Q2 = () => {
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold text-[20px]">a</span>
 
-            <span>Is it</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "005")}
+              flowText
+            >
+              Is it
+            </Unit10StudentAudioText>
 
             {inputField(4, "w-[220px]")}
 
-            <span>to add the eggs first, or can I add them later?</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "006")}
+              flowText
+            >
+              to add the eggs first, or can I add them later?
+            </Unit10StudentAudioText>
           </div>
 
           {/* B */}
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold text-[20px]">b</span>
 
-            <span>It was such a beautiful day that there were</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "007")}
+              flowText
+            >
+              It was such a beautiful day that there were
+            </Unit10StudentAudioText>
 
             {inputField(5, "w-[220px]")}
 
-            <span>of people at the beach.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "008")}
+              flowText
+            >
+              of people at the beach.
+            </Unit10StudentAudioText>
           </div>
 
           {/* C */}
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold text-[20px]">c</span>
 
-            <span>Can I</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "010")}
+              flowText
+            >
+              Can I
+            </Unit10StudentAudioText>
 
             {inputField(6, "w-[220px]")}
 
-            <span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "009")}
+              flowText
+            >
               a surfboard while I am just trying the sport to see if I like it?
-            </span>
+            </Unit10StudentAudioText>
           </div>
 
           {/* D */}
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-bold text-[20px]">d</span>
 
-            <span>I like to keep</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "011")}
+              flowText
+            >
+              I like to keep
+            </Unit10StudentAudioText>
 
             {inputField(7, "w-[220px]")}
 
-            <span>and have several things to do each day.</span>
+            <Unit10StudentAudioText
+              src={unit10StudentAudio(audioFolder, "012")}
+              flowText
+            >
+              and have several things to do each day.
+            </Unit10StudentAudioText>
           </div>
         </div>
       </div>

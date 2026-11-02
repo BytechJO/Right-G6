@@ -52,6 +52,7 @@ button {
   flex-direction: column;
   width: 60%;
   justify-content: flex-start;
+  margin-bottom: 30px;
 }
 .tooltip-text {
   visibility: hidden;
@@ -281,7 +282,7 @@ img {
   /* white-space: nowrap; */
   width: 100%;
   margin-bottom: 2;
-}/* Global keyboard focus for all inputs */
+} /* Global keyboard focus for all inputs */
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
