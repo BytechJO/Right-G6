@@ -91,6 +91,7 @@ const Posters_Page1 = ({ openPopup }) => {
   ];
 
   const filteredSegments = wordJson.segments.slice(1);
+
   const Voc = [
     [
       filteredSegments[0]?.words || [],
@@ -216,6 +217,44 @@ const Posters_Page1 = ({ openPopup }) => {
     },
   ];
 
+  const openConversation = () => {
+    openPopup(
+      "html",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Conversation
+          title="Listen and read. Then say."
+          items={data}
+          sound={longAudio}
+          captions={captionsExample}
+          stopAtSecond={5.12}
+          pageId="poster_page_01_conversation"
+          captionTimings={captionTimings}
+          wordTimings={Voc}
+          openPopup={openPopup}
+          video={video}
+          keyboardAccessible={true}
+        />
+      </div>,
+    );
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!event.repeat) {
+        openConversation();
+      }
+    }
+  };
+
   return (
     <div
       className="poster-wrapper"
@@ -229,31 +268,15 @@ const Posters_Page1 = ({ openPopup }) => {
           width="30"
           height="30"
           viewBox="0 0 90 90"
-          onClick={() =>
-            openPopup(
-              "html",
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                <Conversation
-                  title="Listen and read. Then say."
-                  items={data}
-                  sound={longAudio}
-                  captions={captionsExample}
-                  stopAtSecond={5.12}
-                  captionTimings={captionTimings}
-                  wordTimings={Voc}
-                  openPopup={openPopup}
-                  video={video}
-                />
-              </div>,
-            )
-          }
-          style={{ overflow: "visible" }}
+          role="button"
+          tabIndex={0}
+          aria-label="Open conversation"
+          onClick={openConversation}
+          onKeyDown={handleKeyDown}
+          style={{
+            overflow: "visible",
+            cursor: "pointer",
+          }}
         >
           <image
             className="svg-img"
