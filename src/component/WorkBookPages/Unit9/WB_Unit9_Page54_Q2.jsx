@@ -64,259 +64,281 @@ const WB_Unit9_SurveyChart_G = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-[30px]">
-      <div className="div-forall">
-        <ExerciseHeader
-          sectionLetter="G"
-          title={
-            <>
-              Use the survey chart to write a sentence about each classmate in
-              the{" "}
-              <span style={{ color: "orange", fontWeight: "bold" }}>
-                present perfect progressive
-              </span>
-              .
-            </>
-          }
-          subTitle="Read the survey row by row and write one present-perfect-progressive sentence for each classmate using the checked sports."
-        />
+    <>
+      <style>{`
+  .workbook-unit9-choice:hover,
+  .workbook-unit9-choice:focus-visible {
+    background: rgba(132, 173, 64, 0.13) !important;
+    border-radius: 10px !important;
+  }
 
-        {/* Chart + balls image */}
-        <div style={{ marginBottom: "24px", position: "relative" }}>
-          <img
-            src={chartImg}
-            alt="Sports survey chart for Stuart, Amanda, Beth, and Joe covering soccer, volleyball, baseball, and basketball"
-            style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-              display: "block",
-            }}
+  .workbook-unit9-choice:focus-visible {
+    outline: 3px solid #2563eb !important;
+    outline-offset: 3px;
+  }
+`}</style>{" "}
+      <div className="flex flex-col items-center p-[30px]">
+        <div className="div-forall">
+          <ExerciseHeader
+            sectionLetter="G"
+            title={
+              <>
+                Use the survey chart to write a sentence about each classmate in
+                the{" "}
+                <span style={{ color: "orange", fontWeight: "bold" }}>
+                  present perfect progressive
+                </span>
+                .
+              </>
+            }
+            subTitle="Read the survey row by row and write one present-perfect-progressive sentence for each classmate using the checked sports."
           />
-          {[
-            ["Item_001_", "Play soccer ", 14, 9, 11, 20],
-            ["Item_008_", "Play volleyball", 25, 9, 14, 20],
-            ["Item_002_", "Play baseball", 40, 9, 13, 20],
-            ["Item_003_", "Play basketball", 55, 9, 14, 20],
-            ["Item_006_", "Play Stuart", 1, 32, 14, 14],
-            ["Item_007_", "Play Amanda", 1, 46, 14, 14],
-            ["Item_004_", "Play Beth", 1, 61, 14, 14],
-            ["Item_005_", "Play Joe", 1, 75, 14, 14],
-          ].map(([prefix, label, left, top, width, height]) => (
-            <WorkbookUnit9AudioText
-              key={label}
-              src={workbookUnit9Audio(audioFolder, prefix)}
-              ariaLabel={label}
-              className="workbook-unit9-choice"
+
+          {/* Chart + balls image */}
+          <div style={{ marginBottom: "24px", position: "relative" }}>
+            <img
+              src={chartImg}
+              alt="Sports survey chart for Stuart, Amanda, Beth, and Joe covering soccer, volleyball, baseball, and basketball"
               style={{
-                position: "absolute",
-                left: `${left}%`,
-                top: `${top}%`,
-                width: `${width}%`,
-                height: `${height}%`,
-                borderRadius: 8,
+                width: "100%",
+                height: "auto",
+                objectFit: "contain",
+                display: "block",
               }}
+            />
+            {[
+              ["Item_001_", "Play soccer ", 15, 10, 10, 20],
+              ["Item_008_", "Play volleyball", 25, 10, 14, 20],
+              ["Item_002_", "Play baseball", 40, 10, 14, 20],
+              ["Item_003_", "Play basketball", 54, 10, 18, 20],
+              ["Item_006_", "Play Stuart", 1, 32, 14, 14],
+              ["Item_007_", "Play Amanda", 1, 46, 14, 14],
+              ["Item_004_", "Play Beth", 1, 61, 14, 14],
+              ["Item_005_", "Play Joe", 1, 75, 14, 14],
+            ].map(([prefix, label, left, top, width, height]) => (
+              <WorkbookUnit9AudioText
+                key={label}
+                src={workbookUnit9Audio(audioFolder, prefix)}
+                ariaLabel={label}
+                className="workbook-unit9-choice"
+                style={{
+                  position: "absolute",
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  width: `${width}%`,
+                  height: `${height}%`,
+                  borderRadius: 8,
+                }}
+              >
+                <span className="sr-only">{label}</span>
+              </WorkbookUnit9AudioText>
+            ))}
+          </div>
+
+          {/* Sentences */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "24px",
+              marginBottom: "3em",
+            }}
+          >
+            {/* Sentence 1 — prefilled two lines */}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
             >
-              <span className="sr-only">{label}</span>
-            </WorkbookUnit9AudioText>
-          ))}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: "8px",
+                  fontSize: "17px",
+                }}
+              >
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>1</span>
+                <span style={{ whiteSpace: "nowrap" }}>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, "Item_006_")}
+                    ariaLabel="Play Stuart"
+                    className="workbook-unit9-choice"
+                    style={{
+                      position: "relative",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Stuart
+                  </WorkbookUnit9AudioText>
+                </span>
+
+                <LineInput
+                  fKey="1a"
+                  value={answers["1a"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+              <div style={{ paddingLeft: "30px" }}>
+                <LineInput
+                  fKey="1b"
+                  value={answers["1b"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+            </div>
+
+            {/* Sentence 2 */}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: "8px",
+                  fontSize: "17px",
+                }}
+              >
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>2</span>
+                <span style={{ whiteSpace: "nowrap" }}>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, "Item_007_")}
+                    ariaLabel="Play Amanda"
+                    className="workbook-unit9-choice"
+                    style={{
+                      position: "relative",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Amanda
+                  </WorkbookUnit9AudioText>
+                </span>
+                <LineInput
+                  fKey="2a"
+                  value={answers["2a"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+              <div style={{ paddingLeft: "30px" }}>
+                <LineInput
+                  fKey="2b"
+                  value={answers["2b"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+            </div>
+
+            {/* Sentence 3 */}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: "8px",
+                  fontSize: "17px",
+                }}
+              >
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>3</span>
+                <span style={{ whiteSpace: "nowrap" }}>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, "Item_004_")}
+                    ariaLabel="Play Beth"
+                    className="workbook-unit9-choice"
+                    style={{
+                      position: "relative",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Beth
+                  </WorkbookUnit9AudioText>
+                </span>
+                <LineInput
+                  fKey="3a"
+                  value={answers["3a"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+              <div style={{ paddingLeft: "30px" }}>
+                <LineInput
+                  fKey="3b"
+                  value={answers["3b"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+            </div>
+
+            {/* Sentence 4 */}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: "8px",
+                  fontSize: "17px",
+                }}
+              >
+                <span style={{ fontWeight: "bold", minWidth: "22px" }}>4</span>
+                <span style={{ whiteSpace: "nowrap" }}>
+                  <WorkbookUnit9AudioText
+                    src={workbookUnit9Audio(audioFolder, "Item_005_")}
+                    ariaLabel="Play Joe"
+                    className="workbook-unit9-choice"
+                    style={{
+                      position: "relative",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Joe
+                  </WorkbookUnit9AudioText>
+                </span>
+                <LineInput
+                  fKey="4a"
+                  value={answers["4a"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+              <div style={{ paddingLeft: "30px" }}>
+                <LineInput
+                  fKey="4b"
+                  value={answers["4b"]}
+                  onChange={handleChange}
+                  disabled={false}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Sentences */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-            marginBottom: "3em",
-          }}
-        >
-          {/* Sentence 1 — prefilled two lines */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                gap: "8px",
-                fontSize: "17px",
-              }}
-            >
-              <span style={{ fontWeight: "bold", minWidth: "22px" }}>1</span>
-              <span style={{ whiteSpace: "nowrap" }}>
-                <WorkbookUnit9AudioText
-                  src={workbookUnit9Audio(audioFolder, "Item_006_")}
-                  ariaLabel="Play Stuart"
-                  className="workbook-unit9-choice"
-                  style={{
-                    position: "relative",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    whiteSpace: "nowrap",
-                    cursor: "pointer",
-                  }}
-                >
-                  Stuart
-                </WorkbookUnit9AudioText>
-              </span>
-
-              <LineInput
-                fKey="1a"
-                value={answers["1a"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-            <div style={{ paddingLeft: "30px" }}>
-              <LineInput
-                fKey="1b"
-                value={answers["1b"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-          </div>
-
-          {/* Sentence 2 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                gap: "8px",
-                fontSize: "17px",
-              }}
-            >
-              <span style={{ fontWeight: "bold", minWidth: "22px" }}>2</span>
-              <span style={{ whiteSpace: "nowrap" }}>
-                <WorkbookUnit9AudioText
-                  src={workbookUnit9Audio(audioFolder, "Item_007_")}
-                  ariaLabel="Play Amanda"
-                  className="workbook-unit9-choice"
-                  style={{
-                    position: "relative",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    whiteSpace: "nowrap",
-                    cursor: "pointer",
-                  }}
-                >
-                  Amanda
-                </WorkbookUnit9AudioText>
-              </span>
-              <LineInput
-                fKey="2a"
-                value={answers["2a"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-            <div style={{ paddingLeft: "30px" }}>
-              <LineInput
-                fKey="2b"
-                value={answers["2b"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-          </div>
-
-          {/* Sentence 3 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                gap: "8px",
-                fontSize: "17px",
-              }}
-            >
-              <span style={{ fontWeight: "bold", minWidth: "22px" }}>3</span>
-              <span style={{ whiteSpace: "nowrap" }}>
-                <WorkbookUnit9AudioText
-                  src={workbookUnit9Audio(audioFolder, "Item_004_")}
-                  ariaLabel="Play Beth"
-                  className="workbook-unit9-choice"
-                  style={{
-                    position: "relative",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    whiteSpace: "nowrap",
-                    cursor: "pointer",
-                  }}
-                >
-                  Beth
-                </WorkbookUnit9AudioText>
-              </span>
-              <LineInput
-                fKey="3a"
-                value={answers["3a"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-            <div style={{ paddingLeft: "30px" }}>
-              <LineInput
-                fKey="3b"
-                value={answers["3b"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-          </div>
-
-          {/* Sentence 4 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "flex-end",
-                gap: "8px",
-                fontSize: "17px",
-              }}
-            >
-              <span style={{ fontWeight: "bold", minWidth: "22px" }}>4</span>
-              <span style={{ whiteSpace: "nowrap" }}>
-                <WorkbookUnit9AudioText
-                  src={workbookUnit9Audio(audioFolder, "Item_005_")}
-                  ariaLabel="Play Joe"
-                  className="workbook-unit9-choice"
-                  style={{
-                    position: "relative",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    whiteSpace: "nowrap",
-                    cursor: "pointer",
-                  }}
-                >
-                  Joe
-                </WorkbookUnit9AudioText>
-              </span>
-              <LineInput
-                fKey="4a"
-                value={answers["4a"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-            <div style={{ paddingLeft: "30px" }}>
-              <LineInput
-                fKey="4b"
-                value={answers["4b"]}
-                onChange={handleChange}
-                disabled={false}
-              />
-            </div>
-          </div>
+        {/* Reset only */}
+        <div className="action-buttons-container">
+          <button className="try-again-button" onClick={handleReset}>
+            Start Again ↻
+          </button>
         </div>
       </div>
-
-      {/* Reset only */}
-      <div className="action-buttons-container">
-        <button className="try-again-button" onClick={handleReset}>
-          Start Again ↻
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
