@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/If I.mp3";
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ExerciseHeaderReview from "../../ExerciseHeaderReview";
@@ -187,12 +188,12 @@ const Review3_Page1_Q2 = () => {
         <Unit4StudentAudioText
           key={part.value + qi}
           src={
-            part.audio
+            part.value.trim() === "If I" ? missingNew0 : part.audio
               ? unit4StudentAudio("Page 34 - Exercise B", part.audio)
               : null
           }
           ariaLabel={`Play ${part.value.trim()}`}
-          style={{ fontSize: "20px" }}
+          style={{ fontSize: "20px", ...(part.value.trim() === "If I" ? {padding: 0} : {}) }}
         >
           {part.value}
         </Unit4StudentAudioText>

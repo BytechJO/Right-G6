@@ -1,3 +1,6 @@
+import missingNew0 from "../../../assets/audio/G6-missing/She couldn't miss school for her singing, could she.mp3";
+import missingNew1 from "../../../assets/audio/G6-missing/She could record CDs during school vacations, couldn't she.mp3";
+import missingNew2 from "../../../assets/audio/G6-missing/She sings rock and roll music, doesn't she.mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
@@ -369,7 +372,7 @@ const WB_Unit5_Interview_H = () => {
                   {id}
                 </span>
                 <WorkbookUnit5AudioText
-                  src={audio ? workbookUnit5Audio(audioFolder, audio) : null}
+                  src={{3:missingNew0,5:missingNew1,6:missingNew2}[id] || (audio ? workbookUnit5Audio(audioFolder, audio) : null)}
                   ariaLabel={`Play question ${id}`}
                   style={{ whiteSpace: "nowrap" }}
                 >

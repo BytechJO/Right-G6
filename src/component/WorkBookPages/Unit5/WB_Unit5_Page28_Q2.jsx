@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/The Statue of Liberty's index finger is eight feet long..mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ExerciseHeader from "../../ExerciseHeader";
@@ -136,9 +137,9 @@ const WB_Unit5_QuestionTagD = () => {
                   {id}
                 </span>
                 <WorkbookUnit5AudioText
-                  src={audio.map((prefix) =>
-                    workbookUnit5Audio(audioFolder, prefix),
-                  )}
+                  src={id === 1 ? missingNew0 : audio.map((prefix) =>
+                      workbookUnit5Audio(audioFolder, prefix),
+                    )}
                   ariaLabel={`Play fact ${id}`}
                   style={{ color: "#333" }}
                 >

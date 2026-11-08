@@ -1,7 +1,9 @@
+import missingNew0 from "../../../assets/audio/G6-missing/Tom hates riding his bike to the park..mp3";
 import React, { useState } from "react";
 import ExerciseHeader from "../../ExerciseHeader";
 import WorkbookUnit10AudioText, {
   workbookUnit10Audio,
+  stopWorkbookUnit10Audio,
 } from "./WorkbookUnit10AudioText";
 import ValidationAlert from "../../Popup/ValidationAlert";
 
@@ -95,6 +97,7 @@ const WB_Unit10_TrueFalse_F = () => {
   };
 
   const checkAnswers = () => {
+    stopWorkbookUnit10Audio();
     if (locked) return;
     if (Object.values(answers).some((v) => !v.trim())) {
       ValidationAlert.info("Please complete all answers.");
@@ -120,6 +123,7 @@ const WB_Unit10_TrueFalse_F = () => {
   };
 
   const showAnswers = () => {
+    stopWorkbookUnit10Audio();
     const a = {};
     const r = {};
     QUESTIONS.forEach(({ id, answer }) => {
@@ -132,6 +136,7 @@ const WB_Unit10_TrueFalse_F = () => {
   };
 
   const handleReset = () => {
+    stopWorkbookUnit10Audio();
     setAnswers(initAnswers());
     setResult({});
     setLocked(false);
@@ -182,11 +187,9 @@ const WB_Unit10_TrueFalse_F = () => {
                   <span style={{ fontWeight: "bold", minWidth: "22px" }}>
                     {id}
                   </span>
-                  {id === 1 ? (
-                    <span style={{ color: "#333" }}>{text}</span>
-                  ) : (
+                  {(
                     <WorkbookUnit10AudioText
-                      src={workbookUnit10Audio(
+                      src={id === 1 ? missingNew0 : workbookUnit10Audio(
                         "Page 59 - Exercise F",
                         `Item_${String(id - 1).padStart(3, "0")}_`,
                       )}

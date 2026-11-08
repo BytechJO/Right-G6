@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/My dad told me he was going to the store today..mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
@@ -236,7 +237,7 @@ const WB_Unit8_ReportedToDirectSpeech_F = () => {
                   </span>
                   <WorkbookUnit8AudioText
                     src={
-                      id > 1
+                      id === 1 ? missingNew0 : id > 1
                         ? workbookUnit8Audio(audioFolder, `Item_00${id - 1}_`)
                         : null
                     }
