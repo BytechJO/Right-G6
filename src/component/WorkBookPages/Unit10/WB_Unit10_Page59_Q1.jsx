@@ -1,5 +1,7 @@
+import missingNew0 from "../../../assets/audio/G6-missing/Tom and his friends do many things in the summer..mp3";
 import React from "react";
 import ExerciseHeader from "../../ExerciseHeader";
+import WorkbookUnit10AudioText from "./WorkbookUnit10AudioText";
 
 const WB_Unit10_ReadSlowly_E = () => (
   <div className="flex flex-col items-center p-[30px]">
@@ -20,7 +22,7 @@ const WB_Unit10_ReadSlowly_E = () => (
           textAlign: "left",
         }}
       >
-        Tom and his friends do many things in the summer. Tom loves riding his
+        <WorkbookUnit10AudioText src={missingNew0} ariaLabel="Play the full story about Tom and his friends" flowText>Tom and his friends do many things in the summer. Tom loves riding his
         bike to the park. Harley likes watching movies at the theater. He
         doesn’t mind renting movies and watching them at home, either. John
         enjoys reading his favorite books, but he hates putting them away after
@@ -32,7 +34,7 @@ const WB_Unit10_ReadSlowly_E = () => (
         the mess in the kitchen! Sarah loves playing with her dolls. She loves
         buying new dolls. She has a dollhouse made especially for them. Hansel
         loves going to the carnival, but he hates waiting in long lines for his
-        turn on the rides.
+        turn on the rides.</WorkbookUnit10AudioText>
       </div>
     </div>
   </div>

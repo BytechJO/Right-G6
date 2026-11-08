@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/Usually I like pizza, but this dessert which has fruit and honey isn't really to my liking..mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ExerciseHeader from "../../ExerciseHeader";
@@ -163,8 +164,8 @@ const WB_Unit_WriteSentence_L = () => {
                 </span>
                 <WorkbookUnit6AudioText
                   src={
-                    item.audio
-                      ? workbookUnit6AudioSequence(audioFolder, item.audio)
+                    item.id === 1 ? missingNew0 : item.audio
+                        ? workbookUnit6AudioSequence(audioFolder, item.audio)
                       : null
                   }
                   ariaLabel={`Play example sentence ${item.id}`}

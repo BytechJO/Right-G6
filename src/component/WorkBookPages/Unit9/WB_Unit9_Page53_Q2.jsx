@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/The workers move the furniture..mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
@@ -233,7 +234,7 @@ const WB_Unit9_RewriteProgressive_E = () => {
                   <WorkbookUnit9AudioText
                     src={
                       id === 1
-                        ? null
+                        ? missingNew0
                         : workbookUnit9Audio(
                             audioFolder,
                             `Item_${String(id - 1).padStart(3, "0")}_`,

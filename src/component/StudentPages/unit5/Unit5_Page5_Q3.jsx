@@ -1,7 +1,18 @@
+import missingNew0 from "../../../assets/audio/G6-missing/Mary sews very well,.mp3";
+import missingNew1 from "../../../assets/audio/G6-missing/That dog isn’t friendly,.mp3";
+import missingNew2 from "../../../assets/audio/G6-missing/We can make it to the bus on time,.mp3";
+import missingNew3 from "../../../assets/audio/G6-missing/You asked your parents,.mp3";
+import missingNew4 from "../../../assets/audio/G6-missing/Marsha hasn’t called yet,.mp3";
+import missingNew5 from "../../../assets/audio/G6-missing/can’t we.mp3";
+import missingNew6 from "../../../assets/audio/G6-missing/didn’t you.mp3";
+import missingNew7 from "../../../assets/audio/G6-missing/doesn’t she.mp3";
+import missingNew8 from "../../../assets/audio/G6-missing/has she.mp3";
+import missingNew9 from "../../../assets/audio/G6-missing/is it.mp3";
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
 import ExerciseHeader from "../../ExerciseHeader";
+import Unit5StudentAudioText, { stopUnit5StudentAudio } from "./Unit5StudentAudioText";
 
 const normalize = (str) =>
   str
@@ -45,6 +56,7 @@ const Unit5_Page5_Q3 = () => {
   };
 
   const checkAnswers = () => {
+    stopUnit5StudentAudio({ resetPageMedia: false });
     if (locked) return;
     if (answers.some((a) => !a.trim())) {
       ValidationAlert.info();
@@ -67,12 +79,14 @@ const Unit5_Page5_Q3 = () => {
   };
 
   const showAnswers = () => {
+    stopUnit5StudentAudio({ resetPageMedia: false });
     setAnswers(CORRECT);
     setErrors(Array(5).fill(true));
     setLocked(true);
   };
 
   const reset = () => {
+    stopUnit5StudentAudio({ resetPageMedia: false });
     setAnswers(Array(5).fill(""));
     setErrors(Array(5).fill(null));
     setLocked(false);
@@ -159,7 +173,7 @@ const Unit5_Page5_Q3 = () => {
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {item.num}
                 </span>
-                <span style={{ color: "#333" }}>{item.word}</span>
+                <Unit5StudentAudioText src={[missingNew0,missingNew1,missingNew2,missingNew3,missingNew4][i]} ariaLabel={`Play ${item.word}`} style={{ color: "#333", textAlign: "left" }}>{item.word}</Unit5StudentAudioText>
               </div>
             ))}
           </div>
@@ -176,7 +190,7 @@ const Unit5_Page5_Q3 = () => {
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {def.letter}
                 </span>
-                <span style={{ color: "#333" }}>{def.text}</span>
+                <Unit5StudentAudioText src={[missingNew5,missingNew6,missingNew7,missingNew8,missingNew9][i]} ariaLabel={`Play ${def.text}`} style={{ color: "#333", textAlign: "left" }}>{def.text}</Unit5StudentAudioText>
               </div>
             ))}
           </div>

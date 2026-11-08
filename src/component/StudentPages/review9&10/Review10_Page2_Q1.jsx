@@ -1,3 +1,7 @@
+import missingNew0 from "../../../assets/audio/G6-missing/My sister loves engineering..mp3";
+import missingNew1 from "../../../assets/audio/G6-missing/We are working at the restaurant today..mp3";
+import missingNew2 from "../../../assets/audio/G6-missing/Is the class taking a field trip.mp3";
+import missingNew3 from "../../../assets/audio/G6-missing/I am shopping at the mall right now..mp3";
 import React, { useState } from "react";
 
 import ValidationAlert from "../../Popup/ValidationAlert";
@@ -416,7 +420,7 @@ const Review10_Page2_Q1 = () => {
           {sentencePool.map((sentence, index) => (
             <div key={index}>
               <Unit10StudentAudioText
-                src={unit10StudentAudio(
+                src={({"My sister loves engineering.":missingNew0,"We are working at the restaurant today.":missingNew1,"Is the class taking a field trip?":missingNew2,"I am shopping at the mall right now.":missingNew3})[sentence] || unit10StudentAudio(
                   audioFolder,
                   sentenceAudioPrefixes[index],
                 )}

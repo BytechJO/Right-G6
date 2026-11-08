@@ -1,3 +1,7 @@
+import missingNew0 from "../../../assets/audio/G6-missing/we see Eiffel Tower.mp3";
+import missingNew1 from "../../../assets/audio/G6-missing/he make cookies.mp3";
+import missingNew2 from "../../../assets/audio/G6-missing/police not let him go.mp3";
+import missingNew3 from "../../../assets/audio/G6-missing/I do better.mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
@@ -233,9 +237,7 @@ const WB_Unit_ThirdConditional_G = () => {
                 </span>
                 <WorkbookUnit7AudioText
                   src={
-                    item.id === 4
-                      ? workbookUnit7Audio(audioFolder, "Item_004_")
-                      : null
+                    [missingNew0,missingNew1,missingNew2,missingNew3][item.id - 1]
                   }
                   ariaLabel={`Play clues for sentence ${item.id}`}
                   style={{ fontSize: "16px", color: "#333" }}

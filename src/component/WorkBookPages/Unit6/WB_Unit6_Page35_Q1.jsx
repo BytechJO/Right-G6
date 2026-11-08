@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/Mary.mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
@@ -235,7 +236,7 @@ const WB_Unit5_Unscramble_I = () => {
                     {id}
                   </span>
                   <WorkbookUnit6AudioText
-                    src={audio ? workbookUnit6Audio(audioFolder, audio) : null}
+                    src={id === 1 ? missingNew0 : audio ? workbookUnit6Audio(audioFolder, audio) : null}
                     ariaLabel={`Play sentence parts ${id}`}
                     style={{ color: "#444", letterSpacing: "0.3px" }}
                   >

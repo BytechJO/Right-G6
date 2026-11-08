@@ -1,3 +1,4 @@
+import missingNew0 from "../../../assets/audio/G6-missing/Beth.mp3";
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState } from "react";
 
@@ -118,7 +119,7 @@ const WB_Unit9_SurveyChart_G = () => {
             ].map(([prefix, label, left, top, width, height]) => (
               <WorkbookUnit9AudioText
                 key={label}
-                src={workbookUnit9Audio(audioFolder, prefix)}
+                src={label === "Play Beth" ? missingNew0 : workbookUnit9Audio(audioFolder, prefix)}
                 ariaLabel={label}
                 className="workbook-unit9-choice"
                 style={{
@@ -252,7 +253,7 @@ const WB_Unit9_SurveyChart_G = () => {
                 <span style={{ fontWeight: "bold", minWidth: "22px" }}>3</span>
                 <span style={{ whiteSpace: "nowrap" }}>
                   <WorkbookUnit9AudioText
-                    src={workbookUnit9Audio(audioFolder, "Item_004_")}
+                    src={missingNew0}
                     ariaLabel="Play Beth"
                     className="workbook-unit9-choice"
                     style={{
