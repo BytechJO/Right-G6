@@ -12,7 +12,9 @@ import React, { useState } from "react";
 import ValidationAlert from "../../Popup/ValidationAlert";
 import ActionButtons from "../../Button";
 import ExerciseHeader from "../../ExerciseHeader";
-import Unit5StudentAudioText, { stopUnit5StudentAudio } from "./Unit5StudentAudioText";
+import Unit5StudentAudioText, {
+  stopUnit5StudentAudio,
+} from "./Unit5StudentAudioText";
 
 const normalize = (str) =>
   str
@@ -173,7 +175,21 @@ const Unit5_Page5_Q3 = () => {
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {item.num}
                 </span>
-                <Unit5StudentAudioText src={[missingNew0,missingNew1,missingNew2,missingNew3,missingNew4][i]} ariaLabel={`Play ${item.word}`} style={{ color: "#333", textAlign: "left" }}>{item.word}</Unit5StudentAudioText>
+                <Unit5StudentAudioText
+                  src={
+                    [
+                      missingNew0,
+                      missingNew1,
+                      missingNew2,
+                      missingNew3,
+                      missingNew4,
+                    ][i]
+                  }
+                  ariaLabel={`Play ${item.word}`}
+                  style={{ color: "#333", textAlign: "left" }}
+                >
+                  {item.word}
+                </Unit5StudentAudioText>
               </div>
             ))}
           </div>
@@ -190,7 +206,21 @@ const Unit5_Page5_Q3 = () => {
                 <span style={{ fontWeight: "bold", color: "#333" }}>
                   {def.letter}
                 </span>
-                <Unit5StudentAudioText src={[missingNew5,missingNew6,missingNew7,missingNew8,missingNew9][i]} ariaLabel={`Play ${def.text}`} style={{ color: "#333", textAlign: "left" }}>{def.text}</Unit5StudentAudioText>
+                <Unit5StudentAudioText
+                  src={
+                    [
+                      missingNew5,
+                      missingNew6,
+                      missingNew7,
+                      missingNew8,
+                      missingNew9,
+                    ][i]
+                  }
+                  ariaLabel={`Play ${def.text}`}
+                  style={{ color: "#333", textAlign: "left" }}
+                >
+                  {def.text}
+                </Unit5StudentAudioText>
               </div>
             ))}
           </div>

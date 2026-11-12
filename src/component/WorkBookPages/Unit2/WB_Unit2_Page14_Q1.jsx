@@ -31,7 +31,10 @@ const rawStoryParagraphs = [
   [
     { text: `"` },
     { blank: true, answer: "Come along", width: 130 },
-    { text: `!" my brother said. He was acting like he was looking forward to climbing the mountain, but I knew `, audioIndex: 15 },
+    {
+      text: `!" my brother said. He was acting like he was looking forward to climbing the mountain, but I knew `,
+      audioIndex: 15,
+    },
     { text: `better. He was actually so `, audioIndex: 16 },
     { blank: true, answer: "nervous", width: 110 },
     { text: `, that I thought he might `, audioIndex: 17 },
@@ -44,7 +47,10 @@ const rawStoryParagraphs = [
   [
     { text: `I am different. I like an `, audioIndex: 21 },
     { blank: true, answer: "adventure", width: 115 },
-    { text: `, so I was looking forward to climbing Straight Up Mountain. Although I `, audioIndex: 22 },
+    {
+      text: `, so I was looking forward to climbing Straight Up Mountain. Although I `,
+      audioIndex: 22,
+    },
     { text: `thought it would be `, audioIndex: 23 },
     { blank: true, answer: "thrilling", width: 110 },
     { text: `, I felt that he was not `, audioIndex: 24 },
@@ -61,15 +67,25 @@ const rawStoryParagraphs = [
     { text: ` that I can do this."`, audioIndex: 29 },
   ],
   [
-    { text: `I wanted to make him feel better, so I told him, "This will be a new `, audioIndex: 30 },
+    {
+      text: `I wanted to make him feel better, so I told him, "This will be a new `,
+      audioIndex: 30,
+    },
     { blank: true, answer: "experience", width: 120 },
-    { text: ` for you. I feel you would be so `, audioIndex: 31 },
-    { text: `brave. `, audioIndex: 32 },
-    { text: `It took him so much `, audioIndex: 33 },
+    {
+      text: ` for you. I feel you would be so brave. It took him so much`,
+      audioIndex: 34,
+    },
     { blank: true, answer: "courage", width: 100 },
-    { text: ` to climb, but he did it. He started to look like a ` },
+    {
+      text: ` to climb, but he did it. He started to look like a `,
+      audioIndex: 36,
+    },
     { blank: true, answer: "professional", width: 130 },
-    { text: ` mountain climber. After we got down, I told him, "You did a great job!" "Yes," he said. "Maybe next winter, I will learn ` },
+    {
+      text: ` mountain climber. After we got down, I told him, "You did a great job!" "Yes," he said. "Maybe next winter, I will learn `,
+      audioIndex: 35,
+    },
     { blank: true, answer: "snowboarding", width: 130 },
     { text: `."` },
   ],
@@ -148,122 +164,135 @@ const WB_Unit2_Page13_I = () => {
   };
 
   const renderBlank = (seg, keyPrefix) => {
-      const i = seg.blankIndex;
-      const isWrong = result[i] === false;
-      const isCorrect = result[i] === true;
-
-      return (
-        <span
-          key={`${keyPrefix}-blank-${i}`}
-          style={{ position: "relative", display: "inline-block" }}
-        >
-          <input
-            type="text"
-            value={answers[i] || ""}
-            disabled={locked || isCorrect}
-            placeholder="word"
-            title="Type the vocabulary word or expression"
-            className="wb-unit2-answer-input"
-            onChange={(e) => handleChange(i, e.target.value)}
-            style={{
-              width: seg.width || 120,
-              border: "none",
-              borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
-              outline: "none",
-              background: "transparent",
-              fontSize: "17px",
-              color: isCorrect ? "#333" : isWrong ? "#D1232A" : "#333",
-              textAlign: "center",
-              padding: "0 4px",
-              verticalAlign: "baseline",
-            }}
-          />
-          {isWrong && (
-            <span
-              style={{
-                position: "absolute",
-                top: -7,
-                right: -7,
-                width: 16,
-                height: 16,
-                background: "#ef4444",
-                color: "white",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 10,
-                fontWeight: "bold",
-                border: "2px solid white",
-                boxShadow: "0 1px 4px rgba(0,0,0,.2)",
-                pointerEvents: "none",
-                zIndex: 10,
-              }}
-            >
-              ✕
-            </span>
-          )}
-        </span>
-      );
-  };
-
-  const renderStory = () => storyParagraphs.map((paragraph, paragraphIndex) => {
-    const paragraphCorrect = paragraph
-      .filter((segment) => segment.blank)
-      .every((segment) => result[segment.blankIndex] === true);
-
-    if (paragraphCorrect && paragraphIndex < 3) {
-      return (
-        <Unit2WorkbookAudioText
-          key={`paragraph-${paragraphIndex}`}
-          src={workbookUnit2Audio("Page 14 - Exercise I", `full${paragraphIndex + 1}`)}
-          ariaLabel={`Play completed paragraph ${paragraphIndex + 1}`}
-          className="wb-unit2-full-paragraph"
-        >
-          {paragraph.map((segment, segmentIndex) =>
-            segment.blank ? (
-              <span
-                key={`complete-${paragraphIndex}-${segmentIndex}`}
-                className="wb-unit2-completed-answer"
-              >
-                {answers[segment.blankIndex]}
-              </span>
-            ) : (
-              <React.Fragment key={`complete-${paragraphIndex}-${segmentIndex}`}>
-                {segment.text}
-              </React.Fragment>
-            ),
-          )}
-        </Unit2WorkbookAudioText>
-      );
-    }
+    const i = seg.blankIndex;
+    const isWrong = result[i] === false;
+    const isCorrect = result[i] === true;
 
     return (
-      <p key={`paragraph-${paragraphIndex}`} className="wb-unit2-story-paragraph">
-        {paragraph.map((segment, segmentIndex) => {
-          if (segment.blank) {
-            return renderBlank(segment, `${paragraphIndex}-${segmentIndex}`);
-          }
-          if (!segment.audioIndex) {
-            return <React.Fragment key={`text-${paragraphIndex}-${segmentIndex}`}>{segment.text}</React.Fragment>;
-          }
-          return (
-            <Unit2WorkbookAudioText
-              key={`audio-${paragraphIndex}-${segmentIndex}`}
-              src={workbookUnit2Audio(
-                "Page 14 - Exercise I",
-                `Item_${String(segment.audioIndex).padStart(3, "0")}_`,
-              )}
-              ariaLabel={`Play sentence part ${segment.audioIndex - 14}`}
-              style={{ textAlign: "left" }}
-            >
-              {segment.text}
-            </Unit2WorkbookAudioText>
-          );
-        })}
-      </p>
+      <span
+        key={`${keyPrefix}-blank-${i}`}
+        style={{ position: "relative", display: "inline-block" }}
+      >
+        <input
+          type="text"
+          value={answers[i] || ""}
+          disabled={locked || isCorrect}
+          placeholder="word"
+          title="Type the vocabulary word or expression"
+          className="wb-unit2-answer-input"
+          onChange={(e) => handleChange(i, e.target.value)}
+          style={{
+            width: seg.width || 120,
+            border: "none",
+            borderBottom: `1.5px solid ${isWrong ? "#D1232A" : "#555"}`,
+            outline: "none",
+            background: "transparent",
+            fontSize: "17px",
+            color: isCorrect ? "#333" : isWrong ? "#D1232A" : "#333",
+            textAlign: "center",
+            padding: "0 4px",
+            verticalAlign: "baseline",
+          }}
+        />
+        {isWrong && (
+          <span
+            style={{
+              position: "absolute",
+              top: -7,
+              right: -7,
+              width: 16,
+              height: 16,
+              background: "#ef4444",
+              color: "white",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 10,
+              fontWeight: "bold",
+              border: "2px solid white",
+              boxShadow: "0 1px 4px rgba(0,0,0,.2)",
+              pointerEvents: "none",
+              zIndex: 10,
+            }}
+          >
+            ✕
+          </span>
+        )}
+      </span>
     );
-  });
+  };
+
+  const renderStory = () =>
+    storyParagraphs.map((paragraph, paragraphIndex) => {
+      const paragraphCorrect = paragraph
+        .filter((segment) => segment.blank)
+        .every((segment) => result[segment.blankIndex] === true);
+
+      if (paragraphCorrect ) {
+        return (
+          <Unit2WorkbookAudioText
+            key={`paragraph-${paragraphIndex}`}
+            src={workbookUnit2Audio(
+              "Page 14 - Exercise I",
+              `full${paragraphIndex + 1}`,
+            )}
+            ariaLabel={`Play completed paragraph ${paragraphIndex + 1}`}
+            className="wb-unit2-full-paragraph"
+          >
+            {paragraph.map((segment, segmentIndex) =>
+              segment.blank ? (
+                <span
+                  key={`complete-${paragraphIndex}-${segmentIndex}`}
+                  className="wb-unit2-completed-answer"
+                >
+                  {answers[segment.blankIndex]}
+                </span>
+              ) : (
+                <React.Fragment
+                  key={`complete-${paragraphIndex}-${segmentIndex}`}
+                >
+                  {segment.text}
+                </React.Fragment>
+              ),
+            )}
+          </Unit2WorkbookAudioText>
+        );
+      }
+
+      return (
+        <p
+          key={`paragraph-${paragraphIndex}`}
+          className="wb-unit2-story-paragraph"
+        >
+          {paragraph.map((segment, segmentIndex) => {
+            if (segment.blank) {
+              return renderBlank(segment, `${paragraphIndex}-${segmentIndex}`);
+            }
+            if (!segment.audioIndex) {
+              return (
+                <React.Fragment key={`text-${paragraphIndex}-${segmentIndex}`}>
+                  {segment.text}
+                </React.Fragment>
+              );
+            }
+            return (
+              <Unit2WorkbookAudioText
+                key={`audio-${paragraphIndex}-${segmentIndex}`}
+                src={workbookUnit2Audio(
+                  "Page 14 - Exercise I",
+                  `Item_${String(segment.audioIndex).padStart(3, "0")}_`,
+                )}
+                ariaLabel={`Play sentence part ${segment.audioIndex - 14}`}
+                style={{ textAlign: "left" }}
+              >
+                {segment.text}
+              </Unit2WorkbookAudioText>
+            );
+          })}
+        </p>
+      );
+    });
 
   return (
     <div className="flex flex-col items-center p-[30px]">
@@ -315,7 +344,6 @@ const WB_Unit2_Page13_I = () => {
         >
           {renderStory()}
         </div>
-
       </div>
 
       {/* Buttons */}

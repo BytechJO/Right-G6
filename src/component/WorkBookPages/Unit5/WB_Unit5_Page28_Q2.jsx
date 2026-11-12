@@ -137,9 +137,13 @@ const WB_Unit5_QuestionTagD = () => {
                   {id}
                 </span>
                 <WorkbookUnit5AudioText
-                  src={id === 1 ? missingNew0 : audio.map((prefix) =>
-                      workbookUnit5Audio(audioFolder, prefix),
-                    )}
+                  src={
+                    id === 1
+                      ? missingNew0
+                      : audio.map((prefix) =>
+                          workbookUnit5Audio(audioFolder, prefix),
+                        )
+                  }
                   ariaLabel={`Play fact ${id}`}
                   style={{ color: "#333" }}
                 >
