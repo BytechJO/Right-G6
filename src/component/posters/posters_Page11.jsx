@@ -6,7 +6,7 @@ import imgConversation2 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I
 import imgConversation3 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 9.svg";
 import imgConversation4 from "../../assets/imgs/pages/classbook/Right 6 Unit 6 I Used to Be Used to It Folder/SVG/Asset 12.svg";
 import longAudio from "../../assets/audio/ClassBook/U6/PG 46/cd26pg46-conversation.mp3";
-import video from "../../assets/videos/grade 6 unit 2 page 10.mp4";
+import video from "../../assets/videos/grade 6 unit 6 page 46.mp4";
 import wordJson from "../../assets/json/cd26pg46-conversation_eng.json";
 import Conversation from "../Conversation";
 import "./posters.css";

@@ -6,7 +6,7 @@ import imgConversation2 from "../../assets/imgs/pages/classbook/Right 6 Unit 5 Y
 import imgConversation3 from "../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 13.svg";
 import imgConversation4 from "../../assets/imgs/pages/classbook/Right 6 Unit 5 You Would, Wouldnt You Folder/SVG/Asset 14.svg";
 import longAudio from "../../assets/audio/ClassBook/U5/PG 40/cd21pg40-conversation.mp3";
-import video from "../../assets/videos/grade 6 unit 1 page 4.mp4";
+import video from "../../assets/videos/grade 6 unit 5 page 40.mp4";
 import wordJson from "../../assets/json/cd21pg40-conversation_eng.json";
 import Conversation from "../Conversation";
 import "./posters.css";
